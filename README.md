@@ -26,4 +26,8 @@
   
     `cd front`
   
-    `npm start`
+    `npm start &`
+
+3. To stop Front-End:
+
+    `npm stop`
