@@ -19,7 +19,7 @@
 1. Install node staff if necessary 
   
     `cd front`
-  
+    
     `npm install`
   
 2. Run Front-End from "/front" folder 
