@@ -1,0 +1,3 @@
+#!/bin/bash
+P=$(ps -a|grep 'npm'|grep -o ^[0-9]*)
+kill -- -$(ps -o pgid=$P | grep -o [0-9]*)
