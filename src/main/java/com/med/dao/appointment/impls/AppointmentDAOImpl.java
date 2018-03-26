@@ -67,7 +67,12 @@ public class AppointmentDAOImpl implements IAppointmentDAO {
 
     @Override
     public Appointment deleteAppointment(int id) {
-        return null;
+
+       Appointment appointment = this.getAppointment(id);
+        int index = dataStorage.getAppointments().indexOf(appointment);
+        dataStorage.getAppointments().remove(index);
+
+        return appointment;
     }
 
     @Override
