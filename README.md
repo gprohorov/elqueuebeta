@@ -24,10 +24,12 @@
   
 2. Run Front-End from "/front" folder 
   
-    `cd front`
-  
+    `npm start`
+
+  ... or run it in background, use:
+
     `npm start &`
 
-3. To stop Front-End:
+  ... to stop it:
 
     `npm stop`
