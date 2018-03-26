@@ -3,10 +3,7 @@ package com.med.controller;
 import com.med.model.Patient;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +19,7 @@ public class PatientController {
     PatientServiceImpl service;
 
 
-    @RequestMapping("/patients")
+    @GetMapping("/patient/list")
    public List<Patient> showPatients(){
         return service.getAll();
     }
