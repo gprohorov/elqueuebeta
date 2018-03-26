@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface IPatientDAO {
     Patient createPatient(Person person);
+    Patient createPatient(Patient patient);
     Patient addPatient(Patient patient);
     Patient updatePatient(Patient patient);
     Patient getPatient(int id);

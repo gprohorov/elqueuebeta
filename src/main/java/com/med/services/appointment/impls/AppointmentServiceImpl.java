@@ -3,6 +3,7 @@ package com.med.services.appointment.impls;
 import com.med.dao.appointment.impls.AppointmentDAOImpl;
 import com.med.model.Appointment;
 import com.med.model.Patient;
+import com.med.model.Person;
 import com.med.services.appointment.interfaces.IAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public Appointment createAppointment(Patient patient, LocalDate date) {
         return appointmentDAO.createAppointment(patient,date);
+    }
+
+    @Override
+    public Appointment createAppointment(Person person, LocalDate date) {
+        return appointmentDAO.createAppointment(person, date );
     }
 
     @Override

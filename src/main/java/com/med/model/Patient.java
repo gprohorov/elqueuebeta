@@ -1,10 +1,7 @@
 package com.med.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by george on 3/9/18.
@@ -12,9 +9,8 @@ import java.util.Map;
 public class Patient {
    private int id;
    private Person person;
-   private LocalDate date;
    private Therapy therapy;
-   private Map<Procedure,Boolean> assignedProcedures = new HashMap<>(); // for today
+   private HashMap<Procedure,Boolean> assignedProcedures; // for today
    private Status status;
    private LocalDateTime lastActivity;
    private int balance;
@@ -23,10 +19,9 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int id, Person person, LocalDate date, Therapy therapy, Map<Procedure, Boolean> assignedProcedures, Status status, LocalDateTime lastActivity, int balance, Activity active) {
+    public Patient(int id, Person person,  Therapy therapy, HashMap<Procedure, Boolean> assignedProcedures, Status status, LocalDateTime lastActivity, int balance, Activity active) {
         this.id = id;
         this.person = person;
-        this.date = date;
         this.therapy = therapy;
         this.assignedProcedures = assignedProcedures;
         this.status = status;
@@ -36,41 +31,12 @@ public class Patient {
     }
 
 
-
-
-    public Patient(Person person, LocalDate date) {
-        this.id = person.getId();
-        this.person = person;
-        this.date = date;
-        this.assignedProcedures= Collections.emptyMap();
-        this.active = Activity.NON_ACTIVE;
-    }
-
     public Patient(Person person) {
         this.id = person.getId();
         this.person = person;
+        this.assignedProcedures= new HashMap<>();
         this.active = Activity.NON_ACTIVE;
     }
-
-    public Therapy getTherapy() {
-        return therapy;
-    }
-
-    public void setTherapy(Therapy therapy) {
-        this.therapy = therapy;
-    }
-
-    public LocalDateTime getLastActivity() {
-        return lastActivity;
-    }
-
-    public void setLastActivity(LocalDateTime lastActivity) {
-        this.lastActivity = lastActivity;
-    }
-
-    public Activity getActive() {return active;}
-
-    public void setActive(Activity active) {this.active = active;}
 
     public int getId() {
         return id;
@@ -88,15 +54,25 @@ public class Patient {
         this.person = person;
     }
 
-    public Therapy getDiagnosis() {
+    public Therapy getTherapy() {
         return therapy;
     }
 
-    public void setDiagnosis(Therapy therapy) {
+    public void setTherapy(Therapy therapy) {
         this.therapy = therapy;
     }
 
+    public HashMap<Procedure, Boolean> getAssignedProcedures() {
+        return assignedProcedures;
+    }
 
+    public void setAssignedProcedures(HashMap<Procedure, Boolean> assignedProcedures) {
+        this.assignedProcedures = assignedProcedures;
+    }
+
+    public void assignProcedure(Procedure procedure){
+        this.assignedProcedures.put(procedure,true);
+    }
 
     public Status getStatus() {
         return status;
@@ -106,6 +82,13 @@ public class Patient {
         this.status = status;
     }
 
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
+    }
 
     public int getBalance() {
         return balance;
@@ -115,7 +98,13 @@ public class Patient {
         this.balance = balance;
     }
 
+    public Activity getActive() {
+        return active;
+    }
 
+    public void setActive(Activity active) {
+        this.active = active;
+    }
 
     @Override
     public boolean equals(Object o) {

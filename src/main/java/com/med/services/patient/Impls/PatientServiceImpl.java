@@ -51,6 +51,11 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     @Override
+    public Patient createPatient(Patient patient) {
+        return patientDAO.createPatient(patient);
+    }
+
+    @Override
     public Patient addPatient(Patient patient) {
 
         return patientDAO.addPatient(patient);

@@ -58,6 +58,12 @@ public class PatientDAOImpl implements IPatientDAO {
     }
 
     @Override
+    public Patient createPatient(Patient patient) {
+        dataStorage.getPatients().add(patient);
+        return patient;
+    }
+
+    @Override
     public Patient addPatient(Patient patient) {
         dataStorage.getPatients().add(patient);
         return patient;
@@ -71,9 +77,10 @@ public class PatientDAOImpl implements IPatientDAO {
     }
 
     @Override
-    public Patient getPatient(int id) {
-        return dataStorage.getPatients().stream().filter(patient -> patient.getPerson().getId()==id)
-                .findFirst().orElse(null);
+    public Patient getPatient(int patientId) {
+        System.out.println(patientId);
+        return dataStorage.getPatients().stream().filter(patient -> patient.getId()==patientId)
+                .findFirst().get();
     }
 
     @Override

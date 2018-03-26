@@ -1,11 +1,14 @@
 package com.med.controller;
 
+import com.med.model.Appointment;
 import com.med.model.Person;
+import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.person.impls.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,6 +21,8 @@ public class PersonController {
 
     @Autowired
     PersonServiceImpl service;
+    @Autowired
+    AppointmentServiceImpl appointmentService;
 
     // get all persons
     @RequestMapping("/person/list")
@@ -63,7 +68,6 @@ public class PersonController {
     @GetMapping("/person/list/{name}")
     public List<Person> getPersonsByLastName(@PathVariable(value = "name") String lastName) {
         return service.getPersonListByName(lastName);
-
     }
 
 
@@ -71,9 +75,18 @@ public class PersonController {
     @GetMapping("/person/list/contains/{letters}")
     public List<Person> getPersonListByLetters(@PathVariable(value = "letters") String letters) {
         return service.getPersonListByLetters(letters);
-
-
     }
 
+
+
+    // appoint person on a date (create patient)
+    @PostMapping("/person/appoint/{id}")
+    public Appointment appointPersonOnDate(@PathVariable(value = "id") int personId,
+                                           @Valid @RequestBody LocalDate date) {
+        Person person = service.getPerson(personId);
+
+        return appointmentService.createAppointment(person, date);
+
+    }
 
 }

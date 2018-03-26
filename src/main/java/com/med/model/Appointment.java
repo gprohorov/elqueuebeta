@@ -18,11 +18,21 @@ public class Appointment {
         this.date = date;
     }
 
+    public Appointment(Person person, LocalDate date) {
+        this.patient = new Patient(person);
+        this.date = date;
+    }
+
     public Appointment(int id, Patient patient, LocalDate date) {
         this.id = id;
         this.patient = patient;
         this.date = date;
     }
+
+
+
+
+
 
     public int getId() {
         return id;

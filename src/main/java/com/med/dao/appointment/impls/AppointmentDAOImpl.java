@@ -4,6 +4,7 @@ import com.med.DataStorage;
 import com.med.dao.appointment.interfaces.IAppointmentDAO;
 import com.med.model.Appointment;
 import com.med.model.Patient;
+import com.med.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,10 +41,18 @@ public class AppointmentDAOImpl implements IAppointmentDAO {
 
     @Override
     public Appointment createAppointment(Patient patient, LocalDate date) {
-        Appointment appointment = new Appointment( patient, date);
-        return null;
+
+        return  new Appointment( patient, date);
     }
 
+    @Override
+    public Appointment createAppointment(Person person, LocalDate date) {
+        Appointment appointment = new Appointment(person, date);
+        dataStorage.getAppointments().add(appointment);
+        return appointment;
+    }
+
+    // appointment cannot be updated, only removed => method was not implemented
     @Override
     public Appointment updateAppointment(Appointment appointment) {
         return null;

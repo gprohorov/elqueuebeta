@@ -2,6 +2,7 @@ package com.med.dao.appointment.interfaces;
 
 import com.med.model.Appointment;
 import com.med.model.Patient;
+import com.med.model.Person;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public interface IAppointmentDAO {
     Appointment createAppointment(Appointment appointment);
     Appointment createAppointment(Patient patient, LocalDate date);
+    Appointment createAppointment(Person person, LocalDate date);
     Appointment updateAppointment(Appointment appointment);
     Appointment getAppointment(int id);
     Appointment deleteAppointment(int id);

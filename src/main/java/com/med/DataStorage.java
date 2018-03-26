@@ -23,6 +23,13 @@ public class DataStorage {
         executed.put(massage, 0);
         executed.put(pulling, 0);
 
+        progres.put(massage,true);
+        progres.put(laser,true);
+        progres.put(pulling,true);
+        patients.get(0).setAssignedProcedures(progres);
+
+
+
     }
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
@@ -93,7 +100,7 @@ public class DataStorage {
 
    Map<Procedure, Integer> assigned = new HashMap<Procedure, Integer>();
    Map<Procedure, Integer> executed = new HashMap<Procedure, Integer>();
-   Map<Procedure, Integer> progres = new HashMap<Procedure, Integer>();
+   HashMap<Procedure, Boolean> progres = new HashMap<>();
    LocalDate today = LocalDate.now();
 
 /*
@@ -103,13 +110,13 @@ public class DataStorage {
 
     private Therapy primary = new Therapy();
 
-    private Patient vasa = new Patient(9, persons.get(4),today, primary
-            , new HashMap<Procedure, Boolean>()
+    private Patient vasa = new Patient(9, persons.get(4), primary
+            , progres
             , Status.SOCIAL, null, 0, Activity.NON_ACTIVE) ;
 
-   private Patient trump = new Patient(11, persons.get(7),today, primary
-            , new HashMap<Procedure, Boolean>()
-            , Status.SOCIAL, null, 0, Activity.NON_ACTIVE) ;
+   private Patient trump = new Patient(11, persons.get(7), primary
+            , null
+            , Status.VIP, null, 0, Activity.NON_ACTIVE) ;
 
 
     private List<Patient> patients = new LinkedList<Patient> (Arrays.asList(

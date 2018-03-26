@@ -50,8 +50,8 @@ public class AppointmentController {
         updates.setId(appointmentId);
 
         return service.updateAppointment(updates);
-
     }
+
 
     // DELETE the appointment by id
     @PostMapping("/appointment/delete/{id}")
