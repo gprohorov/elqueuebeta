@@ -1,8 +1,10 @@
 package com.med.controller;
 
 import com.med.model.Appointment;
+import com.med.model.Patient;
 import com.med.model.Person;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.person.impls.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,12 @@ public class PersonController {
 
     @Autowired
     PersonServiceImpl service;
+
     @Autowired
     AppointmentServiceImpl appointmentService;
+
+    @Autowired
+    PatientServiceImpl patientService;
 
     // get all persons
     @RequestMapping("/person/list")
@@ -88,5 +94,26 @@ public class PersonController {
         return appointmentService.createAppointment(person, date);
 
     }
+
+    // appoint person on today (stupid)
+    @PostMapping("/person/appoint/today/{id}")
+    public Appointment appointPersonOnToday(@PathVariable(value = "id") int personId) {
+        Person person = service.getPerson(personId);
+
+        return appointmentService.createAppointment(person, LocalDate.now());
+
+    }
+
+    //  person  ->   patient   i.e. insert into Set<Patient> of today
+    // this means that the person has no diagnosis and assigned procedures
+    @PostMapping("/person/topatient/{id}")
+    public Patient putPersonIntoQueue(@PathVariable(value = "id") int personId) {
+
+        Person person = service.getPerson(personId);
+
+        return patientService.createPatient(person);
+
+    }
+
 
 }

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -29,7 +30,7 @@ public class DataStorage {
 
         patients.add(vasa);
         patients.add(trump);
-        patients.iterator().next().setAssignedProcedures(progres);
+        patients.get(0).setAssignedProcedures(progres);
 
 
 
@@ -115,14 +116,14 @@ public class DataStorage {
 
     private Patient vasa = new Patient(9, persons.get(4), primary
             , progres
-            , Status.SOCIAL, null, 0, Activity.NON_ACTIVE) ;
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
 
    private Patient trump = new Patient(11, persons.get(7), primary
             , null
-            , Status.VIP, null, 0, Activity.NON_ACTIVE) ;
+            , Status.VIP, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
 
-    private Set<Patient> patients = new HashSet<>();
+    private List<Patient> patients = new LinkedList<>();
 
     private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
             new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
@@ -141,7 +142,7 @@ public class DataStorage {
         this.appointments = appointments;
     }
 
-    public Set<Patient> getPatients() {
+    public List<Patient> getPatients() {
         return patients;
     }
 

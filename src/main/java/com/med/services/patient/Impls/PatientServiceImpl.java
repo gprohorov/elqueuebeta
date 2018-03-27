@@ -1,10 +1,7 @@
 package com.med.services.patient.Impls;
 
 import com.med.dao.patient.impls.PatientDAOImpl;
-import com.med.model.Doctor;
-import com.med.model.Patient;
-import com.med.model.Person;
-import com.med.model.Procedure;
+import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.event.impls.EventsServiceImpl;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by george on 3/9/18.
@@ -79,13 +75,13 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     @Override
-    public Set<Patient> getAll() {
+    public List<Patient> getAll() {
         return   patientDAO.getAll();
 
     }
 
     @Override
-    public Set<Patient> insertAppointedForToday() {
+    public List<Patient> insertAppointedForToday() {
 
        // List<Patient> appointed =
 
@@ -112,6 +108,23 @@ public class PatientServiceImpl implements IPatientsService {
         return patientDAO.getAll();
     }
 
+    public Patient setStatus(int patientID, Status status){
 
 
+        return null;
+    }
+
+    @Override
+    public Patient updateStatus(int patientId, Status status) {
+       Patient patient = this.getPatient(patientId);
+       patient.setStatus(status);
+       this.updatePatient(patient);
+        return patient;
+    }
+    public Patient updateActivity(int patientId, Activity activity) {
+       Patient patient = this.getPatient(patientId);
+       patient.setActive(activity);
+       this.updatePatient(patient);
+        return patient;
+    }
 }

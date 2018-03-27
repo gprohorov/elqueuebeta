@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -53,14 +54,24 @@ public class PatientDAOImpl implements IPatientDAO {
     @Override
     public Patient createPatient(Person person) {
         Patient patient = new Patient(person);
-        dataStorage.getPatients().add(patient);
-        return patient;
+        patient.setId(person.getId());
+
+        return this.createPatient(patient);
     }
 
     @Override
     public Patient createPatient(Patient patient) {
-        dataStorage.getPatients().add(patient);
-        return patient;
+
+        if(
+             this.getAll().stream()
+                     .noneMatch(ptn->ptn.getPerson().getId()==patient.getPerson().getId())
+           )
+        {
+            patient.setLastActivity(LocalDateTime.now());
+            dataStorage.getPatients().add(patient);
+            return patient;
+        }
+        else return null;
     }
 
     @Override
@@ -71,8 +82,14 @@ public class PatientDAOImpl implements IPatientDAO {
 
     @Override
     public Patient updatePatient(Patient patient) {
-       // int index = dataStorage.getPatients().indexOf(patient);
-        dataStorage.getPatients().add(patient);
+
+        Patient ptn = this.getAll().stream()
+                .filter(p->p.getId()==patient.getId()).findFirst().get();
+
+        int index = this.getAll().indexOf(ptn);
+
+        this.getAll().set(index,patient);
+
         return patient;
     }
 
@@ -87,19 +104,19 @@ public class PatientDAOImpl implements IPatientDAO {
     public Patient deletePatient(int id) {
      Patient patient = dataStorage.getPatients().stream().filter(pat -> pat.getPerson().getId()==id)
              .findFirst().orElse(null);
-   //  int index = dataStorage.getPatients().indexOf(patient);
-     dataStorage.getPatients().remove(patient);
+    int index = dataStorage.getPatients().indexOf(patient);
+     dataStorage.getPatients().remove(index);
         return patient;
     }
 
     @Override
-    public Set<Patient> getAll() {
+    public List<Patient> getAll() {
         return dataStorage.getPatients();
     }
 
 
     @Override
-    public Set<Patient> insertAppointedForToday() {
+    public List<Patient> insertAppointedForToday() {
 
         System.out.println(this.getAll().size());
 
