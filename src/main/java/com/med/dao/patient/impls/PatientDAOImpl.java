@@ -89,7 +89,7 @@ public class PatientDAOImpl implements IPatientDAO {
              .findFirst().orElse(null);
      int index = dataStorage.getPatients().indexOf(patient);
      dataStorage.getPatients().remove(index);
-        return null;
+        return patient;
     }
 
     @Override
@@ -101,12 +101,14 @@ public class PatientDAOImpl implements IPatientDAO {
     @Override
     public List<Patient> insertAppointedForToday() {
 
+        System.out.println(this.getAll().size());
+
         for(Appointment appointment: appointmentService.getAppointmentsByDate(LocalDate.now())){
 
             Patient patient = appointment.getPatient();
-            dataStorage.getPatients().add(patient);
+            this.getAll().add(patient);
         }
 
-        return dataStorage.getPatients();
+        return this.getAll();
     }
 }

@@ -120,7 +120,8 @@ public class DataStorage {
 
 
     private List<Patient> patients = new LinkedList<Patient> (Arrays.asList(
-            vasa, trump
+            vasa,
+            trump
             //   new Patient( persons.get(0)),
             //   new Patient( persons.get(2))
     ));

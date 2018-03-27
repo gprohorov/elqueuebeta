@@ -72,22 +72,11 @@ public class PatientController {
 
         return service.deletePatient(patientId);
     }
+
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     @RequestMapping("/patients/today")
-   public List<Patient> showPatientsToday(){
+    //
+     @PostMapping("/patient/list/today/insert")
+   public List<Patient> insertPatientsToday(){
         return service.insertAppointedForToday();
     }
 

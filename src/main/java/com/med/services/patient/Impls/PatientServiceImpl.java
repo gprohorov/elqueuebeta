@@ -1,7 +1,10 @@
 package com.med.services.patient.Impls;
 
 import com.med.dao.patient.impls.PatientDAOImpl;
-import com.med.model.*;
+import com.med.model.Doctor;
+import com.med.model.Patient;
+import com.med.model.Person;
+import com.med.model.Procedure;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.event.impls.EventsServiceImpl;
@@ -11,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -85,11 +86,16 @@ public class PatientServiceImpl implements IPatientsService {
     @Override
     public List<Patient> insertAppointedForToday() {
 
-        List<Patient> appointed = appointmentService
+       // List<Patient> appointed =
+
+                appointmentService
                 .getAppointmentsByDate(LocalDate.now())
                 .stream().map(appointment -> appointment.getPatient())
-                .collect(Collectors.toList());
+                .forEach(el-> this.createPatient(el));
+             //   .collect(Collectors.toList());
 
+      //  appointed.stream().forEach(el -> this.createPatient(el));
+/*
            for (Patient patient:appointed){
 
             patientDAO.addPatient(patient);
@@ -100,9 +106,9 @@ public class PatientServiceImpl implements IPatientsService {
                    Action.PUT_IN_QUEUE );
 
             eventsService.addEvent(event);
-
         }
-        return appointed;
+        */
+        return patientDAO.getAll();
     }
 
 
