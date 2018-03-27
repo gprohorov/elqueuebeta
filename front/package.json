@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ss.js >/dev/tty | ng serve",
-    "stop": "./ks",
+    "stop": "kill -- -$(ps -o pgid=$(ps -a|grep 'npm'|grep -o ^[0-9]*) | grep -o [0-9]*)",
     "ng": "ng",
     "build": "ng build --prod",
     "test": "ng test",
