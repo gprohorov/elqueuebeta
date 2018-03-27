@@ -3,7 +3,7 @@ package com.med.dao.patient.interfaces;
 import com.med.model.Patient;
 import com.med.model.Person;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by george on 3/9/18.
@@ -15,8 +15,8 @@ public interface IPatientDAO {
     Patient updatePatient(Patient patient);
     Patient getPatient(int id);
     Patient deletePatient(int id);
-    List<Patient> getAll();
-    List<Patient> insertAppointedForToday();
+    Set<Patient> getAll();
+    Set<Patient> insertAppointedForToday();
     //List<Patient> getAppointedForDate(LocalDate date);
 
 }

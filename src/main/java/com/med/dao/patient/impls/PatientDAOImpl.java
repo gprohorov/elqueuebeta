@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by george on 3/9/18.
@@ -71,14 +71,14 @@ public class PatientDAOImpl implements IPatientDAO {
 
     @Override
     public Patient updatePatient(Patient patient) {
-        int index = dataStorage.getPatients().indexOf(patient);
-        dataStorage.getPatients().set(index, patient);
+       // int index = dataStorage.getPatients().indexOf(patient);
+        dataStorage.getPatients().add(patient);
         return patient;
     }
 
     @Override
     public Patient getPatient(int patientId) {
-        System.out.println(patientId);
+       // System.out.println(patientId);
         return dataStorage.getPatients().stream().filter(patient -> patient.getId()==patientId)
                 .findFirst().get();
     }
@@ -87,19 +87,19 @@ public class PatientDAOImpl implements IPatientDAO {
     public Patient deletePatient(int id) {
      Patient patient = dataStorage.getPatients().stream().filter(pat -> pat.getPerson().getId()==id)
              .findFirst().orElse(null);
-     int index = dataStorage.getPatients().indexOf(patient);
-     dataStorage.getPatients().remove(index);
+   //  int index = dataStorage.getPatients().indexOf(patient);
+     dataStorage.getPatients().remove(patient);
         return patient;
     }
 
     @Override
-    public List<Patient> getAll() {
+    public Set<Patient> getAll() {
         return dataStorage.getPatients();
     }
 
 
     @Override
-    public List<Patient> insertAppointedForToday() {
+    public Set<Patient> insertAppointedForToday() {
 
         System.out.println(this.getAll().size());
 

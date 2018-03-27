@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by george on 3/9/18.
@@ -78,13 +79,13 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     @Override
-    public List<Patient> getAll() {
+    public Set<Patient> getAll() {
         return   patientDAO.getAll();
 
     }
 
     @Override
-    public List<Patient> insertAppointedForToday() {
+    public Set<Patient> insertAppointedForToday() {
 
        // List<Patient> appointed =
 

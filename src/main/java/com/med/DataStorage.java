@@ -26,7 +26,10 @@ public class DataStorage {
         progres.put(massage,true);
         progres.put(laser,true);
         progres.put(pulling,true);
-        patients.get(0).setAssignedProcedures(progres);
+
+        patients.add(vasa);
+        patients.add(trump);
+        patients.iterator().next().setAssignedProcedures(progres);
 
 
 
@@ -119,13 +122,7 @@ public class DataStorage {
             , Status.VIP, null, 0, Activity.NON_ACTIVE) ;
 
 
-    private List<Patient> patients = new LinkedList<Patient> (Arrays.asList(
-            vasa,
-            trump
-            //   new Patient( persons.get(0)),
-            //   new Patient( persons.get(2))
-    ));
-
+    private Set<Patient> patients = new HashSet<>();
 
     private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
             new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
@@ -144,7 +141,7 @@ public class DataStorage {
         this.appointments = appointments;
     }
 
-    public List<Patient> getPatients() {
+    public Set<Patient> getPatients() {
         return patients;
     }
 

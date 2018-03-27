@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +28,7 @@ public class PatientController {
 
 
     @GetMapping("/patient/list")
-   public List<Patient> showPatients(){
+   public Set<Patient> showPatients(){
         return service.getAll();
     }
 
@@ -76,7 +77,7 @@ public class PatientController {
     
     //
      @PostMapping("/patient/list/today/insert")
-   public List<Patient> insertPatientsToday(){
+   public Set<Patient> insertPatientsToday(){
         return service.insertAppointedForToday();
     }
 
