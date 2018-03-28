@@ -10,8 +10,11 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -108,11 +111,7 @@ public class PatientServiceImpl implements IPatientsService {
         return patientDAO.getAll();
     }
 
-    public Patient setStatus(int patientID, Status status){
-
-
-        return null;
-    }
+    public Patient setStatus(int patientID, Status status){return null;}
 
     @Override
     public Patient updateStatus(int patientId, Status status) {
@@ -125,6 +124,7 @@ public class PatientServiceImpl implements IPatientsService {
     public Patient updateActivity(int patientId, Activity activity) {
        Patient patient = this.getPatient(patientId);
        patient.setActive(activity);
+       patient.setLastActivity(LocalDateTime.now());
        this.updatePatient(patient);
         return patient;
     }
@@ -138,6 +138,27 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
 
+    public Patient addProcedure(int patientId, @Valid int procedureId) {
+
+        Patient patient = this.getPatient(patientId);
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        patient.assignProcedure(procedure);
+
+        return patient;
+    }
+
+    public Double getProgress(int patientId) {
+        Double progress = 0.0;
+        Patient patient = this.getPatient(patientId);
+        HashMap<Procedure,Boolean> map = patient.getAssignedProcedures();
+        if (!map.isEmpty()){
+           int nominator = (int) map.entrySet().stream()
+                   .filter(entry->entry.getValue().equals(true)).count();
+           int denominator = map.size();
+           progress = Double.valueOf(nominator) /denominator;
+        }
 
 
+        return progress;
+    }
 }

@@ -71,7 +71,7 @@ public class Patient {
     }
 
     public void assignProcedure(Procedure procedure){
-        this.assignedProcedures.put(procedure,true);
+        this.assignedProcedures.put(procedure,false);
     }
 
     public Status getStatus() {

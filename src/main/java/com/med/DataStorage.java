@@ -24,9 +24,9 @@ public class DataStorage {
         executed.put(massage, 0);
         executed.put(pulling, 0);
 
-        progres.put(massage,true);
+        progres.put(massage,false);
         progres.put(laser,true);
-        progres.put(pulling,true);
+        progres.put(pulling,false);
 
         patients.add(vasa);
         patients.add(trump);
@@ -119,8 +119,8 @@ public class DataStorage {
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
 
    private Patient trump = new Patient(11, persons.get(7), primary
-            , null
-            , Status.VIP, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
+            , new HashMap<Procedure,Boolean>()
+            , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
 
     private List<Patient> patients = new LinkedList<>();

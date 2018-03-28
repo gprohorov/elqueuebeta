@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-@RequestMapping("/api")
+@RequestMapping("/api/patient")
 @RestController
 public class PatientController {
 
@@ -26,12 +26,12 @@ public class PatientController {
 
 
     ////////////////////////// CRUD//////////////////////////
-    @GetMapping("/patient/list")
+    @GetMapping("/list")
     public List<Patient> showPatients() {
         return service.getAll();
     }
 
-    @GetMapping("/patient/list/appointed/today")
+    @GetMapping("/list/appointed/today")
     public List<Patient> getPatientsAppointedForToday() {
         return appointmentService
                 .getAppointmentsByDate(LocalDate.now())
@@ -41,7 +41,7 @@ public class PatientController {
 
 
     // CREATE a new Patient
-    @PostMapping("/patient/create")
+    @PostMapping("/create")
     public Patient createPatient(@Valid @RequestBody Person person) {
 
         return service.createPatient(person);
@@ -49,14 +49,14 @@ public class PatientController {
 
 
     // READ the Patient by id
-    @GetMapping("/patient/get/{id}")
+    @GetMapping("/get/{id}")
     public Patient showOnePatient(@PathVariable(value = "id") int patientId) {
 
         return service.getPatient(patientId);
     }
 
     // UPDATE the patient by id
-    @PostMapping("/patient/update/{id}")
+    @PostMapping("/update/{id}")
     public Patient updatePatient(@PathVariable(value = "id") int patientId,
                                  @Valid @RequestBody Patient updates) {
         updates.setId(patientId);
@@ -66,7 +66,7 @@ public class PatientController {
     }
 
     // DELETE the patient by id
-    @PostMapping("/patient/delete/{id}")
+    @PostMapping("/delete/{id}")
     public Patient delPatient(@PathVariable(value = "id") int patientId) {
 
         return service.deletePatient(patientId);
@@ -76,14 +76,14 @@ public class PatientController {
 
 
     // insert into patients list all appointed for today
-    @PostMapping("/patient/list/today/insert")
+    @PostMapping("/list/today/insert")
     public List<Patient> insertPatientsToday() {
         return service.insertAppointedForToday();
     }
 
 
     // UPDATE the patient's status
-    @PostMapping("/patient/update/status/{id}")
+    @PostMapping("/update/status/{id}")
     public Patient updatePatientStatus(@PathVariable(value = "id") int patientId,
                                        @Valid @RequestBody Status status) {
 
@@ -91,7 +91,7 @@ public class PatientController {
     }
 
     // UPDATE the patient's activity
-    @PostMapping("/patient/update/balance/{id}")
+    @PostMapping("/update/activity/{id}")
     public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
                                        @Valid @RequestBody Activity activity) {
 
@@ -99,11 +99,27 @@ public class PatientController {
     }
 
   // UPDATE the patient's activity
-    @PostMapping("/patient/update/activity/{id}")
+    @PostMapping("/update/balance/{id}")
     public Patient updatePatientBalance(@PathVariable(value = "id") int patientId,
                                        @Valid @RequestBody int balance) {
 
         return service.updateBalance(patientId, balance);
+    }
+
+  // UPDATE the patient's activity
+    @PostMapping("add/procedure/{id}")
+    public Patient addProcedure(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody int procedureId) {
+
+        return service.addProcedure(patientId, procedureId);
+    }
+
+
+  // get progress in crowd :  ratio of executed procedures to assigned ones
+    @PostMapping("progress/{id}")
+    public Double getProgress(@PathVariable(value = "id") int patientId) {
+
+        return service.getProgress(patientId);
     }
 
 
