@@ -4,12 +4,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { CallbackComponent } from './callback.component';
 import { PublicDealsComponent } from './public-deals/public-deals.component';
 import { PrivateDealsComponent } from './private-deals/private-deals.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'deals',
+    redirectTo: 'login',
     pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'deals',

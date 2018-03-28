@@ -1,0 +1,22 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h1>Hi {{currentUser.firstName}}!</h1>
+    <p>You're logged in ATM!</p>
+    <p>Your balance is: <span class="text-primary">{{currentUser.balance||0 | currency:'USD':"symbol":'1.2-2'}}</span></p>
+    <p class="input-group input-group-sm">
+      <span class="input-group-addon">Sum:</span>
+      <input type="number" name="sum" id="sum" value="0" class="form-control" [(ngModel)]="model.sum" #sum="ngModel">
+    </p>
+    <p class="pull-right">
+        <button class="btn btn-primary" (click)="updateBalance(-model.sum)">Withdraw</button>
+        <button class="btn btn-info" (click)="updateBalance(model.sum)">Deposit</button>
+    </p>
+    <div class="clearfix"></div>
+    <h2>All registered users:</h2>
+    <ul>
+        <li *ngFor="let user of users">
+            {{user.username}} ({{user.firstName}} {{user.lastName}})
+            - <a href="#" (click)="deleteUser(user.id)">Delete</a>
+        </li>
+    </ul>
+    <p><a [routerLink]="['/login']">Logout</a></p>
+</div>
