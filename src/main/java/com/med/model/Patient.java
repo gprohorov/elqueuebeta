@@ -20,7 +20,7 @@ public class Patient {
     }
 
     public Patient(int id, Person person,  Therapy therapy, HashMap<Procedure, Boolean> assignedProcedures, Status status, LocalDateTime lastActivity, int balance, Activity active) {
-        this.id = id;
+        this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
         this.assignedProcedures = assignedProcedures;
@@ -71,7 +71,7 @@ public class Patient {
     }
 
     public void assignProcedure(Procedure procedure){
-        this.assignedProcedures.put(procedure,true);
+        this.assignedProcedures.put(procedure,false);
     }
 
     public Status getStatus() {
@@ -118,7 +118,7 @@ public class Patient {
 
     @Override
     public int hashCode() {
-        return getPerson().hashCode();
+        return this.getPerson().getId();
     }
 
 

@@ -1,7 +1,6 @@
 package com.med.controller;
 
-import com.med.model.Patient;
-import com.med.model.Person;
+import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-@RequestMapping("/api")
+@RequestMapping("/api/patient")
 @RestController
 public class PatientController {
 
@@ -26,13 +25,14 @@ public class PatientController {
     AppointmentServiceImpl appointmentService;
 
 
-    @GetMapping("/patient/list")
-   public List<Patient> showPatients(){
+    ////////////////////////// CRUD//////////////////////////
+    @GetMapping("/list")
+    public List<Patient> showPatients() {
         return service.getAll();
     }
 
-     @GetMapping("/patient/list/appointed/today")
-   public List<Patient> getPatientsAppointedForToday(){
+    @GetMapping("/list/appointed/today")
+    public List<Patient> getPatientsAppointedForToday() {
         return appointmentService
                 .getAppointmentsByDate(LocalDate.now())
                 .stream().map(appointment -> appointment.getPatient())
@@ -40,9 +40,8 @@ public class PatientController {
     }
 
 
-
     // CREATE a new Patient
-    @PostMapping("/patient/create")
+    @PostMapping("/create")
     public Patient createPatient(@Valid @RequestBody Person person) {
 
         return service.createPatient(person);
@@ -50,16 +49,16 @@ public class PatientController {
 
 
     // READ the Patient by id
-    @GetMapping("/patient/get/{id}")
-    public Patient showOnePatient(@PathVariable(value = "id")  int patientId) {
+    @GetMapping("/get/{id}")
+    public Patient showOnePatient(@PathVariable(value = "id") int patientId) {
 
         return service.getPatient(patientId);
     }
 
     // UPDATE the patient by id
-    @PostMapping("/patient/update/{id}")
-    public Patient updatePatient(@PathVariable(value = "id")  int patientId,
-                               @Valid @RequestBody Patient updates)  {
+    @PostMapping("/update/{id}")
+    public Patient updatePatient(@PathVariable(value = "id") int patientId,
+                                 @Valid @RequestBody Patient updates) {
         updates.setId(patientId);
 
         return service.updatePatient(updates);
@@ -67,31 +66,61 @@ public class PatientController {
     }
 
     // DELETE the patient by id
-    @PostMapping("/patient/delete/{id}")
-    public Patient delPatient(@PathVariable(value = "id")  int patientId)  {
+    @PostMapping("/delete/{id}")
+    public Patient delPatient(@PathVariable(value = "id") int patientId) {
 
         return service.deletePatient(patientId);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     @RequestMapping("/patients/today")
-   public List<Patient> showPatientsToday(){
+
+    //////////////////////////////////////////////////////////
+
+
+    // insert into patients list all appointed for today
+    @PostMapping("/list/today/insert")
+    public List<Patient> insertPatientsToday() {
         return service.insertAppointedForToday();
     }
 
 
+    // UPDATE the patient's status
+    @PostMapping("/update/status/{id}")
+    public Patient updatePatientStatus(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody Status status) {
+
+        return service.updateStatus(patientId, status);
+    }
+
+    // UPDATE the patient's activity
+    @PostMapping("/update/activity/{id}")
+    public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody Activity activity) {
+
+        return service.updateActivity(patientId, activity);
+    }
+
+  // UPDATE the patient's activity
+    @PostMapping("/update/balance/{id}")
+    public Patient updatePatientBalance(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody int balance) {
+
+        return service.updateBalance(patientId, balance);
+    }
+
+  // UPDATE the patient's activity
+    @PostMapping("add/procedure/{id}")
+    public Patient addProcedure(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody int procedureId) {
+
+        return service.addProcedure(patientId, procedureId);
+    }
+
+
+  // get progress in crowd :  ratio of executed procedures to assigned ones
+    @PostMapping("progress/{id}")
+    public Double getProgress(@PathVariable(value = "id") int patientId) {
+
+        return service.getProgress(patientId);
+    }
 
 
 

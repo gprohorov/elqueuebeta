@@ -10,11 +10,12 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -85,11 +86,16 @@ public class PatientServiceImpl implements IPatientsService {
     @Override
     public List<Patient> insertAppointedForToday() {
 
-        List<Patient> appointed = appointmentService
+       // List<Patient> appointed =
+
+                appointmentService
                 .getAppointmentsByDate(LocalDate.now())
                 .stream().map(appointment -> appointment.getPatient())
-                .collect(Collectors.toList());
+                .forEach(el-> this.createPatient(el));
+             //   .collect(Collectors.toList());
 
+      //  appointed.stream().forEach(el -> this.createPatient(el));
+/*
            for (Patient patient:appointed){
 
             patientDAO.addPatient(patient);
@@ -100,11 +106,59 @@ public class PatientServiceImpl implements IPatientsService {
                    Action.PUT_IN_QUEUE );
 
             eventsService.addEvent(event);
-
         }
-        return appointed;
+        */
+        return patientDAO.getAll();
+    }
+
+    public Patient setStatus(int patientID, Status status){return null;}
+
+    @Override
+    public Patient updateStatus(int patientId, Status status) {
+       Patient patient = this.getPatient(patientId);
+       patient.setStatus(status);
+       this.updatePatient(patient);
+        return patient;
+    }
+
+    public Patient updateActivity(int patientId, Activity activity) {
+       Patient patient = this.getPatient(patientId);
+       patient.setActive(activity);
+       patient.setLastActivity(LocalDateTime.now());
+       this.updatePatient(patient);
+        return patient;
     }
 
 
+    public Patient updateBalance(int patientId, int balance) {
+       Patient patient = this.getPatient(patientId);
+       patient.setBalance(balance);
+       this.updatePatient(patient);
+        return patient;
+    }
 
+
+    public Patient addProcedure(int patientId, @Valid int procedureId) {
+
+        Patient patient = this.getPatient(patientId);
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        patient.assignProcedure(procedure);
+
+        return patient;
+    }
+
+    public Double getProgress(int patientId) {
+        Double progress = 0.0;
+        Patient patient = this.getPatient(patientId);
+        HashMap<Procedure,Boolean> map = patient.getAssignedProcedures();
+        if (!map.isEmpty()){
+           int nominator = (int) map.entrySet().stream()
+                   .filter(entry->entry.getValue().equals(true)).count();
+           int denominator = map.size();
+           progress = Double.valueOf(nominator) /denominator;
+        }
+
+
+        return progress;
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -53,14 +54,24 @@ public class PatientDAOImpl implements IPatientDAO {
     @Override
     public Patient createPatient(Person person) {
         Patient patient = new Patient(person);
-        dataStorage.getPatients().add(patient);
-        return patient;
+        patient.setId(person.getId());
+
+        return this.createPatient(patient);
     }
 
     @Override
     public Patient createPatient(Patient patient) {
-        dataStorage.getPatients().add(patient);
-        return patient;
+
+        if(
+             this.getAll().stream()
+                     .noneMatch(ptn->ptn.getPerson().getId()==patient.getPerson().getId())
+           )
+        {
+            patient.setLastActivity(LocalDateTime.now());
+            dataStorage.getPatients().add(patient);
+            return patient;
+        }
+        else return null;
     }
 
     @Override
@@ -71,14 +82,20 @@ public class PatientDAOImpl implements IPatientDAO {
 
     @Override
     public Patient updatePatient(Patient patient) {
-        int index = dataStorage.getPatients().indexOf(patient);
-        dataStorage.getPatients().set(index, patient);
+
+        Patient ptn = this.getAll().stream()
+                .filter(p->p.getId()==patient.getId()).findFirst().get();
+
+        int index = this.getAll().indexOf(ptn);
+
+        this.getAll().set(index,patient);
+
         return patient;
     }
 
     @Override
     public Patient getPatient(int patientId) {
-        System.out.println(patientId);
+       // System.out.println(patientId);
         return dataStorage.getPatients().stream().filter(patient -> patient.getId()==patientId)
                 .findFirst().get();
     }
@@ -87,9 +104,9 @@ public class PatientDAOImpl implements IPatientDAO {
     public Patient deletePatient(int id) {
      Patient patient = dataStorage.getPatients().stream().filter(pat -> pat.getPerson().getId()==id)
              .findFirst().orElse(null);
-     int index = dataStorage.getPatients().indexOf(patient);
+    int index = dataStorage.getPatients().indexOf(patient);
      dataStorage.getPatients().remove(index);
-        return null;
+        return patient;
     }
 
     @Override
@@ -101,12 +118,14 @@ public class PatientDAOImpl implements IPatientDAO {
     @Override
     public List<Patient> insertAppointedForToday() {
 
+        System.out.println(this.getAll().size());
+
         for(Appointment appointment: appointmentService.getAppointmentsByDate(LocalDate.now())){
 
             Patient patient = appointment.getPatient();
-            dataStorage.getPatients().add(patient);
+            this.getAll().add(patient);
         }
 
-        return dataStorage.getPatients();
+        return this.getAll();
     }
 }
