@@ -4,28 +4,33 @@ package com.med.model;
  * Created by george on 3/9/18.
  */
 public class Procedure {
-    int id;
-    String name;
-    int cabinet;
-    String notes;
-    int area;
 
-
-    public Procedure(int id, String name, int cabinet) {
-        this.id = id;
-        this.name = name;
-        this.cabinet = cabinet;
-           }
+    private int id;
+    private String name;
+    private int cabinet;
+    private String notes;
+    private int area;
+    private int price;
 
     public Procedure() {
     }
 
-    public Procedure(int id, String name, int cabinet, String notes, int area) {
+    public Procedure(int id, String name, int cabinet, String notes, int area, int price) {
         this.id = id;
         this.name = name;
         this.cabinet = cabinet;
         this.notes = notes;
         this.area = area;
+        this.price = price;
+    }
+
+    public Procedure(int id, String name, int cabinet, int price) {
+        this.id = id;
+        this.name = name;
+        this.cabinet = cabinet;
+        this.notes = "";
+        this.area = 1;
+        this.price = price;
     }
 
     public int getId() {
@@ -64,18 +69,19 @@ public class Procedure {
         return area;
     }
 
-    public void setArea(byte area) {
+    public void setArea(int area) {
         this.area = area;
     }
 
-    @Override
-    public String toString() {
-        return "Procedure{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", cabinet=" + cabinet +
-                ", notes='" + notes + '\'' +
-                ", area=" + area +
-                '}';
+    public int getPrice() {
+        return price;
+    }
+
+    public int getSum() {
+        return price*area;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

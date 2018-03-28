@@ -106,21 +106,48 @@ public class PatientController {
         return service.updateBalance(patientId, balance);
     }
 
-  // UPDATE the patient's activity
-    @PostMapping("add/procedure/{id}")
-    public Patient addProcedure(@PathVariable(value = "id") int patientId,
-                                       @Valid @RequestBody int procedureId) {
-
-        return service.addProcedure(patientId, procedureId);
-    }
 
 
   // get progress in crowd :  ratio of executed procedures to assigned ones
-    @PostMapping("progress/{id}")
+    @PostMapping("/progress/{id}")
     public Double getProgress(@PathVariable(value = "id") int patientId) {
 
         return service.getProgress(patientId);
     }
+
+    // get a list of patients to procedure orderd by time and status
+    // mast be sorted by Slavik
+    @GetMapping("/list/procedure/{id}")
+    public List<Patient> queueToProcedure(@PathVariable(value = "id") int procedureId){
+
+
+        return service.getQueueToProcedure(procedureId);
+    }
+
+    // put the procedure into map of assigned for today
+    @PostMapping("/add/procedure/{id}")
+    public Patient addProcedure(@PathVariable(value = "id") int patientId,
+                                @Valid @RequestBody int procedureId) {
+
+        return service.addProcedure(patientId, procedureId);
+    }
+
+    // put the procedure into map of assigned for today
+    @PostMapping("/remove/procedure/{id}")
+    public Patient removeProcedure(@PathVariable(value = "id") int patientId,
+                                @Valid @RequestBody int procedureId) {
+
+        return service.removeProcedure(patientId, procedureId);
+    }
+
+    // put the procedure into map of assigned for today
+    @PostMapping("/execute/procedure/{id}")
+    public Patient executeProcedure(@PathVariable(value = "id") int patientId,
+                                @Valid @RequestBody int procedureId) {
+
+        return service.executeProcedure(patientId, procedureId);
+    }
+
 
 
 

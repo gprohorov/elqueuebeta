@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -138,7 +137,7 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
 
-    public Patient addProcedure(int patientId, @Valid int procedureId) {
+    public Patient addProcedure(int patientId, int procedureId) {
 
         Patient patient = this.getPatient(patientId);
         Procedure procedure = procedureService.getProcedure(procedureId);
@@ -147,6 +146,18 @@ public class PatientServiceImpl implements IPatientsService {
         return patient;
     }
 
+    public Patient removeProcedure(int patientId, int procedureId) {
+
+        Patient patient = this.getPatient(patientId);
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        patient.disAssignProcedure(procedure);
+
+        return patient;
+    }
+
+
+
+    // get progress in crowd :  ratio of executed procedures to assigned ones
     public Double getProgress(int patientId) {
         Double progress = 0.0;
         Patient patient = this.getPatient(patientId);
@@ -157,8 +168,29 @@ public class PatientServiceImpl implements IPatientsService {
            int denominator = map.size();
            progress = Double.valueOf(nominator) /denominator;
         }
-
-
         return progress;
+    }
+
+      // get a sorted list of patients to the specified procedure
+    public List<Patient> getQueueToProcedure(int procedureId) {
+
+        Procedure procedure = procedureService.getProcedure(procedureId);
+
+        Map.Entry<Procedure,Boolean> entry
+                = new AbstractMap.SimpleEntry<Procedure, Boolean>(
+                procedure, false
+        );
+
+        return  this.getAll().stream()
+                .filter(patient -> patient.getAssignedProcedures().entrySet().contains(entry))
+                .collect(Collectors.toList());
+    }
+
+     // patient has executedcprocedure, so we mark it as "done" in his assigned procedures
+    public Patient executeProcedure(int patientId, @Valid int procedureId) {
+        Patient patient = this.getPatient(patientId);
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        patient.markProcedureAsExecuted(procedure);
+        return patient;
     }
 }

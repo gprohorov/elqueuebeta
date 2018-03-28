@@ -21,11 +21,11 @@ public class DataStorage {
          assigned.put(pulling, 3);
 
 
-        executed.put(massage, 0);
-        executed.put(pulling, 0);
+        progres2.put(massage, true);
+        progres2.put(pulling, false);
 
         progres.put(massage,false);
-        progres.put(laser,true);
+        progres.put(laser,false);
         progres.put(pulling,false);
 
         patients.add(vasa);
@@ -49,11 +49,12 @@ public class DataStorage {
             new Person(9,"Benedict ",  "Ivanov")
     ));
 
-    Procedure registration =   new Procedure(0, "Registration", 0);
-    Procedure diagnostics =   new Procedure(1, "Diagnostics", 1);
-    Procedure laser = new Procedure(2, "Laser",2,"",3);
-    Procedure pulling = new Procedure(5, "Pulling",5);
-    Procedure massage = new Procedure(3, "Massage",3,"",3);
+    Procedure registration =   new Procedure(0, "Registration", 0,0);
+    Procedure diagnostics =   new Procedure(1, "Diagnostics", 1,100);
+    Procedure laser = new Procedure(2, "Laser",2,"",3,50);
+    Procedure pulling = new Procedure(5, "Pulling",5,50);
+    Procedure massage = new Procedure(3, "Massage",3,"",3,70);
+    Procedure mechmassasge = new Procedure(4, "Mechanical Massage",3,"",3,80);
 
     List<Procedure> procedures = new LinkedList<>( Arrays.asList(
 
@@ -61,7 +62,8 @@ public class DataStorage {
             diagnostics,
             laser,
             massage,
-            pulling
+            pulling,
+            mechmassasge
 
     ));
 
@@ -103,7 +105,7 @@ public class DataStorage {
 
 
    Map<Procedure, Integer> assigned = new HashMap<Procedure, Integer>();
-   Map<Procedure, Integer> executed = new HashMap<Procedure, Integer>();
+   HashMap<Procedure, Boolean> progres2 = new HashMap<>();
    HashMap<Procedure, Boolean> progres = new HashMap<>();
    LocalDate today = LocalDate.now();
 
@@ -119,7 +121,7 @@ public class DataStorage {
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
 
    private Patient trump = new Patient(11, persons.get(7), primary
-            , new HashMap<Procedure,Boolean>()
+            , progres2
             , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
 

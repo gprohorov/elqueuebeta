@@ -70,9 +70,23 @@ public class Patient {
         this.assignedProcedures = assignedProcedures;
     }
 
+
     public void assignProcedure(Procedure procedure){
+
         this.assignedProcedures.put(procedure,false);
     }
+
+    public void disAssignProcedure(Procedure procedure){
+
+        this.assignedProcedures.remove(procedure);
+    }
+
+
+        public void markProcedureAsExecuted(Procedure procedure){
+
+        this.assignedProcedures.put(procedure,true);
+    }
+
 
     public Status getStatus() {
         return status;
