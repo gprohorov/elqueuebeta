@@ -121,10 +121,23 @@ public class PatientServiceImpl implements IPatientsService {
        this.updatePatient(patient);
         return patient;
     }
+
     public Patient updateActivity(int patientId, Activity activity) {
        Patient patient = this.getPatient(patientId);
        patient.setActive(activity);
        this.updatePatient(patient);
         return patient;
     }
+
+
+    public Patient updateBalance(int patientId, int balance) {
+       Patient patient = this.getPatient(patientId);
+       patient.setBalance(balance);
+       this.updatePatient(patient);
+        return patient;
+    }
+
+
+
+
 }

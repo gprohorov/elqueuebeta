@@ -91,11 +91,19 @@ public class PatientController {
     }
 
     // UPDATE the patient's activity
-    @PostMapping("/patient/update/activity/{id}")
-    public Patient updatePatientActivitt(@PathVariable(value = "id") int patientId,
+    @PostMapping("/patient/update/balance/{id}")
+    public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
                                        @Valid @RequestBody Activity activity) {
 
         return service.updateActivity(patientId, activity);
+    }
+
+  // UPDATE the patient's activity
+    @PostMapping("/patient/update/activity/{id}")
+    public Patient updatePatientBalance(@PathVariable(value = "id") int patientId,
+                                       @Valid @RequestBody int balance) {
+
+        return service.updateBalance(patientId, balance);
     }
 
 
