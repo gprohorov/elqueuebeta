@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Created by george on 3/9/18.
  */
-public class Patient {
+public class Patient implements Comparable<Patient>{
    private int id;
    private Person person;
    private Therapy therapy;
@@ -120,6 +120,7 @@ public class Patient {
         this.active = active;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,4 +138,18 @@ public class Patient {
 
 
 
+    @Override
+    public int compareTo(Patient comparePatient) {
+
+        int compareStatus = comparePatient.getStatus().getLevel();
+        int thisStatus = this.getStatus().getLevel();
+        int compareTime = comparePatient.getLastActivity().getSecond();
+
+        if (compareStatus != this.getStatus().getLevel())
+             {return  compareStatus -this.getStatus().getLevel();}
+        else {
+          //  System.out.println("the case");
+            return this.getLastActivity().compareTo(comparePatient.getLastActivity());
+        }
+    }
 }

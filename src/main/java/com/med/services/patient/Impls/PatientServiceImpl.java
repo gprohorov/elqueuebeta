@@ -183,10 +183,10 @@ public class PatientServiceImpl implements IPatientsService {
 
         return  this.getAll().stream()
                 .filter(patient -> patient.getAssignedProcedures().entrySet().contains(entry))
-                .collect(Collectors.toList());
+                .sorted().collect(Collectors.toList());
     }
 
-     // patient has executedcprocedure, so we mark it as "done" in his assigned procedures
+     // patient has got executed procedure, so we mark it as "done" in his assigned procedures
     public Patient executeProcedure(int patientId, @Valid int procedureId) {
         Patient patient = this.getPatient(patientId);
         Procedure procedure = procedureService.getProcedure(procedureId);

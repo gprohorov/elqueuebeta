@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -111,7 +112,8 @@ public class PatientDAOImpl implements IPatientDAO {
 
     @Override
     public List<Patient> getAll() {
-        return dataStorage.getPatients();
+
+        return dataStorage.getPatients().stream().sorted().collect(Collectors.toList());
     }
 
 

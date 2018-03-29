@@ -30,7 +30,8 @@ public class DataStorage {
 
         patients.add(vasa);
         patients.add(trump);
-        patients.get(0).setAssignedProcedures(progres);
+        patients.add(ivanov);
+        //patients.get(0).setAssignedProcedures(progres);
 
 
 
@@ -123,6 +124,10 @@ public class DataStorage {
    private Patient trump = new Patient(11, persons.get(7), primary
             , progres2
             , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
+
+   private Patient ivanov = new Patient(1, persons.get(1), primary
+            , progres
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
 
 
     private List<Patient> patients = new LinkedList<>();
