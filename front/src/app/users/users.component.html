@@ -1,0 +1,8 @@
+﻿<div>
+    <ul>
+        <li *ngFor="let user of users">
+            {{user.username}} ({{user.firstName}} {{user.lastName}})
+            - <a href="#" (click)="deleteUser(user.id)">Удалить</a>
+        </li>
+    </ul>
+</div>
