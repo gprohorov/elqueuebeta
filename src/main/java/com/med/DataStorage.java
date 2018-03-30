@@ -17,8 +17,11 @@ public class DataStorage {
 
     @PostConstruct
             void init(){
-         assigned.put(massage, 5);
-         assigned.put(pulling, 3);
+         assigned.put(massage, 10);
+         assigned.put(pulling, 10);
+        usualTherapy.setProgress(assigned);
+        therapies.add(primary);
+        therapies.add(usualTherapy);
 
 
         progres2.put(massage, true);
@@ -31,6 +34,7 @@ public class DataStorage {
         patients.add(vasa);
         patients.add(trump);
         patients.add(ivanov);
+        patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
 
 
@@ -117,6 +121,13 @@ public class DataStorage {
 
     private Therapy primary = new Therapy();
 
+    private Therapy usualTherapy = new Therapy(1, LocalDateTime.now()
+            ,"Osteohondroz",1, "Шейный участок",
+            "url", assigned);
+
+    private List<Therapy> therapies = new LinkedList<>();
+
+
     private Patient vasa = new Patient(9, persons.get(4), primary
             , progres
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
@@ -125,12 +136,16 @@ public class DataStorage {
             , progres2
             , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
-   private Patient ivanov = new Patient(1, persons.get(1), primary
+   private Patient ivanov = new Patient(1, persons.get(0), null
             , progres
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
 
-
     private List<Patient> patients = new LinkedList<>();
+
+
+
+
+
 
     private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
             new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),

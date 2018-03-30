@@ -84,4 +84,16 @@ public class Procedure {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Procedure{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cabinet=" + cabinet +
+                ", notes='" + notes + '\'' +
+                ", area=" + area +
+                ", price=" + price +
+                '}';
+    }
 }

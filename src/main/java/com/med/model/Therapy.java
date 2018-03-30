@@ -25,7 +25,7 @@ public class Therapy {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
-        this.notes = notes;
+        this.notes = this.toNotes(notes);
         this.picture = picture;
         this.progress = progress;
     }
@@ -34,7 +34,7 @@ public class Therapy {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
-        this.notes = notes;
+        this.notes = this.toNotes(notes);
         this.picture = picture;
         this.progress = progress;
     }
@@ -43,7 +43,7 @@ public class Therapy {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
-        this.notes = notes;
+        this.notes = notes + this.toString();
         this.picture = picture;
         this.progress = Collections.emptyMap();
     }
@@ -92,8 +92,7 @@ public class Therapy {
         return picture;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPicture(String picture) {this.picture = picture;
     }
 
     public Map<Procedure, Integer> getProgress() {
@@ -101,6 +100,34 @@ public class Therapy {
     }
 
     public void setProgress(Map<Procedure, Integer> progress) {
+
+        this.setNotes(this.toNotes(""));
         this.progress = progress;
+    }
+
+    @Override
+    public String toString() {
+        return "Therapy{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", diag='" + diag + '\'' +
+                ", codeDiag=" + codeDiag +
+                ", notes='" + notes + '\'' +
+                ", picture='" + picture + '\'' +
+                ", progress=" + progress +
+                '}';
+    }
+    private String toNotes(String nts){
+
+        String out = "Diagnosis : " + this.getDiag()+ '\n'
+                    + "Date : " + this.getDateTime() + '\n'
+                    + "Code : " + this.getDiag() + '\n'
+                    + "Notes : " + this.getCodeDiag() + '\n'
+                    + "----- Therapy ----    " + '\n' ;
+        for (Map.Entry<Procedure,Integer> entry : this.getProgress().entrySet() ){
+            out += entry.getKey().getName() + " : " + entry.getValue() +  '\n';
+
+        }
+        return  out;
     }
 }
