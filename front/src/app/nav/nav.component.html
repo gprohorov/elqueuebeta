@@ -1,0 +1,24 @@
+﻿  <nav class="navbar navbar-default" *ngIf="authenticationService.isLoggedIn()">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/dashboard"></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li>
+        <a routerLink="/users" routerLinkActive="active-link">Пользователи</a>
+      </li>
+      <li>
+        <a routerLink="/patients" routerLinkActive="active-link">Список пациентов</a>
+      </li>
+      <li>
+        <a routerLink="/queue" routerLinkActive="active-link">Очередь на процедуры</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a><b>{{currentUser.firstName}} {{currentUser.lastName}}</b></a>
+      </li>
+      <li>
+        <a routerLink="/login">Выход</a>
+      </li>
+    </ul>
+  </nav>

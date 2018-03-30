@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "node ss.js >/dev/tty | ng serve",
+    "start": "ng serve",
     "stop": "kill -- -$(ps -o pgid=$(ps -a|grep 'npm'|grep -o ^[0-9]*) | grep -o [0-9]*)",
     "ng": "ng",
     "build": "ng build --prod",
