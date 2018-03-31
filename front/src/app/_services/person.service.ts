@@ -5,12 +5,13 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 import { Person } from '../_models/index';
+import { config } from '../../config';
 
 @Injectable()
 export class PersonService {
   // Define the routes we are going to interact with
-  private getPersonListUrl = 'http://localhost:8088/api/person/list';
-  private deletePersontUrl = 'http://localhost:8088/api/person/delete/';
+  private getPersonListUrl = config.api_path + '/person/list';
+  private deletePersontUrl = config.api_path + '/person/delete/';
 
   constructor(private http: HttpClient) { }
 
