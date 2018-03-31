@@ -11,6 +11,7 @@ public class Procedure {
     private String notes;
     private int area;
     private int price;
+    private ProcedureCard card;
 
     public Procedure() {
     }
@@ -22,6 +23,7 @@ public class Procedure {
         this.notes = notes;
         this.area = area;
         this.price = price;
+        this.card = new ProcedureCard();
     }
 
     public Procedure(int id, String name, int cabinet, int price) {
@@ -31,6 +33,7 @@ public class Procedure {
         this.notes = "";
         this.area = 1;
         this.price = price;
+        this.card = new ProcedureCard();
     }
 
     public int getId() {
@@ -84,6 +87,8 @@ public class Procedure {
     public void setPrice(int price) {
         this.price = price;
     }
+
+
 
     @Override
     public String toString() {
