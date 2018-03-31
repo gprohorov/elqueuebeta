@@ -19,7 +19,7 @@ export class PersonsComponent implements OnInit {
   }
 
   deletePerson(id: number, name: string) {
-      if (confirm('Удалить персону "' + name + '" ?')) this.personService.deletePerson(id).subscribe(() => { this.loadAllPersons() });
+      if (confirm('Видалити персону "' + name + '" ?')) this.personService.deletePerson(id).subscribe(() => { this.loadAllPersons() });
   }
 
   private loadAllPersons() {

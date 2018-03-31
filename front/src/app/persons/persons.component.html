@@ -2,7 +2,7 @@
     <ul>
         <li *ngFor="let person of persons">
             {{person.firstName}} {{person.lastName}}
-            - <a role="button" (click)="deletePerson(person.id, person.firstName + ' ' + person.lastName)">Удалить</a>
+            - <a role="button" (click)="deletePerson(person.id, person.firstName + ' ' + person.lastName)">Видалити</a>
         </li>
     </ul>
 </div>

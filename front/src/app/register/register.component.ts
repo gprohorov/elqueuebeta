@@ -22,7 +22,7 @@ export class RegisterComponent {
         this.userService.create(this.model)
             .subscribe(
                 data => {
-                    this.alertService.success('Регистрация прошла успешно', true);
+                    this.alertService.success('Реєстрація пройшла успішно', true);
                     this.router.navigate(['login']);
                 },
                 error => {

@@ -42,7 +42,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return Observable.of(new HttpResponse({ status: 200, body: body }));
                 } else {
                     // else return 400 bad request
-                    return Observable.throw('Имя пользователя или пароль неверны');
+                    return Observable.throw('Ім`я користувача або пароль невірні');
                 }
             }
 
@@ -82,7 +82,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 // validation
                 let duplicateUser = users.filter(user => { return user.username === newUser.username; }).length;
                 if (duplicateUser) {
-                    return Observable.throw('Имя пользователя "' + newUser.username + '" уже занято');
+                    return Observable.throw('Ім`я користувача "' + newUser.username + '" вже зайнято');
                 }
 
                 // save new user

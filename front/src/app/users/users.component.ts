@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(id: number, name: string) {
-      if (confirm('Удалить пользователя "' + name + '" ?')) this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
+      if (confirm('Видалити користувача "' + name + '" ?')) this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
   }
 
   private loadAllUsers() {
