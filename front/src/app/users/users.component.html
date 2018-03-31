@@ -2,7 +2,7 @@
     <ul>
         <li *ngFor="let user of users">
             {{user.username}} ({{user.firstName}} {{user.lastName}})
-            - <a role="button" click)="deleteUser(user.id)">Удалить</a>
+            - <a role="button" (click)="deleteUser(user.id)">Удалить</a>
         </li>
     </ul>
 </div>
