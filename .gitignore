@@ -1,6 +1,7 @@
 target/
 !.mvn
 
+.fuse*
 ### STS ###
 .apt_generated
 .classpath

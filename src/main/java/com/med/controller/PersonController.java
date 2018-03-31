@@ -32,7 +32,7 @@ public class PersonController {
     PatientServiceImpl patientService;
 
     // get all persons
-    @RequestMapping("/person/list")
+    @GetMapping("/person/list")
     public List<Person> showPersons() {
 
         return service.getAll();
@@ -63,7 +63,7 @@ public class PersonController {
     }
 
     // DELETE the person by id
-    @PostMapping("/person/delete/{id}")
+    @GetMapping("/person/delete/{id}")
     public Person delPerson(@PathVariable(value = "id") int personId) {
 
         return service.deletePerson(personId);
