@@ -24,7 +24,7 @@ export class PersonService {
 
   deletePerson(id: number) {
     return this.http
-      .get(this.getPersonListUrl + id)
+      .get(this.deletePersontUrl + id)
       .pipe(
         catchError(this.handleError)
       );
