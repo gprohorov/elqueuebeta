@@ -14,6 +14,7 @@ import java.util.List;
  */
 @RequestMapping("/api")
 @RestController
+@CrossOrigin("*")
 public class AppointmentController {
 
     @Autowired
@@ -21,7 +22,7 @@ public class AppointmentController {
 
 
     @RequestMapping("/appointment/list")
-   public List<Appointment> showAllAppointments(){
+    public List<Appointment> showAllAppointments(){
         return service.getAll();
     }
 

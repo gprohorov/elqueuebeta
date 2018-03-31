@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  */
 @RequestMapping("/api/patient")
 @RestController
+@CrossOrigin("*")
 public class PatientController {
 
     @Autowired
