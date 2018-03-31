@@ -1,13 +1,10 @@
-﻿  <nav class="navbar navbar-default" *ngIf="authenticationService.isLoggedIn()">
+﻿  <nav class="navbar navbar-default">
     <div class="navbar-header">
       <a class="navbar-brand" routerLink="/dashboard"></a>
     </div>
     <ul class="nav navbar-nav">
       <li>
-        <a routerLink="/users" routerLinkActive="active-link">Пользователи</a>
-      </li>
-      <li>
-        <a routerLink="/patients" routerLinkActive="active-link">Список пациентов</a>
+        <a routerLink="/persons" routerLinkActive="active-link">Список персон</a>
       </li>
       <li>
         <a routerLink="/queue" routerLinkActive="active-link">Очередь на процедуры</a>
@@ -15,10 +12,10 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a><b>{{currentUser.firstName}} {{currentUser.lastName}}</b></a>
+        <a routerLink="/users" routerLinkActive="active-link">Пользователи ({{currentUser.firstName}} {{currentUser.lastName}})</a>
       </li>
       <li>
-        <a routerLink="/login">Выход</a>
+        <a routerLink="/login" routerLinkActive="active-link">Выход</a>
       </li>
     </ul>
   </nav>

@@ -8,10 +8,10 @@ import { RegisterComponent } from './register/index';
 import { AuthGuard } from './_guards/index';
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'users', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-    { path: 'patients', component: PersonsComponent, canActivate: [AuthGuard] },
+    { path: 'persons', component: PersonsComponent, canActivate: [AuthGuard] },
     { path: 'queue', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

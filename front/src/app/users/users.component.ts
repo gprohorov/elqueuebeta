@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { User } from '../_models/index';
 import { UserService } from '../_services/index';
 
@@ -20,8 +20,8 @@ export class UsersComponent implements OnInit {
       this.loadAllUsers();
   }
 
-  deleteUser(id: number) {
-      if (confirm('Are you sure ?')) this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
+  deleteUser(id: number, name: string) {
+      if (confirm('Удалить пользователя "' + name + '" ?')) this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
   }
 
   private loadAllUsers() {

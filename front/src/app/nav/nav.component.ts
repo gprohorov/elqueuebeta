@@ -12,7 +12,7 @@ export class NavComponent implements OnInit {
   currentUser: User;
     
   constructor(private userService: UserService, public authenticationService: AuthenticationService) {
-    if (authenticationService.isLoggedIn()) this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.authenticationService.isLoggedIn()) this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {

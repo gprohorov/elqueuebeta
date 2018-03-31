@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Person } from '../_models/index';
 import { PersonService } from '../_services/index';
 
@@ -18,8 +18,8 @@ export class PersonsComponent implements OnInit {
       this.loadAllPersons();
   }
 
-  deletePerson(id: number) {
-      if (confirm('Are you sure ?')) this.personService.deletePerson(id).subscribe(() => { this.loadAllPersons() });
+  deletePerson(id: number, name: string) {
+      if (confirm('Удалить персону "' + name + '" ?')) this.personService.deletePerson(id).subscribe(() => { this.loadAllPersons() });
   }
 
   private loadAllPersons() {

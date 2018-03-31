@@ -1,4 +1,5 @@
 ﻿import { Component } from '@angular/core';
+import { AuthenticationService } from './_services/authentication.service';
 
 @Component({
     moduleId: module.id,
@@ -6,4 +7,8 @@
     templateUrl: 'app.component.html'
 })
 
-export class AppComponent { }
+export class AppComponent { 
+
+  constructor(public authenticationService: AuthenticationService) {}
+
+}
