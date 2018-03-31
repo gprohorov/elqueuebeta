@@ -9,8 +9,8 @@ import { Person } from '../_models/index';
 @Injectable()
 export class PersonService {
   // Define the routes we are going to interact with
-  private getPersonListUrl = 'http://192.168.1.2:8088/api/person/list';
-  private deletePersontUrl = 'http://192.168.1.2:8088/api/person/delete/';
+  private getPersonListUrl = 'http://localhost:8088/api/person/list';
+  private deletePersontUrl = 'http://localhost:8088/api/person/delete/';
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +29,7 @@ export class PersonService {
         catchError(this.handleError)
       );
   }
-  
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
