@@ -1,12 +1,18 @@
 package com.med.model;
 
+
 import java.time.LocalDate;
 
 /**
  * Created by george on 3/9/18.
  */
+
+
+
 public class Person {
+
     private int id;
+    
     private String firstName;
     private String patronymic;
     private String lastName;
