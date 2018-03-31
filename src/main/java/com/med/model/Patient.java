@@ -146,8 +146,6 @@ public class Patient implements Comparable<Patient>{
         return this.getPerson().getId();
     }
 
-
-
     @Override
     public int compareTo(Patient comparePatient) {
 
@@ -161,5 +159,20 @@ public class Patient implements Comparable<Patient>{
           //  System.out.println("the case");
             return this.getLastActivity().compareTo(comparePatient.getLastActivity());
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", person=" + person +
+                ", therapy=" + therapy +
+                ", assignedProcedures=" + assignedProcedures +
+                ", status=" + status +
+                ", lastActivity=" + lastActivity +
+                ", balance=" + balance +
+                ", active=" + active +
+                ", reckoning=" + reckoning +
+                '}';
     }
 }
