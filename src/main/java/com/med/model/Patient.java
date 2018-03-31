@@ -15,6 +15,8 @@ public class Patient implements Comparable<Patient>{
    private LocalDateTime lastActivity;
    private int balance;
    private Activity active;
+   private Reckoning reckoning;
+
 
     public Patient() {
     }
@@ -28,6 +30,7 @@ public class Patient implements Comparable<Patient>{
         this.lastActivity = lastActivity;
         this.balance = balance;
         this.active = active;
+        this.reckoning = Reckoning.NULL;
     }
 
 
@@ -120,6 +123,13 @@ public class Patient implements Comparable<Patient>{
         this.active = active;
     }
 
+    public Reckoning getReckoning() {
+        return reckoning;
+    }
+
+    public void setReckoning(Reckoning reckoning) {
+        this.reckoning = reckoning;
+    }
 
     @Override
     public boolean equals(Object o) {
