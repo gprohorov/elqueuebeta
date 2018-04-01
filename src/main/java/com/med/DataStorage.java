@@ -77,6 +77,10 @@ public class DataStorage {
 
     ));
 
+    List<Card> cards = new LinkedList<>(Arrays.asList(
+            new Card(1, "Min",1)
+    ));
+
     Doctor SERVER = new Doctor(0, "SERVER"
             , "Computer", "Supermicro","IT",null);
 
@@ -212,5 +216,13 @@ public class DataStorage {
 
     public void setPersons(List<Person> persons) {
         this.persons = persons;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 }

@@ -6,8 +6,9 @@ import java.util.Set;
 /**
  * Created by george on 3/31/18.
  */
-public class ProcedureCard {
+public class Card {
     private int id;
+    private String name;
     private int days;
     private Set<Procedure> deniedBefore = new HashSet<>();
     private Set<Procedure> deniedAfter = new HashSet<>();
@@ -15,11 +16,12 @@ public class ProcedureCard {
     private Set<Procedure> needAfter = new HashSet<>();
     private Set<Procedure> changing = new HashSet<>();
 
-    public ProcedureCard() {
+    public Card() {
     }
 
-    public ProcedureCard(int id, int days, Set<Procedure> deniedBefore, Set<Procedure> deniedAfter, Set<Procedure> needBefore, Set<Procedure> needAfter, Set<Procedure> changing) {
+    public Card(int id, String name, int days, Set<Procedure> deniedBefore, Set<Procedure> deniedAfter, Set<Procedure> needBefore, Set<Procedure> needAfter, Set<Procedure> changing) {
         this.id = id;
+        this.name =name;
         this.days = days;
         this.deniedBefore = deniedBefore;
         this.deniedAfter = deniedAfter;
@@ -28,8 +30,9 @@ public class ProcedureCard {
         this.changing = changing;
     }
 
-    public ProcedureCard(int id, int days) {
+    public Card(int id, String name, int days) {
         this.id = id;
+        this.name= name;
         this.days = days;
         this.deniedBefore = new HashSet<>();
         this.deniedAfter = new HashSet<>();
@@ -38,12 +41,21 @@ public class ProcedureCard {
         this.changing = new HashSet<>();
     }
 
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getDays() {

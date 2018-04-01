@@ -11,7 +11,7 @@ public class Procedure {
     private String notes;
     private int area;
     private int price;
-    private ProcedureCard card;
+    private Card card;
 
     public Procedure() {
     }
@@ -23,7 +23,7 @@ public class Procedure {
         this.notes = notes;
         this.area = area;
         this.price = price;
-        this.card = new ProcedureCard();
+        this.card = new Card();
     }
 
     public Procedure(int id, String name, int cabinet, int price) {
@@ -33,7 +33,7 @@ public class Procedure {
         this.notes = "";
         this.area = 1;
         this.price = price;
-        this.card = new ProcedureCard();
+        this.card = new Card();
     }
 
     public int getId() {
