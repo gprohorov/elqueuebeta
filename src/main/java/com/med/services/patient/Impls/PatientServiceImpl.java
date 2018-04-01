@@ -136,7 +136,7 @@ public class PatientServiceImpl implements IPatientsService {
         return patient;
     }
 
-
+    // Add ONE procedure to execute today
     public Patient addProcedure(int patientId, int procedureId) {
 
         Patient patient = this.getPatient(patientId);
@@ -154,6 +154,26 @@ public class PatientServiceImpl implements IPatientsService {
 
         return patient;
     }
+
+
+    // add ALL procedures for TODAY according to the therapy
+    public Patient addProceduresAll(int patientId) {
+
+        Patient patient = this.getPatient(patientId);
+
+        if(patient.getAssignedProcedures().isEmpty()) {
+            Map<Procedure, Integer> assignedTherapy = patient.getTherapy().getProgress();
+            for(Map.Entry<Procedure, Integer> assignation: assignedTherapy.entrySet()){
+                if (assignation.getValue()>0){
+                    this.addProcedure(patientId,assignation.getKey().getId());
+                }
+            }
+        }
+        return null;
+    }
+
+
+
 
 
 
@@ -191,4 +211,12 @@ public class PatientServiceImpl implements IPatientsService {
         patient.markProcedureAsExecuted(procedure);
         return patient;
     }
+
+
+
+
+
+
+
+
 }

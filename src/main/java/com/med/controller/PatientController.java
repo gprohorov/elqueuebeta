@@ -150,6 +150,12 @@ public class PatientController {
     }
 
 
+    // put the procedure into map of assigned for today
+    @PostMapping("/add/procedure/all/{id}")
+    public Patient addAllProcedures(@PathVariable(value = "id") int patientId) {
+
+        return service.addProceduresAll(patientId);
+    }
 
 
 }
