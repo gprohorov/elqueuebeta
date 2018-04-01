@@ -42,17 +42,22 @@ public class DataStorage {
     }
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
-            new Person(1,"Ivan",  "Ivanov"),
-            new Person(2,"Petr",  "Petrov"),
-            new Person(3,"Sidor", "Sidorovich",  "Sidorini", "050-0000000", "Herza",
-                    "Holovna str., 5", true, LocalDate.now().minusYears(38).minusDays(20)),
-            new Person(4,"Sasha", "Sashin"),
-            new Person(5,"vasa",  "vasin"),
-            new Person(6,"pasha", "pashin"),
-            new Person(7,"ilia",  "Ivlev"),
-            new Person(8,"Barak ",  "Obama"),
-            new Person(9,"Benedict ",  "Ivanov")
-    ));
+            new Person(1,"Іван",  "Іванов"),
+            new Person(2,"Петров",  "Петро"),
+            new Person(3,"Сидоров", "Сидорович",  "Сидоров"
+                    , "050-0000000", "Герца",
+                    "Головна,5", true, LocalDate.now().minusYears(38).minusDays(20)),
+            new Person(4,"Павел", "Павлов"),
+            new Person(5,"Василий",  "Васильев"),
+            new Person(6,"Леон", "Леонов"),
+            new Person(7,"Ілля",  "Івкін"),
+            new Person(8,"Барак",  "Хусейнович","Обама", "066 6666666", "Гербедж-Таун"
+                    , "Треш-авеню, 6", true, LocalDate.now().minusYears(60)),
+            new Person(9,"Олександр ",  "Іванов"),
+            new Person(10,"Дональд",  "Фредович","Трамп", "067 7777777", "Вашингтон"
+                    , "Білий Дім, 1, кв.1", true, LocalDate.now().minusYears(73))
+
+            ));
 
     Procedure registration =   new Procedure(0, "Registration", 0,0);
     Procedure diagnostics =   new Procedure(1, "Diagnostics", 1,100);
@@ -75,20 +80,23 @@ public class DataStorage {
     Doctor SERVER = new Doctor(0, "SERVER"
             , "Computer", "Supermicro","IT",null);
 
-    Doctor registrator = new Doctor(1, "Irina"
-            , "Ivanovna", "Melnichuk","Registrator","0501234577");
+    Doctor registrator = new Doctor(1, "Ірина"
+            , "Іванівна", "Мельник","Регістратор","0501234577");
 
-    Doctor diagnost = new Doctor(2, "Andrew"
-            , "Wladimirovich", "Nechay","Diagnost","0501234577");
+    Doctor diagnost = new Doctor(2, "Андрій"
+            , "Володимирович", "Нечай","Діагност","0501234577");
 
 
-    Doctor massagist = new Doctor(3, "Igor"
-            , "Ivanovich", "Petruk","Massagist","0501234577");
+    Doctor massagist = new Doctor(3, "Ігор"
+            , "Іванович", "Петрюк","Масажист","0501234577");
+
+   Doctor laserist = new Doctor(3, "Іван"
+            , "Васильович", "Мандрик","Лазер","0501234577");
 
 
 
     List<Doctor> doctors = new LinkedList<>(Arrays.asList(
-            SERVER, registrator, diagnost, massagist
+            SERVER, registrator, diagnost, massagist, laserist
     ));
 
 
