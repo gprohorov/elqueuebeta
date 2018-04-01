@@ -1,8 +1,33 @@
-﻿<div>
-    <ul>
-        <li *ngFor="let person of persons">
-            {{person.firstName}} {{person.lastName}}
-            - <a role="button" (click)="deletePerson(person.id, person.firstName + ' ' + person.lastName)">Видалити</a>
-        </li>
-    </ul>
+﻿<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <div class="pull-right">
+        <label for="search">Пошук:</label><input class="form-control" id="search" (keyup)="doSearch()">
+      </div>
+      <h4 class="title">Список персон</h4>
+      <p><a role="button" (click)="createPerson()">[Нова персона]</a></p>
+    </div>
+    <div class="content table-responsive table-full-width">
+          <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let person of persons">
+                        <td>{{person.id}}</td>
+                        <td>{{getFullName(person)}}</td>
+                        <td>{{person.gender ? 'Ч' : 'Ж'}}</td>
+                        <td>{{person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
+                        <td>{{person.town}}</td>
+                        <td align="right">
+                          <a role="button" (click)="editPerson(person.id)">[Редагувати]</a>
+                          <a role="button" (click)="deletePerson(person.id, getFullName(person))">[Видалити]</a>
+                        </td>
+                    </tr>
+                </tbody>
+          </table>
+    </div>
+  </div>
 </div>
