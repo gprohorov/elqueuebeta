@@ -81,7 +81,7 @@ public class DataStorage {
             new Card(1, "Min",1)
     ));
 
-    Doctor SERVER = new Doctor(0, "SERVER"
+    Doctor SERVER = new Doctor(5, "SERVER"
             , "Computer", "Supermicro","IT",null);
 
     Doctor registrator = new Doctor(1, "Ірина"

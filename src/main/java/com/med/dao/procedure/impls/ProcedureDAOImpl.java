@@ -45,13 +45,19 @@ public class ProcedureDAOImpl implements IProcedureDAO {
     @Override
     public Procedure updateProcedure(Procedure procedure) {
 
-        Procedure oldValues = this.getProcedure(procedure.getId());
-        int index = procedures.indexOf(oldValues);
-        procedures.set(index,procedure);
-
+        if (procedure.getId()==0){
+            int doctord = this.getAll().stream().mapToInt(el->el.getId())
+                    .max().getAsInt() + 1;
+            procedure.setId(doctord);
+            this.createProcedure(procedure);
+        }
+        else {
+            Procedure oldValues = this.getProcedure(procedure.getId());
+            int index = this.getAll().indexOf(oldValues);
+            this.getAll().set(index,procedure);
+        }
         return procedure;
     }
-
 
     @Override
     public Procedure deleteProcedure(int id) {

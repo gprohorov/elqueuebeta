@@ -20,14 +20,14 @@ public class DoctorController {
     @Autowired
     DoctorServiceImpl service;
 
-/*
+
 
     @RequestMapping("/doctor/list")
    public List<Doctor> showDoctors(){
         return service.getAll();
     }
 
-*/
+
 
     // get a Person list by lastName
     @GetMapping("/doctor/list/{name}")
@@ -52,7 +52,7 @@ public class DoctorController {
     }
 
     // UPDATE the doctor by id
-    @PostMapping("/doctor/update/{id}")
+    @PostMapping("/doctor/update/")
     public Doctor updateDoctor(@Valid @RequestBody Doctor updates)  {
      //   updates.setId(doctorId);
 

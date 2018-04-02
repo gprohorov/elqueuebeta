@@ -22,6 +22,12 @@ public class ProcedureController {
 
 
     @RequestMapping("/procedure/list")
+   public List<Procedure> showProceduresDefault(){
+        return service.getAll();
+    }
+
+
+    @RequestMapping("/procedure/list/")
    public List<Procedure> showProcedures(){
         return service.getAll();
     }
@@ -45,11 +51,10 @@ public class ProcedureController {
     }
 
     // UPDATE the procedure by id
-    @PostMapping("/procedure/update/{id}")
-    public Procedure updateProcedure(@PathVariable(value = "id")  int procedureId,
-                                     @Valid @RequestBody Procedure updates)  {
-        updates.setId(procedureId);
-
+    @PostMapping("/procedure/update/")
+    public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
+      //  updates.setId(procedureId);
+//
         return service.updateProcedure(updates);
 
     }

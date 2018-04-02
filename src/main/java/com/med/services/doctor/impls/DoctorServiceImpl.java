@@ -45,6 +45,7 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public List<Doctor> getDoctorListByLetters(String lastName) {
-        return doctorDAO.getDoctorListByLetters(lastName);
+       // return doctorDAO.getDoctorListByLetters(lastName);
+        return this.getAll();
     }
 }
