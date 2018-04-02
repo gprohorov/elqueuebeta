@@ -14,12 +14,11 @@
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
+                        <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let person of persons">
-                        <td>{{person.id}}</td>
+                <tbody *ngFor="let person of persons; let i = index" (click)="rows[i]=!rows[i]">
+                    <tr>
                         <td>{{getFullName(person)}}</td>
                         <td>{{person.gender ? 'чол.' : 'жін.'}}</td>
                         <td>{{person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
@@ -28,6 +27,9 @@
                           <a role="button" [routerLink]="['/person-form', { id: person.id }]">[Редагувати]</a>
                           <a role="button" (click)="deletePerson(person.id, getFullName(person))">[Видалити]</a>
                         </td>
+                    </tr>
+                    <tr [hidden]="!rows[i]">
+                      <td colspan="100"><blockquote><b>Телефон:</b> {{person.cellPhone}}<br/><b>Адреса:</b> {{person.address}}</blockquote></td>
                     </tr>
                 </tbody>
           </table>

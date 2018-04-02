@@ -13,6 +13,7 @@ export class PersonsComponent implements OnInit {
   personsSub: Subscription;
   persons: Person[] = [];
   loading = false;
+  rows = [];
 
   constructor(private personService: PersonService, private alertService: AlertService) {
   }
@@ -35,6 +36,10 @@ export class PersonsComponent implements OnInit {
 
   getFullName(person: Person) {
     return [person.lastName, person.firstName, person.patronymic].join(' ');
+  }
+  
+  toggleRow(id: string) {
+    
   }
   
   private loadAllPersons() {
