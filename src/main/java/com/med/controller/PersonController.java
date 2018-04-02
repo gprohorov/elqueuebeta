@@ -35,7 +35,7 @@ public class PersonController {
     @GetMapping("/person/list")
     public List<Person> showPersons() {
 
-        return service.getAll();
+        return service.getPersonListByLetters("");
     }
 
     // CREATE a new Person
@@ -53,10 +53,10 @@ public class PersonController {
     }
 
     // UPDATE the person by id
-    @PostMapping("/person/update/{id}")
-    public Person updatePerson(@PathVariable(value = "id") int personId,
+    @PostMapping("/person/update/")
+    public Person updatePerson(
                                @Valid @RequestBody Person updates) {
-        updates.setId(personId);
+     //   updates.setId(personId);
 
         return service.updatePerson(updates);
 
@@ -74,16 +74,18 @@ public class PersonController {
     // get a Person list by lastName
     @GetMapping("/person/list/{name}")
     public List<Person> getPersonsByLastName(@PathVariable(value = "name") String lastName) {
-        return service.getPersonListByName(lastName);
+        return service.getPersonListByLetters(lastName);
     }
 
+/*
 
-    // get a Person list by the firstletters
+    // get a Person list by the firstletters . If letters are "" or null => full list
     @GetMapping("/person/list/contains/{letters}")
     public List<Person> getPersonListByLetters(@PathVariable(value = "letters") String letters) {
         return service.getPersonListByLetters(letters);
     }
 
+*/
 
 
     // appoint person on a date (create patient)

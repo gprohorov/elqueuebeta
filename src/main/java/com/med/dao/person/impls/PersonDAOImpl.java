@@ -38,15 +38,23 @@ public class PersonDAOImpl implements IPersonDAO {
     @Override
     public Person getPerson(int id) {
 
-        return dataStorage.getPersons().stream()
+        return this.getAll().stream()
                 .filter(person -> person.getId()==id).findFirst().get();
     }
     //crUd
     @Override
     public Person updatePerson(Person person) {
+        if (person.getId()==0){
+            int persoId = this.getAll().stream().mapToInt(el->el.getId())
+                    .max().getAsInt() + 1;
+            person.setId(persoId);
+            this.createPerson(person);
+        }
+        else {
         Person oldValues = this.getPerson(person.getId());
-       int index = dataStorage.getPersons().indexOf(oldValues);
-       dataStorage.getPersons().set(index,person);
+       int index = this.getAll().indexOf(oldValues);
+       this.getAll().set(index,person);
+        }
         return person;
     }
 
@@ -76,10 +84,14 @@ public class PersonDAOImpl implements IPersonDAO {
         // by letters
   @Override
     public List<Person> getPersonListByLetters(String letters) {
+        if (letters.equals("")||letters.equals(null)){
+            return this.getAll();}
+        else {
         return  this.getAll().stream()
                 .filter(person -> person.getLastName()
                 .contains(letters))
                 .collect(Collectors.toList());
+        }
     }
 
 
