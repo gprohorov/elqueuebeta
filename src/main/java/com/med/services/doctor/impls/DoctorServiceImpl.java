@@ -42,4 +42,9 @@ public class DoctorServiceImpl implements IDoctorService {
     public List<Doctor> getAll() {
         return doctorDAO.getAll();
     }
+
+    @Override
+    public List<Doctor> getDoctorListByLetters(String lastName) {
+        return doctorDAO.getDoctorListByLetters(lastName);
+    }
 }

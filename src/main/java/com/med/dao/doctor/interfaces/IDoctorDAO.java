@@ -13,4 +13,6 @@ public interface IDoctorDAO {
     Doctor getDoctor(int id);
     Doctor deleteDoctor(int id);
     List<Doctor> getAll();
+
+    List<Doctor> getDoctorListByLetters(String lastName);
 }

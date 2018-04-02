@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -43,11 +44,18 @@ public class DoctorDAOImpl implements IDoctorDAO {
 
     @Override
     public Doctor updateDoctor(Doctor doctor) {
-        Doctor oldValues = this.getDoctor(doctor.getId());
-        int index = dataStorage.getDoctors().indexOf(oldValues);
-        dataStorage.getDoctors().set(index,doctor);
+        if (doctor.getId()==0){
+            int doctord = this.getAll().stream().mapToInt(el->el.getId())
+                    .max().getAsInt() + 1;
+            doctor.setId(doctord);
+            this.createDoctor(doctor);
+        }
+        else {
+            Doctor oldValues = this.getDoctor(doctor.getId());
+            int index = this.getAll().indexOf(oldValues);
+            this.getAll().set(index,doctor);
+        }
         return doctor;
-
     }
 
 
@@ -65,5 +73,19 @@ public class DoctorDAOImpl implements IDoctorDAO {
     @Override
     public List<Doctor> getAll() {
         return dataStorage.getDoctors();
+    }
+
+
+
+    @Override
+    public List<Doctor> getDoctorListByLetters(String letters) {
+        if (letters.equals("")||letters.equals(null)){
+            return this.getAll();}
+        else {
+            return  this.getAll().stream()
+                    .filter(doctor -> doctor.getLastName()
+                            .contains(letters))
+                    .collect(Collectors.toList());
+        }
     }
 }

@@ -20,11 +20,21 @@ public class DoctorController {
     @Autowired
     DoctorServiceImpl service;
 
+/*
 
     @RequestMapping("/doctor/list")
    public List<Doctor> showDoctors(){
         return service.getAll();
     }
+
+*/
+
+    // get a Person list by lastName
+    @GetMapping("/doctor/list/{name}")
+    public List<Doctor> getDoctorsByLastName(@PathVariable(value = "name") String lastName) {
+        return service.getDoctorListByLetters(lastName);
+    }
+
 
     // CREATE a new Doctor
     @PostMapping("/doctor/create")
@@ -43,9 +53,8 @@ public class DoctorController {
 
     // UPDATE the doctor by id
     @PostMapping("/doctor/update/{id}")
-    public Doctor updateDoctor(@PathVariable(value = "id")  int doctorId,
-                               @Valid @RequestBody Doctor updates)  {
-        updates.setId(doctorId);
+    public Doctor updateDoctor(@Valid @RequestBody Doctor updates)  {
+     //   updates.setId(doctorId);
 
         return service.updateDoctor(updates);
 
