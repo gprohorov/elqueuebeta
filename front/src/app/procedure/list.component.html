@@ -1,0 +1,34 @@
+﻿<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <h4 class="title">
+        Список процедур 
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </h4>
+      <p><a role="button" routerLink="/procedure-form">[Нова процедура]</a></p>
+    </div>
+    <div class="content table-responsive table-full-width">
+          <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Назва</th> <th>Кабінет</th> <th>К-ть ділянок</th> <th>Ціна</th> <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
+                    <tr>
+                        <td>{{item.name}}</td>
+                        <td>{{item.cabinet}}</td>
+                        <td>{{item.area}}</td>
+                        <td>{{item.price}}</td>
+                        <td align="right">
+                          <a role="button" [routerLink]="['/procedure-form', { id: item.id }]">[Редагувати]</a>
+                        </td>
+                    </tr>
+                    <tr [hidden]="!rows[i]">
+                      <td colspan="100"><blockquote>{{item.notes}}</blockquote></td>
+                    </tr>
+                </tbody>
+          </table>
+    </div>
+  </div>
+</div>
