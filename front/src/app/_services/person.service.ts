@@ -13,8 +13,7 @@ export class PersonService {
   private getPersonListUrl = config.api_path + '/person/list/';
   private getPersonUrl = config.api_path + '/person/get/';
   private deletePersonUrl = config.api_path + '/person/delete/';
-  private createPersonUrl = config.api_path + '/person/create';
-  private updatePersonUrl = config.api_path + '/person/update/';
+    private updatePersonUrl = config.api_path + '/person/update/';
 
   constructor(private http: HttpClient) { }
 
@@ -42,17 +41,9 @@ export class PersonService {
       );
   }
   
-  createPerson(model: Person) {
-    return this.http
-      .post(this.createPersonUrl, model)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  
   updatePerson(model: Person) {
     return this.http
-      .get('path here...')
+      .post(this.updatePersonUrl, model)
       .pipe(
         catchError(this.handleError)
       );

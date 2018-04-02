@@ -47,7 +47,6 @@ export class PersonFormComponent {
     
     submit() {
         this.loading = true;
-        if (this.model.id) {
           this.personService.updatePerson(this.model)
               .subscribe(
                   data => {
@@ -58,17 +57,5 @@ export class PersonFormComponent {
                       this.alertService.error(error);
                       this.loading = false;
                   });
-        } else {
-          this.personService.createPerson(this.model)
-              .subscribe(
-                  data => {
-                      this.alertService.success('Операція пройшла успішно', true);
-                      this.router.navigate(['persons']);
-                  },
-                  error => {
-                      this.alertService.error(error);
-                      this.loading = false;
-                  });
-        }
     }
 }

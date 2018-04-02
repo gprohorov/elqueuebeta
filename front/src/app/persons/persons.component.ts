@@ -34,12 +34,7 @@ export class PersonsComponent implements OnInit {
     return [person.lastName, person.firstName, person.patronymic].join(' ');
   }
   
-  toggleRow(id: string) {
-    
-  }
-  
   loadAllPersons(search: string = '') {
-    console.log(search);
     this.loading = true;
     this.personsSub = this.personService.getAll(search).subscribe(persons => { this.persons = persons; this.loading = false; });
   }
