@@ -26,10 +26,6 @@ export class PersonsComponent implements OnInit {
     this.personsSub.unsubscribe();
   } 
   
-  doSearch() {
-    this.alertService.error('На стадії розробки');
-  }
-  
   deletePerson(id: number, name: string) {
     if (confirm('Видалити персону "' + name + '" ?')) this.personService.deletePerson(id).subscribe(() => { this.loadAllPersons() });
   }
@@ -42,9 +38,10 @@ export class PersonsComponent implements OnInit {
     
   }
   
-  private loadAllPersons() {
+  loadAllPersons(search: string = '') {
+    console.log(search);
     this.loading = true;
-    this.personsSub = this.personService.getAll().subscribe(persons => { this.persons = persons; this.loading = false; });
+    this.personsSub = this.personService.getAll(search).subscribe(persons => { this.persons = persons; this.loading = false; });
   }
 
 }

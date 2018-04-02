@@ -10,7 +10,7 @@ import { config } from '../../config';
 @Injectable()
 export class PersonService {
   // Define the routes we are going to interact with
-  private getPersonListUrl = config.api_path + '/person/list';
+  private getPersonListUrl = config.api_path + '/person/list/';
   private getPersonUrl = config.api_path + '/person/get/';
   private deletePersonUrl = config.api_path + '/person/delete/';
   private createPersonUrl = config.api_path + '/person/create';
@@ -18,9 +18,9 @@ export class PersonService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
+  getAll(search: string = '') {
     return this.http
-      .get<Person[]>(this.getPersonListUrl)
+      .get<Person[]>(this.getPersonListUrl + search)
       .pipe(
         catchError(this.handleError)
       );

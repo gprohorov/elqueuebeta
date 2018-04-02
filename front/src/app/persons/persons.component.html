@@ -2,7 +2,7 @@
   <div class="card">
     <div class="header">
       <div class="pull-right">
-        <label for="search">Пошук:</label><input class="form-control" id="search" (keyup)="doSearch()">
+        <label for="search">Пошук:</label><input class="form-control" #searchfield (keyup)="loadAllPersons(searchfield.value)">
       </div>
       <h4 class="title">
         Список персон 
