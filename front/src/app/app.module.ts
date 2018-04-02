@@ -5,12 +5,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserXhr } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { routing } from './app.routing';
-
+import { Routes, RouterModule } from '@angular/router';
+ 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
-import { AlertService, AuthenticationService, UserService, PersonService } from './_services/index';
+import { AlertService, AuthenticationService, UserService, PersonService, DoctorService, ProcedureService } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -22,12 +22,37 @@ import { UsersComponent } from './users/users.component';
 import { PersonListComponent } from './person/list.component';
 import { PersonFormComponent } from './person/form.component';
 
+import { DoctorListComponent } from './doctor/list.component';
+import { DoctorFormComponent } from './doctor/form.component';
+
+import { ProcedureListComponent } from './procedure/list.component';
+import { ProcedureFormComponent } from './procedure/form.component';
+
+const appRoutes: Routes = [
+    { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+    
+    { path: 'persons', component: PersonListComponent, canActivate: [AuthGuard] },
+    { path: 'person-form', component: PersonFormComponent, canActivate: [AuthGuard] },
+    
+    { path: 'doctors', component: DoctorListComponent, canActivate: [AuthGuard] },
+    { path: 'doctor-form', component: DoctorFormComponent, canActivate: [AuthGuard] },
+    
+    { path: 'procedures', component: ProcedureListComponent, canActivate: [AuthGuard] },
+    { path: 'procedure-form', component: ProcedureFormComponent, canActivate: [AuthGuard] },
+    
+    { path: '**', redirectTo: '' }
+];
+
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        routing
+        RouterModule.forRoot(appRoutes)
     ],
     declarations: [
         AppComponent,
@@ -37,8 +62,9 @@ import { PersonFormComponent } from './person/form.component';
         RegisterComponent,
         NavComponent,
         UsersComponent,
-        PersonListComponent,
-        PersonFormComponent
+        PersonListComponent, PersonFormComponent,
+        DoctorListComponent, DoctorFormComponent,
+        ProcedureListComponent, ProcedureFormComponent
     ],
     providers: [
         AuthGuard,
@@ -46,16 +72,10 @@ import { PersonFormComponent } from './person/form.component';
         AuthenticationService,
         UserService,
         PersonService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: JwtInterceptor,
-            multi: true
-        },
-        {
-            provide: BrowserXhr, 
-            useClass: CustExtBrowserXhr
-        },
-        // provider used to create fake backend
+        DoctorService,
+        ProcedureService,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: BrowserXhr, useClass: CustExtBrowserXhr },
         fakeBackendProvider
     ],
     bootstrap: [AppComponent]

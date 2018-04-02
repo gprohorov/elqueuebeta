@@ -2,3 +2,5 @@
 export * from './authentication.service';
 export * from './user.service';
 export * from './person.service';
+export * from './doctor.service';
+export * from './procedure.service';
