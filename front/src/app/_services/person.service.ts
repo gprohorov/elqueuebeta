@@ -3,47 +3,47 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
+import { config } from '../../config';
 
 import { Person } from '../_models/index';
-import { config } from '../../config';
 
 @Injectable()
 export class PersonService {
   // Define the routes we are going to interact with
-  private getPersonListUrl = config.api_path + '/person/list/';
-  private getPersonUrl = config.api_path + '/person/get/';
-  private deletePersonUrl = config.api_path + '/person/delete/';
-    private updatePersonUrl = config.api_path + '/person/update/';
+  private listUrl   = config.api_path + '/person/list/';
+  private getUrl    = config.api_path + '/person/get/';
+  private deleteUrl = config.api_path + '/person/delete/';
+  private updateUrl = config.api_path + '/person/update/';
 
   constructor(private http: HttpClient) { }
 
   getAll(search: string = '') {
     return this.http
-      .get<Person[]>(this.getPersonListUrl + search)
+      .get<Person[]>(this.listUrl + search)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  getPerson(id: number) {
+  get(id: number) {
     return this.http
-      .get<Person>(this.getPersonUrl + id)
+      .get<Person>(this.getUrl + id)
       .pipe(
         catchError(this.handleError)
       );
   }
   
-  deletePerson(id: number) {
+  delete(id: number) {
     return this.http
-      .get(this.deletePersonUrl + id)
+      .get(this.deleteUrl + id)
       .pipe(
         catchError(this.handleError)
       );
   }
   
-  updatePerson(model: Person) {
+  update(model: Person) {
     return this.http
-      .post(this.updatePersonUrl, model)
+      .post(this.updateUrl, model)
       .pipe(
         catchError(this.handleError)
       );

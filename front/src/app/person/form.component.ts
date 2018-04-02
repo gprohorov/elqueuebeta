@@ -3,22 +3,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription'; 
 
 import { Person } from '../_models/index';
-import { AlertService, PersonService } from '../_services/index';
+import { PersonService, AlertService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'person-form.component.html'
+    templateUrl: './form.component.html'
 })
 
 export class PersonFormComponent {
     model: any = {};
-    personsSub: Subscription;
+    sub: Subscription;
     loading = false;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private personService: PersonService,
+        private service: PersonService,
         private alertService: AlertService) { }
 
     ngOnInit() {
@@ -27,12 +27,12 @@ export class PersonFormComponent {
     }
     
     ngOnDestroy() {
-      if (this.personsSub) this.personsSub.unsubscribe();
+      if (this.sub) this.sub.unsubscribe();
     } 
   
     load(id: number) {
         this.loading = true;
-        this.personsSub = this.personService.getPerson(id)
+        this.sub = this.service.get(id)
             .subscribe(
                 data => {
                     data.gender = data.gender.toString();
@@ -47,7 +47,7 @@ export class PersonFormComponent {
     
     submit() {
         this.loading = true;
-          this.personService.updatePerson(this.model)
+          this.service.update(this.model)
               .subscribe(
                   data => {
                       this.alertService.success('Операція пройшла успішно', true);

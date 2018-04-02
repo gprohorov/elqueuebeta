@@ -1,24 +1,26 @@
-﻿import { NgModule }      from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }    from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { BrowserXhr } from '@angular/http';
 
-import { AppComponent }  from './app.component';
-import { routing }        from './app.routing';
+import { AppComponent } from './app.component';
+import { routing } from './app.routing';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
 import { AlertService, AuthenticationService, UserService, PersonService } from './_services/index';
-import { HomeComponent } from './home/index';
-import { LoginComponent } from './login/index';
-import { RegisterComponent } from './register/index';
+
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 import { NavComponent } from './nav/nav.component';
+
+import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
-import { PersonsComponent } from './persons/persons.component';
-import { PersonFormComponent } from './persons/person-form.component';
+
+import { PersonListComponent } from './person/list.component';
+import { PersonFormComponent } from './person/form.component';
 
 @NgModule({
     imports: [
@@ -35,7 +37,7 @@ import { PersonFormComponent } from './persons/person-form.component';
         RegisterComponent,
         NavComponent,
         UsersComponent,
-        PersonsComponent,
+        PersonListComponent,
         PersonFormComponent
     ],
     providers: [
