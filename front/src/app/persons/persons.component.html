@@ -4,8 +4,11 @@
       <div class="pull-right">
         <label for="search">Пошук:</label><input class="form-control" id="search" (keyup)="doSearch()">
       </div>
-      <h4 class="title">Список персон</h4>
-      <p><a role="button" (click)="createPerson()">[Нова персона]</a></p>
+      <h4 class="title">
+        Список персон 
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </h4>
+      <p><a role="button" routerLink="/person-form">[Нова персона]</a></p>
     </div>
     <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
@@ -18,11 +21,11 @@
                     <tr *ngFor="let person of persons">
                         <td>{{person.id}}</td>
                         <td>{{getFullName(person)}}</td>
-                        <td>{{person.gender ? 'Ч' : 'Ж'}}</td>
+                        <td>{{person.gender ? 'чол.' : 'жін.'}}</td>
                         <td>{{person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
                         <td>{{person.town}}</td>
                         <td align="right">
-                          <a role="button" (click)="editPerson(person.id)">[Редагувати]</a>
+                          <a role="button" [routerLink]="['/person-form', { id: person.id }]">[Редагувати]</a>
                           <a role="button" (click)="deletePerson(person.id, getFullName(person))">[Видалити]</a>
                         </td>
                     </tr>

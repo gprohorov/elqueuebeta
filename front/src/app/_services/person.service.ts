@@ -11,7 +11,10 @@ import { config } from '../../config';
 export class PersonService {
   // Define the routes we are going to interact with
   private getPersonListUrl = config.api_path + '/person/list';
-  private deletePersontUrl = config.api_path + '/person/delete/';
+  private getPersonUrl = config.api_path + '/person/get/';
+  private deletePersonUrl = config.api_path + '/person/delete/';
+  private createPersonUrl = config.api_path + '/person/create';
+  private updatePersonUrl = config.api_path + '/person/update/';
 
   constructor(private http: HttpClient) { }
 
@@ -23,14 +26,38 @@ export class PersonService {
       );
   }
 
-  deletePerson(id: number) {
+  getPerson(id: number) {
     return this.http
-      .get(this.deletePersontUrl + id)
+      .get<Person>(this.getPersonUrl + id)
       .pipe(
         catchError(this.handleError)
       );
   }
-
+  
+  deletePerson(id: number) {
+    return this.http
+      .get(this.deletePersonUrl + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  createPerson(model: Person) {
+    return this.http
+      .post(this.createPersonUrl, model)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  updatePerson(model: Person) {
+    return this.http
+      .get('path here...')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);

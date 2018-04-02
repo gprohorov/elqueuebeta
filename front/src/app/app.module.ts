@@ -18,6 +18,7 @@ import { RegisterComponent } from './register/index';
 import { NavComponent } from './nav/nav.component';
 import { UsersComponent } from './users/users.component';
 import { PersonsComponent } from './persons/persons.component';
+import { PersonFormComponent } from './persons/person-form.component';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { PersonsComponent } from './persons/persons.component';
         RegisterComponent,
         NavComponent,
         UsersComponent,
-        PersonsComponent
+        PersonsComponent,
+        PersonFormComponent
     ],
     providers: [
         AuthGuard,
