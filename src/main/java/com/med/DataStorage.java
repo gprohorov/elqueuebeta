@@ -19,7 +19,7 @@ public class DataStorage {
             void init(){
          assigned.put(massage, 10);
          assigned.put(pulling, 10);
-        usualTherapy.setProgress(assigned);
+       // usualTherapy.setProgress(assigned);
         therapies.add(primary);
         therapies.add(usualTherapy);
 
@@ -65,6 +65,7 @@ public class DataStorage {
     Procedure pulling = new Procedure(5, "Pulling",5,50);
     Procedure massage = new Procedure(6, "Massage",3,"",3,70);
     Procedure mechmassasge = new Procedure(4, "Mechanical Massage",3,"",3,80);
+    Procedure heating = new Procedure(7, "Heating",7,"",3,80);
 
     List<Procedure> procedures = new LinkedList<>( Arrays.asList(
 
@@ -135,21 +136,37 @@ public class DataStorage {
 
     private Therapy usualTherapy = new Therapy(1, LocalDateTime.now()
             ,"Osteohondroz",1, "Шейный участок",
-            "url", assigned);
+            "url", null);
 
     private List<Therapy> therapies = new LinkedList<>();
 
 
+
+    private List<Procedure> emptyList = new ArrayList<>();
+
+    private List<Procedure> proceduresForToday1 = new ArrayList<>(
+            Arrays.asList(massage, laser, pulling)
+    );
+
+    private List<Procedure> proceduresForToday2 = new ArrayList<>(
+            Arrays.asList(massage, laser, pulling,heating)
+    );
+
+    private Patient petrovv= new Patient(persons.get(1),primary
+            ,emptyList,Status.SOCIAL
+    , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
+
+
     private Patient vasa = new Patient(persons.get(4), primary
-            , progres
+            , emptyList
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
 
    private Patient trump = new Patient(persons.get(9), primary
-            , progres2
+            , proceduresForToday1
             , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
    private Patient ivanov = new Patient(persons.get(0), null
-            , progres
+            , proceduresForToday2
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
 
     private List<Patient> patients = new LinkedList<>();

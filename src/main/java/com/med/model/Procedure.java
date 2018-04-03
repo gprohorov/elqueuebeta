@@ -12,6 +12,9 @@ public class Procedure {
     private int area;
     private int price;
     private Card card;
+    private int assigned;
+    private int done;
+    private boolean executed = false;
 
     public Procedure() {
     }
@@ -80,15 +83,41 @@ public class Procedure {
         return price;
     }
 
-    public int getSum() {
-        return price*area;
-    }
-
     public void setPrice(int price) {
         this.price = price;
     }
 
+    public Card getCard() {
+        return card;
+    }
 
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public int getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(int assigned) {
+        this.assigned = assigned;
+    }
+
+    public int getDone() {
+        return done;
+    }
+
+    public void setDone(int done) {
+        this.done = done;
+    }
+
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
+    }
 
     @Override
     public String toString() {
@@ -99,6 +128,10 @@ public class Procedure {
                 ", notes='" + notes + '\'' +
                 ", area=" + area +
                 ", price=" + price +
+                ", card=" + card +
+                ", assigned=" + assigned +
+                ", done=" + done +
+                ", executed=" + executed +
                 '}';
     }
 }

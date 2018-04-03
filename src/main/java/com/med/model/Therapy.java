@@ -1,9 +1,7 @@
 package com.med.model;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by george on 3/9/18.
@@ -15,37 +13,29 @@ public class Therapy {
     int codeDiag;
     String notes;
     String picture;
-    Map<Procedure, Integer> progress = new HashMap<>();
+  //  Map<Procedure, Integer> progress = new HashMap<>();
+    List<Procedure> procedures = new ArrayList<>();
 
     public Therapy() {
     }
 
-    public Therapy(int id, LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, Map<Procedure, Integer> progress) {
+    public Therapy(int id, LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
         this.id = id;
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
-        this.notes = this.toNotes(notes);
+        this.notes = notes;
         this.picture = picture;
-        this.progress = progress;
+        this.procedures = procedures;
     }
 
-    public Therapy(LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, Map<Procedure, Integer> progress) {
+    public Therapy(LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
-        this.notes = this.toNotes(notes);
+        this.notes = notes;
         this.picture = picture;
-        this.progress = progress;
-    }
-
-    public Therapy(LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture) {
-        this.dateTime = dateTime;
-        this.diag = diag;
-        this.codeDiag = codeDiag;
-        this.notes = notes + this.toString();
-        this.picture = picture;
-        this.progress = Collections.emptyMap();
+        this.procedures = procedures;
     }
 
     public int getId() {
@@ -92,17 +82,16 @@ public class Therapy {
         return picture;
     }
 
-    public void setPicture(String picture) {this.picture = picture;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public Map<Procedure, Integer> getProgress() {
-        return progress;
+    public List<Procedure> getProcedures() {
+        return procedures;
     }
 
-    public void setProgress(Map<Procedure, Integer> progress) {
-
-        this.setNotes(this.toNotes(""));
-        this.progress = progress;
+    public void setProcedures(List<Procedure> procedures) {
+        this.procedures = procedures;
     }
 
     @Override
@@ -114,20 +103,7 @@ public class Therapy {
                 ", codeDiag=" + codeDiag +
                 ", notes='" + notes + '\'' +
                 ", picture='" + picture + '\'' +
-                ", progress=" + progress +
+                ", procedures=" + procedures +
                 '}';
-    }
-    private String toNotes(String nts){
-
-        String out = "Diagnosis : " + this.getDiag()+ '\n'
-                    + "Date : " + this.getDateTime() + '\n'
-                    + "Code : " + this.getDiag() + '\n'
-                    + "Notes : " + this.getCodeDiag() + '\n'
-                    + "----- Therapy ----    " + '\n' ;
-        for (Map.Entry<Procedure,Integer> entry : this.getProgress().entrySet() ){
-            out += entry.getKey().getName() + " : " + entry.getValue() +  '\n';
-
-        }
-        return  out;
     }
 }

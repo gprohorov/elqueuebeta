@@ -64,7 +64,7 @@ public class PatientController {
     }
 
     // DELETE the patient by id
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public Patient delPatient(@PathVariable(value = "id") int patientId) {
 
         return service.deletePatient(patientId);
@@ -132,6 +132,7 @@ public class PatientController {
 
         return service.getQueueToProcedure(procedureId);
     }
+/*
 
     // put THE procedure (ONLY ONE)  into map of assigned for today
     @PostMapping("/add/procedure/{id}")
@@ -148,6 +149,7 @@ public class PatientController {
 
         return service.removeProcedure(patientId, procedureId);
     }
+*/
 
     // put the procedure into map of assigned for today
     @PostMapping("/execute/procedure/{id}")
@@ -159,11 +161,13 @@ public class PatientController {
 
 
     // put the procedure into map of assigned for today
+/*
     @PostMapping("/add/procedure/all/{id}")
     public Patient addAllProcedures(@PathVariable(value = "id") int patientId) {
 
         return service.addProceduresAll(patientId);
     }
+*/
 
 
 }
