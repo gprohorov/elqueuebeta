@@ -232,7 +232,13 @@ public class Procedure {
      * @see HashMap
      */
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Procedure procedure = (Procedure) o;
+
+        return this.getId() == procedure.getId();
     }
+
 }

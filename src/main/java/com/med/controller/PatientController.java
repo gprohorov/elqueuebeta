@@ -92,25 +92,27 @@ public class PatientController {
 
 
     // UPDATE the patient's status
-    @PostMapping("/update/status/{id}")
+    @GetMapping("/update/status/{id}/{status}")
     public Patient updatePatientStatus(@PathVariable(value = "id") int patientId,
-                                       @Valid @RequestBody Status status) {
+                                       @PathVariable(value = "status") Status status) {
 
         return service.updateStatus(patientId, status);
     }
 
     // UPDATE the patient's activity
-    @PostMapping("/update/activity/{id}")
+    // example http://localhost:8088/api/patient/update/activity/5/ACTIVE
+    @GetMapping("/update/activity/{id}/{activity}")
     public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
-                                       @Valid @RequestBody Activity activity) {
+                                       @PathVariable(value = "activity") Activity activity) {
 
         return service.updateActivity(patientId, activity);
     }
 
-  // UPDATE the patient's activity
-    @PostMapping("/update/balance/{id}")
+  // UPDATE the patient's balance
+    // example  http://localhost:8088/api/patient/update/balance/5/100
+    @GetMapping("/update/balance/{id}/{balance}")
     public Patient updatePatientBalance(@PathVariable(value = "id") int patientId,
-                                       @Valid @RequestBody int balance) {
+                                       @PathVariable(value = "balance") int balance) {
 
         return service.updateBalance(patientId, balance);
     }
