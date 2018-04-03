@@ -211,18 +211,15 @@ public class PatientServiceImpl implements IPatientsService {
 /*        Map.Entry<Procedure, Boolean> entry
                 = new AbstractMap.SimpleEntry<Procedure, Boolean>(procedure, false);
  */
+        System.out.println(procedure);
 
 
 
-
-        return this.getAll().stream().filter(pat -> pat.getActive().equals(Activity.ACTIVE))
+        return this.getAll().stream()
+                //.filter(pat -> pat.getActive().equals(Activity.ACTIVE))
                 .filter(pat -> pat.getProceduresForToday()
                         .contains(procedure)).collect(Collectors.toList());
     }
- /*               this.getAll().stream()
-                .filter(patient -> patient.getAssignedProcedures().entrySet().contains(entry))
-                .sorted().collect(Collectors.toList());
-    }*/
 
      // patient has got executed procedure, so we mark it as "done" in his assigned procedures
     public Patient executeProcedure(int patientId, @Valid int procedureId) {

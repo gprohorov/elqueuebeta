@@ -76,7 +76,8 @@ public class DataStorage {
             laser,
             massage,
             pulling,
-            mechmassasge
+            mechmassasge,
+            heating
 
     ));
 
