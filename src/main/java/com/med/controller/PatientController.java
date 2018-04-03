@@ -1,9 +1,6 @@
 package com.med.controller;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Person;
-import com.med.model.Status;
+import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +114,14 @@ public class PatientController {
         return service.updateBalance(patientId, balance);
     }
 
+    // UPDATE the patient's reckoning
+    // example  http://localhost:8088/api/patient/update/balance/5/100
+    @GetMapping("/update/reckoning/{id}/{reckoning}")
+    public Patient updatePatientReckoning(@PathVariable(value = "id") int patientId,
+                                          @PathVariable(value = "reckoning") Reckoning reckoning) {
+
+        return service.updateReckoning(patientId, reckoning);
+    }
 
 
   // get progress in crowd :  ratio of executed procedures to assigned ones

@@ -137,6 +137,17 @@ public class PatientServiceImpl implements IPatientsService {
         return patient;
     }
 
+
+
+    public Patient updateReckoning(int patientId, Reckoning reckoning) {
+        Patient patient = this.getPatient(patientId);
+        patient.setReckoning(reckoning);
+        this.updatePatient(patient);
+        return patient;
+
+    }
+
+
     // Add ONE procedure to execute today
  /*   public Patient addProcedure(int patientId, int procedureId) {
 
@@ -220,12 +231,5 @@ public class PatientServiceImpl implements IPatientsService {
      //   patient.markProcedureAsExecuted(procedure);
         return patient;
     }
-
-
-
-
-
-
-
 
 }
