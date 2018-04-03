@@ -34,6 +34,8 @@ public class DataStorage {
         patients.add(vasa);
         patients.add(trump);
         patients.add(ivanov);
+        patients.add(petrovv);
+
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
 
@@ -143,6 +145,9 @@ public class DataStorage {
 
 
     private List<Procedure> emptyList = new ArrayList<>();
+    private List<Procedure> diagList = new ArrayList<>(
+            Arrays.asList(diagnostics)
+    );
 
     private List<Procedure> proceduresForToday1 = new ArrayList<>(
             Arrays.asList(massage, laser, pulling)
@@ -153,7 +158,7 @@ public class DataStorage {
     );
 
     private Patient petrovv= new Patient(persons.get(1),primary
-            ,emptyList,Status.SOCIAL
+            ,diagList,Status.SOCIAL
     , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
 
 

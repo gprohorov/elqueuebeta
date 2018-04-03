@@ -47,6 +47,7 @@ public class Patient implements Comparable<Patient>{
     }
 
     public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active) {
+        this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
         this.proceduresForToday = proceduresForToday;

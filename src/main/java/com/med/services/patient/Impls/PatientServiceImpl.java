@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -198,10 +197,16 @@ public class PatientServiceImpl implements IPatientsService {
 
         Procedure procedure = procedureService.getProcedure(procedureId);
 
-        Map.Entry<Procedure, Boolean> entry
+/*        Map.Entry<Procedure, Boolean> entry
                 = new AbstractMap.SimpleEntry<Procedure, Boolean>(procedure, false);
+ */
 
-        return null;
+
+
+
+        return this.getAll().stream().filter(pat -> pat.getActive().equals(Activity.ACTIVE))
+                .filter(pat -> pat.getProceduresForToday()
+                        .contains(procedure)).collect(Collectors.toList());
     }
  /*               this.getAll().stream()
                 .filter(patient -> patient.getAssignedProcedures().entrySet().contains(entry))
