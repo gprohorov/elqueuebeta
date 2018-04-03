@@ -2,20 +2,20 @@
 import { Subscription } from 'rxjs/Subscription'; 
 
 import { Person } from '../_models/index';
-import { PersonService, AlertService } from '../_services/index';
+import { PatientsQueueService, AlertService } from '../_services/index';
 
 @Component({
   moduleId: module.id,
   templateUrl: './list.component.html'
 })
-export class PersonListComponent implements OnInit {
+export class PatientsQueueListComponent implements OnInit {
 
   sub: Subscription;
-  items: Person[] = [];
+  items: any[] = [];
   loading = false;
   rows = [];
 
-  constructor(private service: PersonService, private alertService: AlertService) {
+  constructor(private service: PatientsQueueService, private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -28,10 +28,6 @@ export class PersonListComponent implements OnInit {
   
   delete(id: number, name: string) {
     if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load() });
-  }
-
-  toPatientToday(id: number) {
-    this.service.toPatientToday(id).subscribe(() => { this.alertService.success('Операція пройшла успішно'); });
   }
   
   getFullName(item: Person) {
