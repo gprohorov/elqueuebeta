@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by george on 3/9/18.
@@ -137,7 +139,7 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     // Add ONE procedure to execute today
-    public Patient addProcedure(int patientId, int procedureId) {
+ /*   public Patient addProcedure(int patientId, int procedureId) {
 
         Patient patient = this.getPatient(patientId);
         Procedure procedure = procedureService.getProcedure(procedureId);
@@ -154,10 +156,10 @@ public class PatientServiceImpl implements IPatientsService {
 
         return patient;
     }
-
+*/
 
     // add ALL procedures for TODAY according to the therapy
-    public Patient addProceduresAll(int patientId) {
+/*    public Patient addProceduresAll(int patientId) {
 
         Patient patient = this.getPatient(patientId);
 
@@ -170,7 +172,7 @@ public class PatientServiceImpl implements IPatientsService {
             }
         }
         return null;
-    }
+    }*/
 
 
 
@@ -180,14 +182,14 @@ public class PatientServiceImpl implements IPatientsService {
     // get progress in crowd :  ratio of executed procedures to assigned ones
     public Double getProgress(int patientId) {
         Double progress = 0.0;
-        Patient patient = this.getPatient(patientId);
+/*        Patient patient = this.getPatient(patientId);
         HashMap<Procedure,Boolean> map = patient.getAssignedProcedures();
         if (!map.isEmpty()){
            int nominator = (int) map.entrySet().stream()
                    .filter(entry->entry.getValue().equals(true)).count();
            int denominator = map.size();
            progress = Double.valueOf(nominator) /denominator;
-        }
+        }*/
         return progress;
     }
 
@@ -196,19 +198,21 @@ public class PatientServiceImpl implements IPatientsService {
 
         Procedure procedure = procedureService.getProcedure(procedureId);
 
-        Map.Entry<Procedure,Boolean>    entry
+        Map.Entry<Procedure, Boolean> entry
                 = new AbstractMap.SimpleEntry<Procedure, Boolean>(procedure, false);
 
-        return  this.getAll().stream()
+        return null;
+    }
+ /*               this.getAll().stream()
                 .filter(patient -> patient.getAssignedProcedures().entrySet().contains(entry))
                 .sorted().collect(Collectors.toList());
-    }
+    }*/
 
      // patient has got executed procedure, so we mark it as "done" in his assigned procedures
     public Patient executeProcedure(int patientId, @Valid int procedureId) {
         Patient patient = this.getPatient(patientId);
         Procedure procedure = procedureService.getProcedure(procedureId);
-        patient.markProcedureAsExecuted(procedure);
+     //   patient.markProcedureAsExecuted(procedure);
         return patient;
     }
 

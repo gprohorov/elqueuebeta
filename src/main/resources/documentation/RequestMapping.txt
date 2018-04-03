@@ -142,6 +142,9 @@
             - Илья Ивкин
 
 
-
+"assignedProcedures": [
+    {"id"=6, "name"='Massage', "cabinet"=3, notes='', area=3, price=70, "passed": true },
+    {"id"=5, "name"='Pulling', "cabinet"=5, notes='', area=1, price=50, "passed": false }
+]
 
      ------------------- продолжение следует ---------------------
