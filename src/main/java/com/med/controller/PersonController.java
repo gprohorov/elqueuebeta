@@ -109,7 +109,7 @@ public class PersonController {
 
     //  person  ->   patient   i.e. insert into Set<Patient> of today
     // this means that the person has no diagnosis and assigned procedures
-    @PostMapping("/person/topatient/{id}")
+    @GetMapping("/person/topatient/{id}")
     public Patient putPersonIntoQueue(@PathVariable(value = "id") int personId) {
 
         Person person = service.getPerson(personId);
