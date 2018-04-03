@@ -32,6 +32,17 @@ public class Patient implements Comparable<Patient>{
         this.active = active;
         this.reckoning = Reckoning.NULL;
     }
+    public Patient(Person person,  Therapy therapy, HashMap<Procedure, Boolean> assignedProcedures, Status status, LocalDateTime lastActivity, int balance, Activity active) {
+        this.id = person.getId();
+        this.person = person;
+        this.therapy = therapy;
+        this.assignedProcedures = assignedProcedures;
+        this.status = status;
+        this.lastActivity = lastActivity;
+        this.balance = balance;
+        this.active = active;
+        this.reckoning = Reckoning.NULL;
+    }
 
 
     public Patient(Person person) {

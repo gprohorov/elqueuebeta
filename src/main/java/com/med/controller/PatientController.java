@@ -1,6 +1,9 @@
 package com.med.controller;
 
-import com.med.model.*;
+import com.med.model.Activity;
+import com.med.model.Patient;
+import com.med.model.Person;
+import com.med.model.Status;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +30,11 @@ public class PatientController {
 
 
     ////////////////////////// CRUD//////////////////////////
+
+    // getAll
     @GetMapping("/list")
     public List<Patient> showPatients() {
         return service.getAll();
-    }
-
-    @GetMapping("/list/appointed/today")
-    public List<Patient> getPatientsAppointedForToday() {
-        return appointmentService
-                .getAppointmentsByDate(LocalDate.now())
-                .stream().map(appointment -> appointment.getPatient())
-                .collect(Collectors.toList());
     }
 
 
@@ -73,7 +70,18 @@ public class PatientController {
         return service.deletePatient(patientId);
     }
 
-    //////////////////////////////////////////////////////////
+
+
+    //////////////////////END OF CRUD ////////////////////////////////////
+
+
+    @GetMapping("/list/appointed/today")
+    public List<Patient> getPatientsAppointedForToday() {
+        return appointmentService
+                .getAppointmentsByDate(LocalDate.now())
+                .stream().map(appointment -> appointment.getPatient())
+                .collect(Collectors.toList());
+    }
 
 
     // insert into patients list all appointed for today
@@ -125,7 +133,7 @@ public class PatientController {
         return service.getQueueToProcedure(procedureId);
     }
 
-    // put the procedure into map of assigned for today
+    // put THE procedure (ONLY ONE)  into map of assigned for today
     @PostMapping("/add/procedure/{id}")
     public Patient addProcedure(@PathVariable(value = "id") int patientId,
                                 @Valid @RequestBody int procedureId) {
@@ -133,7 +141,7 @@ public class PatientController {
         return service.addProcedure(patientId, procedureId);
     }
 
-    // put the procedure into map of assigned for today
+    // remove the procedure from the map of assigned for today
     @PostMapping("/remove/procedure/{id}")
     public Patient removeProcedure(@PathVariable(value = "id") int patientId,
                                 @Valid @RequestBody int procedureId) {

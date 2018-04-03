@@ -59,11 +59,11 @@ public class DataStorage {
 
             ));
 
-    Procedure registration =   new Procedure(0, "Registration", 0,0);
-    Procedure diagnostics =   new Procedure(1, "Diagnostics", 1,100);
-    Procedure laser = new Procedure(2, "Laser",2,"",3,50);
+    Procedure registration =   new Procedure(1, "Registration", 0,0);
+    Procedure diagnostics =   new Procedure(2, "Diagnostics", 1,100);
+    Procedure laser = new Procedure(3, "Laser",2,"",3,50);
     Procedure pulling = new Procedure(5, "Pulling",5,50);
-    Procedure massage = new Procedure(3, "Massage",3,"",3,70);
+    Procedure massage = new Procedure(6, "Massage",3,"",3,70);
     Procedure mechmassasge = new Procedure(4, "Mechanical Massage",3,"",3,80);
 
     List<Procedure> procedures = new LinkedList<>( Arrays.asList(
@@ -94,7 +94,7 @@ public class DataStorage {
     Doctor massagist = new Doctor(3, "Ігор"
             , "Іванович", "Петрюк","Масажист","0501234577");
 
-   Doctor laserist = new Doctor(3, "Іван"
+   Doctor laserist = new Doctor(7, "Іван"
             , "Васильович", "Мандрик","Лазер","0501234577");
 
 
@@ -140,15 +140,15 @@ public class DataStorage {
     private List<Therapy> therapies = new LinkedList<>();
 
 
-    private Patient vasa = new Patient(9, persons.get(4), primary
+    private Patient vasa = new Patient(persons.get(4), primary
             , progres
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
 
-   private Patient trump = new Patient(11, persons.get(7), primary
+   private Patient trump = new Patient(persons.get(9), primary
             , progres2
             , Status.BISSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
 
-   private Patient ivanov = new Patient(1, persons.get(0), null
+   private Patient ivanov = new Patient(persons.get(0), null
             , progres
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
 
