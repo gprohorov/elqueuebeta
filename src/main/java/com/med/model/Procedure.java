@@ -39,6 +39,14 @@ public class Procedure {
         this.card = new Card();
     }
 
+    public Procedure(int id, String name, int cabinet, int price, boolean executed) {
+        this.id = id;
+        this.name = name;
+        this.cabinet = cabinet;
+        this.price = price;
+        this.executed = executed;
+    }
+
     public int getId() {
         return id;
     }

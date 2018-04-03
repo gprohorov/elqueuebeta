@@ -63,7 +63,7 @@ public class DataStorage {
     Procedure diagnostics =   new Procedure(2, "Diagnostics", 1,100);
     Procedure laser = new Procedure(3, "Laser",2,"",3,50);
     Procedure pulling = new Procedure(5, "Pulling",5,50);
-    Procedure massage = new Procedure(6, "Massage",3,"",3,70);
+    Procedure massage = new Procedure(6, "Massage",3,70, true);
     Procedure mechmassasge = new Procedure(4, "Mechanical Massage",3,"",3,80);
     Procedure heating = new Procedure(7, "Heating",7,"",3,80);
 
