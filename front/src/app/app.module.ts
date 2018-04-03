@@ -10,7 +10,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
-import { AlertService, AuthenticationService, UserService, PersonService, DoctorService, ProcedureService } from './_services/index';
+import {  AlertService, 
+          AuthenticationService, 
+          UserService, 
+          PersonService, 
+          DoctorService, 
+          ProcedureService, 
+          PatientsQueueService 
+       } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -28,6 +35,8 @@ import { DoctorFormComponent } from './doctor/form.component';
 import { ProcedureListComponent } from './procedure/list.component';
 import { ProcedureFormComponent } from './procedure/form.component';
 
+import { PatientsQueueListComponent } from './patients-queue/list.component';
+
 const appRoutes: Routes = [
     { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -43,6 +52,8 @@ const appRoutes: Routes = [
     
     { path: 'procedures', component: ProcedureListComponent, canActivate: [AuthGuard] },
     { path: 'procedure-form', component: ProcedureFormComponent, canActivate: [AuthGuard] },
+    
+    { path: 'patients-queue', component: PatientsQueueListComponent, canActivate: [AuthGuard] },
     
     { path: '**', redirectTo: '' }
 ];
@@ -64,7 +75,8 @@ const appRoutes: Routes = [
         UsersComponent,
         PersonListComponent, PersonFormComponent,
         DoctorListComponent, DoctorFormComponent,
-        ProcedureListComponent, ProcedureFormComponent
+        ProcedureListComponent, ProcedureFormComponent,
+        PatientsQueueListComponent
     ],
     providers: [
         AuthGuard,
@@ -74,6 +86,7 @@ const appRoutes: Routes = [
         PersonService,
         DoctorService,
         ProcedureService,
+        PatientsQueueService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: BrowserXhr, useClass: CustExtBrowserXhr },
         fakeBackendProvider

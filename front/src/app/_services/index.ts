@@ -4,3 +4,4 @@ export * from './user.service';
 export * from './person.service';
 export * from './doctor.service';
 export * from './procedure.service';
+export * from './patients-queue.service';
