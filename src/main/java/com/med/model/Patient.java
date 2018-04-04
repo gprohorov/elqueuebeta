@@ -104,6 +104,16 @@ public class Patient implements Comparable<Patient>{
         this.proceduresForToday = proceduresForToday;
     }
 
+    public void setOneProcedureForTodayToExecute(Procedure procedure) {
+        this.proceduresForToday.add(procedure);
+    }
+
+    public void setOneProcedureForTodayAsExecuted(Procedure procedure) {
+        int index = this.proceduresForToday.indexOf(procedure);
+        procedure.setExecuted(true);
+        this.proceduresForToday.set(index,procedure);
+    }
+
     public Status getStatus() {
         return status;
     }

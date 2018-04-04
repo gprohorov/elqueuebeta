@@ -2,10 +2,7 @@ package com.med.dao.patient.impls;
 
 import com.med.DataStorage;
 import com.med.dao.patient.interfaces.IPatientDAO;
-import com.med.model.Appointment;
-import com.med.model.Patient;
-import com.med.model.Person;
-import com.med.model.Status;
+import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.event.impls.EventsServiceImpl;
@@ -70,6 +67,8 @@ public class PatientDAOImpl implements IPatientDAO {
         {
             patient.setLastActivity(LocalDateTime.now());
             patient.setStatus(Status.SOCIAL);
+            patient.setActive(Activity.ACTIVE);
+            patient.setOneProcedureForTodayToExecute(procedureService.getProcedure(1));
             dataStorage.getPatients().add(patient);
             return patient;
         }

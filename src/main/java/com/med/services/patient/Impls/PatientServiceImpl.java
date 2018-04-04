@@ -217,15 +217,8 @@ public class PatientServiceImpl implements IPatientsService {
 
         Procedure procedure = procedureService.getProcedure(procedureId);
 
-/*        Map.Entry<Procedure, Boolean> entry
-                = new AbstractMap.SimpleEntry<Procedure, Boolean>(procedure, false);
- */
-        System.out.println(procedure);
-
-
-
         return this.getAll().stream()
-                //.filter(pat -> pat.getActive().equals(Activity.ACTIVE))
+                .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
                 .filter(pat -> pat.getProceduresForToday()
                         .contains(procedure)).collect(Collectors.toList());
     }

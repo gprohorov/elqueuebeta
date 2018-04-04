@@ -46,7 +46,7 @@ public class DataStorage {
     List<Person> persons = new LinkedList<>( Arrays.asList(
             new Person(1,"Іван",  "Іванов"),
             new Person(2,"Петро",  "Петров"),
-            new Person(3,"Сидоров", "Сидорович",  "Сидоров"
+            new Person(3,"Сидор", "Сидорович",  "Сидоров"
                     , "050-0000000", "Герца",
                     "Головна,5", true, LocalDate.now().minusYears(38).minusDays(20)),
             new Person(4,"Павел", "Павлов"),
@@ -158,14 +158,11 @@ public class DataStorage {
             Arrays.asList(massage, laser, pulling,heating)
     );
 
-    private Patient petrovv= new Patient(persons.get(1),primary
-            ,diagList,Status.SOCIAL
-    , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
 
 
     private Patient vasa = new Patient(persons.get(4), primary
-            , emptyList
-            , Status.SOCIAL, LocalDateTime.now().minusMinutes(15), 0, Activity.NON_ACTIVE) ;
+            , diagList
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(35), 0, Activity.ACTIVE) ;
 
    private Patient trump = new Patient(persons.get(9), primary
             , proceduresForToday1
@@ -174,6 +171,11 @@ public class DataStorage {
    private Patient ivanov = new Patient(persons.get(0), null
             , proceduresForToday2
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
+
+
+    private Patient petrovv= new Patient(persons.get(1),primary
+            ,diagList,Status.SOCIAL
+            , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
 
     private List<Patient> patients = new LinkedList<>();
 
