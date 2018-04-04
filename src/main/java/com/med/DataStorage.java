@@ -45,7 +45,7 @@ public class DataStorage {
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
             new Person(1,"Іван",  "Іванов"),
-            new Person(2,"Петров",  "Петро"),
+            new Person(2,"Петро",  "Петров"),
             new Person(3,"Сидоров", "Сидорович",  "Сидоров"
                     , "050-0000000", "Герца",
                     "Головна,5", true, LocalDate.now().minusYears(38).minusDays(20)),

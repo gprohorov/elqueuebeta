@@ -39,24 +39,21 @@ export class PatientsQueueListComponent implements OnInit {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
   
-  getTimeDiffClass(date) {
-    var diff = this.getTimeDiff(date);
-    console.log(diff);
-    if (diff > (60*60*1000)) return 'text-danger';
-    if (diff > (30*60*1000)) return 'text-success';
-    return 'text-primary';
+  getProgress(list: any[]) {
+    var executed = 0;
+    list.forEach(function(item) {
+      if (item.executed) executed++;
+    });
+    return executed + '/' + list.length;
   }
-   
-  getTimeDiff(date) {
-    var d1 = new Date().getTime();
-    var d2 = new Date(date).getTime();
-    var diff = Math.abs(d1)-Math.abs(d2)-(2*60*60*1000);
-    return diff;
+
+  getTimeDiffClass(v: number) {
+    return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
   }
   
   load(search: string = '') {
     this.loading = true;
-    this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
   }
 
 }

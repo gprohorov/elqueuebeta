@@ -8,14 +8,23 @@ import { config } from '../../config';
 @Injectable()
 export class PatientsQueueService {
   // Define the routes we are going to interact with
-  private listUrl           = config.api_path + '/patient/list/';
-  private deleteUrl         = config.api_path + '/patient/delete/';
+  private listUrl             = config.api_path + '/patient/list/';
+  private listByProcedureUrl  = config.api_path + '/patient/list/procedure/';
+  private deleteUrl           = config.api_path + '/patient/delete/';
 
   constructor(private http: HttpClient) { }
 
   getAll(search: string = '') {
     return this.http
       .get<any[]>(this.listUrl + search)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  getAllByProcedure(id: number) {
+    return this.http
+      .get<any[]>(this.listByProcedureUrl + id)
       .pipe(
         catchError(this.handleError)
       );
