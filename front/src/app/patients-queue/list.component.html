@@ -5,7 +5,7 @@
         <label for="search">Пошук:</label><input class="form-control" #searchfield (keyup)="load(searchfield.value)">
       </div>
       <h4 class="title">
-        Список паціентів у черзі 
+        Загальна черга
         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
         <p>&nbsp;</p><p>&nbsp;</p>
       </h4>
@@ -14,7 +14,7 @@
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th></th> <th>ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Час очікування</th>
+                        <th></th> <th [style.min-width.px]="300">ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Прогрес</th> <th>Час очікування</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let item of items; let i = index">
@@ -24,7 +24,8 @@
                         <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
                         <td>{{item.balance | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</td>
                         <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
-                        <td><span class="{{getTimeDiffClass(item.lastActivity)}}">{{getTimeDiff(item.lastActivity) | date:'HH:mm'}}</span></td>
+                        <td>{{getProgress(item.proceduresForToday)}}</td>
+                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}} хв.</span></td>
                     </tr>
                     <tr [hidden]="!rows[i]">
                       <td colspan="100">

@@ -1,0 +1,39 @@
+﻿<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <div class="pull-right">
+        <label for="search">Пошук:</label><input class="form-control" #searchfield (keyup)="load(searchfield.value)">
+      </div>
+      <h4 class="title">
+        Черга на процедури
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <p>&nbsp;</p><p>&nbsp;</p>
+      </h4>
+    </div>
+    <div class="content table-responsive table-full-width" *ngFor="let group of items; let j = index">
+      <table class="table table-hover table-striped" *ngIf="group.queue?.length > 0">
+        <thead>
+          <tr (click)="rows[j]=!rows[j]">
+            <th [style.width.px]="20"><i [ngClass]="{'fa': true, 'fa-caret-right': (rows[j]), 'fa-caret-down': (!rows[j]) }"></i></th>
+            <th>{{group.name}}</th>
+            <th colspan="100" class="text-right"><span class="badge">{{group.queue?.length}}</span></th>
+          </tr>
+        </thead>
+        <tbody [hidden]="rows[j]">
+          <tr>
+            <th></th> <th [style.min-width.px]="300">ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Прогрес</th> <th>Час очікування</th>
+          </tr>
+          <tr *ngFor="let item of group.queue">
+              <td></td>
+              <td>{{getFullName(item.person)}}</td>
+              <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
+              <td>{{item.balance | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</td>
+              <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
+              <td>{{getProgress(item.proceduresForToday)}}</td>
+              <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}} хв.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

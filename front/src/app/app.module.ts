@@ -1,4 +1,4 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -37,6 +37,8 @@ import { ProcedureFormComponent } from './procedure/form.component';
 
 import { PatientsQueueListComponent } from './patients-queue/list.component';
 
+import { ProceduresQueueListComponent } from './procedures-queue/list.component';
+
 const appRoutes: Routes = [
     { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -54,6 +56,8 @@ const appRoutes: Routes = [
     { path: 'procedure-form', component: ProcedureFormComponent, canActivate: [AuthGuard] },
     
     { path: 'patients-queue', component: PatientsQueueListComponent, canActivate: [AuthGuard] },
+    
+    { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
     
     { path: '**', redirectTo: '' }
 ];
@@ -76,7 +80,8 @@ const appRoutes: Routes = [
         PersonListComponent, PersonFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
-        PatientsQueueListComponent
+        PatientsQueueListComponent,
+        ProceduresQueueListComponent
     ],
     providers: [
         AuthGuard,
@@ -91,6 +96,7 @@ const appRoutes: Routes = [
         { provide: BrowserXhr, useClass: CustExtBrowserXhr },
         fakeBackendProvider
     ],
+    schemas: [ NO_ERRORS_SCHEMA ],
     bootstrap: [AppComponent]
 })
 
