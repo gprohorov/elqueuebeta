@@ -11,6 +11,9 @@ export class PatientsQueueService {
   private listUrl             = config.api_path + '/patient/list/';
   private listByProcedureUrl  = config.api_path + '/patient/list/procedure/';
   private deleteUrl           = config.api_path + '/patient/delete/';
+  private updateActivityUrl   = config.api_path + '/patient/update/activity/';
+  private updateStatusUrl     = config.api_path + '/patient/update/status/';
+  private updateBalanceUrl    = config.api_path + '/patient/update/balance/';
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +28,30 @@ export class PatientsQueueService {
   getAllByProcedure(id: number) {
     return this.http
       .get<any[]>(this.listByProcedureUrl + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  updateActivity(id: number, value: string) {
+    return this.http
+      .get(this.updateActivityUrl + id + '/' + value)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  updateStatus(id: number, value: string) {
+    return this.http
+      .get(this.updateStatusUrl + id + '/' + value)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }  
+
+  updateBalance(id: number, value: string) {
+    return this.http
+      .get(this.updateBalanceUrl + id + '/' + value)
       .pipe(
         catchError(this.handleError)
       );

@@ -38,7 +38,7 @@
                         <div class="col-md-6">
                           <p>
                             <b class="col-md-5">Встановити статус:</b>
-                            <select [class]="Statuses[item.status].cssClass" [(ngModel)]="item.status" [style.width.px]="120">
+                            <select [class]="Statuses[item.status].cssClass" [(ngModel)]="item.status" (change)="updateStatus(item.id, item.status)" [style.width.px]="120">
                               <option *ngFor="let status of StatusesArr" [ngValue]="status" [class]="Statuses[status].cssClass">
                                 {{Statuses[status].text}}
                               </option>
@@ -46,7 +46,7 @@
                           </p>
                           <p>
                             <b class="col-md-5">Встановити активність:</b>
-                            <select [class]="Activity[item.active].cssClass" [(ngModel)]="item.active" [style.width.px]="120">
+                            <select [class]="Activity[item.active].cssClass" [(ngModel)]="item.active" (change)="updateActivity(item.id, item.active)" [style.width.px]="120">
                               <option *ngFor="let act of ActivityArr" [ngValue]="act" [class]="Activity[act].cssClass">
                                 {{Activity[act].text}}
                               </option>
@@ -54,7 +54,7 @@
                           </p>
                           <p>
                             <b class="col-md-5">Встановити баланс:</b>
-                            <input type="number" [(ngModel)]="item.balance" [style.width.px]="120"/>
+                            <input type="number" [(ngModel)]="item.balance" (change)="updateBalance(item.id, item.balance)" [style.width.px]="120"/>
                           </p>
                           <p class="col-md-offset-5">
                             <a role="button" (click)="delete(item.id, getFullName(item.person))">[Видалити з черги]</a>
