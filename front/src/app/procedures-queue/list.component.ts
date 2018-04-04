@@ -59,7 +59,11 @@ export class ProceduresQueueListComponent implements OnInit {
    
   load() {
     this.loading = true;
+<<<<<<< HEAD
     this.subProcedures = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; this.loadAll(); });
+=======
+    this.subProcedures = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; this.loadAll(););
+>>>>>>> fe794ee8489e50610b0fb2223da509a13023337c
   }
   
   loadAll() {
