@@ -66,6 +66,7 @@ public class DataStorage {
     Procedure laser = new Procedure(3, "Лазерна терапия",2,"",3,50);
     Procedure pulling = new Procedure(5, "Витяжка",5,50);
     Procedure massage = new Procedure(6, "Массаж",3,70, true);
+    Procedure massageNo = new Procedure(6, "Массаж",3,70, false);
     Procedure mechmassasge = new Procedure(4, "Механ. массаж",3,"",3,80);
     Procedure heating = new Procedure(7, "Прогрівання",7,"",3,80);
 
@@ -77,6 +78,7 @@ public class DataStorage {
             massage,
             pulling,
             mechmassasge,
+            massageNo,
             heating
 
     ));
@@ -146,8 +148,8 @@ public class DataStorage {
 
 
     private List<Procedure> emptyList = new ArrayList<>();
-    private List<Procedure> diagList = new ArrayList<>(
-            Arrays.asList(diagnostics)
+    private List<Procedure> diagAndMassage = new ArrayList<>(
+            Arrays.asList(diagnostics, massageNo)
     );
 
     private List<Procedure> proceduresForToday1 = new ArrayList<>(
@@ -161,7 +163,7 @@ public class DataStorage {
 
 
     private Patient vasa = new Patient(persons.get(4), primary
-            , diagList
+            , diagAndMassage
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(35), 0, Activity.ACTIVE) ;
 
    private Patient trump = new Patient(persons.get(9), primary
@@ -174,7 +176,7 @@ public class DataStorage {
 
 
     private Patient petrovv= new Patient(persons.get(1),primary
-            ,diagList,Status.SOCIAL
+            ,diagAndMassage,Status.SOCIAL
             , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
 
     private List<Patient> patients = new LinkedList<>();

@@ -212,16 +212,45 @@ public class PatientServiceImpl implements IPatientsService {
         return progress;
     }
 
+
+
       // get a sorted list of patients to the specified procedure
     public List<Patient> getQueueToProcedure(int procedureId) {
 
         Procedure procedure = procedureService.getProcedure(procedureId);
 
+        List<Patient> queue = new ArrayList<>();
+        List<Patient> all = this.getAll().stream()
+                .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
+                .collect(Collectors.toList());
+
+        boolean swtch1 = false;
+        boolean swtch2 = false;
+
+
+        for(Patient patient: all){
+            if (patient.getProceduresForToday().contains(procedure)){
+                int index = patient.getProceduresForToday().indexOf(procedure);
+                if (patient.getProceduresForToday().get(index)
+                        .isExecuted() == false
+                        ){
+                    queue.add(patient);
+                }
+            }
+
+
+
+        }
+/*
         return this.getAll().stream()
                 .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
                 .filter(pat -> pat.getProceduresForToday()
-                        .contains(procedure)).collect(Collectors.toList());
+                        .contains(procedure)).collect(Collectors.toList());*/
+        return queue;
     }
+
+
+
 
      // patient has got executed procedure, so we mark it as "done" in his assigned procedures
     public Patient executeProcedure(int patientId, @Valid int procedureId) {

@@ -129,6 +129,7 @@ public class Procedure {
         this.executed = executed;
     }
 
+
     @Override
     public String toString() {
         return "Procedure{" +
@@ -225,7 +226,7 @@ public class Procedure {
      * general contract for the {@code hashCode} method, which states
      * that equal objects must have equal hash codes.
      *
-     * @param obj the reference object with which to compare.
+     * &param obj the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      * argument; {@code false} otherwise.
      * @see #hashCode()
