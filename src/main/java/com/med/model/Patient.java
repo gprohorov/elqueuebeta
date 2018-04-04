@@ -14,6 +14,7 @@ public class Patient implements Comparable<Patient>{
    private List<Procedure> proceduresForToday = new ArrayList<>();
    private Status status;
    private LocalDateTime lastActivity;
+   private long delta=0;
    private int balance;
    private Activity active;
    private Reckoning reckoning;
@@ -63,7 +64,13 @@ public class Patient implements Comparable<Patient>{
         this.active = Activity.NON_ACTIVE;
     }
 
+    public long getDelta() {
+        return delta;
+    }
 
+    public void setDelta(long delta) {
+        this.delta = delta;
+    }
 
     public int getId() {
         return id;

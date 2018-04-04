@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,6 +80,13 @@ public class PatientServiceImpl implements IPatientsService {
 
     @Override
     public List<Patient> getAll() {
+
+        for (Patient patient:patientDAO.getAll()){
+            patient.setDelta(ChronoUnit.MINUTES.between(
+                    patient.getLastActivity(), LocalDateTime.now()
+            ));
+        }
+
         return   patientDAO.getAll();
 
     }
@@ -86,15 +94,15 @@ public class PatientServiceImpl implements IPatientsService {
     @Override
     public List<Patient> insertAppointedForToday() {
 
-       // List<Patient> appointed =
+        // List<Patient> appointed =
 
-                appointmentService
+        appointmentService
                 .getAppointmentsByDate(LocalDate.now())
                 .stream().map(appointment -> appointment.getPatient())
-                .forEach(el-> this.createPatient(el));
-             //   .collect(Collectors.toList());
+                .forEach(el -> this.createPatient(el));
+        //   .collect(Collectors.toList());
 
-      //  appointed.stream().forEach(el -> this.createPatient(el));
+        //  appointed.stream().forEach(el -> this.createPatient(el));
 /*
            for (Patient patient:appointed){
 
@@ -108,6 +116,7 @@ public class PatientServiceImpl implements IPatientsService {
             eventsService.addEvent(event);
         }
         */
+
         return patientDAO.getAll();
     }
 
