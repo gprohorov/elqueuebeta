@@ -14,11 +14,12 @@
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
+                        <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
                     <tr>
+                        <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                         <td>{{getFullName(item)}}</td>
                         <td>{{item.gender ? 'чол.' : 'жін.'}}</td>
                         <td>{{item.dateOfBirth | date:'dd.MM.yyyy'}}</td>

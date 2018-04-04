@@ -1,15 +1,14 @@
-﻿  <nav class="navbar navbar-default">
-    <div class="navbar-header">
-      <a class="navbar-brand" routerLink="/dashboard"></a>
-    </div>
+﻿<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
     <ul class="nav navbar-nav">
-      <li><a routerLink="/persons" routerLinkActive="active-link">Персони</a></li>
-      <li><a routerLink="/doctors" routerLinkActive="active-link">Лікарі</a></li>
-      <li><a routerLink="/procedures" routerLinkActive="active-link">Процедури</a></li>
-      <li><a routerLink="/patients-queue" routerLinkActive="active-link">Паціенти в черзі</a></li>
+      <li><a routerLink="/persons">Персони</a></li>
+      <li><a routerLink="/doctors">Лікарі</a></li>
+      <li><a routerLink="/procedures">Процедури</a></li>
+      <li><a routerLink="/patients-queue">Паціенти в черзі</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a routerLink="/users" routerLinkActive="active-link">Користувачі ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
-      <li><a routerLink="/login" routerLinkActive="active-link">Вихід</a></li>
+      <li><a routerLink="/users">Користувачі ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
+      <li [style.margin-right.px]="20" ><a routerLink="/login">Вихід</a></li>
     </ul>
-  </nav>
+  </div>
+</nav>

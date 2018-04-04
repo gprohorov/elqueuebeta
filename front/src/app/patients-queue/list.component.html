@@ -14,30 +14,51 @@
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Час очікування</th> <th></th>
+                        <th></th> <th>ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Час очікування</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
-                    <tr>
+                <tbody *ngFor="let item of items; let i = index">
+                    <tr (click)="rows[i]=!rows[i]">
+                        <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                         <td>{{getFullName(item.person)}}</td>
-                        <td>{{item.status}}</td>
+                        <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
                         <td>{{item.balance | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</td>
-                        <td>{{item.active}}</td>
-                        <td>{{item.lastActivity | date:'dd.MM.yyyy HH:mm:ss'}}</td>
-                        <td align="right">
-                          <a role="button" (click)="delete(item.id, getFullName(item.person))">[Видалити]</a>
-                        </td>
+                        <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
+                        <td><span class="{{getTimeDiffClass(item.lastActivity)}}">{{getTimeDiff(item.lastActivity) | date:'HH:mm'}}</span></td>
                     </tr>
                     <tr [hidden]="!rows[i]">
                       <td colspan="100">
-                        <blockquote>
-                          <b>Призначені процедури:</b>
-                          <ul>
-                            <li *ngFor="let item of items.proceduresForToday;">
-                              В розробці
-                            </li>
-                          </ul>
-                        </blockquote>
+                        <div class="col-md-6">
+                          <p><b>Призначені процедури:</b></p>
+                            <p *ngFor="let proc of item.proceduresForToday" title="{{!proc.executed ? 'не пройдено' : 'пройдено'}}">
+                              <span class="fa fa-{{!proc.executed ? 'minus text-danger' : 'check text-success'}}"></span> {{proc.name}}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                          <p>
+                            <b class="col-md-5">Встановити статус:</b>
+                            <select [class]="Statuses[item.status].cssClass" [(ngModel)]="item.status" [style.width.px]="120">
+                              <option *ngFor="let status of StatusesArr" [ngValue]="status" [class]="Statuses[status].cssClass">
+                                {{Statuses[status].text}}
+                              </option>
+                            </select>
+                          </p>
+                          <p>
+                            <b class="col-md-5">Встановити активність:</b>
+                            <select [class]="Activity[item.active].cssClass" [(ngModel)]="item.active" [style.width.px]="120">
+                              <option *ngFor="let act of ActivityArr" [ngValue]="act" [class]="Activity[act].cssClass">
+                                {{Activity[act].text}}
+                              </option>
+                            </select>
+                          </p>
+                          <p>
+                            <b class="col-md-5">Встановити баланс:</b>
+                            <input type="number" [(ngModel)]="item.balance" [style.width.px]="120"/>
+                          </p>
+                          <p class="col-md-offset-5">
+                            <a role="button" (click)="delete(item.id, getFullName(item.person))">[Видалити з черги]</a>
+                          </p>
+                        </div>
                       </td>
                     </tr>
                 </tbody>

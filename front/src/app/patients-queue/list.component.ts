@@ -2,6 +2,7 @@
 import { Subscription } from 'rxjs/Subscription'; 
 
 import { Person } from '../_models/index';
+import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
 
 @Component({
@@ -14,6 +15,10 @@ export class PatientsQueueListComponent implements OnInit {
   items: any[] = [];
   loading = false;
   rows = [];
+  Statuses = Statuses;
+  StatusesArr = StatusesArr;
+  Activity = Activity;
+  ActivityArr = ActivityArr;
 
   constructor(private service: PatientsQueueService, private alertService: AlertService) {
   }
@@ -32,6 +37,21 @@ export class PatientsQueueListComponent implements OnInit {
   
   getFullName(item: Person) {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
+  }
+  
+  getTimeDiffClass(date) {
+    var diff = this.getTimeDiff(date);
+    console.log(diff);
+    if (diff > (60*60*1000)) return 'text-danger';
+    if (diff > (30*60*1000)) return 'text-success';
+    return 'text-primary';
+  }
+   
+  getTimeDiff(date) {
+    var d1 = new Date().getTime();
+    var d2 = new Date(date).getTime();
+    var diff = Math.abs(d1)-Math.abs(d2)-(2*60*60*1000);
+    return diff;
   }
   
   load(search: string = '') {
