@@ -12,6 +12,7 @@ import { PatientsQueueService, AlertService } from '../_services/index';
 export class PatientsQueueListComponent implements OnInit {
 
   sub: Subscription;
+  subTemp: Subscription;
   items: any[] = [];
   loading = false;
   rows = [];
@@ -45,6 +46,18 @@ export class PatientsQueueListComponent implements OnInit {
       if (item.executed) executed++;
     });
     return executed + '/' + list.length;
+  }
+
+  updateActivity(id: number, value: string) {
+    this.subTemp = this.service.updateActivity(id, value).subscribe(data => {});
+  }
+
+  updateStatus(id: number, value: string) {
+    this.subTemp = this.service.updateStatus(id, value).subscribe(data => {});
+  }
+
+  updateBalance(id: number, value: string) {
+    this.subTemp = this.service.updateBalance(id, value).subscribe(data => {});
   }
 
   getTimeDiffClass(v: number) {
