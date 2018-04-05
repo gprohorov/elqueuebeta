@@ -10,7 +10,6 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -252,12 +251,37 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
-     // patient has got executed procedure, so we mark it as "done" in his assigned procedures
-    public Patient executeProcedure(int patientId, @Valid int procedureId) {
+     // patient has executed a procedure, so we mark the procedure  as TRUE in his list of  assigned procedures for tody
+    public Patient executeProcedure(int patientId, int procedureId) {
         Patient patient = this.getPatient(patientId);
+        int index = this.getAll().indexOf(patient);
         Procedure procedure = procedureService.getProcedure(procedureId);
-     //   patient.markProcedureAsExecuted(procedure);
+        patient.setOneProcedureForTodayAsExecuted(procedure);
+        patient.setLastActivity(LocalDateTime.now());
+        patient.setActive(Activity.ACTIVE);
+        this.getAll().set(index, patient);
         return patient;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -157,10 +157,10 @@ public class PatientController {
     }
 */
 
-    // put the procedure into map of assigned for today
-    @PostMapping("/execute/procedure/{id}")
-    public Patient executeProcedure(@PathVariable(value = "id") int patientId,
-                                @Valid @RequestBody int procedureId) {
+    // mark procedure as executed
+    @GetMapping("/execute/procedure/{patid}/{procid}")
+    public Patient executeProcedure(@PathVariable(value = "patid") int patientId,
+                                @PathVariable(value = "procid") int procedureId) {
 
         return service.executeProcedure(patientId, procedureId);
     }

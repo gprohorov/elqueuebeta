@@ -177,7 +177,7 @@ public class DataStorage {
 
     private Patient petrovv= new Patient(persons.get(1),primary
             ,diagAndMassage,Status.SOCIAL
-            , LocalDateTime.now(),0,Activity.ACTIVE,Reckoning.END);
+            , LocalDateTime.now().minusMinutes(11),0,Activity.ACTIVE,Reckoning.END);
 
     private List<Patient> patients = new LinkedList<>();
 

@@ -111,6 +111,7 @@ public class Patient implements Comparable<Patient>{
     public void setOneProcedureForTodayAsExecuted(Procedure procedure) {
         int index = this.proceduresForToday.indexOf(procedure);
         procedure.setExecuted(true);
+      //  System.out.println(this.getPerson().getFirstName());
         this.proceduresForToday.set(index,procedure);
     }
 
