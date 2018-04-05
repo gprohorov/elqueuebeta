@@ -68,7 +68,11 @@ public class PatientDAOImpl implements IPatientDAO {
             patient.setLastActivity(LocalDateTime.now());
             patient.setStatus(Status.SOCIAL);
             patient.setActive(Activity.ACTIVE);
-            patient.setOneProcedureForTodayToExecute(procedureService.getProcedure(1));
+            Procedure registration = new Procedure();
+            registration.setId(procedureService.getProcedure(1).getId());
+            registration.setName(procedureService.getProcedure(1).getName());
+            registration.setExecuted(false);
+            patient.setOneProcedureForTodayToExecute(registration);
             dataStorage.getPatients().add(patient);
             return patient;
         }
