@@ -16,7 +16,8 @@ import {  AlertService,
           PersonService, 
           DoctorService, 
           ProcedureService, 
-          PatientsQueueService 
+          PatientsQueueService,
+          DoctorInterfaceService
        } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -39,6 +40,8 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
+import { DoctorInterfaceComponent } from './doctor-interface/main.component';
+
 const appRoutes: Routes = [
     { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -58,6 +61,8 @@ const appRoutes: Routes = [
     { path: 'patients-queue', component: PatientsQueueListComponent, canActivate: [AuthGuard] },
     
     { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
+
+    { path: 'doctor-interface', component: DoctorInterfaceComponent, canActivate: [AuthGuard] },
     
     { path: '**', redirectTo: '' }
 ];
@@ -81,7 +86,8 @@ const appRoutes: Routes = [
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
-        ProceduresQueueListComponent
+        ProceduresQueueListComponent,
+        DoctorInterfaceComponent
     ],
     providers: [
         AuthGuard,
@@ -92,6 +98,7 @@ const appRoutes: Routes = [
         DoctorService,
         ProcedureService,
         PatientsQueueService,
+        DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: BrowserXhr, useClass: CustExtBrowserXhr },
         fakeBackendProvider
