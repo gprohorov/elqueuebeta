@@ -30,13 +30,9 @@ export class DoctorInterfaceComponent implements OnInit {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
 
-  showAlert(item: Person) {
-    alert(this.getFullName(item));
-  }
-  
   load() {
     this.loading = true;
-    this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getAllByProcedure(6).subscribe(data => { this.items = data; this.loading = false; });
   }
 
 }

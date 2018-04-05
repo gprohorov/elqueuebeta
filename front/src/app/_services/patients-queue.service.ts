@@ -14,6 +14,7 @@ export class PatientsQueueService {
   private updateActivityUrl   = config.api_path + '/patient/update/activity/';
   private updateStatusUrl     = config.api_path + '/patient/update/status/';
   private updateBalanceUrl    = config.api_path + '/patient/update/balance/';
+  private executeProcedureUrl = config.api_path + '/patient/execute/procedure/';
 
   constructor(private http: HttpClient) { }
 
@@ -57,6 +58,14 @@ export class PatientsQueueService {
       );
   }
   
+  executeProcedure(patientID: number, procedureID: number) {
+    return this.http
+      .get(this.executeProcedureUrl + patientID + '/' + procedureID)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+ 
   delete(id: number) {
      return this.http
       .get(this.deleteUrl + id)
