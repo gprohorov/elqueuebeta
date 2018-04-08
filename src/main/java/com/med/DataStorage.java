@@ -156,14 +156,27 @@ public class DataStorage {
 
     private Therapy primary = new Therapy();
 
+    Procedure massage5 = new Procedure(6,"Массаж", 5, "Lorem ipsum"
+            , 3, 70, null, 5,0, false);
+    Procedure heating5 = new Procedure(7,"Прогрівання", 5, "Lorem ipsum"
+            , 3, 50, null, 5,0, false);
+
+    List<Procedure> testList = new ArrayList<>(
+            Arrays.asList(massage5, heating5)
+    );
+
     private Therapy usualTherapy = new Therapy(1, LocalDateTime.now()
             ,"Osteohondroz",1, "Шейный участок",
-            "url", null);
+            "url", testList);
 
-    private List<Therapy> therapies = new LinkedList<>();
+    private List<Therapy> therapies = new ArrayList<>(
+            Arrays.asList(usualTherapy)
+    );
 
 
-
+    public List<Therapy> getTherapies() {
+        return therapies;
+    }
 
     private List<Procedure> emptyList = new ArrayList<>();
 

@@ -4,6 +4,7 @@ package com.med.model;
  * Created by george on 3/9/18.
  */
 public enum Status {
+    FOREIGNER(7),
     VIP(6),
     BISSINESS(5),
     ALL_INCLUSIVE(4),

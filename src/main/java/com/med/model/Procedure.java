@@ -13,12 +13,52 @@ public class Procedure {
     private String notes;
     private int area;
     private int price;
+    private int foreigner;
+    private int vip;
+    private int bussiness;
+    private int allInclusive;
+    private int social;
+
     private Card card;
-    private int assigned;
+    private int assigned; // diagnost assigns the amount
     private int done;
     private boolean executed = false;
 
     public Procedure() {
+    }
+
+    public Procedure(int id, String name, int cabinet, String notes
+            , int area, int price, int foreigner, int vip, int bussiness
+            , int allInclusive, int social, Card card, int assigned, int done
+            , boolean executed) {
+        this.id = id;
+        this.name = name;
+        this.cabinet = cabinet;
+        this.notes = notes;
+        this.area = area;
+        this.price = price;
+        this.foreigner = foreigner;
+        this.vip = vip;
+        this.bussiness = bussiness;
+        this.allInclusive = allInclusive;
+        this.social = social;
+        this.card = card;
+        this.assigned = assigned;
+        this.done = done;
+        this.executed = executed;
+    }
+
+    public Procedure(int id, String name, int cabinet, String notes, int area, int price, Card card, int assigned, int done, boolean executed) {
+        this.id = id;
+        this.name = name;
+        this.cabinet = cabinet;
+        this.notes = notes;
+        this.area = area;
+        this.price = price;
+        this.card = card;
+        this.assigned = assigned;
+        this.done = done;
+        this.executed = executed;
     }
 
     public Procedure(int id, String name, int cabinet, String notes, int area, int price) {
@@ -47,6 +87,46 @@ public class Procedure {
         this.cabinet = cabinet;
         this.price = price;
         this.executed = executed;
+    }
+
+    public int getForeigner() {
+        return foreigner;
+    }
+
+    public void setForeigner(int foreigner) {
+        this.foreigner = foreigner;
+    }
+
+    public int getVip() {
+        return vip;
+    }
+
+    public void setVip(int vip) {
+        this.vip = vip;
+    }
+
+    public int getBussiness() {
+        return bussiness;
+    }
+
+    public void setBussiness(int bussiness) {
+        this.bussiness = bussiness;
+    }
+
+    public int getAllInclusive() {
+        return allInclusive;
+    }
+
+    public void setAllInclusive(int allInclusive) {
+        this.allInclusive = allInclusive;
+    }
+
+    public int getSocial() {
+        return social;
+    }
+
+    public void setSocial(int social) {
+        this.social = social;
     }
 
     public int getId() {

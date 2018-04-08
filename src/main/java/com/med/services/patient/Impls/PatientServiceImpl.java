@@ -7,6 +7,7 @@ import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.event.impls.EventsServiceImpl;
 import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,9 @@ public class PatientServiceImpl implements IPatientsService {
 
     @Autowired
     EventsServiceImpl eventsService;
+
+    @Autowired
+    TherapyServiceImpl therapyService;
 
 
 
@@ -265,24 +269,11 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public Patient setTherapy(int patientId, int therapyId) {
+        Patient patient = this.getPatient(patientId);
+        Therapy therapy = therapyService.getTherapy(0);
+        patient.setTherapy(therapy);
+        this.updatePatient(patient);
+        return patient;
+    }
 }

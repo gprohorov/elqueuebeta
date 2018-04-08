@@ -43,7 +43,7 @@ public class TherapyServiceImpl implements ITherapyDAO {
 
     @Override
     public Therapy getTherapy(int id) {
-        return null;
+        return therapyDAO.getTherapy(id);
     }
 
     @Override
@@ -53,6 +53,6 @@ public class TherapyServiceImpl implements ITherapyDAO {
 
     @Override
     public List<Therapy> getAll() {
-        return null;
+        return therapyDAO.getAll();
     }
 }
