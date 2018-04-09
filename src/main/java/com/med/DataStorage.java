@@ -57,8 +57,41 @@ public class DataStorage {
                     , "Треш-авеню, 6", true, LocalDate.now().minusYears(60)),
             new Person(9,"Олександр ",  "Іванов"),
             new Person(10,"Дональд",  "Фредович","Трамп", "067 7777777", "Вашингтон"
-                    , "Білий Дім, 1, кв.1", true, LocalDate.now().minusYears(73))
-
+                    , "Білий Дім, 1, кв.1", true, LocalDate.now().minusYears(73)),
+           new Person(11,"Павел", "Майков"),
+           new Person(12,"Василий",  "Ливанов"),
+           new Person(13,"Леон", "Киллер"),
+           new Person(14,"Ілля",  "Муромец"),
+           new Person(15,"Павел", "Куракин"),
+           new Person(16,"Василий",  "Шукшин"),
+           new Person(17,"Евгений", "Леонов"),
+           new Person(18,"Иван",  "Никитин"),
+           new Person(19,"Юрий", "Шевчук"),
+           new Person(20,"Василий",  "Лановой"),
+           new Person(21,"Игнат", "Лобов"),
+           new Person(22,"Руслан",  "Аушев"),
+           new Person(23,"Алексей", "Баталов"),
+           new Person(24,"Леонид",  "Харитонов"),
+           new Person(25,"Игорь", "Строев"),
+           new Person(26,"Ілля",  "Івашов"),
+            new Person(27,"Василий",  "Бубка"),
+            new Person(28,"Евгений", "Онегин"),
+            new Person(29,"Юрий", "Продан"),
+            new Person(30,"Василий",  "Чапаев"),
+            new Person(31,"Игнат", "Ложкин"),
+            new Person(32,"Руслан",  "Бахтияров"),
+            new Person(33,"Алексей", "Новиков"),
+            new Person(34,"Леонид",  "Леонидов"),
+            new Person(35,"Игорь", "Мамчин"),
+            new Person(36,"Иван",  "Силаев"),
+            new Person(37,"Ілля",  "Куц"),
+            new Person(38,"Дмитрий", "Донской"),
+            new Person(39,"Владимир",  "Мономах"),
+            new Person(40,"Алексей", "Крутов"),
+            new Person(41,"Леонид",  "Брежнев"),
+            new Person(42,"Игорь", "Кривин"),
+            new Person(43,"Иван",  "Калита"),
+            new Person(344,"Дмитрий",  "Гук")
             ));
 
     Procedure registration =   new Procedure(1, "Реєстратура", 0,0);
@@ -196,6 +229,62 @@ public class DataStorage {
            Arrays.asList( registrationForVas, diagnosticsForVas, massageforVas)
     );
 
+    private List<Procedure> schema1(){
+        return new ArrayList<>(
+        Arrays.asList(
+                new Procedure(6,"Массаж", 5, "Lorem ipsum"
+                , 1, 70, null, 5,0, false)
+                ,new Procedure(7,"Прогрівання", 5, "Lorem ipsum"
+                        , 1, 50, null, 5,0, false)
+                ,new Procedure(5, "Витяжка",5,50)
+                ));
+    }
+     private List<Procedure> schema2(){
+        return new ArrayList<>(
+        Arrays.asList(
+                 new Procedure(3, "Лазерна терапия",2,"",3,50)
+                ,new Procedure(5, "Витяжка",5,50)
+                ,new Procedure(6,"Массаж", 5, "Lorem ipsum"
+                        , 1, 70, null, 5,0, false)
+                ));
+    }
+
+    private List<Procedure> schema3(){
+        return new ArrayList<>(
+        Arrays.asList(
+                 new Procedure(3, "Лазерна терапия",2,"",3,50)
+                ,new Procedure(4, "Механ. массаж",3,"",3,80)
+                ,new Procedure(6,"Массаж", 5, "Lorem ipsum"
+                        , 1, 70, null, 5,0, false)
+                ));
+    }
+
+      private List<Procedure> schema4(){
+        return new ArrayList<>(
+        Arrays.asList(
+                new Procedure(2, "Диагностика", 1,100)
+                , new Procedure(4, "Механ. массаж",3,"",3,80)
+
+                ));
+    }
+
+
+
+
+
+
+
+
+
+/*
+
+    Procedure laserforTrump = new Procedure(3, "Лазерна терапия",2,"",3,50);
+    Procedure pullingforTrump = new Procedure(5, "Витяжка",5,50);
+    Procedure massageForTrump = new Procedure(6, "Массаж",3,70);
+
+*/
+
+
 
 
     private List<Procedure> procDiag = new ArrayList<>(
@@ -229,7 +318,51 @@ public class DataStorage {
             ,proceduresForPetrov,   Status.SOCIAL
             , LocalDateTime.now().minusMinutes(11),0,Activity.ACTIVE,Reckoning.END);
 
-    private List<Patient> patients = new LinkedList<>();
+    private List<Patient> patients = new LinkedList<>(
+            Arrays.asList(
+                    new Patient(persons.get(12), primary, this.schema2()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(12)
+                    , 0, Activity.ACTIVE)
+
+                    ,  new Patient(persons.get(13), primary, this.schema1()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(2)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(13), primary, this.schema2()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(14), primary, this.schema3()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(14)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(15), primary, this.schema4()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(16), primary, this.schema2()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(15)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(17), primary, this.schema2()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(18), primary, this.schema1()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(19), primary, this.schema4()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(7)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(20), primary, this.schema2()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(21), primary, this.schema4()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(43)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(22), primary, this.schema4()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
+                            , 0, Activity.ACTIVE)
+                    ,  new Patient(persons.get(23), primary, this.schema4()
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
+                            , 0, Activity.ACTIVE)
+
+            )
+    );
 
 
 
