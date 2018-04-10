@@ -10,7 +10,7 @@ public class Tail {
     private int procedureId;
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
-
+    private int vacancies;
 
     public Tail() {
     }
@@ -24,6 +24,7 @@ public class Tail {
     public Tail(int procedureId, String procedureName) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
+        this.vacancies =0;
     }
 
     public int getProcedureId() {
@@ -53,5 +54,13 @@ public class Tail {
     public Patient addPatient(Patient patient){
         this.patients.add(patient);
         return patient;
+    }
+
+    public int getVacancies() {
+        return vacancies;
+    }
+
+    public void setVacancies(int vacancies) {
+        this.vacancies = vacancies;
     }
 }

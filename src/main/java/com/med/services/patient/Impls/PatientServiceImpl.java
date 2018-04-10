@@ -285,6 +285,7 @@ public class PatientServiceImpl implements IPatientsService {
 
     public List<Tail> getTails(){
         List<Tail> tails = new ArrayList<>();
+
         for (Procedure procedure: procedureService.getAll()){
            tails.add(new Tail(procedure.getId(), procedure.getName()));
         }
@@ -299,6 +300,20 @@ public class PatientServiceImpl implements IPatientsService {
                 }
             }
         }
+                for (Tail tail:tails){
+
+            if (tail.getPatients().stream()
+                    .anyMatch(patient -> patient.getActive().equals(Activity.ON_PROCEDURE)
+                    )){
+                tail.setVacancies(0);
+            }else {
+                tail.setVacancies(0);
+            }
+        }
+
+
+
+
         return tails;
     }
 
