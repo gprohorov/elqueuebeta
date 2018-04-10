@@ -9,16 +9,7 @@ import { ProcedureService, PatientsQueueService, AlertService } from '../_servic
 @Component({
   moduleId: module.id,
   templateUrl: './list.component.html',
-  styles: [`
-    .masonry-item { 
-      width: 200px;
-      border: 1px solid;
-      margin-bottom: 20px;
-      padding: 5px;
-      height: 150px;
-      overflow-y: scroll;
-    }
-  `]
+  styleUrls: ['./list.component.css']
 })
 export class ProceduresQueueListComponent implements OnInit {
 
@@ -35,7 +26,7 @@ export class ProceduresQueueListComponent implements OnInit {
   public myOptions: NgxMasonryOptions = {
     //itemSelector: '.masonry-item',
     transitionDuration: '0.2s',
-    columnWidth: 200,
+    columnWidth: 250,
     fitWidth: true,
     gutter: 20
   };

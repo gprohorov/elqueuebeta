@@ -10,8 +10,10 @@
     
     <ngx-masonry [options]="myOptions">
        <ngx-masonry-item class="masonry-item" *ngFor="let group of items">
-        <h5>{{group.name}}</h5>
-        <p *ngFor="let item of group.queue">{{getFullName(item.person)}}</p>
+        <div class="masonry-header bg-success">{{group.name}} <span class="badge pull-right">{{group.queue?.length}}</span></div>
+        <div class="masonry-body">
+          <p *ngFor="let item of group.queue" [class]="{'bg-danger': item.active == 'ON_PROCEDURE'}">{{getFullName(item.person)}}</p>
+        </div>
        </ngx-masonry-item>
     </ngx-masonry>
     
