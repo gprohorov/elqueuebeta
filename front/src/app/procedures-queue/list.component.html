@@ -7,6 +7,15 @@
         <p>&nbsp;</p><p>&nbsp;</p>
       </h4>
     </div>
+    
+    <ngx-masonry [options]="myOptions">
+       <ngx-masonry-item class="masonry-item" *ngFor="let group of items">
+        <h5>{{group.name}}</h5>
+        <p *ngFor="let item of group.queue">{{getFullName(item.person)}}</p>
+       </ngx-masonry-item>
+    </ngx-masonry>
+    
+    <!--
     <div class="content table-responsive table-full-width" *ngFor="let group of items; let j = index">
       <table class="table table-hover table-striped" *ngIf="group.queue?.length > 0">
         <thead>
@@ -32,5 +41,6 @@
         </tbody>
       </table>
     </div>
+    -->
   </div>
 </div>

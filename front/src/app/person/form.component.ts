@@ -50,7 +50,7 @@ export class PersonFormComponent {
           this.service.update(this.model)
               .subscribe(
                   data => {
-                      this.alertService.success('Операція пройшла успішно', true);
+                      this.alertService.success('Зміни збережено.', true);
                       this.router.navigate(['persons']);
                   },
                   error => {
