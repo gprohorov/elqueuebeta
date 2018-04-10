@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NgxMasonryOptions } from 'ng5-masonry';
 import { Person } from '../_models/index';
 import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
-import { ProcedureService, PatientsQueueService, AlertService } from '../_services/index';
+import { PatientsQueueService, AlertService } from '../_services/index';
 
 @Component({
   moduleId: module.id,
@@ -13,8 +13,7 @@ import { ProcedureService, PatientsQueueService, AlertService } from '../_servic
 })
 export class ProceduresQueueListComponent implements OnInit {
 
-  subProcedures: Subscription;
-  subQueue: Subscription[] = [];
+  sub: Subscription;
   items: any[] = [];
   loading = false;
   rows = [];
@@ -33,8 +32,7 @@ export class ProceduresQueueListComponent implements OnInit {
   
   constructor(
     private alertService: AlertService,
-    private service: ProcedureService, 
-    private servicePatients: PatientsQueueService
+    private service: PatientsQueueService
     ) {
   }
 
@@ -43,10 +41,10 @@ export class ProceduresQueueListComponent implements OnInit {
   }
   
   ngOnDestroy() {
-    this.subProcedures.unsubscribe();
-    this.subQueue.forEach(function(item) {
-      item.unsubscribe();
-    });
+    this.sub.unsubscribe();
+    // this.subQueue.forEach(function(item) {
+      // item.unsubscribe();
+    // });
   } 
   
   delete(id: number, name: string) {
@@ -69,14 +67,15 @@ export class ProceduresQueueListComponent implements OnInit {
    
   load() {
     this.loading = true;
-    this.subProcedures = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; this.loadAll(); });
+    this.sub = this.service.getTails().subscribe(data => { this.items = data; this.loading = false; });
   }
   
+  /*
   loadAll() {
     this.items.forEach(function(item) {
       this.loading = true;
       this.subQueue.push(this.servicePatients.getAllByProcedure(item.id).subscribe(data => { item.queue = data; this.loading = false; }));
     }, this);
   }
-
+  */
 }

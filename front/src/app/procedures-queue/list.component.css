@@ -2,7 +2,7 @@
   width: 250px;
   border: 1px solid #ccc;
   margin-bottom: 20px;
-  height: 150px;
+  max-height: 150px;
   overflow-y: hidden;
 }
 
@@ -13,6 +13,6 @@
 
 .masonry-body { 
   padding: 5px;
-  height: 110px;
+  max-height: 110px;
   overflow-y: scroll;
 }

@@ -9,6 +9,7 @@ import { config } from '../../config';
 export class PatientsQueueService {
   // Define the routes we are going to interact with
   private listUrl             = config.api_path + '/patient/list/';
+  private tailsUrl            = config.api_path + '/patient/get/tails/';
   private listByProcedureUrl  = config.api_path + '/patient/list/procedure/';
   private deleteUrl           = config.api_path + '/patient/delete/';
   private updateActivityUrl   = config.api_path + '/patient/update/activity/';
@@ -21,6 +22,14 @@ export class PatientsQueueService {
   getAll(search: string = '') {
     return this.http
       .get<any[]>(this.listUrl + search)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  getTails() {
+    return this.http
+      .get<any[]>(this.tailsUrl)
       .pipe(
         catchError(this.handleError)
       );

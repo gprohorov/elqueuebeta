@@ -1,8 +1,8 @@
 ﻿export const Activity = {
     NON_ACTIVE: { text: 'Не активний', cssClass: 'label label-default' },
     ACTIVE: { text: 'Активний', cssClass: 'label label-primary' },
-    ON_PROCEDURE: { text: 'На процедурі', cssClass: 'label label-success' },
-    TEMPORARY_NA: { text: 'Відсутній', cssClass: 'label label-danger' },
+    ON_PROCEDURE: { text: 'На процедурі', cssClass: 'label label-danger' },
+    TEMPORARY_NA: { text: 'Відсутній', cssClass: 'label label-default' },
     INVITED: { text: 'Запрошений', cssClass: 'label label-warning' },
     APPOINTED: { text: 'Призначений', cssClass: 'label label-info' }
 };
