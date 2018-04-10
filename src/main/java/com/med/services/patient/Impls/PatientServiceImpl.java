@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements IPatientsService {
 
    // private List<Patient> patients = new ArrayList<>();
-    private List<Doctor> doctors = new ArrayList<>();
-    private List<Procedure> procedures = new ArrayList<>();
+   // private List<Doctor> doctors = new ArrayList<>();
+   // private List<Procedure> procedures = new ArrayList<>();
 
 
     @Autowired
@@ -276,4 +276,30 @@ public class PatientServiceImpl implements IPatientsService {
         this.updatePatient(patient);
         return patient;
     }
+
+    public List<Patient> getActivePatients(){
+        return this.getAll().stream()
+                .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
+                .collect(Collectors.toList());
+    }
+
+    public List<Tail> getTails(){
+        List<Tail> tails = new ArrayList<>();
+        for (Procedure procedure: procedureService.getAll()){
+           tails.add(new Tail(procedure.getId(), procedure.getName()));
+        }
+
+
+        for (Tail tail:tails){
+            for (Patient patient:this.getActivePatients()){
+                if (patient.getProceduresForToday().stream()
+                        .anyMatch(el->el.getId()==tail.getProcedureId()&&!el.isExecuted())
+                   ){
+                    tail.addPatient(patient);
+                }
+            }
+        }
+        return tails;
+    }
+
 }

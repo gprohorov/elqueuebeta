@@ -174,15 +174,14 @@ public class PatientController {
     }
 
 
+    // mark procedure as executed
+    @GetMapping("/get/tails")
+    public List<Tail> getTails(){
 
-    // put the procedure into map of assigned for today
-/*
-    @PostMapping("/add/procedure/all/{id}")
-    public Patient addAllProcedures(@PathVariable(value = "id") int patientId) {
-
-        return service.addProceduresAll(patientId);
+        return service.getTails();
     }
-*/
+
+
 
 
 }
