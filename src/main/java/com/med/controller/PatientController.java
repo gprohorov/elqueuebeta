@@ -174,7 +174,7 @@ public class PatientController {
     }
 
 
-    // mark procedure as executed
+    // get tails for each procedure
     @GetMapping("/get/tails")
     public List<Tail> getTails(){
 
