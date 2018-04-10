@@ -271,7 +271,7 @@ public class PatientServiceImpl implements IPatientsService {
 
     public Patient setTherapy(int patientId, int therapyId) {
         Patient patient = this.getPatient(patientId);
-        Therapy therapy = therapyService.getTherapy(0);
+        Therapy therapy = therapyService.getTherapy(therapyId);
         patient.setTherapy(therapy);
         this.updatePatient(patient);
         return patient;

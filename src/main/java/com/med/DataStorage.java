@@ -202,8 +202,14 @@ public class DataStorage {
             ,"Osteohondroz",1, "Шейный участок",
             "url", testList);
 
+    private Therapy therapy1 = new Therapy(2, LocalDateTime.now()
+            , "Грижа", 77
+            ," поперек", "url:", this.schema4()
+    );
+
+
     private List<Therapy> therapies = new ArrayList<>(
-            Arrays.asList(usualTherapy)
+            Arrays.asList(usualTherapy, therapy1)
     );
 
 
@@ -267,9 +273,6 @@ public class DataStorage {
 
                 ));
     }
-
-
-
 
 
 

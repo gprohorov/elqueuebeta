@@ -39,8 +39,10 @@ public class TherapyDAOImpl implements ITherapyDAO {
     }
 
     @Override
-    public Therapy getTherapy(int id) {
-        return this.getAll().get(0);
+    public Therapy getTherapy(int therapyId) {
+
+        return this.getAll().stream().filter(therapy -> therapy.getId()==therapyId)
+                .findAny().get();
     }
 
     @Override
