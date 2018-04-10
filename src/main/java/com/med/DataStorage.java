@@ -330,7 +330,7 @@ public class DataStorage {
                     ,  new Patient(persons.get(13), primary, this.schema1()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(2)
                             , 0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(13), primary, this.schema2()
+                    ,  new Patient(persons.get(24), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , 0, Activity.ACTIVE)
                     ,  new Patient(persons.get(14), primary, this.schema3()
