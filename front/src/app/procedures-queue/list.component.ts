@@ -1,13 +1,15 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription'; 
 
+import { NgxMasonryOptions } from 'ng5-masonry';
 import { Person } from '../_models/index';
 import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
 import { ProcedureService, PatientsQueueService, AlertService } from '../_services/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: './list.component.html'
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.css']
 })
 export class ProceduresQueueListComponent implements OnInit {
 
@@ -21,6 +23,14 @@ export class ProceduresQueueListComponent implements OnInit {
   Activity = Activity;
   ActivityArr = ActivityArr;
 
+  public myOptions: NgxMasonryOptions = {
+    //itemSelector: '.masonry-item',
+    transitionDuration: '0.2s',
+    columnWidth: 250,
+    fitWidth: true,
+    gutter: 20
+  };
+  
   constructor(
     private alertService: AlertService,
     private service: ProcedureService, 

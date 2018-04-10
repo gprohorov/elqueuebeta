@@ -5,16 +5,16 @@
         <label for="search">Пошук:</label><input class="form-control" #searchfield (keyup)="load(searchfield.value)">
       </div>
       <h4 class="title">
-        Список персон 
+        Список пацієнтів 
         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
       </h4>
-      <p><a role="button" routerLink="/person-form">[Нова персона]</a></p>
+      <p><a role="button" routerLink="/person-form">[Створити]</a></p>
     </div>
     <div class="content table-responsive table-full-width">
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th> <th></th>
+                        <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
@@ -24,14 +24,14 @@
                         <td>{{item.gender ? 'чол.' : 'жін.'}}</td>
                         <td>{{item.dateOfBirth | date:'dd.MM.yyyy'}}</td>
                         <td>{{item.town}}</td>
-                        <td align="right">
-                          <a role="button" [routerLink]="['/person-form', { id: item.id }]">[Редагувати]</a>
-                          <a role="button" (click)="delete(item.id, getFullName(item))">[Видалити]</a>
-                        </td>
                     </tr>
                     <tr [hidden]="!rows[i]">
                       <td colspan="100">
-                        <div class="pull-right"><a role="button" (click)="toPatientToday(item.id)">[Призначити на сьогодні]</a></div>
+                        <div class="pull-right">
+                          <p><a role="button" (click)="toPatientToday(item.id)">[Призначити на сьогодні]</a></p>
+                          <p><a role="button" [routerLink]="['/person-form', { id: item.id }]">[Редагувати]</a></p>
+                          <p><a role="button" (click)="delete(item.id, getFullName(item))">[Видалити]</a></p>
+                        </div>
                         <blockquote><b>Телефон:</b> {{item.cellPhone}}<br/><b>Адреса:</b> {{item.address}}</blockquote>
                       </td>
                     </tr>

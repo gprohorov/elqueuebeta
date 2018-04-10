@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
 import { ProcedureService, AlertService } from '../_services/index';
+import { Statuses, StatusesArr } from '../_storage/index';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +15,8 @@ export class ProcedureFormComponent {
     model: any = {};
     sub: Subscription;
     loading = false;
+    Statuses = Statuses;
+    StatusesArr = StatusesArr;
 
     constructor(
         private route: ActivatedRoute,
@@ -49,7 +52,7 @@ export class ProcedureFormComponent {
           this.service.update(this.model)
               .subscribe(
                   data => {
-                      this.alertService.success('Операція пройшла успішно', true);
+                      this.alertService.success('Процедуру збережено.', true);
                       this.router.navigate(['procedures']);
                   },
                   error => {

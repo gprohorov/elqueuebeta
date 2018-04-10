@@ -6,7 +6,8 @@ import { BrowserXhr } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
- 
+
+import { NgxMasonryModule } from 'ng5-masonry'; 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
@@ -74,8 +75,9 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         HttpClientModule,
+        NgxMasonryModule,
         RouterModule.forRoot(appRoutes)
-    ],
+    ], 
     declarations: [
         AppComponent,
         AlertComponent,

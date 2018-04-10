@@ -4,5 +4,9 @@ export class Procedure {
   cabinet: number;
   notes: string;
   area: number;
-  price: number;
+  foreigner: number;
+  vip: number;
+  bussiness: number;
+  allInclusive: number;
+  social: number;
 }

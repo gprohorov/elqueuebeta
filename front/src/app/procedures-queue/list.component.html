@@ -7,6 +7,17 @@
         <p>&nbsp;</p><p>&nbsp;</p>
       </h4>
     </div>
+    
+    <ngx-masonry [options]="myOptions">
+       <ngx-masonry-item class="masonry-item" *ngFor="let group of items">
+        <div class="masonry-header bg-success">{{group.name}} <span class="badge pull-right">{{group.queue?.length}}</span></div>
+        <div class="masonry-body">
+          <p *ngFor="let item of group.queue" [class]="{'bg-danger': item.active == 'ON_PROCEDURE'}">{{getFullName(item.person)}}</p>
+        </div>
+       </ngx-masonry-item>
+    </ngx-masonry>
+    
+    <!--
     <div class="content table-responsive table-full-width" *ngFor="let group of items; let j = index">
       <table class="table table-hover table-striped" *ngIf="group.queue?.length > 0">
         <thead>
@@ -32,5 +43,6 @@
         </tbody>
       </table>
     </div>
+    -->
   </div>
 </div>

@@ -11,7 +11,8 @@
           <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th></th> <th>Назва</th> <th>Кабінет</th> <th>Ціна</th> <th></th>
+                        <th></th> <th>Назва</th> <th>Кабінет</th> <th>Ціна:</th> 
+                        <th *ngFor="let status of StatusesArr"><span [class]="Statuses[status].cssClass">{{Statuses[status].text}}</span></th> 
                     </tr>
                 </thead>
                 <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
@@ -19,7 +20,12 @@
                         <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                         <td>{{item.name}}</td>
                         <td>{{item.cabinet}}</td>
-                        <td>{{item.price | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</td>
+                        <td></td>
+                        <td><span [class]="Statuses.FOREIGNER.cssClass">{{item.foreigner | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
+                        <td><span [class]="Statuses.VIP.cssClass">{{item.vip | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
+                        <td><span [class]="Statuses.BUSSINESS.cssClass">{{item.bussiness | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
+                        <td><span [class]="Statuses.ALL_INCLUSIVE.cssClass">{{item.allInclusive | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
+                        <td><span [class]="Statuses.SOCIAL.cssClass">{{item.social | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
                         <td align="right">
                           <a role="button" [routerLink]="['/procedure-form', { id: item.id }]">[Редагувати]</a>
                         </td>
