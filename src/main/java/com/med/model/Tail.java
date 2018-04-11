@@ -25,8 +25,8 @@ public class Tail {
     public Tail(int procedureId, String procedureName) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
-        this.vacancies =0;
-        this.vacant = false;
+        this.vacancies =1;
+        this.vacant = true;
     }
 
     public boolean isVacant() {

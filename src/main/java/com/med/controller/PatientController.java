@@ -101,6 +101,20 @@ public class PatientController {
     @GetMapping("/update/activity/{id}/{activity}")
     public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
                                        @PathVariable(value = "activity") Activity activity) {
+        if (activity.equals(Activity.ON_PROCEDURE)) {
+        Tail tail = this.getTails().stream()
+                .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
+        tail.setVacancies(tail.getVacancies()-1);
+        tail.setVacant(false);
+        }
+
+        if (activity.equals(Activity.ACTIVE)) {
+        Tail tail = this.getTails().stream()
+                .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
+        tail.setVacancies(tail.getVacancies()+1);
+        tail.setVacant(true);
+        }
+
 
         return service.updateActivity(patientId, activity);
     }
