@@ -11,9 +11,9 @@ import { PatientsQueueService, AlertService } from '../_services/index';
 export class DoctorInterfaceComponent implements OnInit {
 
   sub: Subscription;
-  items: any[] = [];
+  item: any = {};
   loading = false;
-  doctorAvail = false;
+  procedureStarted = false;
 
   constructor(private service: PatientsQueueService, private alertService: AlertService) {
   }
@@ -32,7 +32,31 @@ export class DoctorInterfaceComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this.sub = this.service.getAllByProcedure(6).subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getDoctorPatient(6).subscribe(data => { this.item = data; this.loading = false; });
+  }
+  
+  startProcedure() {
+    this.sub = this.service.startProcedure(this.item.person.id, this.item.id).subscribe(data => { 
+      this.alertService.success('Процедуру розпочато.'); 
+      this.procedureStarted = true;
+      this.load();
+    });
+  }
+  
+  cancelProcedure() {
+    this.sub = this.service.cancelProcedure(this.item.person.id, this.item.id).subscribe(data => { 
+      this.alertService.success('Процедуру скасовано.'); 
+      this.procedureStarted = false;
+      this.load();
+    });
+  }
+  
+  executeProcedure() {
+    this.sub = this.service.executeProcedure(this.item.person.id, this.item.id).subscribe(data => { 
+      this.alertService.success('Процедуру завершено.'); 
+      this.procedureStarted = false;
+      this.load();
+    });
   }
 
 }
