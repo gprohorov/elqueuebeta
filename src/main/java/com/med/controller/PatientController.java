@@ -223,6 +223,13 @@ public class PatientController {
         return service.getTails();
     }
 
+//  get the first patient for the procedure from tail
+    @GetMapping("/tail/get/first/{procid}")
+    public Patient getFirstFromTail(@PathVariable(value = "procid") int procedureId) {
+
+
+        return service.getFirstFromTail(procedureId);
+    }
 
 
 
