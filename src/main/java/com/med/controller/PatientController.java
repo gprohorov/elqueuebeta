@@ -101,7 +101,7 @@ public class PatientController {
     @GetMapping("/update/activity/{id}/{activity}")
     public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
                                        @PathVariable(value = "activity") Activity activity) {
-        if (activity.equals(Activity.ON_PROCEDURE)) {
+/*        if (activity.equals(Activity.ON_PROCEDURE)) {
         Tail tail = this.getTails().stream()
                 .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
         tail.setVacancies(tail.getVacancies()-1);
@@ -114,7 +114,7 @@ public class PatientController {
         tail.setVacancies(tail.getVacancies()+1);
         tail.setVacant(true);
         }
-
+        */
 
         return service.updateActivity(patientId, activity);
     }
@@ -171,13 +171,41 @@ public class PatientController {
     }
 */
 
-    // mark procedure as executed
+
+
+     // start procedure i.e. set patient's status as ON_PROCEDURE
+    // and decrement the number of vacant doctors responsible for this procedure
+     @GetMapping("/start/procedure/{patid}/{procid}")
+     public Patient startProcedure(@PathVariable(value = "patid") int patientId,
+                                     @PathVariable(value = "procid") int procedureId) {
+
+         return service.startProcedure(patientId, procedureId);
+     }
+
+
+    // procedure executed successfully => patient gets status ACTIVE
+    //      the procedure in his schema marked as DONE
+    //    the number of vacant doctors responsible for this procedure => + 1
     @GetMapping("/execute/procedure/{patid}/{procid}")
     public Patient executeProcedure(@PathVariable(value = "patid") int patientId,
                                 @PathVariable(value = "procid") int procedureId) {
 
         return service.executeProcedure(patientId, procedureId);
     }
+
+
+    // procedure canceled => patient gets status ACTIVE
+    //    the number of vacant doctors responsible for this procedure => + 1
+    @GetMapping("/cancel/procedure/{patid}/{procid}")
+    public Patient cancelProcedure(@PathVariable(value = "patid") int patientId,
+                                @PathVariable(value = "procid") int procedureId) {
+
+        return service.cancelProcedure(patientId, procedureId);
+    }
+
+
+
+
 
     // set therapy for patient
     @GetMapping("/set/therapy/{patient_id}/{therapy_id}")

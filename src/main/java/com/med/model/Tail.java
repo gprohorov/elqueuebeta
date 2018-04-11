@@ -10,7 +10,7 @@ public class Tail {
     private int procedureId;
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
-    private int vacancies;
+    private int vacancies=1;
     private boolean vacant;
 
     public Tail() {
@@ -20,13 +20,21 @@ public class Tail {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.patients = patients;
+        this.vacancies = 1;
+        this.vacant = true;
     }
 
     public Tail(int procedureId, String procedureName) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
-        this.vacancies =1;
+        this.vacancies = 1;
         this.vacant = true;
+    }
+
+    public Tail(int procedureId, String procedureName, int vacancies) {
+        this.procedureId = procedureId;
+        this.procedureName = procedureName;
+        this.vacancies = vacancies;
     }
 
     public boolean isVacant() {

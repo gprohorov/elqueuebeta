@@ -255,20 +255,6 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
-     // patient has executed a procedure, so we mark the procedure  as TRUE in his list of  assigned procedures for tody
-    public Patient executeProcedure(int patientId, int procedureId) {
-        Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
-        patient.setOneProcedureForTodayAsExecuted(procedure);
-        patient.setLastActivity(LocalDateTime.now());
-        patient.setActive(Activity.ACTIVE);
-        this.getAll().set(index, patient);
-        return patient;
-    }
-
-
     public Patient setTherapy(int patientId, int therapyId) {
         Patient patient = this.getPatient(patientId);
         Therapy therapy = therapyService.getTherapy(therapyId);
@@ -287,7 +273,7 @@ public class PatientServiceImpl implements IPatientsService {
         List<Tail> tails = new ArrayList<>();
 
         for (Procedure procedure: procedureService.getAll()){
-           tails.add(new Tail(procedure.getId(), procedure.getName()));
+           tails.add(new Tail(procedure.getId(), procedure.getName(),1));
         }
 
 
@@ -300,7 +286,7 @@ public class PatientServiceImpl implements IPatientsService {
                 }
             }
         }
-                for (Tail tail:tails){
+             /*   for (Tail tail:tails){
 
             if (tail.getPatients().stream()
                     .anyMatch(patient -> patient.getActive().equals(Activity.ON_PROCEDURE)
@@ -310,11 +296,86 @@ public class PatientServiceImpl implements IPatientsService {
                 tail.setVacancies(0);
             }
         }
+        */
 
 
 
 
         return tails;
     }
+
+
+
+    //  procedure starts => patient gets status ON_PROCEDURE
+    //                  tail gets decremention of a number of responsible  doctors
+    public Patient startProcedure(int patientId, int procedureId) {
+
+        Patient patient = this.getPatient(patientId);
+        int index = this.getAll().indexOf(patient);
+
+        Procedure procedure = patient.getProceduresForToday().stream()
+                .filter(pr -> pr.getId()== procedureId).findAny().get();
+
+        patient.setOneProcedureForTodayAsExecuted(procedure);
+        patient.setActive(Activity.ACTIVE);
+
+        this.getAll().set(index, patient);
+
+         Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+                .findAny().get();
+         tail.setVacancies(tail.getVacancies() -1);
+         tail.setVacant(false);
+
+        return patient;
+    }
+
+
+    // patient has executed a procedure => we mark the procedure  as TRUE in his list of  assigned procedures for tody
+   //                                      patient gets a status ACTIVE
+    //                                     patient gets the time of lastActivity = now
+    //                                     tail gets incremention of a number of responsible  doctors
+    public Patient executeProcedure(int patientId, int procedureId) {
+        Patient patient = this.getPatient(patientId);
+        int index = this.getAll().indexOf(patient);
+        Procedure procedure = patient.getProceduresForToday().stream()
+                .filter(pr -> pr.getId()== procedureId).findAny().get();
+        patient.setOneProcedureForTodayAsExecuted(procedure);
+        patient.setLastActivity(LocalDateTime.now());
+        patient.setActive(Activity.ACTIVE);
+        this.getAll().set(index, patient);
+
+        Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+                .findAny().get();
+        tail.setVacancies(tail.getVacancies() + 1);
+        tail.setVacant(true);
+
+        return patient;
+    }
+
+    // patient has canceled a procedure => we DON'T mark the procedure  as TRUE in his list of  assigned procedures for tody
+   //                                      patient gets a status ACTIVE
+    //                                     tail gets incremention of a number of responsible  doctors
+    public Patient cancelProcedure(int patientId, int procedureId) {
+        Patient patient = this.getPatient(patientId);
+        int index = this.getAll().indexOf(patient);
+        Procedure procedure = patient.getProceduresForToday().stream()
+                .filter(pr -> pr.getId()== procedureId).findAny().get();
+
+        patient.setActive(Activity.ACTIVE);
+        this.getAll().set(index, patient);
+
+        Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+                .findAny().get();
+        tail.setVacancies(tail.getVacancies() + 1);
+        tail.setVacant(true);
+
+        return patient;
+    }
+
+
+
+
+
+
 
 }
