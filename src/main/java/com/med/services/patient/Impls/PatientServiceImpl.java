@@ -316,8 +316,8 @@ public class PatientServiceImpl implements IPatientsService {
         Procedure procedure = patient.getProceduresForToday().stream()
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
-        patient.setOneProcedureForTodayAsExecuted(procedure);
-        patient.setActive(Activity.ACTIVE);
+      //  patient.setOneProcedureForTodayAsExecuted(procedure);
+        patient.setActive(Activity.ON_PROCEDURE);
 
         this.getAll().set(index, patient);
 
