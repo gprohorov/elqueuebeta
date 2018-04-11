@@ -165,7 +165,7 @@ public class PatientController {
         return service.executeProcedure(patientId, procedureId);
     }
 
-    // mark procedure as executed
+    // set therapy for patient
     @GetMapping("/set/therapy/{patient_id}/{therapy_id}")
     public Patient setTherapy(@PathVariable(value = "patient_id") int patientId,
                                 @PathVariable(value = "therapy_id") int therapyId) {

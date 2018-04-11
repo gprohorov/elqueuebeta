@@ -11,6 +11,7 @@ public class Tail {
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
     private int vacancies;
+    private boolean vacant;
 
     public Tail() {
     }
@@ -25,6 +26,15 @@ public class Tail {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.vacancies =0;
+        this.vacant = false;
+    }
+
+    public boolean isVacant() {
+        return vacant;
+    }
+
+    public void setVacant(boolean vacant) {
+        this.vacant = vacant;
     }
 
     public int getProcedureId() {
