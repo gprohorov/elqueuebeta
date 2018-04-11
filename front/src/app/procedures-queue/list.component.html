@@ -12,7 +12,10 @@
        <ngx-masonry-item class="masonry-item" *ngFor="let group of items">
         <div [ngClass]="{'masonry-header': true, 'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}">{{group.procedureName}} <span class="badge pull-right">{{group.patients?.length}}</span></div>
         <div class="masonry-body">
-          <div *ngFor="let item of group.patients" [class]="item.active === 'ON_PROCEDURE' ? 'label-danger' : ''">{{getFullName(item.person)}}</div>
+          <div *ngFor="let item of group.patients" [class]="item.active === 'ON_PROCEDURE' ? 'label-danger' : ''">
+          <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta}} хв.</span>
+          {{getFullName(item.person)}}
+          </div>
         </div>
        </ngx-masonry-item>
     </ngx-masonry>
