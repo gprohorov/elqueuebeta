@@ -362,6 +362,7 @@ public class PatientServiceImpl implements IPatientsService {
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
         patient.setActive(Activity.ACTIVE);
+        patient.setLastActivity(LocalDateTime.now());
         this.getAll().set(index, patient);
 
         Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
@@ -376,7 +377,8 @@ public class PatientServiceImpl implements IPatientsService {
     public Patient getFirstFromTail(int procedureId) {
          return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
                  .findAny().get().getPatients().stream()
-                 .filter(el -> el.getActive().equals(Activity.ACTIVE)
+                 .filter(el ->
+                         el.getActive().equals(Activity.ACTIVE)
                          ||
                          el.getActive().equals(Activity.ON_PROCEDURE))
                  .findFirst().get();
