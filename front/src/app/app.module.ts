@@ -42,7 +42,6 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
 import { DoctorInterfaceComponent } from './doctor-interface/main.component';
-import { DoctorInterfaceProcedureComponent } from './doctor-interface/procedure.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
@@ -65,7 +64,6 @@ const appRoutes: Routes = [
     { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
 
     { path: 'doctor-interface', component: DoctorInterfaceComponent, canActivate: [AuthGuard] },
-    { path: 'doctor-interface-procedure', component: DoctorInterfaceProcedureComponent, canActivate: [AuthGuard] },
     
     { path: '**', redirectTo: '' }
 ];
@@ -91,8 +89,7 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceComponent,
-        DoctorInterfaceProcedureComponent
+        DoctorInterfaceComponent
     ],
     providers: [
         AuthGuard,

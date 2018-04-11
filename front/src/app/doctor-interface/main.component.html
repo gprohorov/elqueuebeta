@@ -6,19 +6,25 @@
     </div>
     <div class="content" [style.margin-top.px]="40">
       <h4 class="title">
-        Паціенти на сьогодні
+        Паціент <b>{{getFullName(item.person)}}</b>
         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
       </h4>
       <div class="col-md-8">
-        <p *ngIf="!(items.length > 0)">Пацієнтів немає...</p>
-        <a class="btn btn-default btn-lg btn-block" *ngFor="let item of items"
-         [routerLink]="['/doctor-interface-procedure']" [queryParams]="{item: (item | json)}">{{getFullName(item.person)}}</a>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
       </div>
-      <div class="col-md-4" [ngSwitch]="doctorAvail">
-        <button class="btn btn-success btn-lg btn-block" *ngSwitchCase="true" 
-          [style.min-height.px]="200" (click)="doctorAvail=!doctorAvail">Готовий до пройому</button>
-        <button class="btn btn-warning btn-lg btn-block" *ngSwitchCase="false" 
-          [style.min-height.px]="200" (click)="doctorAvail=!doctorAvail">Не готовий до пройому</button>
+      <div class="col-md-4" [ngSwitch]="procedureStarted">
+        <div *ngSwitchCase="true">
+          <button class="btn btn-success btn-lg btn-block" 
+            [style.min-height.px]="200" (click)="executeProcedure()">Завершити процедуру</button>
+          <button class="btn btn-danger btn-lg btn-block"
+            [style.min-height.px]="200" (click)="cancelProcedure()">Скаcувати процедуру</button>
+        </div>
+        <div *ngSwitchCase="false">
+          <button class="btn btn-primary btn-lg btn-block" 
+            [style.min-height.px]="200" (click)="startProcedure()">Почати процедуру</button>
+          <button class="btn btn-warning btn-lg btn-block"
+            [style.min-height.px]="200" [routerLink]="['/doctor-interface']">Назад</button>
+        </div>
       </div>
     </div>
   </div>

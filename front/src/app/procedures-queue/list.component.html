@@ -10,7 +10,7 @@
     
     <ngx-masonry [options]="myOptions">
        <ngx-masonry-item class="masonry-item" *ngFor="let group of items">
-        <div class="masonry-header bg-success">{{group.procedureName}} <span class="badge pull-right">{{group.patients?.length}}</span></div>
+        <div [ngClass]="{'masonry-header': true, 'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}">{{group.procedureName}} <span class="badge pull-right">{{group.patients?.length}}</span></div>
         <div class="masonry-body">
           <div *ngFor="let item of group.patients" [class]="item.active === 'ON_PROCEDURE' ? 'label-danger' : ''">{{getFullName(item.person)}}</div>
         </div>
