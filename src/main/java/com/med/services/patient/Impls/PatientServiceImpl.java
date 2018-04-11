@@ -376,6 +376,9 @@ public class PatientServiceImpl implements IPatientsService {
     public Patient getFirstFromTail(int procedureId) {
          return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
                  .findAny().get().getPatients().stream()
-                 .filter(el -> el.getActive().equals(Activity.ACTIVE)).findFirst().get();
+                 .filter(el -> el.getActive().equals(Activity.ACTIVE)
+                         ||
+                         el.getActive().equals(Activity.ON_PROCEDURE))
+                 .findFirst().get();
     }
 }
