@@ -21,11 +21,11 @@
                         <td>{{item.name}}</td>
                         <td>{{item.cabinet}}</td>
                         <td></td>
-                        <td><span [class]="Statuses.FOREIGNER.cssClass">{{item.foreigner | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
-                        <td><span [class]="Statuses.VIP.cssClass">{{item.vip | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
-                        <td><span [class]="Statuses.BUSINESS.cssClass">{{item.business | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
-                        <td><span [class]="Statuses.ALL_INCLUSIVE.cssClass">{{item.allInclusive | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
-                        <td><span [class]="Statuses.SOCIAL.cssClass">{{item.social | currency: 'UAH' : 'symbol-narrow' : '1.0-0'}}</span></td>
+                        <td><span [class]="Statuses.FOREIGNER.cssClass">{{item.foreigner}}</span></td>
+                        <td><span [class]="Statuses.VIP.cssClass">{{item.vip}}</span></td>
+                        <td><span [class]="Statuses.BUSINESS.cssClass">{{item.business}}</span></td>
+                        <td><span [class]="Statuses.ALL_INCLUSIVE.cssClass">{{item.allInclusive}}</span></td>
+                        <td><span [class]="Statuses.SOCIAL.cssClass">{{item.social}}</span></td>
                         <td align="right">
                           <a role="button" [routerLink]="['/procedure-form', { id: item.id }]">[Редагувати]</a>
                         </td>
