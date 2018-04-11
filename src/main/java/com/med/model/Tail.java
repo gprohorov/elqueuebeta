@@ -70,7 +70,9 @@ public class Tail {
     }
 
     public Patient addPatient(Patient patient){
-        this.patients.add(patient);
+        if(!patients.contains(patient)) {
+            this.patients.add(patient);
+        }
         return patient;
     }
 

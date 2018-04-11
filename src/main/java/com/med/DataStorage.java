@@ -39,6 +39,10 @@ public class DataStorage {
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
 
+        for (Procedure procedure: procedures){
+            tails.add(new Tail(procedure.getId(), procedure.getName()));
+        }
+
 
 
     }
@@ -367,10 +371,17 @@ public class DataStorage {
             )
     );
 
+///////////////////////////// TAILS  //////////////////////////////////
 
+    private List<Tail> tails = new ArrayList<>();
 
+    public List<Tail> getTails() {
+        return tails;
+    }
 
-
+    public void setTails(List<Tail> tails) {
+        this.tails = tails;
+    }
 
     private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
             new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),

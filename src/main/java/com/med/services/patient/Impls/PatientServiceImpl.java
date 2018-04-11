@@ -1,5 +1,6 @@
 package com.med.services.patient.Impls;
 
+import com.med.DataStorage;
 import com.med.dao.patient.impls.PatientDAOImpl;
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
@@ -47,6 +48,9 @@ public class PatientServiceImpl implements IPatientsService {
 
     @Autowired
     TherapyServiceImpl therapyService;
+
+    @Autowired
+    DataStorage dataStorage;
 
 
 
@@ -268,13 +272,13 @@ public class PatientServiceImpl implements IPatientsService {
                 .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
     }
-
+////////////////////////  TAILS   //////////////////////////
     public List<Tail> getTails(){
-        List<Tail> tails = new ArrayList<>();
-
+       List<Tail> tails = dataStorage.getTails();
+/*
         for (Procedure procedure: procedureService.getAll()){
-           tails.add(new Tail(procedure.getId(), procedure.getName(),1));
-        }
+           tails.add(new Tail(procedure.getId(), procedure.getName()));
+        }*/
 
 
         for (Tail tail:tails){
@@ -321,10 +325,9 @@ public class PatientServiceImpl implements IPatientsService {
 
         this.getAll().set(index, patient);
 
-         Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get();
-         tail.setVacancies(tail.getVacancies() -1);
-         tail.setVacant(false);
+         this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+                .findAny().get().setVacancies(0);
+         //tail.setVacant(false);
 
         return patient;
     }
@@ -346,7 +349,7 @@ public class PatientServiceImpl implements IPatientsService {
 
         Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
-        tail.setVacancies(tail.getVacancies() + 1);
+        tail.setVacancies( 1);
         tail.setVacant(true);
 
         return patient;
@@ -367,7 +370,7 @@ public class PatientServiceImpl implements IPatientsService {
 
         Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
-        tail.setVacancies(tail.getVacancies() + 1);
+        tail.setVacancies( 1);
         tail.setVacant(true);
 
         return patient;

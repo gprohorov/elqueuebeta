@@ -15,7 +15,7 @@ public class Procedure {
     private int price;
     private int foreigner;
     private int vip;
-    private int bussiness;
+    private int business;
     private int allInclusive;
     private int social;
 
@@ -39,7 +39,7 @@ public class Procedure {
         this.price = price;
         this.foreigner = foreigner;
         this.vip = vip;
-        this.bussiness = bussiness;
+        this.business = bussiness;
         this.allInclusive = allInclusive;
         this.social = social;
         this.card = card;
@@ -106,11 +106,11 @@ public class Procedure {
     }
 
     public int getBussiness() {
-        return bussiness;
+        return business;
     }
 
     public void setBussiness(int bussiness) {
-        this.bussiness = bussiness;
+        this.business = bussiness;
     }
 
     public int getAllInclusive() {
