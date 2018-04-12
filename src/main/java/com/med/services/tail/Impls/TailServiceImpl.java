@@ -87,6 +87,15 @@ public class TailServiceImpl implements ITailService {
 
 
     @Override
+    public Patient getFirstActiveAndOnProcedure(int procedureId) {
+        return this.getPatients(procedureId).stream()
+                .filter(patient -> patient.getActive().equals(Activity.ACTIVE)
+                        ||
+                        patient.getActive().equals(Activity.ON_PROCEDURE))
+                .findFirst().get();
+    }
+
+    @Override
     public List<Patient> getPatientsOnProcedure(int procedureId) {
         System.out.println(procedureId);
         return this.getPatients(procedureId).stream()

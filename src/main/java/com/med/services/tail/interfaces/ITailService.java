@@ -21,6 +21,8 @@ public interface ITailService {
 
     Patient getFirstActive(int procedureId);
 
+    Patient getFirstActiveAndOnProcedure(int procedureId);
+
     List<Patient> getPatientsOnProcedure(int procedureId);
 
 }
