@@ -9,14 +9,14 @@ import { config } from '../../config';
 export class PatientsQueueService {
   // Define the routes we are going to interact with
   private listUrl             = config.api_path + '/patient/list/';
-  private tailsUrl            = config.api_path + '/patient/get/tails/';
+  private tailsUrl            = config.api_path + '/tail/list';
   private listByProcedureUrl  = config.api_path + '/patient/list/procedure/';
   private deleteUrl           = config.api_path + '/patient/delete/';
   private updateActivityUrl   = config.api_path + '/patient/update/activity/';
   private updateStatusUrl     = config.api_path + '/patient/update/status/';
   private updateBalanceUrl    = config.api_path + '/patient/update/balance/';
   
-  private doctorPatientUrl    = config.api_path + '/patient/tail/get/first/';
+  private doctorPatientUrl    = config.api_path + '/tail/first/';
   private startProcedureUrl   = config.api_path + '/patient/start/procedure/';
   private cancelProcedureUrl  = config.api_path + '/patient/cancel/procedure/';
   private executeProcedureUrl = config.api_path + '/patient/execute/procedure/';
