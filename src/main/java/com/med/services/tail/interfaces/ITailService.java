@@ -25,6 +25,4 @@ public interface ITailService {
 
     List<Patient> getPatientsOnProcedure(int procedureId);
 
-
-
 }
