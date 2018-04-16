@@ -15,6 +15,7 @@ import java.util.*;
 public class DataStorage {
 
 
+
     @PostConstruct
             void init(){
          assigned.put(massage, 10);
@@ -48,7 +49,7 @@ public class DataStorage {
     }
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
-            new Person(1,"Іван",  "Іванов"),
+         new Person(1,"Іван",  "Іванов"),
             new Person(2,"Петро",  "Петров"),
             new Person(3,"Сидор", "Сидорович",  "Сидоров"
                     , "050-0000000", "Герца",
@@ -94,7 +95,7 @@ public class DataStorage {
             new Person(40,"Алексей", "Крутов"),
             new Person(41,"Леонид",  "Брежнев"),
             new Person(42,"Игорь", "Кривин"),
-            new Person(43,"Иван",  "Калита"),
+        //    new Person(43,"Иван",  "Калита"),
             new Person(344,"Дмитрий",  "Гук")
             ));
 
@@ -131,7 +132,7 @@ public class DataStorage {
             laser,
             massage,
             pulling,
-            mechmassasge,
+       //     mechmassasge,
          //   massageNo,
             heating
 
@@ -160,7 +161,8 @@ public class DataStorage {
 
 
     List<Doctor> doctors = new LinkedList<>(Arrays.asList(
-            SERVER, registrator, diagnost, massagist, laserist
+          //  SERVER,
+            registrator, diagnost, massagist, laserist
     ));
 
 

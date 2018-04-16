@@ -1,6 +1,5 @@
 package com.med.services.doctor.interfaces;
 
-import com.med.dao.doctor.interfaces.IDoctorDAO;
 import com.med.model.Doctor;
 
 import java.util.List;
@@ -8,8 +7,12 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-public interface IDoctorService extends IDoctorDAO {
+public interface IDoctorService  {
+    Doctor createDoctor(Doctor doctor);
+    Doctor updateDoctor(Doctor doctor);
+    Doctor getDoctor(int id);
+    Doctor deleteDoctor(int id);
+    List<Doctor> getAll();
 
-
-    List<Doctor> getDoctorListByLetters(String lastName);
+    //List<Doctor> getDoctorListByLetters(String lastName);
 }

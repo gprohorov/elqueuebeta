@@ -28,6 +28,7 @@ public class DoctorController {
     }
 
 
+/*
 
     // get a Person list by lastName
     @GetMapping("/doctor/list/{name}")
@@ -35,6 +36,7 @@ public class DoctorController {
         return service.getDoctorListByLetters(lastName);
     }
 
+*/
 
     // CREATE a new Doctor
     @PostMapping("/doctor/create")

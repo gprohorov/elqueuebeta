@@ -1,20 +1,13 @@
 package com.med.services.patient.Impls;
 
-import com.med.DataStorage;
-import com.med.dao.patient.impls.PatientDAOImpl;
 import com.med.model.*;
-import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.event.impls.EventsServiceImpl;
+import com.med.repository.patient.PatientRepository;
 import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,132 +17,102 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class PatientServiceImpl implements IPatientsService {
+public class PatientServiceIMongoImpl implements IPatientsService {
 
-   // private List<Patient> patients = new ArrayList<>();
-   // private List<Doctor> doctors = new ArrayList<>();
-   // private List<Procedure> procedures = new ArrayList<>();
-
+    private static List<Patient> patients = new ArrayList<>();
 
     @Autowired
-    PatientDAOImpl patientDAO;
-
-    @Autowired
-    AppointmentServiceImpl appointmentService;
-
-    @Autowired
-    DoctorServiceImpl doctorService;
+    PatientRepository repository;
 
     @Autowired
     ProcedureServiceImpl procedureService;
 
-    @Autowired
-    EventsServiceImpl eventsService;
 
-    @Autowired
-    TherapyServiceImpl therapyService;
-
+/*
     @Autowired
     DataStorage dataStorage;
 
 
+    @PostConstruct
+    void init() {
+        patients = dataStorage.getPatients();
+        repository.saveAll(patients);
+    }
+*/
 
     @Override
     public Patient createPatient(Person person) {
-        return patientDAO.createPatient(person);
+        Patient patient = new Patient(person);
+        patient.setId(person.getId());
+        return this.createPatient(patient);
     }
 
     @Override
     public Patient createPatient(Patient patient) {
-        return patientDAO.createPatient(patient);
+        return repository.save(patient);
     }
 
     @Override
     public Patient addPatient(Patient patient) {
-
-        return patientDAO.addPatient(patient);
+        return repository.insert(patient);
     }
 
     @Override
     public Patient updatePatient(Patient patient) {
-        return patientDAO.updatePatient(patient);
+        return repository.save(patient);
     }
 
     @Override
     public Patient getPatient(int id) {
-        return patientDAO.getPatient(id);
+        return repository.findById(id).get();
     }
 
     @Override
     public Patient deletePatient(int id) {
-        return patientDAO.deletePatient(id);
+         Patient patient = this.getPatient(id);
+         repository.deleteById(id);
+        return patient;
     }
 
     @Override
     public List<Patient> getAll() {
-
-        for (Patient patient:patientDAO.getAll()){
-            patient.setDelta(ChronoUnit.MINUTES.between(
-                    patient.getLastActivity(), LocalDateTime.now()
-            ));
-        }
-
-        return   patientDAO.getAll();
-
+        return repository.findAll();
     }
 
     @Override
     public List<Patient> insertAppointedForToday() {
-
-        // List<Patient> appointed =
-
-        appointmentService
-                .getAppointmentsByDate(LocalDate.now())
-                .stream().map(appointment -> appointment.getPatient())
-                .forEach(el -> this.createPatient(el));
-        //   .collect(Collectors.toList());
-
-        //  appointed.stream().forEach(el -> this.createPatient(el));
-/*
-           for (Patient patient:appointed){
-
-            patientDAO.addPatient(patient);
-            Event event = new Event(null,
-                   LocalDateTime.now(), patient,
-                   doctorService.getDoctor(0),
-                   procedureService.getProcedure(1),
-                   Action.PUT_IN_QUEUE );
-
-            eventsService.addEvent(event);
-        }
-        */
-
-        return this.getAll();
+        return null;
     }
-
-    public Patient setStatus(int patientID, Status status){return null;}
 
     @Override
     public Patient updateStatus(int patientId, Status status) {
-       Patient patient = this.getPatient(patientId);
-       patient.setStatus(status);
-       this.updatePatient(patient);
-        return patient;
+        Patient patient = this.getPatient(patientId);
+        patient.setStatus(status);
+        return repository.save(patient);
     }
 
+////////////////////////////////////////////////////////////////////////
+
+
+    public Patient setStatus(int patientID, Status status){return null;}
+
+
+
+
+
     public Patient updateActivity(int patientId, Activity activity) {
-       Patient patient = this.getPatient(patientId);
-       patient.setActive(activity);
-       patient.setLastActivity(LocalDateTime.now());
-       this.updatePatient(patient);
+        Patient patient = this.getPatient(patientId);
+        patient.setActive(activity);
+        patient.setLastActivity(LocalDateTime.now());
+        this.updatePatient(patient);
         return patient;
     }
 
 
     public Patient updateBalance(int patientId, int balance) {
-       Patient patient = this.getPatient(patientId);
-       patient.setBalance(balance);
-       this.updatePatient(patient);
+        Patient patient = this.getPatient(patientId);
+        patient.setBalance(balance);
+        this.updatePatient(patient);
         return patient;
     }
 
@@ -162,48 +125,6 @@ public class PatientServiceImpl implements IPatientsService {
         return patient;
 
     }
-
-
-    // Add ONE procedure to execute today
- /*   public Patient addProcedure(int patientId, int procedureId) {
-
-        Patient patient = this.getPatient(patientId);
-        Procedure procedure = procedureService.getProcedure(procedureId);
-        patient.assignProcedure(procedure);
-
-        return patient;
-    }
-
-    public Patient removeProcedure(int patientId, int procedureId) {
-
-        Patient patient = this.getPatient(patientId);
-        Procedure procedure = procedureService.getProcedure(procedureId);
-        patient.disAssignProcedure(procedure);
-
-        return patient;
-    }
-*/
-
-    // add ALL procedures for TODAY according to the therapy
-/*    public Patient addProceduresAll(int patientId) {
-
-        Patient patient = this.getPatient(patientId);
-
-        if(patient.getAssignedProcedures().isEmpty()) {
-            Map<Procedure, Integer> assignedTherapy = patient.getTherapy().getProgress();
-            for(Map.Entry<Procedure, Integer> assignation: assignedTherapy.entrySet()){
-                if (assignation.getValue()>0){
-                    this.addProcedure(patientId,assignation.getKey().getId());
-                }
-            }
-        }
-        return null;
-    }*/
-
-
-
-
-
 
     // get progress in crowd :  ratio of executed procedures to assigned ones
     public Double getProgress(int patientId) {
@@ -221,7 +142,7 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
-      // get a sorted list of patients to the specified procedure
+    // get a sorted list of patients to the specified procedure
     public List<Patient> getQueueToProcedure(int procedureId) {
 
         Procedure procedure = procedureService.getProcedure(procedureId);
@@ -258,6 +179,7 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
+/*
 
     public Patient setTherapy(int patientId, int therapyId) {
         Patient patient = this.getPatient(patientId);
@@ -266,16 +188,22 @@ public class PatientServiceImpl implements IPatientsService {
         this.updatePatient(patient);
         return patient;
     }
+*/
+
+
 
     public List<Patient> getActivePatients(){
         return this.getAll().stream()
                 .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
     }
-////////////////////////  TAILS   //////////////////////////
+    ////////////////////////  TAILS   //////////////////////////
     public List<Tail> getTails(){
-       List<Tail> tails = dataStorage.getTails();
-/*
+
+        List<Tail> tails = new ArrayList<>();
+
+ /*       List<Tail> tails = dataStorage.getTails();
+
         for (Procedure procedure: procedureService.getAll()){
            tails.add(new Tail(procedure.getId(), procedure.getName()));
         }*/
@@ -285,7 +213,7 @@ public class PatientServiceImpl implements IPatientsService {
             for (Patient patient:this.getActivePatients()){
                 if (patient.getProceduresForToday().stream()
                         .anyMatch(el->el.getId()==tail.getProcedureId()&&!el.isExecuted())
-                   ){
+                        ){
                     tail.addPatient(patient);
                 }
             }
@@ -320,21 +248,21 @@ public class PatientServiceImpl implements IPatientsService {
         Procedure procedure = patient.getProceduresForToday().stream()
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
-      //  patient.setOneProcedureForTodayAsExecuted(procedure);
+        //  patient.setOneProcedureForTodayAsExecuted(procedure);
         patient.setActive(Activity.ON_PROCEDURE);
 
         this.getAll().set(index, patient);
 
-         this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+        this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get().setVacancies(0);
-         //tail.setVacant(false);
+        //tail.setVacant(false);
 
         return patient;
     }
 
 
     // patient has executed a procedure => we mark the procedure  as TRUE in his list of  assigned procedures for tody
-   //                                      patient gets a status ACTIVE
+    //                                      patient gets a status ACTIVE
     //                                     patient gets the time of lastActivity = now
     //                                     tail gets incremention of a number of responsible  doctors
     public Patient executeProcedure(int patientId, int procedureId) {
@@ -356,7 +284,7 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     // patient has canceled a procedure => we DON'T mark the procedure  as TRUE in his list of  assigned procedures for tody
-   //                                      patient gets a status ACTIVE
+    //                                      patient gets a status ACTIVE
     //                                     tail gets incremention of a number of responsible  doctors
     public Patient cancelProcedure(int patientId, int procedureId) {
         Patient patient = this.getPatient(patientId);
@@ -378,12 +306,13 @@ public class PatientServiceImpl implements IPatientsService {
 
 
     public Patient getFirstFromTail(int procedureId) {
-         return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                 .findAny().get().getPatients().stream()
-                 .filter(el ->
-                         el.getActive().equals(Activity.ACTIVE)
-                         ||
-                         el.getActive().equals(Activity.ON_PROCEDURE))
-                 .findFirst().get();
+        return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+                .findAny().get().getPatients().stream()
+                .filter(el ->
+                        el.getActive().equals(Activity.ACTIVE)
+                                ||
+                                el.getActive().equals(Activity.ON_PROCEDURE))
+                .findFirst().get();
     }
+
 }

@@ -1,5 +1,8 @@
 package com.med.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,20 +10,38 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-public class Patient implements Comparable<Patient>{
-   private int id;
-   private Person person;
-   private Therapy therapy;
-   private List<Procedure> proceduresForToday = new ArrayList<>();
-   private Status status;
-   private LocalDateTime lastActivity;
-   private long delta=0;
-   private int balance;
-   private Activity active;
-   private Reckoning reckoning;
+@Document(collection = "patient")
+public class Patient implements Comparable<Patient> {
+    @Id
+    private int id;
+
+    private Person person;
+    private Therapy therapy;
+    private List<Procedure> proceduresForToday = new ArrayList<>();
+    private Status status;
+    private LocalDateTime lastActivity;
+    private LocalDateTime startActivity;
+    private long delta = 0;
+    private int balance;
+    private Activity active;
+    private Reckoning reckoning;
 
 
     public Patient() {
+    }
+
+    public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, long delta, int balance, Activity active, Reckoning reckoning) {
+        this.id = id;
+        this.person = person;
+        this.therapy = therapy;
+        this.proceduresForToday = proceduresForToday;
+        this.status = status;
+        this.lastActivity = lastActivity;
+        this.startActivity = startActivity;
+        this.delta = delta;
+        this.balance = balance;
+        this.active = active;
+        this.reckoning = reckoning;
     }
 
     public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
@@ -111,8 +132,8 @@ public class Patient implements Comparable<Patient>{
     public void setOneProcedureForTodayAsExecuted(Procedure procedure) {
         int index = this.proceduresForToday.indexOf(procedure);
         procedure.setExecuted(true);
-      //  System.out.println(this.getPerson().getFirstName());
-        this.proceduresForToday.set(index,procedure);
+        //  System.out.println(this.getPerson().getFirstName());
+        this.proceduresForToday.set(index, procedure);
     }
 
     public Status getStatus() {
@@ -177,12 +198,20 @@ public class Patient implements Comparable<Patient>{
         int thisStatus = this.getStatus().getLevel();
         int compareTime = comparePatient.getLastActivity().getSecond();
 
-        if (compareStatus != this.getStatus().getLevel())
-             {return  compareStatus -this.getStatus().getLevel();}
-        else {
-          //  System.out.println("the case");
+        if (compareStatus != this.getStatus().getLevel()) {
+            return compareStatus - this.getStatus().getLevel();
+        } else {
+            //  System.out.println("the case");
             return this.getLastActivity().compareTo(comparePatient.getLastActivity());
         }
+    }
+
+    public LocalDateTime getStartActivity() {
+        return startActivity;
+    }
+
+    public void setStartActivity(LocalDateTime startActivity) {
+        this.startActivity = startActivity;
     }
 
     @Override
@@ -194,6 +223,8 @@ public class Patient implements Comparable<Patient>{
                 ", proceduresForToday=" + proceduresForToday +
                 ", status=" + status +
                 ", lastActivity=" + lastActivity +
+                ", startActivity=" + startActivity +
+                ", delta=" + delta +
                 ", balance=" + balance +
                 ", active=" + active +
                 ", reckoning=" + reckoning +

@@ -83,4 +83,6 @@ public class Tail {
     public void setVacancies(int vacancies) {
         this.vacancies = vacancies;
     }
+
+
 }

@@ -2,7 +2,7 @@ package com.med.controller;
 
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.patient.Impls.PatientServiceIMongoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     @Autowired
-    PatientServiceImpl service;
+    PatientServiceIMongoImpl service;
 
     @Autowired
     AppointmentServiceImpl appointmentService;
@@ -208,12 +208,14 @@ public class PatientController {
 
 
     // set therapy for patient
+/*
     @GetMapping("/set/therapy/{patient_id}/{therapy_id}")
     public Patient setTherapy(@PathVariable(value = "patient_id") int patientId,
                                 @PathVariable(value = "therapy_id") int therapyId) {
 
         return service.setTherapy(patientId, therapyId);
     }
+*/
 
 
     // get tails for each procedure

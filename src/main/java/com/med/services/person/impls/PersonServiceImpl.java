@@ -1,69 +1,88 @@
 package com.med.services.person.impls;
 
-import com.med.dao.person.impls.PersonDAOImpl;
-import com.med.dao.person.interfaces.IPersonDAO;
 import com.med.model.Person;
+import com.med.repository.person.PersonRepository;
+import com.med.services.person.interfaces.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
  */
 @Component
-public class PersonServiceImpl implements IPersonDAO {
+public class PersonServiceImpl implements IPersonService {
 
 
     private List<Person> persons = new ArrayList<>();
 
+    @Autowired
+    PersonRepository repository;
 
+/*
 
     @Autowired
-    PersonDAOImpl personDAO;
+    DataStorage dataStorage;
 
     @PostConstruct
     void init(){
-       // persons = dataStorage.getPersons();
+        persons = dataStorage.getPersons();
+        repository.saveAll(persons);
     }
 
+*/
 
     @Override
     public Person createPerson(Person person) {
-
-
-        return personDAO.createPerson(person);
+        if (person.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Person::getId).max().getAsInt() + 1;
+            person.setId(id);
+        }
+        return repository.insert(person);
     }
 
     @Override
     public Person updatePerson(Person person) {
-        return personDAO.updatePerson(person);
+
+
+        return repository.save(person);
     }
 
     @Override
     public Person getPerson(int id) {
-        return personDAO.getPerson(id);
+        return
+                repository.findById(id).get();
     }
 
     @Override
     public Person deletePerson(int id) {
-        return personDAO.deletePerson(id);
+        Person person = this.getPerson(id);
+        repository.deleteById(id);
+        return person;
     }
 
     @Override
     public List<Person> getAll() {
-        return personDAO.getAll();
+        return repository.findAll();
     }
 
     @Override
     public List<Person> getPersonListByName(String lastName) {
-        return personDAO.getPersonListByName(lastName);
+
+        return repository.findAll().stream()
+                .filter(person -> person.getLastName().equals(lastName))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Person> getPersonListByLetters(String letters) {
-        return personDAO.getPersonListByLetters(letters);
+
+        return repository.findAll().stream()
+                .filter(person -> person.getLastName().contains(letters))
+                .collect(Collectors.toList());
+
     }
 }
