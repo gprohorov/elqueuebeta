@@ -3,11 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserXhr } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Routes, RouterModule } from '@angular/router';
+import { NgxMasonryModule } from 'ng5-masonry'; 
 
 import { AppComponent } from './app.component';
-import { Routes, RouterModule } from '@angular/router';
-
-import { NgxMasonryModule } from 'ng5-masonry'; 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
@@ -44,7 +44,7 @@ import { ProceduresQueueListComponent } from './procedures-queue/list.component'
 import { DoctorInterfaceComponent } from './doctor-interface/main.component';
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'persons', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -74,6 +74,7 @@ const appRoutes: Routes = [
         FormsModule,
         HttpClientModule,
         NgxMasonryModule,
+        NgbModule.forRoot(),
         RouterModule.forRoot(appRoutes)
     ], 
     declarations: [

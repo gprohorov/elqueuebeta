@@ -1,42 +1,60 @@
-﻿<div class="col-md-12">
-  <div class="card">
-    <div class="header">
-      <div class="pull-right">
-        <label for="search">Пошук:</label><input class="form-control" #searchfield (keyup)="load(searchfield.value)">
+﻿<div class="row">
+  <div class="col">
+    <div class="form-row mb-4">
+      <div class="col-auto">
+        <h3>Список пацієнтів</h3>
       </div>
-      <h4 class="title">
-        Список пацієнтів 
+      <div class="col-auto">
+        <button class="btn btn-success" routerLink="/person-form">Створити</button>
+      </div>
+      <div class="col-auto mr-auto">
         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-      </h4>
-      <p><a role="button" routerLink="/person-form">[Створити]</a></p>
+      </div>
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">Пошук:</div>
+          </div>
+          <input class="form-control" #searchfield (keyup)="load(searchfield.value)">
+        </div>
+      </div>
     </div>
     <div class="content table-responsive table-full-width">
-          <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
-                    <tr>
-                        <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-                        <td>{{getFullName(item)}}</td>
-                        <td>{{item.gender ? 'чол.' : 'жін.'}}</td>
-                        <td>{{item.dateOfBirth | date:'dd.MM.yyyy'}}</td>
-                        <td>{{item.town}}</td>
-                    </tr>
-                    <tr [hidden]="!rows[i]">
-                      <td colspan="100">
-                        <div class="pull-right">
-                          <p><a role="button" (click)="toPatientToday(item.id)">[Призначити на сьогодні]</a></p>
-                          <p><a role="button" [routerLink]="['/person-form', { id: item.id }]">[Редагувати]</a></p>
-                          <p><a role="button" (click)="delete(item.id, getFullName(item))">[Видалити]</a></p>
-                        </div>
-                        <blockquote><b>Телефон:</b> {{item.cellPhone}}<br/><b>Адреса:</b> {{item.address}}</blockquote>
-                      </td>
-                    </tr>
-                </tbody>
-          </table>
+      <table class="table table-sm">
+        <thead class="thead-light">
+          <tr>
+              <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
+          <tr [ngStyle]="{'cursor': 'pointer'}">
+              <td><i [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
+              <td>{{getFullName(item)}}</td>
+              <td><i [ngClass]="{'fa': true, 'fa-mars': item.gender, 'fa-venus': !item.gender }" aria-hidden="true"></i></td>
+              <td>{{item.dateOfBirth | date:'dd.MM.yyyy'}}</td>
+              <td>{{item.town}}</td>
+          </tr>
+          <tr [hidden]="!rows[i]">
+            <td colspan="100">
+              <div class="card">
+                <div class="card-header">
+                  <div class="row">
+                    <h4 class="col-auto mr-auto">Інформація про паціента</h4>
+                    <div class="col-auto">
+                      <button class="btn btn-primary" [routerLink]="['/person-form', { id: item.id }]">Редагувати</button>
+                      <button class="btn btn-danger" (click)="delete(item.id, getFullName(item))">Видалити</button>
+                      <button class="btn btn-info" (click)="toPatientToday(item.id)">Призначити на сьогодні</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <b>Телефон:</b> {{item.cellPhone}}<br/><b>Адреса:</b> {{item.address}}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
