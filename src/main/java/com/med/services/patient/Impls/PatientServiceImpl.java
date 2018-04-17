@@ -329,7 +329,11 @@ public class PatientServiceImpl implements IPatientsService {
 
         this.getAll().set(index, patient);
 
+<<<<<<< Updated upstream
          tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
+=======
+        tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
+>>>>>>> Stashed changes
                 .findAny().get().setVacancies(0);
          //tail.setVacant(false);
 
@@ -382,12 +386,9 @@ public class PatientServiceImpl implements IPatientsService {
 
 
     public Patient getFirstFromTail(int procedureId) {
-         return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+         return tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                  .findAny().get().getPatients().stream()
-                 .filter(el ->
-                         el.getActive().equals(Activity.ACTIVE)
-                         ||
-                         el.getActive().equals(Activity.ON_PROCEDURE))
+                 .filter(el ->el.getActive().equals(Activity.ACTIVE))
                  .findFirst().get();
     }
 }
