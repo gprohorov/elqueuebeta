@@ -329,11 +329,8 @@ public class PatientServiceImpl implements IPatientsService {
 
         this.getAll().set(index, patient);
 
-<<<<<<< Updated upstream
+
          tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-=======
-        tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
->>>>>>> Stashed changes
                 .findAny().get().setVacancies(0);
          //tail.setVacant(false);
 
