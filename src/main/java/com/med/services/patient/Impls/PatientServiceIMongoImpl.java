@@ -4,6 +4,7 @@ import com.med.model.*;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
+import com.med.services.tail.Impls.TailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
     @Autowired
     ProcedureServiceImpl procedureService;
+
+    @Autowired
+    TailServiceImpl tailService;
 
 
 /*
@@ -197,7 +201,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
                 .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
     }
-    ////////////////////////  TAILS   //////////////////////////
+    ////////////////////////  TAILS   ycmape/\o    //////////////////////////
     public List<Tail> getTails(){
 
         List<Tail> tails = new ArrayList<>();
@@ -253,7 +257,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
         this.getAll().set(index, patient);
 
-        this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+       tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get().setVacancies(0);
         //tail.setVacant(false);
 
@@ -275,7 +279,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         patient.setActive(Activity.ACTIVE);
         this.getAll().set(index, patient);
 
-        Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
         tail.setVacancies( 1);
         tail.setVacant(true);
@@ -296,7 +300,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         patient.setLastActivity(LocalDateTime.now());
         this.getAll().set(index, patient);
 
-        Tail tail = this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
         tail.setVacancies( 1);
         tail.setVacant(true);

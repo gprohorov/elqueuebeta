@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class TailServiceImpl implements ITailService {
 
-   private static List<Tail> tails = new ArrayList<>();
+   private  List<Tail> tails = new ArrayList<>();
 
    @Autowired
     ProcedureServiceImpl procedureService;
