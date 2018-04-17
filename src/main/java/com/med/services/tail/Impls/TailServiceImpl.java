@@ -28,6 +28,8 @@ public class TailServiceImpl implements ITailService {
    @Autowired
    PatientServiceImpl patientService;
 
+
+
    @PostConstruct
    void init(){
        procedureService.getAll()
