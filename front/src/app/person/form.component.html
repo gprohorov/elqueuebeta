@@ -1,53 +1,53 @@
 ﻿<div class="row justify-content-md-center">
   <div class="col-6">
-      <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} пацієнта</h2>
-      <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
-          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-              <label for="lastName">Прізвище</label>
-              <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-              <div *ngIf="f.submitted && !lastName.valid" class="help-block">Поле обов`язкове</div>
+    <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} пацієнта</h2>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
+        <label for="lastName">Прізвище</label>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
+        <div *ngIf="f.submitted && !lastName.valid" class="help-block">Поле обов`язкове</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
+        <label for="firstName">Ім`я</label>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
+        <div *ngIf="f.submitted && !firstName.valid" class="help-block">Поле обов`язкове</div>
+      </div>
+      <div class="form-group">
+        <label for="patronymic">По батькові</label>
+        <input type="text" class="form-control" name="patronymic" [(ngModel)]="model.patronymic" #patronymic="ngModel" />
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Стать</label>
+          <div class="form-group radio">
+            <label><input type="radio" name="gender" value="true"  [(ngModel)]="model.gender" #gender="ngModel">чол.</label>
+            <label><input type="radio" name="gender" value="false" [(ngModel)]="model.gender" #gender="ngModel">жін.</label>
           </div>
-          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
-              <label for="firstName">Ім`я</label>
-              <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
-              <div *ngIf="f.submitted && !firstName.valid" class="help-block">Поле обов`язкове</div>
-          </div>
+        </div>
+        <div class="col-sm-8">
           <div class="form-group">
-              <label for="patronymic">По батькові</label>
-              <input type="text" class="form-control" name="patronymic" [(ngModel)]="model.patronymic" #patronymic="ngModel" />
+            <label for="dateOfBirth">Дата народження</label>
+            <input type="date" class="form-control" name="dateOfBirth" [(ngModel)]="model.dateOfBirth" #dateOfBirth="ngModel" />
           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <label>Стать</label>
-              <div class="form-group radio">
-                  <label><input type="radio" name="gender" value="true"  [(ngModel)]="model.gender" #gender="ngModel">чол.</label>
-                  <label><input type="radio" name="gender" value="false" [(ngModel)]="model.gender" #gender="ngModel">жін.</label>
-              </div>
-            </div>
-            <div class="col-sm-8">
-              <div class="form-group">
-                  <label for="dateOfBirth">Дата народження</label>
-                  <input type="date" class="form-control" name="dateOfBirth" [(ngModel)]="model.dateOfBirth" #dateOfBirth="ngModel" />
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-              <label for="cellPhone">Телефон</label>
-              <input type="text" class="form-control" name="cellPhone" [(ngModel)]="model.cellPhone" #cellPhone="ngModel" />
-          </div>
-          <div class="form-group">
-              <label for="town">Місто / село</label>
-              <input type="text" class="form-control" name="town" [(ngModel)]="model.town" #town="ngModel" />
-          </div>
-          <div class="form-group">
-              <label for="address">Адреса</label>
-              <input type="text" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" />
-          </div>
-          <div class="form-group">
-              <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
-              <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-              <a [routerLink]="['/persons']" class="btn btn-link">Скасувати</a>
-          </div>
-      </form>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cellPhone">Телефон</label>
+        <input type="text" class="form-control" name="cellPhone" [(ngModel)]="model.cellPhone" #cellPhone="ngModel" />
+      </div>
+      <div class="form-group">
+        <label for="town">Місто / село</label>
+        <input type="text" class="form-control" name="town" [(ngModel)]="model.town" #town="ngModel" />
+      </div>
+      <div class="form-group">
+        <label for="address">Адреса</label>
+        <input type="text" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" />
+      </div>
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/persons']" class="btn btn-link">Скасувати</a>
+      </div>
+    </form>
   </div>
 </div>
