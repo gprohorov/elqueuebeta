@@ -23,7 +23,7 @@
             <td>{{item.balance}}</td>
             <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
             <td>{{getProgress(item.proceduresForToday)}}</td>
-            <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}} хв.</span></td>
+            <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span> хв.</td>
           </tr>
           <tr [hidden]="!rows[i]">
             <td colspan="100">
