@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class PatientDAOImpl implements IPatientDAO {
 
 
-//1 private List<Patient> patients = new LinkedList<>();
+ //private List<Patient> patients = new LinkedList<>();
 
 
 
@@ -43,9 +43,12 @@ public class PatientDAOImpl implements IPatientDAO {
     DataStorage dataStorage;
 
 
+
+
     @PostConstruct
     void init(){
       //  patients = dataStorage.getPatients();
+
 
     }
 

@@ -38,7 +38,6 @@ public class ProcedureController {
     // CREATE a new Procedure
     @PostMapping("/procedure/create")
     public Procedure createProcedure(@Valid @RequestBody Procedure procedure) {
-        System.out.println("----");
         return service.createProcedure(procedure);
     }
 

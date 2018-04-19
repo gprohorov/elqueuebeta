@@ -56,6 +56,21 @@ public class Patient implements Comparable<Patient> {
         this.reckoning = reckoning;
     }
 
+    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, int balance, Activity active) {
+        this.id = person.getId();
+        this.person = person;
+        this.therapy = therapy;
+        this.proceduresForToday = proceduresForToday;
+        this.status = status;
+        this.lastActivity = lastActivity;
+        this.startActivity = startActivity;
+        this.balance = balance;
+        this.active = active;
+    }
+
+
+
+
     public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
         this.id = person.getId();
         this.person = person;

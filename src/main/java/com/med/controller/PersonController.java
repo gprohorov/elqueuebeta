@@ -4,7 +4,7 @@ import com.med.model.Appointment;
 import com.med.model.Patient;
 import com.med.model.Person;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.patient.Impls.PatientServiceIMongoImpl;
 import com.med.services.person.impls.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ public class PersonController {
     AppointmentServiceImpl appointmentService;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientServiceIMongoImpl patientService;
 
     // get all persons
     @GetMapping("/person/list")
@@ -107,10 +107,10 @@ public class PersonController {
 
     }
 
-    //  person  ->   patient   i.e. insert into Set<Patient> of today
+    //  person  ->   patient   i.e. insert into crowd (general queue) of today
     // this means that the person has no diagnosis and assigned procedures
     @GetMapping("/person/topatient/{id}")
-    public Patient putPersonIntoQueue(@PathVariable(value = "id") int personId) {
+    public Patient putPersonIntoCrowd(@PathVariable(value = "id") int personId) {
 
         Person person = service.getPerson(personId);
 

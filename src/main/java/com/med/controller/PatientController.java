@@ -144,7 +144,7 @@ public class PatientController {
 
         return service.getProgress(patientId);
     }
-
+/*
     // get a list of patients to procedure orderd by time and status
     // example   http://localhost:8088/api/patient/list/procedure/7
       @GetMapping("/list/procedure/{id}")
@@ -152,7 +152,7 @@ public class PatientController {
 
         return service.getQueueToProcedure(procedureId);
     }
-/*
+
 
     // put THE procedure (ONLY ONE)  into map of assigned for today
     @PostMapping("/add/procedure/{id}")

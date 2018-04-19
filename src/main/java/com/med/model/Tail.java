@@ -11,6 +11,7 @@ public class Tail {
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
     private int vacancies=1;
+    private Patient patientOnProcedure;
     private boolean vacant;
 
     public Tail() {

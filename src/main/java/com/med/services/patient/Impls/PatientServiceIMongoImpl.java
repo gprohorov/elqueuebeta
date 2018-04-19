@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,8 +48,18 @@ public class PatientServiceIMongoImpl implements IPatientsService {
     @Override
     public Patient createPatient(Person person) {
         Patient patient = new Patient(person);
-        patient.setId(person.getId());
-        return this.createPatient(patient);
+        if (!this.getAll().contains(patient)) {
+            patient.setId(person.getId());
+            patient.setLastActivity(LocalDateTime.now());
+            patient.setStartActivity(LocalDateTime.now());
+            patient.setStatus(Status.SOCIAL);
+            patient.setActive(Activity.ACTIVE);
+            Procedure registration = procedureService.getProcedure(1);
+            registration.setExecuted(false);
+            patient.setOneProcedureForTodayToExecute(registration);
+            return this.createPatient(patient);
+        }
+        else return null;
     }
 
     @Override
@@ -80,7 +91,18 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
     @Override
     public List<Patient> getAll() {
-        return repository.findAll();
+
+        List<Patient> patients = repository.findAll();
+
+        for (Patient patient:patients){
+            patient.setDelta(ChronoUnit.MINUTES.between(
+                    patient.getLastActivity(), LocalDateTime.now()
+            ));
+        }
+
+        return patients.stream().sorted().collect(Collectors.toList());
+
+
     }
 
     @Override
@@ -144,6 +166,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         return progress;
     }
 
+/*
 
 
     // get a sorted list of patients to the specified procedure
@@ -173,15 +196,18 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
 
         }
+*/
 /*
         return this.getAll().stream()
                 .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
                 .filter(pat -> pat.getProceduresForToday()
-                        .contains(procedure)).collect(Collectors.toList());*/
+                        .contains(procedure)).collect(Collectors.toList());*//*
+
         return queue;
     }
 
 
+*/
 
 /*
 
@@ -198,9 +224,15 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
     public List<Patient> getActivePatients(){
         return this.getAll().stream()
-                .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
+                .filter(el->el.getActive().equals(Activity.ACTIVE)
+                        ||el.getActive().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
     }
+
+
+
+
+
     ////////////////////////  TAILS   ycmape/\o    //////////////////////////
     public List<Tail> getTails(){
 
@@ -252,15 +284,14 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         Procedure procedure = patient.getProceduresForToday().stream()
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
-        //  patient.setOneProcedureForTodayAsExecuted(procedure);
         patient.setActive(Activity.ON_PROCEDURE);
 
-        this.getAll().set(index, patient);
+        repository.save(patient);
 
        tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get().setVacancies(0);
-        //tail.setVacant(false);
 
+        System.out.println(patient);
         return patient;
     }
 
@@ -277,7 +308,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         patient.setOneProcedureForTodayAsExecuted(procedure);
         patient.setLastActivity(LocalDateTime.now());
         patient.setActive(Activity.ACTIVE);
-        this.getAll().set(index, patient);
+        repository.save(patient);
 
         Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
@@ -298,7 +329,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
         patient.setActive(Activity.ACTIVE);
         patient.setLastActivity(LocalDateTime.now());
-        this.getAll().set(index, patient);
+        repository.save(patient);
 
         Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get();
@@ -310,12 +341,10 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
 
     public Patient getFirstFromTail(int procedureId) {
-        return this.getTails().stream().filter(tl -> tl.getProcedureId() == procedureId)
+        return tailService.getAll().stream()
+                .filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get().getPatients().stream()
-                .filter(el ->
-                        el.getActive().equals(Activity.ACTIVE)
-                                ||
-                                el.getActive().equals(Activity.ON_PROCEDURE))
+                .filter(el ->el.getActive().equals(Activity.ACTIVE)                                )
                 .findFirst().get();
     }
 

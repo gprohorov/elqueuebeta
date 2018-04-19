@@ -1,12 +1,13 @@
 package com.med.services.procedure.impls;
 
 import com.med.model.Procedure;
+import com.med.model.Tail;
 import com.med.repository.procedure.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
+import com.med.services.tail.Impls.TailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,10 +18,13 @@ import java.util.List;
 public class ProcedureServiceImpl implements IProcedureService {
 
 
-    private List<Procedure> procedures = new ArrayList<>();
+  //  private List<Procedure> procedures = new ArrayList<>();
 
     @Autowired
     ProcedureRepository repository;
+
+    @Autowired
+    TailServiceImpl tailService;
 
 
 /*
@@ -41,19 +45,28 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @Override
     public Procedure createProcedure(Procedure procedure) {
+
         if (procedure.getId()==0) {
             int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
             procedure.setId(id);
         }
+        tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),0));
+
         return repository.insert(procedure);
     }
 
     @Override
     public Procedure updateProcedure(Procedure procedure) {
-
+      if (procedure.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
+            procedure.setId(id);
+        }
+        tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
 
         return repository.save(procedure);
     }
+
+
 
     @Override
     public Procedure getProcedure(int id) {
