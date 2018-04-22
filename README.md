@@ -10,7 +10,11 @@
   
     `mvn clean package`
 
-3. Run server 
+3. Restore DB (Mongo DB must be installed). Just run from project root:
+	
+	`mongorestore`
+	
+4. Run server 
   
     `java -jar target/elqueuebeta-0.0.1-SNAPSHOT.jar`
 
