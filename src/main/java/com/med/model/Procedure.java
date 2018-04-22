@@ -1,12 +1,16 @@
 package com.med.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.HashMap;
 
 /**
  * Created by george on 3/9/18.
  */
+@Document(collection = "procedure" )
 public class Procedure {
-
+    @Id
     private int id;
     private String name;
     private int cabinet;

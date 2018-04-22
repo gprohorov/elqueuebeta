@@ -2,7 +2,7 @@ package com.med.controller;
 
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.patient.Impls.PatientServiceIMongoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     @Autowired
-    PatientServiceImpl service;
+    PatientServiceIMongoImpl service;
 
     @Autowired
     AppointmentServiceImpl appointmentService;
@@ -144,7 +144,7 @@ public class PatientController {
 
         return service.getProgress(patientId);
     }
-
+/*
     // get a list of patients to procedure orderd by time and status
     // example   http://localhost:8088/api/patient/list/procedure/7
       @GetMapping("/list/procedure/{id}")
@@ -152,7 +152,7 @@ public class PatientController {
 
         return service.getQueueToProcedure(procedureId);
     }
-/*
+
 
     // put THE procedure (ONLY ONE)  into map of assigned for today
     @PostMapping("/add/procedure/{id}")
@@ -208,12 +208,14 @@ public class PatientController {
 
 
     // set therapy for patient
+/*
     @GetMapping("/set/therapy/{patient_id}/{therapy_id}")
     public Patient setTherapy(@PathVariable(value = "patient_id") int patientId,
                                 @PathVariable(value = "therapy_id") int therapyId) {
 
         return service.setTherapy(patientId, therapyId);
     }
+*/
 
 
     // get tails for each procedure

@@ -1,6 +1,8 @@
 package com.med;
 
 import com.med.model.*;
+import com.med.repository.patient.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +13,16 @@ import java.util.*;
 /**
  * Created by george on 3/9/18.
  */
+
+
+
 @Configuration
 public class DataStorage {
+
+
+    @Autowired
+    PatientRepository patientRepository;
+
 
 
     @PostConstruct
@@ -39,16 +49,15 @@ public class DataStorage {
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
 
-        for (Procedure procedure: procedures){
-            tails.add(new Tail(procedure.getId(), procedure.getName()));
-        }
+       // patientRepository.deleteAll();
+      // patientRepository.saveAll(patients);
 
-
+        patients.clear();
 
     }
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
-            new Person(1,"Іван",  "Іванов"),
+        new Person(1,"Іван",  "Іванов"),
             new Person(2,"Петро",  "Петров"),
             new Person(3,"Сидор", "Сидорович",  "Сидоров"
                     , "050-0000000", "Герца",
@@ -94,9 +103,9 @@ public class DataStorage {
             new Person(40,"Алексей", "Крутов"),
             new Person(41,"Леонид",  "Брежнев"),
             new Person(42,"Игорь", "Кривин"),
-            new Person(43,"Иван",  "Калита"),
+        //    new Person(43,"Иван",  "Калита"),
             new Person(344,"Дмитрий",  "Гук")
-            ));
+         ));
 
     Procedure registration =   new Procedure(1, "Реєстратура", 0,0);
     Procedure diagnostics =   new Procedure(2, "Диагностика", 1,100);
@@ -131,7 +140,7 @@ public class DataStorage {
             laser,
             massage,
             pulling,
-            mechmassasge,
+       //     mechmassasge,
          //   massageNo,
             heating
 
@@ -160,7 +169,8 @@ public class DataStorage {
 
 
     List<Doctor> doctors = new LinkedList<>(Arrays.asList(
-            SERVER, registrator, diagnost, massagist, laserist
+          //  SERVER,
+            registrator, diagnost, massagist, laserist
     ));
 
 
@@ -310,63 +320,66 @@ public class DataStorage {
 
     private Patient vasa = new Patient(persons.get(4), primary
             , proceduresForVas
-            , Status.SOCIAL, LocalDateTime.now().minusMinutes(35), 0, Activity.ACTIVE) ;
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(35), LocalDateTime.now().minusMinutes(89),0, Activity.ACTIVE) ;
 
    private Patient trump = new Patient(persons.get(9), primary
             , proceduresForTrump
-            , Status.BUSINESS, LocalDateTime.now().minusMinutes(10), 0, Activity.NON_ACTIVE) ;
+            , Status.BUSINESS, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().minusMinutes(99), 0, Activity.NON_ACTIVE) ;
+
 
    private Patient ivanov = new Patient(persons.get(0), null
             , proceduresForIvanov
-            , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), 0, Activity.NON_ACTIVE) ;
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(20), LocalDateTime.now().minusMinutes(79),0, Activity.NON_ACTIVE) ;
+
 
 
     private Patient petrovv= new Patient(persons.get(1),primary
             ,proceduresForPetrov,   Status.SOCIAL
-            , LocalDateTime.now().minusMinutes(11),0,Activity.ACTIVE,Reckoning.END);
+            , LocalDateTime.now().minusMinutes(11),LocalDateTime.now().minusMinutes(77),0,Activity.ACTIVE);
 
     private List<Patient> patients = new LinkedList<>(
             Arrays.asList(
                     new Patient(persons.get(12), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(12)
-                    , 0, Activity.ACTIVE)
+                    , LocalDateTime.now().minusMinutes(111),0, Activity.ACTIVE)
 
                     ,  new Patient(persons.get(13), primary, this.schema1()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(2)
-                            , 0, Activity.ACTIVE)
+                            ,LocalDateTime.now().minusHours(2), 0, Activity.ACTIVE)
+
                     ,  new Patient(persons.get(24), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(14), primary, this.schema3()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(14)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(222),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(15), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(156),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(16), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(15)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(241),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(17), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(218),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(18), primary, this.schema1()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(180),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(19), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(7)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(199),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(20), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(211),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(21), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(43)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(232),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(22), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(312),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(23), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
-                            , 0, Activity.ACTIVE)
+                            , LocalDateTime.now().minusMinutes(195),0, Activity.ACTIVE)
 
             )
     );

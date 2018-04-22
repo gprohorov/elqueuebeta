@@ -3,7 +3,7 @@ package com.med.services.tail.Impls;
 import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.Tail;
-import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.patient.Impls.PatientServiceIMongoImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class TailServiceImpl implements ITailService {
 
-   private static List<Tail> tails = new ArrayList<>();
+   private  List<Tail> tails = new ArrayList<>();
 
    @Autowired
     ProcedureServiceImpl procedureService;
 
    @Autowired
-   PatientServiceImpl patientService;
+   PatientServiceIMongoImpl patientService;
 
 
 
@@ -99,7 +99,6 @@ public class TailServiceImpl implements ITailService {
 
     @Override
     public List<Patient> getPatientsOnProcedure(int procedureId) {
-        System.out.println(procedureId);
         return this.getPatients(procedureId).stream()
                 .filter(patient -> patient.getActive().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
