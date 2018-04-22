@@ -1,32 +1,34 @@
-﻿<div class="col-md-6 col-md-offset-3">
+﻿<div class="row justify-content-md-center">
+  <div class="col-6">
     <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} лікаря</h2>
     <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
-            <label for="lastName">Прізвище</label>
-            <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
-            <div *ngIf="f.submitted && !lastName.valid" class="help-block">Прізвище обов`язково</div>
-        </div>
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
-            <label for="firstName">Ім`я</label>
-            <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
-            <div *ngIf="f.submitted && !firstName.valid" class="help-block">Ім`я обов`язково</div>
-        </div>
-        <div class="form-group">
-            <label for="patronymic">По батькові</label>
-            <input type="text" class="form-control" name="patronymic" [(ngModel)]="model.patronymic" #patronymic="ngModel" />
-        </div>
-        <div class="form-group">
-            <label for="cellPhone">Телефон</label>
-            <input type="text" class="form-control" name="cellPhone" [(ngModel)]="model.cellPhone" #cellPhone="ngModel" />
-        </div>
-        <div class="form-group">
-            <label for="speciality">Спеціальність</label>
-            <input type="text" class="form-control" name="speciality" [(ngModel)]="model.speciality" #speciality="ngModel" />
-        </div>
-        <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
-            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-            <a [routerLink]="['/doctors']" class="btn btn-link">Скасувати</a>
-        </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
+        <label for="lastName">Прізвище</label>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
+        <div *ngIf="f.submitted && !lastName.valid" class="help-block">Прізвище обов`язково</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
+        <label for="firstName">Ім`я</label>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
+        <div *ngIf="f.submitted && !firstName.valid" class="help-block">Ім`я обов`язково</div>
+      </div>
+      <div class="form-group">
+        <label for="patronymic">По батькові</label>
+        <input type="text" class="form-control" name="patronymic" [(ngModel)]="model.patronymic" #patronymic="ngModel" />
+      </div>
+      <div class="form-group">
+        <label for="cellPhone">Телефон</label>
+        <input type="text" class="form-control" name="cellPhone" [(ngModel)]="model.cellPhone" #cellPhone="ngModel" />
+      </div>
+      <div class="form-group">
+        <label for="speciality">Спеціальність</label>
+        <input type="text" class="form-control" name="speciality" [(ngModel)]="model.speciality" #speciality="ngModel" />
+      </div>
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/doctors']" class="btn btn-link">Скасувати</a>
+      </div>
     </form>
+  </div>
 </div>

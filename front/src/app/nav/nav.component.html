@@ -1,16 +1,28 @@
-﻿<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-      <li><a routerLink="/persons">Пацієнти</a></li>
-      <li><a routerLink="/doctors">Лікарі</a></li>
-      <li><a routerLink="/procedures">Процедури</a></li>
-      <li><a routerLink="/patients-queue">Загальна черга</a></li>
-      <li><a routerLink="/procedures-queue">Черга на процедури</a></li>
-      <li><a routerLink="/doctor-interface">Інтерфейс лікаря</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a routerLink="/users">Користувачі ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
-      <li [style.margin-right.px]="20" ><a routerLink="/login">Вихід</a></li>
-    </ul>
-  </div>
+﻿<nav class="navbar navbar-expand navbar-light bg-light mb-5">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга на процедури</a>
+    </li>
+    <li class="nav-item">
+      <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти на сьогодні</a>
+    </li>
+    <li class="nav-item dropdown" ngbDropdown>
+      <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}" routerLinkActive="active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Довідники</a>
+      <div class="dropdown-menu bg-light" ngbDropdownMenu>
+        <a class="dropdown-item" routerLink="/persons" routerLinkActive="active">Пацієнти</a>
+        <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Лікарі</a>
+        <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Процедури</a>
+        <a class="dropdown-item" routerLink="/users" routerLinkActive="active">Користувачі</a>
+      </div>
+    </li>
+    <li class="nav-item dropdown" ngbDropdown>
+      <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Інтерфейси</a>
+      <div class="dropdown-menu bg-light" ngbDropdownMenu>
+        <a class="dropdown-item" routerLink="/doctor-interface">Масажист</a>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav">
+    <li class="dropdown-item"><a class="dropdown-item" routerLink="/login">Вихід ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
+  </ul>
 </nav>

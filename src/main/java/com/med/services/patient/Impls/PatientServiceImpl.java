@@ -51,6 +51,9 @@ public class PatientServiceImpl implements IPatientsService {
     TherapyServiceImpl therapyService;
 
     @Autowired
+    TailServiceImpl tailService;
+
+    @Autowired
     DataStorage dataStorage;
 
     @Autowired
@@ -330,7 +333,7 @@ public class PatientServiceImpl implements IPatientsService {
 
         this.getAll().set(index, patient);
 
-         tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
+        tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
                 .findAny().get().setVacancies(0);
          //tail.setVacant(false);
 
