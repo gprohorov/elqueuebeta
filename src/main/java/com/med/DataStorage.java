@@ -49,8 +49,8 @@ public class DataStorage {
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
 
-       // patientRepository.deleteAll();
-      // patientRepository.saveAll(patients);
+        patientRepository.deleteAll();
+        patientRepository.saveAll(patients);
 
         patients.clear();
 

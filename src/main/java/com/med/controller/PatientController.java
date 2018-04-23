@@ -217,6 +217,7 @@ public class PatientController {
     }
 */
 
+/*
 
     // get tails for each procedure
     @GetMapping("/get/tails")
@@ -224,6 +225,7 @@ public class PatientController {
 
         return service.getTails();
     }
+*/
 
 //  get the first patient for the procedure from tail
     @GetMapping("/tail/get/first/{procid}")
