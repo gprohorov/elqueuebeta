@@ -61,7 +61,7 @@ export class PatientsQueueListComponent implements OnInit {
   }
 
   getTimeDiffClass(v: number) {
-    return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
+    return 'badge badge-pill badge-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
   }
   
   load(search: string = '') {

@@ -32,7 +32,7 @@ public class Procedure {
     }
 
     public Procedure(int id, String name, int cabinet, String notes
-            , int area, int price, int foreigner, int vip, int bussiness
+            , int area, int price, int foreigner, int vip, int business
             , int allInclusive, int social, Card card, int assigned, int done
             , boolean executed) {
         this.id = id;
@@ -43,7 +43,7 @@ public class Procedure {
         this.price = price;
         this.foreigner = foreigner;
         this.vip = vip;
-        this.business = bussiness;
+        this.business = business;
         this.allInclusive = allInclusive;
         this.social = social;
         this.card = card;
@@ -109,12 +109,12 @@ public class Procedure {
         this.vip = vip;
     }
 
-    public int getBussiness() {
+    public int getBusiness() {
         return business;
     }
 
-    public void setBussiness(int bussiness) {
-        this.business = bussiness;
+    public void setBusiness(int business) {
+        this.business = business;
     }
 
     public int getAllInclusive() {
