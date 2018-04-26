@@ -1,10 +1,17 @@
 package com.med.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by george on 3/9/18.
  */
+@Document
 public class Doctor {
+
+    @Id
     private int id;
+
     private String firstName;
     private String patronymic;
     private String lastName;
