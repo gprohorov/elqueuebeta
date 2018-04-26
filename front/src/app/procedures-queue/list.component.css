@@ -1,8 +1,6 @@
 ﻿.masonry-item { 
   width: 250px;
   margin-bottom: 20px;
-  max-height: 150px;
-  overflow-y: hidden;
   box-shadow:0px 0px 10px #222;
 	-moz-box-shadow:0px 0px 10px #222;
 	-webkit-box-shadow:0px 0px 10px #222;
@@ -16,12 +14,20 @@
 }
 
 .masonry-header { 
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+	padding: 5px;
+	color: #fff;
+	font-weight: 500;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 }
 
 .masonry-body { 
-  padding: 5px;
-  max-height: 110px;
-  overflow-y: scroll;
+	padding: 5px;
+	height: 57px;
+	overflow-y: hidden;
+}
+
+.masonry-body.expanded { 
+	height: 100%;
 }

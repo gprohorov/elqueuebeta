@@ -20,6 +20,7 @@ export class ProceduresQueueListComponent implements OnInit {
   StatusesArr = StatusesArr;
   Activity = Activity;
   ActivityArr = ActivityArr;
+  updateMasonryLayout = false;
 
   public myOptions: NgxMasonryOptions = {
     transitionDuration: '0.2s',
@@ -54,6 +55,11 @@ export class ProceduresQueueListComponent implements OnInit {
 
   getTimeDiffClass(v: number) {
     return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
+  }
+
+  toggleGroup(item: any) {
+    item.expanded = !item.expanded;
+    this.updateMasonryLayout = true;
   }
 
   load() {
