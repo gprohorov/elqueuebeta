@@ -31,7 +31,7 @@ export class ProcedureService {
         catchError(this.handleError)
       );
   }
-  
+
   update(model: Procedure) {
     return this.http
       .post(this.updateUrl, model)
@@ -39,7 +39,7 @@ export class ProcedureService {
         catchError(this.handleError)
       );
   }
-  
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);

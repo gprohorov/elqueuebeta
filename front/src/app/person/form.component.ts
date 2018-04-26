@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { Person } from '../_models/index';
 import { PersonService, AlertService } from '../_services/index';
@@ -22,14 +22,14 @@ export class PersonFormComponent {
         private alertService: AlertService) { }
 
     ngOnInit() {
-      let id = this.route.snapshot.paramMap.get('id');
+      const id = this.route.snapshot.paramMap.get('id');
       if (id) this.load(+id);
     }
-    
+
     ngOnDestroy() {
       if (this.sub) this.sub.unsubscribe();
-    } 
-  
+    }
+
     load(id: number) {
         this.loading = true;
         this.sub = this.service.get(id)
@@ -44,7 +44,7 @@ export class PersonFormComponent {
                     this.loading = false;
                 });
     }
-    
+
     submit() {
         this.loading = true;
           this.service.update(this.model)

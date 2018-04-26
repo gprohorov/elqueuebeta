@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { Person } from '../_models/index';
 import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
@@ -27,21 +27,21 @@ export class PatientsQueueListComponent implements OnInit {
   ngOnInit() {
     this.load();
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
-  } 
-  
-  delete(id: number, name: string) {
-    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load() });
   }
-  
+
+  delete(id: number, name: string) {
+    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
+  }
+
   getFullName(item: Person) {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
-  
+
   getProgress(list: any[]) {
-    var executed = 0;
+    let executed = 0;
     list.forEach(function(item) {
       if (item.executed) executed++;
     });
@@ -63,7 +63,7 @@ export class PatientsQueueListComponent implements OnInit {
   getTimeDiffClass(v: number) {
     return 'badge badge-pill badge-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
   }
-  
+
   load(search: string = '') {
     this.loading = true;
     this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });

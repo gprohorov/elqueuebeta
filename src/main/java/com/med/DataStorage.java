@@ -1,7 +1,10 @@
 package com.med;
 
 import com.med.model.*;
-import com.med.repository.patient.PatientRepository;
+// import com.med.repository.patient.PatientRepository;
+// import com.med.repository.doctor.DoctorRepository;
+// import com.med.repository.procedure.ProcedureRepository;
+// import com.med.repository.person.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +22,19 @@ import java.util.*;
 @Configuration
 public class DataStorage {
 
-
+/* 
     @Autowired
     PatientRepository patientRepository;
 
+	@Autowired
+    DoctorRepository doctorRepository;
+
+	@Autowired
+    ProcedureRepository procedureRepository;
+	
+	@Autowired
+    PersonRepository personRepository;
+ */
 
 
     @PostConstruct
@@ -48,7 +60,6 @@ public class DataStorage {
 
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
-
         patientRepository.deleteAll();
         patientRepository.saveAll(patients);
 

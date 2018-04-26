@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
 import { ProcedureService, AlertService } from '../_services/index';
@@ -24,7 +24,7 @@ export class ProcedureListComponent implements OnInit {
   ngOnInit() {
     this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }

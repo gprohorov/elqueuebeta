@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { Doctor } from '../_models/index';
 import { DoctorService, AlertService } from '../_services/index';
@@ -10,7 +10,7 @@ import { DoctorService, AlertService } from '../_services/index';
     templateUrl: './form.component.html'
 })
 
-export class DoctorFormComponent { 
+export class DoctorFormComponent {
     model: any = {};
     sub: Subscription;
     loading = false;
@@ -22,14 +22,14 @@ export class DoctorFormComponent {
         private alertService: AlertService) { }
 
     ngOnInit() {
-      let id = this.route.snapshot.paramMap.get('id');
+      const id = this.route.snapshot.paramMap.get('id');
       if (id) this.load(+id);
     }
-    
+
     ngOnDestroy() {
       if (this.sub) this.sub.unsubscribe();
-    } 
-  
+    }
+
     load(id: number) {
         this.loading = true;
         this.sub = this.service.get(id)
@@ -43,7 +43,7 @@ export class DoctorFormComponent {
                     this.loading = false;
                 });
     }
-    
+
     submit() {
         this.loading = true;
           this.service.update(this.model)

@@ -15,7 +15,7 @@ export class PatientsQueueService {
   private updateActivityUrl   = config.api_path + '/patient/update/activity/';
   private updateStatusUrl     = config.api_path + '/patient/update/status/';
   private updateBalanceUrl    = config.api_path + '/patient/update/balance/';
-  
+
   private doctorPatientUrl    = config.api_path + '/tail/first/';
   private startProcedureUrl   = config.api_path + '/patient/start/procedure/';
   private cancelProcedureUrl  = config.api_path + '/patient/cancel/procedure/';
@@ -30,7 +30,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   getTails() {
     return this.http
       .get<any[]>(this.tailsUrl)
@@ -38,7 +38,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   getDoctorPatient(procedureID: number) {
     return this.http
       .get<any>(this.doctorPatientUrl + procedureID)
@@ -46,7 +46,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   getAllByProcedure(id: number) {
     return this.http
       .get<any[]>(this.listByProcedureUrl + id)
@@ -62,14 +62,14 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   updateStatus(id: number, value: string) {
     return this.http
       .get(this.updateStatusUrl + id + '/' + value)
       .pipe(
         catchError(this.handleError)
       );
-  }  
+  }
 
   updateBalance(id: number, value: string) {
     return this.http
@@ -78,7 +78,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   startProcedure(patientID: number, procedureID: number) {
     return this.http
       .get(this.startProcedureUrl + patientID + '/' + procedureID)
@@ -86,7 +86,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   cancelProcedure(patientID: number, procedureID: number) {
     return this.http
       .get(this.cancelProcedureUrl + patientID + '/' + procedureID)
@@ -94,7 +94,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   executeProcedure(patientID: number, procedureID: number) {
     return this.http
       .get(this.executeProcedureUrl + patientID + '/' + procedureID)
@@ -102,7 +102,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
- 
+
   delete(id: number) {
      return this.http
       .get(this.deleteUrl + id)
@@ -110,7 +110,7 @@ export class PatientsQueueService {
         catchError(this.handleError)
       );
   }
-  
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
