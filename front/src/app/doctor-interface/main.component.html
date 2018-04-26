@@ -6,7 +6,7 @@
       </h1>
       <h4 class="title">Массаж</h4>
     </div>
-    <div class="content" *ngIf="item.person">
+    <div class="content" *ngIf="item?.person">
       <h4 class="title">
         Паціент <b>{{getFullName(item.person)}}</b>
       </h4>

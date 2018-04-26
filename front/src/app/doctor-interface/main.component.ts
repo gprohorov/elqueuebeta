@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Person } from '../_models/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
+import { Statuses, Activity } from '../_storage';
 
 @Component({
   moduleId: module.id,
@@ -35,7 +36,7 @@ export class DoctorInterfaceComponent implements OnInit {
     this.sub = this.service.getDoctorPatient(6).subscribe(data => {
       this.item = data;
       this.loading = false;
-      if (this.item.active !== 'ACTIVE') this.procedureStarted = true;
+      if (this.item && this.item.active === 'ON_PROCEDURE') this.procedureStarted = true;
     });
   }
 
