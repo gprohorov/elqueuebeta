@@ -1,10 +1,10 @@
 export const Reckonings = {
-    ADVANCE: { text: 'Аванс', cssClass: 'badge badge-danger' },
-    CARD: { text: 'Карта', cssClass: 'badge badge-warning' },
-    FREE: { text: 'Безоплатно', cssClass: 'badge badge-info' },
-    DAY: { text: 'В кінці дня', cssClass: 'badge badge-success' },
-    END: { text: 'В кінці лікування', cssClass: 'badge badge-success' },
-    NULL: { text: 'Не визначено', cssClass: 'badge badge-success' }
+    ADVANCE: { text: 'РђРІР°РЅСЃ', cssClass: 'badge badge-danger' },
+    CARD: { text: 'РљР°СЂС‚Р°', cssClass: 'badge badge-warning' },
+    FREE: { text: 'Р‘РµР·РѕРїР»Р°С‚РЅРѕ', cssClass: 'badge badge-info' },
+    DAY: { text: 'Р’ РєС–РЅС†С– РґРЅСЏ', cssClass: 'badge badge-success' },
+    END: { text: 'Р’ РєС–РЅС†С– Р»С–РєСѓРІР°РЅРЅСЏ', cssClass: 'badge badge-success' },
+    NULL: { text: 'РќРµ РІРёР·РЅР°С‡РµРЅРѕ', cssClass: 'badge badge-success' }
 };
 
 export const ReckoningsArr = ['ADVANCE', 'CARD', 'FREE', 'DAY', 'END', 'NULL'];

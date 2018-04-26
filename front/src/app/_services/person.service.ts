@@ -33,7 +33,7 @@ export class PersonService {
         catchError(this.handleError)
       );
   }
-  
+
   delete(id: number) {
      return this.http
       .get(this.deleteUrl + id)
@@ -41,7 +41,7 @@ export class PersonService {
         catchError(this.handleError)
       );
   }
-  
+
   update(model: Person) {
     return this.http
       .post(this.updateUrl, model)
@@ -49,7 +49,7 @@ export class PersonService {
         catchError(this.handleError)
       );
   }
-  
+
   toPatientToday(id: number) {
     return this.http
       .get(this.toPatientTodayUrl + id)
@@ -57,8 +57,8 @@ export class PersonService {
         catchError(this.handleError)
       );
   }
-  
-  
+
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);

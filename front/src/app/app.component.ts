@@ -7,7 +7,7 @@ import { AuthenticationService } from './_services/authentication.service';
     templateUrl: 'app.component.html'
 })
 
-export class AppComponent { 
+export class AppComponent {
 
   constructor(public authenticationService: AuthenticationService) {}
 

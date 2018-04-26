@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from 'ng5-masonry';
 import { Person } from '../_models/index';
@@ -27,7 +27,7 @@ export class ProceduresQueueListComponent implements OnInit {
     fitWidth: true,
     gutter: 20
   };
-  
+
   constructor(
     private alertService: AlertService,
     private service: PatientsQueueService
@@ -37,17 +37,17 @@ export class ProceduresQueueListComponent implements OnInit {
   ngOnInit() {
     this.load();
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
-  } 
+  }
 
   getFullName(item: Person) {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
 
   getProgress(list: any[]) {
-    var executed = 0;
+    let executed = 0;
     list.forEach(function(item) { if (item.executed) executed++; });
     return executed + '/' + list.length;
   }
@@ -55,10 +55,10 @@ export class ProceduresQueueListComponent implements OnInit {
   getTimeDiffClass(v: number) {
     return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
   }
-   
+
   load() {
     this.loading = true;
     this.sub = this.service.getTails().subscribe(data => { this.items = data; this.loading = false; });
   }
-  
+
 }

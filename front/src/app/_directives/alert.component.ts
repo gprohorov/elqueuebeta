@@ -5,7 +5,7 @@ import { AlertService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
-    selector: 'alert',
+    selector: 'app-alert',
     templateUrl: 'alert.component.html'
 })
 
@@ -13,7 +13,7 @@ export class AlertComponent implements OnDestroy {
     private subscription: Subscription;
     message: any;
 
-    constructor(private alertService: AlertService) { 
+    constructor(private alertService: AlertService) {
         // subscribe to alert messages
         this.subscription = alertService.getMessage().subscribe(message => { this.message = message; });
     }

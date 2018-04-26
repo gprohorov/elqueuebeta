@@ -5,18 +5,18 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserXhr } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from '@angular/router';
-import { NgxMasonryModule } from 'ng5-masonry'; 
+import { NgxMasonryModule } from 'ng5-masonry';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
 import {  AlertService,
-          AuthenticationService, 
-          UserService, 
-          PersonService, 
-          DoctorService, 
-          ProcedureService, 
+          AuthenticationService,
+          UserService,
+          PersonService,
+          DoctorService,
+          ProcedureService,
           PatientsQueueService,
           DoctorInterfaceService
        } from './_services/index';
@@ -49,22 +49,22 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-    
+
     { path: 'persons', component: PersonListComponent, canActivate: [AuthGuard] },
     { path: 'person-form', component: PersonFormComponent, canActivate: [AuthGuard] },
-    
+
     { path: 'doctors', component: DoctorListComponent, canActivate: [AuthGuard] },
     { path: 'doctor-form', component: DoctorFormComponent, canActivate: [AuthGuard] },
-    
+
     { path: 'procedures', component: ProcedureListComponent, canActivate: [AuthGuard] },
     { path: 'procedure-form', component: ProcedureFormComponent, canActivate: [AuthGuard] },
-    
+
     { path: 'patients-queue', component: PatientsQueueListComponent, canActivate: [AuthGuard] },
-    
+
     { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
 
     { path: 'doctor-interface', component: DoctorInterfaceComponent, canActivate: [AuthGuard] },
-    
+
     { path: '**', redirectTo: '' }
 ];
 
@@ -76,7 +76,7 @@ const appRoutes: Routes = [
         NgxMasonryModule,
         NgbModule.forRoot(),
         RouterModule.forRoot(appRoutes)
-    ], 
+    ],
     declarations: [
         AppComponent,
         AlertComponent,

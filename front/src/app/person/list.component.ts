@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription'; 
+import { Subscription } from 'rxjs/Subscription';
 
 import { Person } from '../_models/index';
 import { PersonService, AlertService } from '../_services/index';
@@ -21,23 +21,23 @@ export class PersonListComponent implements OnInit {
   ngOnInit() {
     this.load();
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
-  } 
-  
+  }
+
   delete(id: number, name: string) {
-    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load() });
+    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
   }
 
   toPatientToday(id: number) {
     this.service.toPatientToday(id).subscribe(() => { this.alertService.success('Операція пройшла успішно'); });
   }
-  
+
   getFullName(item: Person) {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
-  
+
   load(search: string = '') {
     this.loading = true;
     this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });

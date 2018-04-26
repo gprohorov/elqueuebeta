@@ -1,5 +1,7 @@
+const api_protocol  = 'http',
+      api_host      = window.location.hostname,
+      api_port      = '8088',
+      api_suffix    = '/api';
 export const config = {
-  // api_path: 'http://mednean.e-head.ru:8088/api'
-  // api_path: 'http://192.168.1.2:8088/api'
-  api_path: 'http://' + window.location.hostname + ':8088/api'
-}
+  api_path: api_protocol + '://' + api_host + ':' + api_port + api_suffix
+};

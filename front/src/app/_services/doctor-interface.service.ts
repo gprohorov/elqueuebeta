@@ -31,7 +31,7 @@ export class DoctorInterfaceService {
         catchError(this.handleError)
       );
   }
-  
+
   updateParient() {
     return this.http
       .post(this.updateParientUrl, {})
@@ -39,7 +39,7 @@ export class DoctorInterfaceService {
         catchError(this.handleError)
       );
   }
-  
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
