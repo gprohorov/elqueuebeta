@@ -41,8 +41,12 @@ public class TailServiceImpl implements ITailService {
 
    // collect all patients from general queue to ONE tail( procedure)
     private List<Patient> getPatientsForOneTailFromCrowd(int procedureId) {
-
-        return   patientService.getActivePatients().stream().filter(
+              Tail tail = tails.stream()
+                      .filter(tail1 -> tail1.getProcedureId()==procedureId)
+                      .findAny().get();
+              Patient pat = tail.getPatientOnProcedure();
+              List<Patient> pats = patientService.getActivePatients()
+                      .stream().filter(
               patient -> patient.getProceduresForToday().stream()
               .anyMatch(procedure ->
                       (procedure.getId()==procedureId)
@@ -51,6 +55,12 @@ public class TailServiceImpl implements ITailService {
               )
       ).collect(Collectors.toList());
 
+              if (pat !=null){
+                  pat.setDelta();
+                  pats.add(pat);}
+
+
+        return pats.stream().sorted().collect(Collectors.toList());
     }
 
     private void setPatientsToAllTails(){
@@ -106,9 +116,11 @@ public class TailServiceImpl implements ITailService {
     }
 
 
+
     @Override
     public List<Tail> getAll() {
         this.setPatientsToAllTails();
+
         return tails;
     }
 

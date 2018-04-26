@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +107,11 @@ public class Patient implements Comparable<Patient> {
 
     public void setDelta(long delta) {
         this.delta = delta;
+    }
+
+    public void setDelta() {
+        this.delta = ChronoUnit.MINUTES.between(
+                this.getLastActivity(), LocalDateTime.now());
     }
 
     public int getId() {

@@ -330,7 +330,7 @@ public class DataStorage {
 
     private Patient vasa = new Patient(persons.get(4), primary
             , proceduresForVas
-            , Status.SOCIAL, LocalDateTime.now().minusMinutes(35), LocalDateTime.now().minusMinutes(89),0, Activity.ACTIVE) ;
+            , Status.SOCIAL, LocalDateTime.now().minusMinutes(60), LocalDateTime.now().minusMinutes(120),0, Activity.ACTIVE) ;
 
    private Patient trump = new Patient(persons.get(9), primary
             , proceduresForTrump

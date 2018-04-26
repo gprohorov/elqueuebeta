@@ -228,7 +228,8 @@ public class PatientServiceIMongoImpl implements IPatientsService {
     public List<Patient> getActivePatients(){
         return this.getAll().stream()
                 .filter(el->el.getActive().equals(Activity.ACTIVE)
-                //    ||el.getActive().equals(Activity.ON_PROCEDURE)
+                 //        ||
+                 //       el.getActive().equals(Activity.ON_PROCEDURE)
                 )
                 .collect(Collectors.toList());
     }
@@ -295,6 +296,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
         patient.setActive(Activity.ON_PROCEDURE);
+
 
         repository.save(patient);
 
