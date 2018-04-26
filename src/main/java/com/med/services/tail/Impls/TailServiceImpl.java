@@ -72,8 +72,8 @@ public class TailServiceImpl implements ITailService {
     public List<Patient> getAllPatientsActiveAndOnProcedure(int procedureId) {
         return this.getPatients(procedureId).stream()
                 .filter(patient ->
-                        patient.getActive().equals(Activity.ON_PROCEDURE)
-                        ||
+                   //     patient.getActive().equals(Activity.ON_PROCEDURE)
+                   //     ||
                         patient.getActive().equals(Activity.ACTIVE)
                 )
                 .collect(Collectors.toList());
@@ -92,8 +92,9 @@ public class TailServiceImpl implements ITailService {
     public Patient getFirstActiveAndOnProcedure(int procedureId) {
         return this.getPatients(procedureId).stream()
                 .filter(patient -> patient.getActive().equals(Activity.ACTIVE)
-                        ||
-                        patient.getActive().equals(Activity.ON_PROCEDURE))
+                       ||
+                       patient.getActive().equals(Activity.ON_PROCEDURE)
+                       )
                 .findFirst().orElse(null);
     }
 

@@ -220,12 +220,15 @@ public class PatientServiceIMongoImpl implements IPatientsService {
     }
 */
 
-
+////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    ////////////////// HERE   /////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     public List<Patient> getActivePatients(){
         return this.getAll().stream()
                 .filter(el->el.getActive().equals(Activity.ACTIVE)
-                     ||el.getActive().equals(Activity.ON_PROCEDURE)
+                //    ||el.getActive().equals(Activity.ON_PROCEDURE)
                 )
                 .collect(Collectors.toList());
     }

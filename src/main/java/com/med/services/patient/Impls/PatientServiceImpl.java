@@ -274,7 +274,9 @@ public class PatientServiceImpl implements IPatientsService {
 
     public List<Patient> getActivePatients(){
         return this.getAll().stream()
-                .filter(el->el.getActive().equals(Activity.ACTIVE)||el.getActive().equals(Activity.ON_PROCEDURE))
+                .filter(el->el.getActive().equals(Activity.ACTIVE)
+                    //    ||el.getActive().equals(Activity.ON_PROCEDURE)
+                )
                 .collect(Collectors.toList());
     }
 ////////////////////////  TAILS   //////////////////////////
