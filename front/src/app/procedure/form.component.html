@@ -14,6 +14,14 @@
       <label>Ціни</label>
       <div class="row form-group">
         <div class="col-md-3">
+          Базова
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="price" [(ngModel)]="model.price" #foreigner="ngModel" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-3">
           <span [class]="Statuses.FOREIGNER.cssClass">{{Statuses.FOREIGNER.text}}</span>
         </div>
         <div class="col-md-3">

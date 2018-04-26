@@ -12,7 +12,14 @@
       <table class="table table-sm">
         <thead class="thead-light">
           <tr>
-            <th></th> <th [style.min-width.px]="300">ПІБ</th> <th>Статус</th> <th>Баланс</th> <th>Активність</th> <th>Прогрес</th> <th>Час очікування</th>
+            <th></th>
+            <th [style.min-width.px]="300">ПІБ</th>
+            <th>Статус</th>
+            <th>Баланс</th>
+            <th>Активність</th>
+            <th>Прогрес</th>
+            <th>Час очікування</th>
+            <th>Початок</th>
           </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
@@ -24,6 +31,7 @@
             <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
             <td>{{getProgress(item.proceduresForToday)}}</td>
             <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span> хв.</td>
+            <td>{{item.startActivity | date: 'HH:mm'}}</td>
           </tr>
           <tr [hidden]="!rows[i]">
             <td colspan="100">
