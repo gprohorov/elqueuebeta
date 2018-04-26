@@ -94,7 +94,7 @@ public class TailServiceImpl implements ITailService {
                 .filter(patient -> patient.getActive().equals(Activity.ACTIVE)
                         ||
                         patient.getActive().equals(Activity.ON_PROCEDURE))
-                .findFirst().get();
+                .findFirst().orElse(null);
     }
 
     @Override

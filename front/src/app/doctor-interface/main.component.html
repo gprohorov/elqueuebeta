@@ -16,13 +16,13 @@
         </div>
         <div class="col-4" [ngSwitch]="procedureStarted">
           <div *ngSwitchCase="true">
-            <button class="btn btn-success btn-lg btn-block" 
+            <button class="btn btn-success btn-lg btn-block"
               [style.min-height.px]="200" (click)="executeProcedure()">Завершити процедуру</button>
             <button class="btn btn-danger btn-lg btn-block"
               [style.min-height.px]="200" (click)="cancelProcedure()">Скаcувати процедуру</button>
           </div>
           <div *ngSwitchCase="false">
-            <button class="btn btn-primary btn-lg btn-block" 
+            <button class="btn btn-primary btn-lg btn-block"
               [style.min-height.px]="200" (click)="startProcedure()">Почати процедуру</button>
           </div>
         </div>
