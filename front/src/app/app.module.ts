@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BrowserXhr } from '@angular/http';
+import { HttpModule, BrowserXhr } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from '@angular/router';
 import { NgxMasonryModule } from 'ng5-masonry';
@@ -72,6 +72,7 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         FormsModule,
+        HttpModule,
         HttpClientModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
