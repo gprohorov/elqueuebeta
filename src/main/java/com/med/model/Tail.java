@@ -38,6 +38,14 @@ public class Tail {
         this.vacancies = vacancies;
     }
 
+    public Patient getPatientOnProcedure() {
+        return patientOnProcedure;
+    }
+
+    public void setPatientOnProcedure(Patient patientOnProcedure) {
+        this.patientOnProcedure = patientOnProcedure;
+    }
+
     public boolean isVacant() {
         return vacant;
     }

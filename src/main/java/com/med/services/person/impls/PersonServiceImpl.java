@@ -46,7 +46,10 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public Person updatePerson(Person person) {
-
+        if (person.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Person::getId).max().getAsInt() + 1;
+            person.setId(id);
+        }
 
         return repository.save(person);
     }

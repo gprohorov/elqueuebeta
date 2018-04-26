@@ -56,7 +56,6 @@ public class PatientServiceImpl implements IPatientsService {
     @Autowired
     DataStorage dataStorage;
 
-	
 //////////////////////////////repositories//////////////////////////////////////
 
 

@@ -47,8 +47,10 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public Doctor updateDoctor(Doctor doctor) {
-
-
+        if (doctor.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Doctor::getId).max().getAsInt() + 1;
+            doctor.setId(id);
+        }
         return repository.save(doctor);
     }
 
