@@ -66,7 +66,15 @@ export class PatientsQueueListComponent implements OnInit {
 
   load(search: string = '') {
     this.loading = true;
-    this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getAll().subscribe(data => {
+      this.items = data.sort(function(a, b) {
+        const x = a.startActivity, y = b.startActivity;
+        if (x < y) { return -1; }
+        if (x > y) { return 1; }
+        return 0;
+      });
+      this.loading = false;
+    });
   }
 
 }
