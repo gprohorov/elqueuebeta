@@ -12,45 +12,46 @@
       </div>
     </div>    
     <div class="content table-responsive table-full-width">
-          <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th></th> <th>Назва</th> <th>Кабінет</th> <th>Ціна:</th> 
-                        <th *ngFor="let status of StatusesArr"><span [class]="Statuses[status].cssClass">{{Statuses[status].text}}</span></th> 
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
-                    <tr>
-                        <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.cabinet}}</td>
-                        <td></td>
-                        <td>{{item.foreigner}}</td>
-                        <td>{{item.vip}}</td>
-                        <td>{{item.business}}</td>
-                        <td>{{item.allInclusive}}</td>
-                        <td>{{item.social}}</td>
-                        <td align="right">
-                          <button class="btn btn-primary" [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
-                        </td>
-                    </tr>
-                    <tr [hidden]="!rows[i]">
-                      <td colspan="100">
-                        <div class="card">
-                          <div class="card-header">
-                            <div class="row">
-                              <h4 class="col-auto mr-auto">Карта процедури</h4>
-                            </div>
-                          </div>
-                          <div class="card-body">
-                            В розробці
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                </tbody>
-          </table>
+      <table class="table table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th></th> <th>Назва</th> <th>Кабінет</th> <th>Ціна:</th> <th>Базова</th>
+            <th *ngFor="let status of StatusesArr"><span [class]="Statuses[status].cssClass">{{Statuses[status].text}}</span></th> 
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
+          <tr>
+            <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
+            <td>{{item.name}}</td>
+            <td>{{item.cabinet}}</td>
+            <td></td>
+            <td>{{item.price}}</td>
+            <td>{{item.foreigner}}</td>
+            <td>{{item.vip}}</td>
+            <td>{{item.business}}</td>
+            <td>{{item.allInclusive}}</td>
+            <td>{{item.social}}</td>
+            <td align="right">
+              <button class="btn btn-primary btn-sm" [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
+            </td>
+          </tr>
+          <tr [hidden]="!rows[i]">
+            <td colspan="100">
+              <div class="card">
+                <div class="card-header">
+                  <div class="row">
+                    <h4 class="col-auto mr-auto">Карта процедури</h4>
+                  </div>
+                </div>
+                <div class="card-body">
+                  В розробці
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
