@@ -62,7 +62,7 @@ public class DataStorage {
         patientRepository.deleteAll();
         patientRepository.saveAll(patients);
 
-        patients.clear();
+     //   patients.clear();
 
     }
 
