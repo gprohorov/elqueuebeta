@@ -64,7 +64,7 @@ public class AppointmentController {
 
 ////////////////////////////////////////////////////////////////////////
 
-    // DELETE the appointment by id
+    // get al appointments by date
     @RequestMapping("/list/{date}")
     public List<Appointment> delAppointment(@PathVariable(value = "date")  LocalDate date)  {
 

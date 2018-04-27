@@ -17,6 +17,7 @@ public class Doctor {
     private String lastName;
     private String speciality;
     private String cellPhone;
+    private int userId;
 
     public Doctor() {
     }
