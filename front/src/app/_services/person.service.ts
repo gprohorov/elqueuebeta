@@ -58,7 +58,6 @@ export class PersonService {
       );
   }
 
-
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);

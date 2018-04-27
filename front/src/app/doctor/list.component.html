@@ -25,6 +25,7 @@
             <td>{{item.speciality}}</td>
             <td align="right">
               <button class="btn btn-primary btn-sm" [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
+              <button class="btn btn-danger btn-sm" (click)="delete(item.id, getFullName(item))">Видалити</button>
             </td>
           </tr>
         </tbody>

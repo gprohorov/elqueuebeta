@@ -30,6 +30,10 @@ export class DoctorListComponent implements OnInit {
     return [item.lastName, item.firstName, item.patronymic].join(' ');
   }
 
+  delete(id: number, name: string) {
+    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
+  }
+
   load(search: string = '') {
     this.loading = true;
     this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });

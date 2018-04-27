@@ -13,6 +13,7 @@ export class DoctorService {
   private listUrl   = config.api_path + '/doctor/list/';
   private getUrl    = config.api_path + '/doctor/get/';
   private updateUrl = config.api_path + '/doctor/update/';
+  private deleteUrl = config.api_path + '/doctor/delete/';
 
   constructor(private http: HttpClient) { }
 
@@ -38,6 +39,14 @@ export class DoctorService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  delete(id: number) {
+    return this.http
+      .get(this.deleteUrl + id)
+      .pipe(
+        catchError(this.handleError)
+     );
   }
 
   // Implement a method to handle errors if any
