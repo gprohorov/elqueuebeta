@@ -23,6 +23,7 @@
     </li>
   </ul>
   <ul class="navbar-nav">
+    <li class="dropdown-item"><button class="btn btn-sm btn-danger" (click)="resetDB()">Reset DB</button></li>
     <li class="dropdown-item"><a class="dropdown-item" routerLink="/login">Вихід ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
   </ul>
 </nav>

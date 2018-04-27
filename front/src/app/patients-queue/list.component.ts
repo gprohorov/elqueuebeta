@@ -68,8 +68,6 @@ export class PatientsQueueListComponent implements OnInit {
     this.loading = true;
     this.sub = this.service.getAll().subscribe(data => {
       this.items = data.sort(function(a, b) {
-        console.log(a.startActivity, b.startActivity);
-        // return a.startActivity < b.startActivity;
         const x = a.startActivity, y = b.startActivity;
         if (x < y) { return -1; }
         if (x > y) { return 1; }
