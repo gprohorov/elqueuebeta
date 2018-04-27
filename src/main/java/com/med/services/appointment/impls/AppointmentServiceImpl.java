@@ -41,12 +41,12 @@ public class AppointmentServiceImpl implements IAppointmentService {
     }
 
     @Override
-    public Appointment getAppointment(int id) {
+    public Appointment getAppointment(long id) {
         return appointmentDAO.getAppointment(id);
     }
 
     @Override
-    public Appointment deleteAppointment(int id) {
+    public Appointment deleteAppointment(long id) {
         return appointmentDAO.deleteAppointment(id);
     }
 

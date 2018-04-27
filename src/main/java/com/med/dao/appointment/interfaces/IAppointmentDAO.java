@@ -15,8 +15,8 @@ public interface IAppointmentDAO {
     Appointment createAppointment(Patient patient, LocalDate date);
     Appointment createAppointment(Person person, LocalDate date);
     Appointment updateAppointment(Appointment appointment);
-    Appointment getAppointment(int id);
-    Appointment deleteAppointment(int id);
+    Appointment getAppointment(long id);
+    Appointment deleteAppointment(long id);
     List<Appointment> getAppointmentsByDate(LocalDate date);
     List<Appointment> getAll();
 }

@@ -59,7 +59,7 @@ public class AppointmentDAOImpl implements IAppointmentDAO {
     }
 
     @Override
-    public Appointment getAppointment(int id) {
+    public Appointment getAppointment(long id) {
         return dataStorage.getAppointments().stream()
                 .filter(el->el.getId()==id).findFirst()
                 .orElse(null);
@@ -75,7 +75,7 @@ public class AppointmentDAOImpl implements IAppointmentDAO {
     }
 
     @Override
-    public Appointment deleteAppointment(int id) {
+    public Appointment deleteAppointment(long id) {
 
        Appointment appointment = this.getAppointment(id);
         int index = dataStorage.getAppointments().indexOf(appointment);

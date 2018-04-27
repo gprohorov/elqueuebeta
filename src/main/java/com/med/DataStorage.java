@@ -472,4 +472,38 @@ public class DataStorage {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+
+    public void resetPatientsTable(){
+
+        assigned.put(massage, 10);
+        assigned.put(pulling, 10);
+        // usualTherapy.setProgress(assigned);
+        therapies.add(primary);
+        therapies.add(usualTherapy);
+
+
+        progres2.put(massage, true);
+        progres2.put(pulling, false);
+
+        progres.put(massage,false);
+        progres.put(laser,false);
+        progres.put(pulling,false);
+
+        patients.add(vasa);
+        patients.add(trump);
+        patients.add(ivanov);
+        patients.add(petrovv);
+
+        patients.get(2).setTherapy(therapies.get(1));
+        //patients.get(0).setAssignedProcedures(progres);
+        patientRepository.deleteAll();
+        patientRepository.saveAll(patients);
+
+        patients.clear();
+
+    }
+
+
+
 }

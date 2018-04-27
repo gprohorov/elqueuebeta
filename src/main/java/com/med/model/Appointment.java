@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 public class Appointment {
-    private int id;
+    private long id;
     private Patient patient;
     private LocalDate date;
 
@@ -23,7 +23,7 @@ public class Appointment {
         this.date = date;
     }
 
-    public Appointment(int id, Patient patient, LocalDate date) {
+    public Appointment(long id, Patient patient, LocalDate date) {
         this.id = id;
         this.patient = patient;
         this.date = date;
@@ -34,7 +34,7 @@ public class Appointment {
 
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
