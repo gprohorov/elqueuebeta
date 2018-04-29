@@ -59,8 +59,8 @@ public class DataStorage {
 
         patients.get(2).setTherapy(therapies.get(1));
         //patients.get(0).setAssignedProcedures(progres);
-        patientRepository.deleteAll();
-        patientRepository.saveAll(patients);
+      //  patientRepository.deleteAll();
+      //  patientRepository.saveAll(patients);
 
      //   patients.clear();
 
@@ -361,13 +361,13 @@ public class DataStorage {
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(14), primary, this.schema3()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(14)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(31)
                             , LocalDateTime.now().minusMinutes(222),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(15), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
                             , LocalDateTime.now().minusMinutes(156),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(16), primary, this.schema2()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(15)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(46)
                             , LocalDateTime.now().minusMinutes(241),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(17), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
@@ -376,7 +376,7 @@ public class DataStorage {
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
                             , LocalDateTime.now().minusMinutes(180),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(19), primary, this.schema4()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(7)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(61)
                             , LocalDateTime.now().minusMinutes(199),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(20), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)

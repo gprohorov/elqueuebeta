@@ -69,6 +69,10 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public List<Doctor> getAll() {
+
+      //  List<Doctor> doctors =repository.findAll();
+       // doctors.stream().forEach(doctor -> doctor.setUser(UserRepository.findById(doctor.getUserId).get());
+
         return repository.findAll();
     }
 /*

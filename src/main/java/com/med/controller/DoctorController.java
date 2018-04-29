@@ -63,7 +63,7 @@ public class DoctorController {
     }
 
     // DELETE the doctor by id
-    @PostMapping("/doctor/delete/{id}")
+    @GetMapping("/doctor/delete/{id}")
     public Doctor delDoctor(@PathVariable(value = "id")  int doctorId)  {
 
         return service.deleteDoctor(doctorId);
