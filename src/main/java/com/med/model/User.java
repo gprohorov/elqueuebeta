@@ -1,5 +1,9 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -7,10 +11,15 @@ import java.util.List;
 /**
  * Created by george on 27.04.18.
  */
+@Document
 public class User implements UserDetails {
+    @Id
+    private ObjectId id;
 
     private List<Role> authorities;
     private String password;
+
+    @Indexed(unique = true)
     private String username;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
@@ -18,6 +27,17 @@ public class User implements UserDetails {
     private boolean enabled;
 
     public User() {
+    }
+
+    public User(ObjectId id, List<Role> authorities, String password, String username, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
+        this.id = id;
+        this.authorities = authorities;
+        this.password = password;
+        this.username = username;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
     }
 
     public User(List<Role> authorities, String password, String username, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
