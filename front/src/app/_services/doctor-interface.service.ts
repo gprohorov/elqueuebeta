@@ -10,9 +10,9 @@ import { Person } from '../_models/index';
 @Injectable()
 export class DoctorInterfaceService {
   // Define the routes we are going to interact with
-  private getPatientUrl     = config.api_path + '/doctor/get/';
-  private listUrl           = config.api_path + '/doctor/list/';
-  private updateParientUrl  = config.api_path + '/doctor/update/';
+  private getPatientUrl    = config.api_path + '/doctor/get/';
+  private listUrl          = config.api_path + '/doctor/list/';
+  private updateParientUrl = config.api_path + '/doctor/update/';
 
   constructor(private http: HttpClient) { }
 

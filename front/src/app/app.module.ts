@@ -1,16 +1,16 @@
 ﻿import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpModule, BrowserXhr } from '@angular/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+
 import { NgxMasonryModule } from 'ng5-masonry';
 
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
+import { JwtInterceptor, fakeBackendProvider } from './_helpers/index';
 import {  AlertService,
           AuthenticationService,
           UserService,
@@ -73,7 +73,6 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
         HttpClientModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
@@ -106,7 +105,6 @@ const appRoutes: Routes = [
         PatientsQueueService,
         DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: BrowserXhr, useClass: CustExtBrowserXhr },
         fakeBackendProvider
     ],
     schemas: [ NO_ERRORS_SCHEMA ],
