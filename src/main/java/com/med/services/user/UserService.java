@@ -4,6 +4,7 @@ import com.med.model.Role;
 import com.med.model.User;
 import com.med.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.token.Token;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -72,5 +73,10 @@ public class UserService implements UserDetailsService {
                        -> new UsernameNotFoundException( username + " was not found") );
 
         return user;
+    }
+
+    public Token getTokenForUser(User user){
+
+        return null;
     }
 }
