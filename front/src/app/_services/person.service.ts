@@ -58,10 +58,32 @@ export class PersonService {
       );
   }
 
+  sortBy(criteria: PersonSearchCriteria, list) {
+    return list.sort((a, b) => {
+      let x = a[criteria.sortColumn], y = b[criteria.sortColumn];
+      if (x && x.toLowerCase) x = x.toLowerCase();
+      if (y && y.toLowerCase) y = y.toLowerCase();
+      if (criteria.sortDirection === 'asc') {
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      } else {
+        if (x > y) return -1;
+        if (x < y) return 1;
+        return 0;
+      }
+    });
+  }
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
     return Observable.throw(err.message || err);
   }
 
+}
+
+export class PersonSearchCriteria {
+  sortColumn: string;
+  sortDirection: string;
 }
