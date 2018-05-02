@@ -26,6 +26,8 @@ public class DataStorage {
     @Autowired
     PatientRepository patientRepository;
 
+
+
 	@Autowired
     DoctorRepository doctorRepository;
 
@@ -37,8 +39,8 @@ public class DataStorage {
 
 
     @PostConstruct
-            void init(){
-         assigned.put(massage, 10);
+           void init(){
+  /*        assigned.put(massage, 10);
          assigned.put(pulling, 10);
        // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -57,7 +59,7 @@ public class DataStorage {
         patients.add(ivanov);
         patients.add(petrovv);
 
-        patients.get(2).setTherapy(therapies.get(1));
+        patients.get(2).setTherapy(therapies.get(1));*/
         //patients.get(0).setAssignedProcedures(progres);
       //  patientRepository.deleteAll();
       //  patientRepository.saveAll(patients);
@@ -476,7 +478,7 @@ public class DataStorage {
 
     public void resetPatientsTable(){
 
-        assigned.put(massage, 10);
+        /*assigned.put(massage, 10);
         assigned.put(pulling, 10);
         // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -500,7 +502,16 @@ public class DataStorage {
         patientRepository.deleteAll();
         patientRepository.saveAll(patients);
 
-        patients.clear();
+        patients.clear();*/
+        List<Patient> patients = patientRepository.findAll();
+        patients.stream().forEach(patient
+                -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
+
+        patients.stream().forEach(patient
+                -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
+
+        patientRepository.saveAll(patients);
+
 
     }
 
