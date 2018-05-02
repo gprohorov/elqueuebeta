@@ -13,6 +13,7 @@
         <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Лікарі</a>
         <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Процедури</a>
         <a class="dropdown-item" routerLink="/users" routerLinkActive="active">Користувачі</a>
+        <a class="dropdown-item badge-danger" routerLink="" (click)="resetDB()">Reset DB</a>
       </div>
     </li>
     <li class="nav-item dropdown" ngbDropdown>
@@ -23,7 +24,6 @@
     </li>
   </ul>
   <ul class="navbar-nav">
-    <li class="dropdown-item"><button class="btn btn-sm btn-danger" (click)="resetDB()">Reset DB</button></li>
     <li class="dropdown-item"><a class="dropdown-item" routerLink="/login">Вихід ({{currentUser.firstName}} {{currentUser.lastName}})</a></li>
   </ul>
 </nav>
