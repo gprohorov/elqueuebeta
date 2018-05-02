@@ -60,8 +60,15 @@ public class ProcedureServiceImpl implements IProcedureService {
       if (procedure.getId()==0) {
             int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
             procedure.setId(id);
-        }
-        tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
+          tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
+        }else {
+          Tail tail = tailService.getAll()
+                  .stream().filter(tail1 -> tail1.getProcedureId() == procedure.getId()).findFirst().get();
+
+          int indx = tailService.getAll().indexOf(tail);
+          tail.setProcedureName(procedure.getName());
+          tailService.getAll().set(indx,tail);
+      }
 
         return repository.save(procedure);
     }
