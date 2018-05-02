@@ -1,6 +1,6 @@
 package com.med.controller;
 
-import com.med.services.user.UserService;
+import com.med.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;

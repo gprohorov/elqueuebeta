@@ -1,4 +1,4 @@
-package com.med.model;
+package com.med.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -19,17 +19,17 @@ public enum Role implements GrantedAuthority{
     }, CHIEF {
         @Override
         public String getAuthority() {
-            return null;
+            return name();
         }
     },  DOCTOR {
         @Override
         public String getAuthority() {
-            return null;
+            return name();
         }
     }, PAT {
         @Override
         public String getAuthority() {
-            return null;
+            return name();
         }
     }, USER {
        @Override

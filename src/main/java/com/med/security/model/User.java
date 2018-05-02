@@ -1,4 +1,4 @@
-package com.med.model;
+package com.med.security.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -123,5 +123,19 @@ public class User implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", authorities=" + authorities +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                '}';
     }
 }
