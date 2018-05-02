@@ -85,6 +85,9 @@ public class ProcedureServiceImpl implements IProcedureService {
     public Procedure deleteProcedure(int id) {
         Procedure procedure = this.getProcedure(id);
         repository.deleteById(id);
+        Tail tail = tailService.getAll().stream()
+                .filter(t->t.getProcedureId()==procedure.getId()).findFirst().get();
+        tailService.getAll().remove(tail);
         return procedure;
     }
 
