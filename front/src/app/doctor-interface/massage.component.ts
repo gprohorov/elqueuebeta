@@ -7,9 +7,9 @@ import { Statuses, Activity } from '../_storage';
 
 @Component({
   moduleId: module.id,
-  templateUrl: './main.component.html'
+  templateUrl: './massage.component.html'
 })
-export class DoctorInterfaceComponent implements OnInit {
+export class DoctorInterfaceMassageComponent implements OnInit {
 
   sub: Subscription;
   item: any = {};

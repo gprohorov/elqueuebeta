@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { Person } from '../_models/index';
-import { PersonService, AlertService } from '../_services/index';
+import { AlertService, PersonService, PersonSearchCriteria } from '../_services/index';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +11,7 @@ import { PersonService, AlertService } from '../_services/index';
 export class PersonListComponent implements OnInit {
 
   sub: Subscription;
-  items: Person[] = [];
+  items: Person[];
   loading = false;
   rows = [];
 
@@ -24,6 +24,10 @@ export class PersonListComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  onSorted($event: PersonSearchCriteria) {
+    this.items = this.service.sortBy($event, this.items);
   }
 
   delete(id: number, name: string) {
@@ -40,7 +44,10 @@ export class PersonListComponent implements OnInit {
 
   load(search: string = '') {
     this.loading = true;
-    this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getAll(search).subscribe(data => { 
+      this.items = this.service.sortBy({sortColumn: 'lastName', sortDirection: 'asc'}, data); 
+      this.loading = false; 
+    });
   }
 
 }

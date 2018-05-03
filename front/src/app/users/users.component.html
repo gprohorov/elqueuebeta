@@ -1,8 +1,8 @@
 ﻿<div>
     <ul>
         <li *ngFor="let user of users">
-            {{user.username}} ({{user.firstName}} {{user.lastName}})
-            - <a role="button" (click)="deleteUser(user.id, user.firstName + ' ' + user.lastName)">Видалити</a>
+            {{user?.username}} ({{user?.firstName}} {{user?.lastName}})
+            <!-- <a role="button" (click)="deleteUser(user.id, user.firstName + ' ' + user.lastName)">Видалити</a> -->
         </li>
     </ul>
 </div>

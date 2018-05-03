@@ -8,13 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { NgxMasonryModule } from 'ng5-masonry';
 
 import { AppComponent } from './app.component';
-import { AlertComponent } from './_directives/index';
+import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, fakeBackendProvider } from './_helpers/index';
 import {  AlertService,
           AuthenticationService,
           UserService,
           UtilService,
+          SortService,
           PersonService,
           DoctorService,
           ProcedureService,
@@ -42,7 +43,8 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
-import { DoctorInterfaceComponent } from './doctor-interface/main.component';
+import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.component';
+import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'procedures-queue', pathMatch: 'full', canActivate: [AuthGuard] },
@@ -64,7 +66,8 @@ const appRoutes: Routes = [
 
     { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
 
-    { path: 'doctor-interface', component: DoctorInterfaceComponent, canActivate: [AuthGuard] },
+    { path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent, canActivate: [AuthGuard] },
+    { path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent, canActivate: [AuthGuard] },
 
     { path: '**', redirectTo: '' }
 ];
@@ -81,6 +84,8 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         AlertComponent,
+        SortableTableDirective,
+        SortableColumnComponent,
         HomeComponent,
         LoginComponent,
         RegisterComponent,
@@ -91,7 +96,8 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceComponent
+        DoctorInterfaceMassageComponent,
+        DoctorInterfaceDiagnoseComponent
     ],
     providers: [
         AuthGuard,
@@ -99,6 +105,7 @@ const appRoutes: Routes = [
         AuthenticationService,
         UserService,
         UtilService,
+        SortService,
         PersonService,
         DoctorService,
         ProcedureService,
