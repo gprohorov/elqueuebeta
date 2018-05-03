@@ -15,35 +15,52 @@ public class Talon {
 
     @Id
     private ObjectId id;
-
+    private int patientId;
     private LocalDate date;
     private Procedure procedure;
     private int zones;
     private String desc;
     private LocalDateTime executionTime;
     private Doctor doctor;
+    private int sum;
 
 
     public Talon() {
     }
 
-    public Talon(ObjectId id, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor) {
+    // full
+    public Talon(ObjectId id, int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.id = id;
+        this.patientId = patientId;
         this.date = date;
         this.procedure = procedure;
         this.zones = zones;
         this.desc = desc;
         this.executionTime = executionTime;
         this.doctor = doctor;
+        this.sum = sum;
     }
-
-    public Talon(LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor) {
+    // without id
+    public Talon(int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+        this.patientId = patientId;
         this.date = date;
         this.procedure = procedure;
         this.zones = zones;
         this.desc = desc;
         this.executionTime = executionTime;
         this.doctor = doctor;
+        this.sum = sum;
+    }
+    //  patient and procedure  for today
+    public Talon(int patientId, Procedure procedure) {
+        this.patientId = patientId;
+        this.date = LocalDate.now();
+        this.procedure = procedure;
+        this.zones = 0;
+        this.desc = "";
+        this.executionTime = null;
+        this.doctor = null;
+        this.sum = 0;
     }
 
     public ObjectId getId() {
@@ -52,6 +69,14 @@ public class Talon {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public LocalDate getDate() {
@@ -100,5 +125,13 @@ public class Talon {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
     }
 }

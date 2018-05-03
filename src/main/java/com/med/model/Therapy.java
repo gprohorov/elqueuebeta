@@ -1,5 +1,7 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -7,42 +9,32 @@ import java.util.*;
  * Created by george on 3/9/18.
  */
 public class Therapy {
-    int id;
-    LocalDateTime dateTime;
-    String diag;
-    int codeDiag;
-    String notes;
-    String picture;
-  //  Map<Procedure, Integer> progress = new HashMap<>();
-    List<Procedure> procedures = new ArrayList<>();
-
+   private ObjectId id;
+   private LocalDateTime dateTime;
+   private String diag;
+   private int codeDiag;
+   private String notes;
+   private String picture;
+   private List<Procedure> procedures = new ArrayList<>();
+   private int zones;
     public Therapy() {
     }
 
-    public Therapy(int id, LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
-        this.id = id;
+    public Therapy( LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures, int zones) {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
         this.notes = notes;
         this.picture = picture;
         this.procedures = procedures;
+        this.zones = zones;
     }
 
-    public Therapy(LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
-        this.dateTime = dateTime;
-        this.diag = diag;
-        this.codeDiag = codeDiag;
-        this.notes = notes;
-        this.picture = picture;
-        this.procedures = procedures;
-    }
-
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -94,16 +86,11 @@ public class Therapy {
         this.procedures = procedures;
     }
 
-    @Override
-    public String toString() {
-        return "Therapy{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", diag='" + diag + '\'' +
-                ", codeDiag=" + codeDiag +
-                ", notes='" + notes + '\'' +
-                ", picture='" + picture + '\'' +
-                ", procedures=" + procedures +
-                '}';
+    public int getZones() {
+        return zones;
+    }
+
+    public void setZones(int zones) {
+        this.zones = zones;
     }
 }

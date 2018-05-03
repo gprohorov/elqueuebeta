@@ -1,6 +1,7 @@
 package com.med.dao.therapy.interfaces;
 
 import com.med.model.Therapy;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ITherapyDAO {
     Therapy createTherapy(Therapy therapy);
     Therapy updateTherapy(Therapy therapy);
-    Therapy getTherapy(int id);
-    Therapy deleteTherapy(int id);
+    Therapy getTherapy(ObjectId id);
+    Therapy deleteTherapy(ObjectId id);
     List<Therapy> getAll();
 }
