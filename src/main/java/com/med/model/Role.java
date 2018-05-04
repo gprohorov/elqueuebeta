@@ -1,4 +1,4 @@
-package com.med.security.model;
+package com.med.model;
 
 import org.springframework.security.core.GrantedAuthority;
 

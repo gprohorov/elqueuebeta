@@ -1,6 +1,6 @@
-package com.med.security.repository;
+package com.med.repository.user;
 
-import com.med.security.model.User;
+import com.med.model.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

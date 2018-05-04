@@ -10,7 +10,7 @@ import { NgxMasonryModule } from 'ng5-masonry';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { JwtInterceptor, fakeBackendProvider, CustExtBrowserXhr } from './_helpers/index';
+import { JwtInterceptor, /* fakeBackendProvider, */ CustExtBrowserXhr } from './_helpers/index';
 import {  AlertService,
           AuthenticationService,
           UserService,
@@ -107,7 +107,7 @@ const appRoutes: Routes = [
         DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: BrowserXhr, useClass: CustExtBrowserXhr },
-        fakeBackendProvider
+        //fakeBackendProvider
     ],
     schemas: [ NO_ERRORS_SCHEMA ],
     bootstrap: [AppComponent]
