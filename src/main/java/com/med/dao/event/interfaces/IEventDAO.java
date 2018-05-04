@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
+@SuppressWarnings("ALL")
 public interface IEventDAO {
     Event createEvent(Event event);
     Event getEvent(int id);

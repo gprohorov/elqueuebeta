@@ -22,11 +22,19 @@ export class ProcedureListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
+    this.load();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
+  delete(id: number, name: string) {
+    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
+  }
+
+  load(search: string = '') {
+    this.loading = true;
+    this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });
+  }
 }

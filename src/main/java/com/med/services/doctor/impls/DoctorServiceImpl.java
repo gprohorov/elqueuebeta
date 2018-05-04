@@ -13,6 +13,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
+@SuppressWarnings("ALL")
 @Service
 public class DoctorServiceImpl implements IDoctorService {
 
@@ -69,6 +70,10 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public List<Doctor> getAll() {
+
+      //  List<Doctor> doctors =repository.findAll();
+       // doctors.stream().forEach(doctor -> doctor.setUser(UserRepository.findById(doctor.getUserId).get());
+
         return repository.findAll();
     }
 /*

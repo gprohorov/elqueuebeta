@@ -4,7 +4,7 @@ import com.med.model.Appointment;
 import com.med.model.Patient;
 import com.med.model.Person;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceIMongoImpl;
+import com.med.services.patient.Impls.PatientServiceMongoImpl;
 import com.med.services.person.impls.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +17,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")
@@ -29,7 +30,7 @@ public class PersonController {
     AppointmentServiceImpl appointmentService;
 
     @Autowired
-    PatientServiceIMongoImpl patientService;
+    PatientServiceMongoImpl patientService;
 
     // get all persons
     @GetMapping("/person/list")

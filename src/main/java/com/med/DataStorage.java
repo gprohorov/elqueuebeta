@@ -19,12 +19,15 @@ import java.util.*;
 
 
 
+@SuppressWarnings("ALL")
 @Configuration
 public class DataStorage {
 
 
     @Autowired
     PatientRepository patientRepository;
+
+
 
 	@Autowired
     DoctorRepository doctorRepository;
@@ -37,8 +40,8 @@ public class DataStorage {
 
 
     @PostConstruct
-            void init(){
-         assigned.put(massage, 10);
+           void init(){
+  /*        assigned.put(massage, 10);
          assigned.put(pulling, 10);
        // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -57,10 +60,10 @@ public class DataStorage {
         patients.add(ivanov);
         patients.add(petrovv);
 
-        patients.get(2).setTherapy(therapies.get(1));
+        patients.get(2).setTherapy(therapies.get(1));*/
         //patients.get(0).setAssignedProcedures(progres);
-        patientRepository.deleteAll();
-        patientRepository.saveAll(patients);
+      //  patientRepository.deleteAll();
+      //  patientRepository.saveAll(patients);
 
      //   patients.clear();
 
@@ -222,15 +225,22 @@ public class DataStorage {
             Arrays.asList(massage5, heating5)
     );
 
-    private Therapy usualTherapy = new Therapy(1, LocalDateTime.now()
+    private Therapy usualTherapy = null;
+/*
+
+            new Therapy(null, LocalDateTime.now()
             ,"Osteohondroz",1, "Шейный участок",
             "url", testList);
+*/
 
-    private Therapy therapy1 = new Therapy(2, LocalDateTime.now()
+    private Therapy therapy1 = null;
+/*
+            new Therapy(2, LocalDateTime.now()
             , "Грижа", 77
             ," поперек", "url:", this.schema4()
     );
 
+*/
 
     private List<Therapy> therapies = new ArrayList<>(
             Arrays.asList(usualTherapy, therapy1)
@@ -361,13 +371,13 @@ public class DataStorage {
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(14), primary, this.schema3()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(14)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(31)
                             , LocalDateTime.now().minusMinutes(222),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(15), primary, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
                             , LocalDateTime.now().minusMinutes(156),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(16), primary, this.schema2()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(15)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(46)
                             , LocalDateTime.now().minusMinutes(241),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(17), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
@@ -376,7 +386,7 @@ public class DataStorage {
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
                             , LocalDateTime.now().minusMinutes(180),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(19), primary, this.schema4()
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(7)
+                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(61)
                             , LocalDateTime.now().minusMinutes(199),0, Activity.ACTIVE)
                     ,  new Patient(persons.get(20), primary, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
@@ -476,7 +486,7 @@ public class DataStorage {
 
     public void resetPatientsTable(){
 
-        assigned.put(massage, 10);
+        /*assigned.put(massage, 10);
         assigned.put(pulling, 10);
         // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -500,7 +510,16 @@ public class DataStorage {
         patientRepository.deleteAll();
         patientRepository.saveAll(patients);
 
-        patients.clear();
+        patients.clear();*/
+        List<Patient> patients = patientRepository.findAll();
+        patients.stream().forEach(patient
+                -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
+
+        patients.stream().forEach(patient
+                -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
+
+        patientRepository.saveAll(patients);
+
 
     }
 

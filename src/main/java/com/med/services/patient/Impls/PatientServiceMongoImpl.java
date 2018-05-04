@@ -17,9 +17,8 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-
 @Service
-public class PatientServiceIMongoImpl implements IPatientsService {
+public class PatientServiceMongoImpl implements IPatientsService {
 
     private static List<Patient> patients = new ArrayList<>();
 
@@ -94,7 +93,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
         List<Patient> patients = repository.findAll();
 
-        for (Patient patient:patients){
+        for (Patient patient:patients) {
             patient.setDelta(ChronoUnit.MINUTES.between(
                     patient.getLastActivity(), LocalDateTime.now()
             ));

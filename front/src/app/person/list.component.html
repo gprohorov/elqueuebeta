@@ -19,11 +19,15 @@
         </div>
       </div>
     </div>
-    <div class="content table-responsive table-full-width">
+    <div class="content table-responsive table-full-width" sortable-table (sorted)="onSorted($event)">
       <table class="table table-sm">
         <thead class="thead-light">
           <tr>
-              <th></th> <th>ПІБ</th> <th>Стать</th> <th>Дата народження</th> <th>Місто / село</th>
+              <th></th>
+              <th sortable-column="lastName" sort-direction="asc">ПІБ</th>
+              <th>Стать</th>
+              <th>Дата народження</th>
+              <th>Місто / село</th>
           </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">

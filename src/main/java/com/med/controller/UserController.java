@@ -13,6 +13,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")
@@ -24,7 +25,7 @@ public class UserController {
     // Login User
     @PostMapping("/user/login")
     public User loginUser(@Valid @RequestBody String username, String password) {
-        return service.loadUserByUsername(username);
+        return service.findOne(username);
     }
 
     @GetMapping("/user/list")

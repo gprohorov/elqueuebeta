@@ -1,5 +1,6 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,58 +10,73 @@ import java.time.LocalDateTime;
 /**
  * Created by george on 22.04.18.
  */
-@Document(collection = "patient")
+@Document
 public class Talon {
 
     @Id
-    private long id;
-
-    private LocalDate date;
+    private ObjectId id;
     private int patientId;
+    private LocalDate date;
     private Procedure procedure;
     private int zones;
     private String desc;
-    private LocalDateTime doneTime;
+    private LocalDateTime executionTime;
     private Doctor doctor;
+    private int sum;
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
 
     public Talon() {
     }
 
-    public Talon(long id, LocalDate date, int patient_id, Procedure procedure, int zones, String desc, LocalDateTime doneTime) {
+    // full
+    public Talon(ObjectId id, int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.id = id;
+        this.patientId = patientId;
         this.date = date;
-        this.patientId = patient_id;
         this.procedure = procedure;
         this.zones = zones;
         this.desc = desc;
-        this.doneTime = doneTime;
+        this.executionTime = executionTime;
+        this.doctor = doctor;
+        this.sum = sum;
     }
-
-    public Talon(int patient_id, Procedure procedure, int zones, String desc) {
-        this.id = 0;
+    // without id
+    public Talon(int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+        this.patientId = patientId;
+        this.date = date;
+        this.procedure = procedure;
+        this.zones = zones;
+        this.desc = desc;
+        this.executionTime = executionTime;
+        this.doctor = doctor;
+        this.sum = sum;
+    }
+    //  patient and procedure  for today
+    public Talon(int patientId, Procedure procedure) {
+        this.patientId = patientId;
         this.date = LocalDate.now();
-        this.patientId = patient_id;
         this.procedure = procedure;
-        this.zones = zones;
-        this.desc = desc;
-        this.doneTime = null;
+        this.zones = 0;
+        this.desc = "";
+        this.executionTime = null;
         this.doctor = null;
+        this.sum = 0;
     }
 
-    public long getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public LocalDate getDate() {
@@ -69,14 +85,6 @@ public class Talon {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patient_id) {
-        this.patientId = patient_id;
     }
 
     public Procedure getProcedure() {
@@ -103,11 +111,27 @@ public class Talon {
         this.desc = desc;
     }
 
-    public LocalDateTime getDoneTime() {
-        return doneTime;
+    public LocalDateTime getExecutionTime() {
+        return executionTime;
     }
 
-    public void setDoneTime(LocalDateTime doneTime) {
-        this.doneTime = doneTime;
+    public void setExecutionTime(LocalDateTime executionTime) {
+        this.executionTime = executionTime;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
     }
 }

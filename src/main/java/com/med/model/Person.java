@@ -9,8 +9,6 @@ import java.time.LocalDate;
 /**
  * Created by george on 3/9/18.
  */
-
-
 @Document(collection = "person")
 public class Person {
 
@@ -25,7 +23,6 @@ public class Person {
     private String address;
     private boolean gender;
     private LocalDate dateOfBirth;
-
 
     public Person() {
     }

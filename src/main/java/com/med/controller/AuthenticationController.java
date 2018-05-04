@@ -31,6 +31,9 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
+        // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        // System.out.println(encoder.encode("password"));
+
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getUsername(),
@@ -38,7 +41,7 @@ public class AuthenticationController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final User user = userService.loadUserByUsername(loginUser.getUsername());
+        final User user = userService.findOne(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new AuthToken(token));
     }

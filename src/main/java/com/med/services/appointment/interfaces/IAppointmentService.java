@@ -5,5 +5,6 @@ import com.med.dao.appointment.interfaces.IAppointmentDAO;
 /**
  * Created by george on 3/11/18.
  */
+@SuppressWarnings("ALL")
 public interface IAppointmentService extends IAppointmentDAO {
 }

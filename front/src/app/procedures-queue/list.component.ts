@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { NgxMasonryOptions } from 'ng5-masonry';
+import { NgxMasonryOptions } from '../_helpers/index';
 import { Person } from '../_models/index';
 import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
@@ -24,8 +24,9 @@ export class ProceduresQueueListComponent implements OnInit {
 
   public myOptions: NgxMasonryOptions = {
     transitionDuration: '0.2s',
-    columnWidth: 250,
+    columnWidth: 200,
     fitWidth: true,
+    horizontalOrder: true,
     gutter: 20
   };
 

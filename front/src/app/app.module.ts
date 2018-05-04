@@ -1,20 +1,22 @@
 ﻿import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpModule, BrowserXhr } from '@angular/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+
 import { NgxMasonryModule } from 'ng5-masonry';
 
 import { AppComponent } from './app.component';
-import { AlertComponent } from './_directives/index';
+import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { JwtInterceptor, /* fakeBackendProvider, */ CustExtBrowserXhr } from './_helpers/index';
+import { JwtInterceptor } from './_helpers/index';
+import { TokenStorage } from './_storage/index';
 import {  AlertService,
-          AuthenticationService,
+          AuthService,
           UserService,
           UtilService,
+          SortService,
           PersonService,
           DoctorService,
           ProcedureService,
@@ -42,11 +44,12 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
-import { DoctorInterfaceComponent } from './doctor-interface/main.component';
+import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.component';
+import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full', canActivate: [AuthGuard] },
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
@@ -64,7 +67,8 @@ const appRoutes: Routes = [
 
     { path: 'procedures-queue', component: ProceduresQueueListComponent, canActivate: [AuthGuard] },
 
-    { path: 'doctor-interface', component: DoctorInterfaceComponent, canActivate: [AuthGuard] },
+    { path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent, canActivate: [AuthGuard] },
+    { path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent, canActivate: [AuthGuard] },
 
     { path: '**', redirectTo: '' }
 ];
@@ -73,7 +77,6 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
         HttpClientModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
@@ -82,6 +85,8 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         AlertComponent,
+        SortableTableDirective,
+        SortableColumnComponent,
         HomeComponent,
         LoginComponent,
         RegisterComponent,
@@ -92,22 +97,23 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceComponent
+        DoctorInterfaceMassageComponent,
+        DoctorInterfaceDiagnoseComponent
     ],
     providers: [
         AuthGuard,
         AlertService,
-        AuthenticationService,
+        AuthService,
+        TokenStorage,
         UserService,
         UtilService,
+        SortService,
         PersonService,
         DoctorService,
         ProcedureService,
         PatientsQueueService,
         DoctorInterfaceService,
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: BrowserXhr, useClass: CustExtBrowserXhr },
-        //fakeBackendProvider
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     schemas: [ NO_ERRORS_SCHEMA ],
     bootstrap: [AppComponent]

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by george on 27.04.18.
  */
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")

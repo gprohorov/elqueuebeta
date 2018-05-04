@@ -9,29 +9,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by george on 27.04.18.
  */
 @Document
-public class User { //implements UserDetails {
+public class User {
     @Id
     private ObjectId id;
 
-    // private List<Role> authorities;
+    /* private List<Role> authorities; */
+
     private String password;
 
     @Indexed(unique = true)
     private String username;
+
     private boolean enabled;
 
-
-    public User() {
-    }
+    public User() { }
 
     public User( String password, String username) {
-        // this.authorities = new ArrayList<Role>();
+        /* this.authorities = new ArrayList<Role>(); */
         this.password = password;
         this.username = username;
         this.enabled = true;
     }
-/*
-    @Override
+
+    /*
     public List<Role> getAuthorities() {
         return authorities;
     }
@@ -39,7 +39,8 @@ public class User { //implements UserDetails {
     public void setAuthorities(List<Role> roles) {
         this.authorities = roles;
     }
-*/
+    */
+
     public String getPassword() {
         return password;
     }
@@ -64,14 +65,4 @@ public class User { //implements UserDetails {
         this.enabled = enabled;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                //", authorities=" + authorities +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", enabled=" + enabled +
-                '}';
-    }
 }

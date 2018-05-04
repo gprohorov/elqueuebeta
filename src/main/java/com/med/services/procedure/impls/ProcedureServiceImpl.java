@@ -14,6 +14,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
+@SuppressWarnings("ALL")
 @Service
 public class ProcedureServiceImpl implements IProcedureService {
 
@@ -60,8 +61,15 @@ public class ProcedureServiceImpl implements IProcedureService {
       if (procedure.getId()==0) {
             int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
             procedure.setId(id);
-        }
-        tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
+          tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
+        }else {
+          Tail tail = tailService.getAll()
+                  .stream().filter(tail1 -> tail1.getProcedureId() == procedure.getId()).findFirst().get();
+
+          int indx = tailService.getAll().indexOf(tail);
+          tail.setProcedureName(procedure.getName());
+          tailService.getAll().set(indx,tail);
+      }
 
         return repository.save(procedure);
     }
@@ -78,6 +86,9 @@ public class ProcedureServiceImpl implements IProcedureService {
     public Procedure deleteProcedure(int id) {
         Procedure procedure = this.getProcedure(id);
         repository.deleteById(id);
+        Tail tail = tailService.getAll().stream()
+                .filter(t->t.getProcedureId()==procedure.getId()).findFirst().get();
+        tailService.getAll().remove(tail);
         return procedure;
     }
 

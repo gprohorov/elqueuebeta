@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by george on 3/11/18.
  */
+@SuppressWarnings("ALL")
 @Service
 public class AppointmentServiceImpl implements IAppointmentService {
 

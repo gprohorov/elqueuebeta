@@ -10,4 +10,5 @@ public class ElqueuebetaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ElqueuebetaApplication.class, args);
 	}
+
 }

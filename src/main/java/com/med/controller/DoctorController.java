@@ -12,6 +12,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")
@@ -63,7 +64,7 @@ public class DoctorController {
     }
 
     // DELETE the doctor by id
-    @PostMapping("/doctor/delete/{id}")
+    @GetMapping("/doctor/delete/{id}")
     public Doctor delDoctor(@PathVariable(value = "id")  int doctorId)  {
 
         return service.deleteDoctor(doctorId);

@@ -1,41 +1,37 @@
 package com.med.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
+@Document
 public class Therapy {
-    int id;
-    LocalDateTime dateTime;
-    String diag;
-    int codeDiag;
-    String notes;
-    String picture;
-  //  Map<Procedure, Integer> progress = new HashMap<>();
-    List<Procedure> procedures = new ArrayList<>();
-
+    @Id
+   private int id;
+   private LocalDateTime dateTime;
+   private String diag;
+   private int codeDiag;
+   private String notes;
+   private String picture;
+   private List<Procedure> procedures = new ArrayList<>();
+   private int zones;
     public Therapy() {
     }
 
-    public Therapy(int id, LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
-        this.id = id;
+    public Therapy( LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures, int zones) {
         this.dateTime = dateTime;
         this.diag = diag;
         this.codeDiag = codeDiag;
         this.notes = notes;
         this.picture = picture;
         this.procedures = procedures;
-    }
-
-    public Therapy(LocalDateTime dateTime, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures) {
-        this.dateTime = dateTime;
-        this.diag = diag;
-        this.codeDiag = codeDiag;
-        this.notes = notes;
-        this.picture = picture;
-        this.procedures = procedures;
+        this.zones = zones;
     }
 
     public int getId() {
@@ -94,16 +90,11 @@ public class Therapy {
         this.procedures = procedures;
     }
 
-    @Override
-    public String toString() {
-        return "Therapy{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", diag='" + diag + '\'' +
-                ", codeDiag=" + codeDiag +
-                ", notes='" + notes + '\'' +
-                ", picture='" + picture + '\'' +
-                ", procedures=" + procedures +
-                '}';
+    public int getZones() {
+        return zones;
+    }
+
+    public void setZones(int zones) {
+        this.zones = zones;
     }
 }

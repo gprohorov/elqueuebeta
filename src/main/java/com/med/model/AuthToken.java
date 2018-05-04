@@ -12,7 +12,6 @@ public class AuthToken {
         this.token = token;
     }
 
-
     public String getToken() {
         return token;
     }
