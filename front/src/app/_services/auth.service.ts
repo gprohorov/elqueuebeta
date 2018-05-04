@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class AuthService {
 
-  private authUrl = config.api_path + '/user/login/';
+  private authUrl = config.api_path + '/api/authenticate';
 
   constructor(private http: HttpClient) {  }
 
