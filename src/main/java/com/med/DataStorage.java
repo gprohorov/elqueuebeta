@@ -224,15 +224,22 @@ public class DataStorage {
             Arrays.asList(massage5, heating5)
     );
 
-    private Therapy usualTherapy = new Therapy(1, LocalDateTime.now()
+    private Therapy usualTherapy = null;
+/*
+
+            new Therapy(null, LocalDateTime.now()
             ,"Osteohondroz",1, "Шейный участок",
             "url", testList);
+*/
 
-    private Therapy therapy1 = new Therapy(2, LocalDateTime.now()
+    private Therapy therapy1 = null;
+/*
+            new Therapy(2, LocalDateTime.now()
             , "Грижа", 77
             ," поперек", "url:", this.schema4()
     );
 
+*/
 
     private List<Therapy> therapies = new ArrayList<>(
             Arrays.asList(usualTherapy, therapy1)
