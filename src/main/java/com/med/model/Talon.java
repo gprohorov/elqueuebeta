@@ -23,6 +23,7 @@ public class Talon {
     private LocalDateTime executionTime;
     private Doctor doctor;
     private int sum;
+    private int duration;
 
 
     public Talon() {
@@ -61,6 +62,7 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
+        this.duration =0;
     }
 
     public ObjectId getId() {
@@ -133,5 +135,13 @@ public class Talon {
 
     public void setSum(int sum) {
         this.sum = sum;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

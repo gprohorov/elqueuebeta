@@ -11,6 +11,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,20 +55,57 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public List<Talon> getAll() {
-        return repository.findAll();
+        return null;
     }
 
- //------------------------------- BUSINESS LOGIC -------------------------
 
-    public Talon createActiveTalon(int patientId, int procedureId){
+    @Override
+    public List<Talon> getTalonsForToday() {
+        return null;
+    }
+
+    //------------------------------- BUSINESS LOGIC -------------------------
+
+    public List<Talon> createActiveTalonsFromTherapy(int patientId){
 
         Patient  patient = patientService.getPatient(patientId);
-        Procedure procedure = procedureServicee.getProcedure(procedureId);
-        Talon talon = new Talon(patient.getId(), procedure);
+        if (patient.getTherapy() != null) return null;
+        List<Talon> talons = new ArrayList<>();
+        List<Procedure> procedures = patient.getTherapy().getProcedures();
 
-        talon.setDoctor(null);
 
-        return null;
+        for (Procedure procedure: procedures) {
+
+            Talon talon = new Talon();
+
+            talon.setPatientId(patientId);
+            talon.setDate(LocalDate.now());
+            talon.setProcedure(procedure);
+            talon.setDoctor(null);
+            talon.setZones(patient.getTherapy().getZones());
+            talon.setDesc(patient.getTherapy().getNotes());
+            talon.setExecutionTime(null);
+            talon.setDoctor(null);
+            talon.setSum(0);
+            talon.setDuration(0);
+
+            talons.add(talon);
+        }
+
+    /*    private ObjectId id;
+        private int patientId;
+        private LocalDate date;
+        private Procedure procedure;
+        private int zones;
+        private String desc;
+        private LocalDateTime executionTime;
+        private Doctor doctor;
+        private int sum;
+        private int duration;
+
+        */
+
+        return repository.saveAll(talons);
     }
 
 

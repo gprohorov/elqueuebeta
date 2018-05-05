@@ -13,5 +13,7 @@ public interface ITalonService {
     Talon getTalon(ObjectId id);
     Talon deleteTalon(ObjectId id);
     List<Talon> getAll();
+    List<Talon>  getTalonsForToday();
+
 
 }
