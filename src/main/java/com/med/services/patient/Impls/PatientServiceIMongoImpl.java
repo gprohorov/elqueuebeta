@@ -296,6 +296,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
 
         patient.setActive(Activity.ON_PROCEDURE);
+        patient.setLastActivity(LocalDateTime.now());
 
 
         repository.save(patient);

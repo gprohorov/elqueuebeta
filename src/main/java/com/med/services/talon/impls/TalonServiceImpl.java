@@ -1,9 +1,11 @@
 package com.med.services.talon.impls;
 
+import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Procedure;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
+import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,9 @@ public class TalonServiceImpl implements ITalonService {
     @Autowired
     ProcedureServiceImpl procedureServicee;
 
+    @Autowired
+    DoctorServiceImpl doctorService;
+
 
 
     @Override
@@ -40,6 +46,11 @@ public class TalonServiceImpl implements ITalonService {
     @Override
     public Talon getTalon(ObjectId id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Talon updateTalon(Talon talon) {
+        return repository.save(talon);
     }
 
     @Override
@@ -107,6 +118,38 @@ public class TalonServiceImpl implements ITalonService {
 
         return repository.saveAll(talons);
     }
+    public Talon createSingleTalon(int patiendId, int procedureId, int zones, String desc
+    ){
+        Talon talon = new Talon();
+        Procedure procedure = procedureServicee.getProcedure(procedureId);
+
+        talon.setPatientId(patiendId);
+        talon.setDate(LocalDate.now());
+        talon.setProcedure(procedure);
+        talon.setZones(zones);
+        talon.setDesc(desc);
+
+        return this.createTalon(talon);
+    }
+
+    public Talon executeTalon(ObjectId talonId, int doctorId){
+        Talon talon = this.getTalon(talonId);
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        Patient patient = patientService.getPatient(talon.getPatientId());
+
+
+
+        talon.setDoctor(doctor);
+        talon.setExecutionTime(LocalDateTime.now());
+        int delta = (int) patient.getDelta();
+        talon.setDuration(delta);
+        int price = talon.getProcedure().getPrice();
+        int sum = price * talon.getZones();
+        talon.setSum(sum);
+
+        return this.updateTalon(talon);
+    }
+
 
 
 }

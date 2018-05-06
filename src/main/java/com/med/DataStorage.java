@@ -119,29 +119,30 @@ public class DataStorage {
             new Person(344,"Дмитрий",  "Гук")
          ));
 
-    Procedure registration =   new Procedure(1, "Реєстратура", 0,0);
-    Procedure diagnostics =   new Procedure(2, "Диагностика", 1,100);
-    Procedure laser = new Procedure(3, "Лазерна терапия",2,"",3,50);
-    Procedure pulling = new Procedure(5, "Витяжка",5,50);
-    Procedure massage = new Procedure(6, "Массаж",3,70);
-    Procedure mechmassasge = new Procedure(4, "Механ. массаж",3,"",3,80);
-    Procedure heating = new Procedure(7, "Прогрівання",7,"",3,80);
+
+    Procedure registration =   new Procedure(1, "Реєстратура", 9);
+    Procedure diagnostics =   new Procedure(2, "Диагностика", 77);
+    Procedure laser = new Procedure(3, "Лазерна терапия",250);
+    Procedure pulling = new Procedure(5, "Витяжка",50);
+    Procedure massage = new Procedure(6, "Массаж",70);
+    Procedure mechmassasge = new Procedure(4, "Механ. массаж",80);
+    Procedure heating = new Procedure(7, "Прогрівання",80);
 ///--------------------------------------------------------------------------------------
 
-    Procedure laserforTrump = new Procedure(3, "Лазерна терапия",2,"",3,50);
-    Procedure pullingforTrump = new Procedure(5, "Витяжка",5,50);
-    Procedure massageForTrump = new Procedure(6, "Массаж",3,70);
+    Procedure laserforTrump = new Procedure(3, "Лазерна терапия",50);
+    Procedure pullingforTrump = new Procedure(5, "Витяжка",50);
+    Procedure massageForTrump = new Procedure(6, "Массаж",70);
 
-    Procedure laserforIvanov = new Procedure(3, "Лазерна терапия",2,"",3,50);
-    Procedure pullingforIvanov = new Procedure(5, "Витяжка",5,50);
-    Procedure massageForIvanov = new Procedure(6, "Массаж",3,70);
+    Procedure laserforIvanov = new Procedure(3, "Лазерна терапия",50);
+    Procedure pullingforIvanov = new Procedure(5, "Витяжка",50);
+    Procedure massageForIvanov = new Procedure(6, "Массаж",70);
 
-    Procedure massageforPetrov = new Procedure(6, "Массаж",3,70);
-    Procedure heatingForPetrov = new Procedure(7, "Прогрівання",7,"",3,80);
+    Procedure massageforPetrov = new Procedure(6, "Массаж",70);
+    Procedure heatingForPetrov = new Procedure(7, "Прогрівання",80);
 
-    Procedure massageforVas = new Procedure(6, "Массаж",3,70);
-    Procedure diagnosticsForVas =   new Procedure(2, "Диагностика", 1,100);
-    Procedure registrationForVas =   new Procedure(1, "Реєстратура", 0,0);
+    Procedure massageforVas = new Procedure(6, "Массаж",70);
+    Procedure diagnosticsForVas =   new Procedure(2, "Диагностика", 100);
+    Procedure registrationForVas =   new Procedure(1, "Реєстратура", 0);
 
 
 
@@ -215,10 +216,8 @@ public class DataStorage {
 
     private Therapy primary = new Therapy();
 
-    Procedure massage5 = new Procedure(6,"Массаж", 5, "Lorem ipsum"
-            , 3, 70, null, 5,0, false);
-    Procedure heating5 = new Procedure(7,"Прогрівання", 5, "Lorem ipsum"
-            , 3, 50, null, 5,0, false);
+    Procedure massage5 = new Procedure(6,"Массаж", 5);
+    Procedure heating5 = new Procedure(7,"Прогрівання", 5);
 
     List<Procedure> testList = new ArrayList<>(
             Arrays.asList(massage5, heating5)
@@ -271,38 +270,34 @@ public class DataStorage {
     private List<Procedure> schema1(){
         return new ArrayList<>(
         Arrays.asList(
-                new Procedure(6,"Массаж", 5, "Lorem ipsum"
-                , 1, 70, null, 5,0, false)
-                ,new Procedure(7,"Прогрівання", 5, "Lorem ipsum"
-                        , 1, 50, null, 5,0, false)
-                ,new Procedure(5, "Витяжка",5,50)
+                new Procedure(6,"Массаж", 5)
+                ,new Procedure(7,"Прогрівання", 5)
+                ,new Procedure(5, "Витяжка",50)
                 ));
     }
      private List<Procedure> schema2(){
         return new ArrayList<>(
         Arrays.asList(
-                 new Procedure(3, "Лазерна терапия",2,"",3,50)
-                ,new Procedure(5, "Витяжка",5,50)
-                ,new Procedure(6,"Массаж", 5, "Lorem ipsum"
-                        , 1, 70, null, 5,0, false)
+                 new Procedure(3, "Лазерна терапия",50)
+                ,new Procedure(5, "Витяжка",50)
+                ,new Procedure(6,"Массаж", 5)
                 ));
     }
 
     private List<Procedure> schema3(){
         return new ArrayList<>(
         Arrays.asList(
-                 new Procedure(3, "Лазерна терапия",2,"",3,50)
-                ,new Procedure(4, "Механ. массаж",3,"",3,80)
-                ,new Procedure(6,"Массаж", 5, "Lorem ipsum"
-                        , 1, 70, null, 5,0, false)
+                 new Procedure(3, "Лазерна терапия",50)
+                ,new Procedure(4, "Механ. массаж",80)
+                ,new Procedure(6,"Массаж", 5)
                 ));
     }
 
       private List<Procedure> schema4(){
         return new ArrayList<>(
         Arrays.asList(
-                new Procedure(2, "Диагностика", 1,100)
-                , new Procedure(4, "Механ. массаж",3,"",3,80)
+                new Procedure(2, "Диагностика", 100)
+                , new Procedure(4, "Механ. массаж",80)
 
                 ));
     }

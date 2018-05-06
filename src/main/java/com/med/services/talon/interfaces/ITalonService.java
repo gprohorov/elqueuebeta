@@ -11,6 +11,7 @@ import java.util.List;
 public interface ITalonService {
     Talon createTalon(Talon talon);
     Talon getTalon(ObjectId id);
+    Talon updateTalon(Talon talon);
     Talon deleteTalon(ObjectId id);
     List<Talon> getAll();
     List<Talon>  getTalonsForToday();
