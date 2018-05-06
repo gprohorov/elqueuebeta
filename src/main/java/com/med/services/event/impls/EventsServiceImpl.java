@@ -29,7 +29,7 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     public List<Event> getAll() {
 
-        return  dataStorage.getEvents();
+        return  null;
     }
 
 

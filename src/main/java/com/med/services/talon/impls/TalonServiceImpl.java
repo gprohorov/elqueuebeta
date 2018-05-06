@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -40,6 +41,14 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public Talon createTalon(Talon talon) {
+/*        if (this.getAll().size()==0){talon.setId(5L);}
+
+        if (talon.getId() == null){
+           Long id = this.getAll().stream().mapToLong(Talon::getId).max().getAsLong() +1;
+            talon.setId(id);
+            System.out.println(talon.getId()
+            );
+        }*/
         return repository.save(talon);
     }
 
@@ -66,13 +75,16 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public List<Talon> getAll() {
-        return null;
+        return repository.findAll();
     }
 
 
     @Override
     public List<Talon> getTalonsForToday() {
-        return null;
+
+        return repository.findAll()
+                .stream().filter(talon ->talon.getDate().equals(LocalDate.now()) )
+                .collect(Collectors.toList());
     }
 
     //------------------------------- BUSINESS LOGIC -------------------------

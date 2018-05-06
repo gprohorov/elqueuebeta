@@ -40,7 +40,7 @@ public class EventDAOImpl implements IEventDAO {
 
     @Override
     public List<Event> getAll() {
-        return dataStorage.getEvents();
+        return null;
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Talon {
 
     @Id
     private ObjectId id;
+
     private int patientId;
     private LocalDate date;
     private Procedure procedure;
@@ -143,5 +144,22 @@ public class Talon {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Talon{" +
+                "id=" + id +
+                ", patientId=" + patientId +
+                ", date=" + date +
+                ", procedure=" + procedure +
+                ", zones=" + zones +
+                ", desc='" + desc + '\'' +
+                ", executionTime=" + executionTime +
+                ", doctor=" + doctor +
+                ", sum=" + sum +
+                ", duration=" + duration +
+                '}';
     }
 }

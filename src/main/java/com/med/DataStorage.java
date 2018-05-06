@@ -1,10 +1,11 @@
 package com.med;
 
 import com.med.model.*;
-import com.med.repository.patient.PatientRepository;
 import com.med.repository.doctor.DoctorRepository;
-import com.med.repository.procedure.ProcedureRepository;
+import com.med.repository.patient.PatientRepository;
 import com.med.repository.person.PersonRepository;
+import com.med.repository.procedure.ProcedureRepository;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,6 +38,9 @@ public class DataStorage {
 	@Autowired
     PersonRepository personRepository;
 
+	@Autowired
+    TalonServiceImpl talonService;
+
 
     @PostConstruct
            void init(){
@@ -65,6 +69,11 @@ public class DataStorage {
       //  patientRepository.saveAll(patients);
 
      //   patients.clear();
+
+   // talonService.deleteAll();
+     talons.stream().forEach(talon -> talonService.createTalon(talon));
+    //    talonService.
+
 
     }
 
@@ -120,13 +129,13 @@ public class DataStorage {
          ));
 
 
-    Procedure registration =   new Procedure(1, "Реєстратура", 9);
-    Procedure diagnostics =   new Procedure(2, "Диагностика", 77);
-    Procedure laser = new Procedure(3, "Лазерна терапия",250);
-    Procedure pulling = new Procedure(5, "Витяжка",50);
-    Procedure massage = new Procedure(6, "Массаж",70);
-    Procedure mechmassasge = new Procedure(4, "Механ. массаж",80);
-    Procedure heating = new Procedure(7, "Прогрівання",80);
+    Procedure registration =   new Procedure(1, "Registration",100);
+    Procedure diagnostics =   new Procedure(2, "Diagnostics",100);
+    Procedure manual = new Procedure(3, "Manual therapy",100);
+    Procedure pulling = new Procedure(4, "Dry pull",100);
+    Procedure mechmassasge = new Procedure(5, "Mechanical massage",100);
+    Procedure massage = new Procedure(6, "Manual massage",100);
+    Procedure ultrasound = new Procedure(7, "USound",100);
 ///--------------------------------------------------------------------------------------
 
     Procedure laserforTrump = new Procedure(3, "Лазерна терапия",50);
@@ -150,12 +159,12 @@ public class DataStorage {
 
             registration,
             diagnostics,
-            laser,
+            manual,
             massage,
             pulling,
-       //     mechmassasge,
+       ultrasound
          //   massageNo,
-            heating
+
 
     ));
 
@@ -188,19 +197,6 @@ public class DataStorage {
 
 
 
-   private List<Event> logs = Arrays.asList(
-          //  new Event(null, LocalDateTime.now(), null, doctors.get(0),procedures.get(0), Action.PRESENT),
-         //   new Event(null, LocalDateTime.now(), patient.get(0), doctors.get(0),procedures.get(0), Action.REGISTRATED),
-          //  new Event(null, LocalDateTime.now(), patient.get(0), doctors.get(0),procedures.get(0), Action.PUT_IN_QUEUE)
-
-    );
-
-
-   private List<Event> events = new ArrayList<>();
-           //Arrays.asList(
-          //  new Event(null, LocalDateTime.now(), null, doctors.get(0),procedures.get(0), Action.PRESENT),
-         //   new Event(null, LocalDateTime.now(), patient.get(0), doctors.get(0),procedures.get(0), Action.REGISTRATED),
-          //  new Event(null, LocalDateTime.now(), patient.get(0), doctors.get(0),procedures.get(0), Action.PUT_IN_QUEUE)
 
 
 
@@ -323,11 +319,11 @@ public class DataStorage {
     );
 
     private List<Procedure> proceduresIvanov = new ArrayList<>(
-            Arrays.asList(massage, laser, pulling)
+            Arrays.asList(massage, ultrasound, pulling)
     );
 
     private List<Procedure> proceduresForToday2 = new ArrayList<>(
-            Arrays.asList(massage, laser, pulling,heating)
+            Arrays.asList(massage, ultrasound, pulling,mechmassasge)
     );
 
 
@@ -410,6 +406,52 @@ public class DataStorage {
         this.tails = tails;
     }
 
+    //////////////////////////////// TALONS /////////////////
+/*
+
+     registration
+     diagnostics
+    manual
+   pulling
+     mechmassasge
+     massage
+    ultrasound
+*/
+
+    private List<Talon> talons = new ArrayList<>(
+
+            Arrays.asList(
+            //// tail to diagnostics
+             new Talon(12,diagnostics),
+             new Talon(13,diagnostics)
+         ,  new Talon(14,diagnostics),
+             new Talon(15,diagnostics),
+
+              //// tail to massage
+              new Talon(12,massage),
+              new Talon(13,massage),
+              new Talon(14,massage),
+              new Talon(15,massage),
+
+                    /// tail to registrature
+              new Talon(16,registration),
+              new Talon(17,registration),
+              new Talon(14,registration),
+              new Talon(15,registration),
+
+              // manual therapy
+              new Talon(16,manual),
+              new Talon(17,manual),
+              new Talon(14,manual),
+              new Talon(15,manual)
+            )
+    );
+
+
+
+
+    ////////////////////////////////////////////////////////////
+
     private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
             new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
             new Appointment(2, new Patient(persons.get(1)), LocalDate.now()),
@@ -418,6 +460,14 @@ public class DataStorage {
             new Appointment(5, new Patient(persons.get(3)), LocalDate.now().plusDays(2))
            , new Appointment(6, vasa, LocalDate.now().plusDays(5)
     )));
+
+    public List<Talon> getTalons() {
+        return talons;
+    }
+
+    public void setTalons(List<Talon> talons) {
+        this.talons = talons;
+    }
 
     public List<Appointment> getAppointments() {
         return appointments;
@@ -451,16 +501,6 @@ public class DataStorage {
         this.doctors = doctors;
     }
 
-    public List<Event> getLogs() {
-        return logs;
-    }
-
-    public List<Event> getEvents() { return events; }
-
-    public void setLogs(List<Event> logs) {
-        this.logs = logs;
-    }
-
     public List<Person> getPersons() {
         return persons;
     }
@@ -479,8 +519,8 @@ public class DataStorage {
 
 
     public void resetPatientsTable(){
-
-        /*assigned.put(massage, 10);
+/*
+       assigned.put(massage, 10);
         assigned.put(pulling, 10);
         // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -491,7 +531,6 @@ public class DataStorage {
         progres2.put(pulling, false);
 
         progres.put(massage,false);
-        progres.put(laser,false);
         progres.put(pulling,false);
 
         patients.add(vasa);
@@ -505,6 +544,13 @@ public class DataStorage {
         patientRepository.saveAll(patients);
 
         patients.clear();*/
+
+     // talonRepository.deleteAll();
+     //   talons.stream().forEach(System.out::println);
+    //    talonRepository.save(talons.get(0));
+     //   talonRepository.save(talons.get(1));
+
+ /* 
         List<Patient> patients = patientRepository.findAll();
         patients.stream().forEach(patient
                 -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
@@ -513,7 +559,7 @@ public class DataStorage {
                 -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
 
         patientRepository.saveAll(patients);
-
+*/
 
     }
 

@@ -90,6 +90,14 @@ public class PatientServiceIMongoImpl implements IPatientsService {
     }
 
     @Override
+    public List<Patient> getByLastName(String lastName) {
+        return this.getAll().stream()
+                .filter(patient -> patient.getPerson().getLastName().equals(lastName))
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public List<Patient> getAll() {
 
         List<Patient> patients = repository.findAll();
@@ -365,5 +373,18 @@ public class PatientServiceIMongoImpl implements IPatientsService {
                 .filter(el ->el.getActive().equals(Activity.ACTIVE)                                )
                 .findFirst().get();
     }
+
+    /////////////////////// TALONS
+    Patient getTalons(int patientId){
+
+        Patient patient = this.getPatient(patientId);
+
+
+
+
+        return patient;
+    }
+
+
 
 }

@@ -15,6 +15,7 @@ public interface IPatientDAO {
     Patient updatePatient(Patient patient);
     Patient getPatient(int id);
     Patient deletePatient(int id);
+    List<Patient> getByLastName(String lastName);
     List<Patient> getAll();
     List<Patient> insertAppointedForToday();
     //List<Patient> getAppointedForDate(LocalDate date);

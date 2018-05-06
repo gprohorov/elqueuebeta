@@ -91,6 +91,11 @@ public class PatientServiceImpl implements IPatientsService {
     }
 
     @Override
+    public List<Patient> getByLastName(String lastName) {
+        return null;
+    }
+
+    @Override
     public List<Patient> getAll() {
 
         for (Patient patient:patientDAO.getAll()){

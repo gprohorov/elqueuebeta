@@ -21,6 +21,6 @@ public class LogsServiceImpl implements ILogsService {
     @Override
     public List<Event> getAll() {
 
-        return dataStorage.getLogs();
+        return null;
     }
 }

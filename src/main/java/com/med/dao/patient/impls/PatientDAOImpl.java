@@ -118,6 +118,13 @@ public class PatientDAOImpl implements IPatientDAO {
     }
 
     @Override
+    public List<Patient> getByLastName(String lastName) {
+        return this.getAll()
+                .stream().filter(patient -> patient.getPerson().getLastName().equals(lastName))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Patient> getAll() {
 
         return dataStorage.getPatients().stream().sorted().collect(Collectors.toList());

@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, Integer>{
+  //  List<Patient> findByLastName(String lastName);
 
 }

@@ -19,6 +19,7 @@ public class Patient implements Comparable<Patient> {
     private Person person;
     private Therapy therapy;
     private List<Procedure> proceduresForToday = new ArrayList<>();
+    private List<Talon> talons = new ArrayList<>();
     private Status status;
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
@@ -26,6 +27,8 @@ public class Patient implements Comparable<Patient> {
     private int balance;
     private Activity active;
     private Reckoning reckoning;
+
+     /////////   need to create dao method -  find by last name
 
 
     public Patient() {
