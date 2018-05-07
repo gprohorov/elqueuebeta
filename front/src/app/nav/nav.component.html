@@ -25,6 +25,10 @@
     </li>
   </ul>
   <ul class="navbar-nav">
-    <li class="dropdown-item"><a class="dropdown-item" routerLink="/login">Вихід</a></li>
+    <li class="dropdown-item">
+      <a class="dropdown-item" routerLink="/login">
+      Вихід ({{user.speciality}} - {{user.lastName}} {{user.firstName[0]}}. {{user.patronymic[0]}}.)
+      </a>
+    </li>
   </ul>
 </nav>

@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor } from './_helpers/index';
-import { TokenStorage } from './_storage/index';
+import { TokenStorage, UserStorage } from './_storage/index';
 import {  AlertService,
           AuthService,
           UserService,
@@ -105,6 +105,7 @@ const appRoutes: Routes = [
         AlertService,
         AuthService,
         TokenStorage,
+        UserStorage,
         UserService,
         UtilService,
         SortService,

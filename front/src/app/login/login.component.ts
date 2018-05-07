@@ -2,7 +2,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, AuthService } from '../_services/index';
-import { TokenStorage } from "../_storage/index";
 
 @Component({
     moduleId: module.id,
@@ -18,7 +17,6 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private token: TokenStorage,
         private alertService: AlertService) {
       this.authService.deAuth();
     }
@@ -36,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.authService.attemptAuth(this.model.username, this.model.password)
             .subscribe(
                 data => {
-                    this.token.saveToken(data.token);
+                    this.authService.setAuth(data);
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
