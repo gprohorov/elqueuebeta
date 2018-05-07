@@ -3,6 +3,7 @@ package com.med.services.doctor.impls;
 import com.med.model.Doctor;
 import com.med.repository.doctor.DoctorRepository;
 import com.med.services.doctor.interfaces.IDoctorService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,6 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-
-@SuppressWarnings("ALL")
 @Service
 public class DoctorServiceImpl implements IDoctorService {
 
@@ -57,8 +56,12 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public Doctor getDoctor(int id) {
-        return
-                repository.findById(id).get();
+        return repository.findById(id).get();
+    }
+
+    public Doctor getDoctorByUserId(ObjectId id) {
+        return repository.findAll().stream().filter(doctor ->
+                doctor.getUserId().equals(id)).findFirst().orElse(null);
     }
 
     @Override

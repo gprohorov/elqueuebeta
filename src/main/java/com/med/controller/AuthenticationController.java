@@ -1,10 +1,11 @@
 package com.med.controller;
 
 import com.med.config.JwtTokenUtil;
-import com.med.model.AuthToken;
+import com.med.model.Doctor;
 import com.med.model.LoginUser;
 import com.med.model.User;
 import com.med.services.user.UserService;
+import com.med.services.doctor.impls.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,9 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DoctorServiceImpl doctorService;
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
@@ -42,8 +46,12 @@ public class AuthenticationController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final User user = userService.findOne(loginUser.getUsername());
+        final Doctor doctor = doctorService.getDoctorByUserId(user.getId());
         final String token = jwtTokenUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthToken(token));
+        user.setToken(token);
+        user.setInfo(doctor);
+        System.out.println(user);
+        return ResponseEntity.ok(user);
     }
 
 }

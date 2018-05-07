@@ -1,7 +1,9 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 /**
  * Created by george on 3/9/18.
@@ -17,7 +19,9 @@ public class Doctor {
     private String lastName;
     private String speciality;
     private String cellPhone;
-//    private int userId;
+
+    @Nullable
+    private ObjectId userId;
 //    private User user;
 
     public Doctor() {
@@ -41,6 +45,7 @@ public class Doctor {
         this.lastName = lastName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
+        this.userId = null;
     }
 
     public Doctor(String firstName, String patronymic, String lastName, String speciality, String cellPhone) {
@@ -49,13 +54,14 @@ public class Doctor {
         this.lastName = lastName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
+        this.userId = null;
     }
 
-//    public int getUserId() {
-//        return userId;
-//    }
+    public ObjectId getUserId() {
+        return userId;
+    }
 
-//    public void setUserId(int userId) {
+//    public void setUserId(ObjectId userId) {
 //        this.userId = userId;
 //    }
 
