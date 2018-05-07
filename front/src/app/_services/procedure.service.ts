@@ -40,7 +40,7 @@ export class ProcedureService {
         catchError(this.handleError)
       );
   }
-  
+
   delete(id: number) {
     return this.http
       .post(this.deleteUrl + id, {})

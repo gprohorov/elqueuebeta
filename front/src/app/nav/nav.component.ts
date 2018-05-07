@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService, AuthService, UtilService, AlertService } from '../_services/index';
+import { AuthService, UtilService, AlertService } from '../_services/index';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +12,6 @@ export class NavComponent implements OnInit {
   user: any;
 
   constructor(public authService: AuthService,
-              private userService: UserService,
               private utilService: UtilService,
               private alertService: AlertService,
               private router: Router

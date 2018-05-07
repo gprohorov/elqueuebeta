@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/do';
 
-import { TokenStorage } from "../_storage/token.storage";
-import {HttpEvent} from "@angular/common/http";
+import { TokenStorage } from '../_storage/token.storage';
+import {HttpEvent} from '@angular/common/http';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 

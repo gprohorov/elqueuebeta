@@ -15,7 +15,7 @@ export class SortableColumnComponent implements OnInit {
     columnName: string;
 
     @Input('sort-direction')
-    sortDirection: string = '';
+    sortDirection: string;
 
     private columnSortedSubscription: Subscription;
 
@@ -29,7 +29,7 @@ export class SortableColumnComponent implements OnInit {
         // subscribe to sort changes so we can react when other columns are sorted
         this.columnSortedSubscription = this.sortService.columnSorted$.subscribe(event => {
             // reset this column's sort direction to hide the sort icons
-            if (this.columnName != event.sortColumn) {
+            if (this.columnName !== event.sortColumn) {
                 this.sortDirection = '';
             }
         });

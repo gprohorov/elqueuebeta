@@ -14,7 +14,6 @@ import { JwtInterceptor } from './_helpers/index';
 import { TokenStorage, UserStorage } from './_storage/index';
 import {  AlertService,
           AuthService,
-          UserService,
           UtilService,
           SortService,
           PersonService,
@@ -25,11 +24,7 @@ import {  AlertService,
        } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { NavComponent } from './nav/nav.component';
-
-import { HomeComponent } from './home/home.component';
-import { UsersComponent } from './users/users.component';
 
 import { PersonListComponent } from './person/list.component';
 import { PersonFormComponent } from './person/form.component';
@@ -49,10 +44,7 @@ import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.co
 
 const appRoutes: Routes = [
     { path: '', redirectTo: 'procedures-queue', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
 
     { path: 'persons', component: PersonListComponent, canActivate: [AuthGuard] },
     { path: 'person-form', component: PersonFormComponent, canActivate: [AuthGuard] },
@@ -87,11 +79,8 @@ const appRoutes: Routes = [
         AlertComponent,
         SortableTableDirective,
         SortableColumnComponent,
-        HomeComponent,
         LoginComponent,
-        RegisterComponent,
         NavComponent,
-        UsersComponent,
         PersonListComponent, PersonFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -106,7 +95,6 @@ const appRoutes: Routes = [
         AuthService,
         TokenStorage,
         UserStorage,
-        UserService,
         UtilService,
         SortService,
         PersonService,

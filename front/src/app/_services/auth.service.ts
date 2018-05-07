@@ -40,7 +40,7 @@ export class AuthService {
   isAuth() {
     return (this.token.getToken()) ? true : false;
   }
-  
+
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
