@@ -38,7 +38,10 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    this.alertService.error(error);
+                    const mes = error.status === 401 
+                          ? 'Помилка авторизації' 
+                          : 'Помилка сервера';
+                    this.alertService.error(mes);
                     this.loading = false;
                 });
     }

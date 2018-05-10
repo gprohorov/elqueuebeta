@@ -19,7 +19,7 @@ export class AuthService {
   attemptAuth( username: string, password: string ): Observable<any> {
     const credentials = {username: username, password: password};
     return this.http.post(this.authUrl, credentials).pipe(
-      catchError(this.handleError)
+      //catchError(this.handleError)
     );
   }
 
@@ -44,7 +44,7 @@ export class AuthService {
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);
-    return Observable.throw(err.error || err.message || err);
+    return Observable.throw(err.message || err);
   }
 
 }
