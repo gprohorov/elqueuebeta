@@ -1,6 +1,7 @@
 package com.med.model;
 
 import org.bson.types.ObjectId;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,7 +12,6 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-
 @Document
 public class Therapy {
 
@@ -26,7 +26,6 @@ public class Therapy {
     private String picture;
     private List<Procedure> procedures = new ArrayList<>();
     private int zones;
-
 
     public Therapy() {
     }

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-
 @Service
 public class PatientServiceImpl implements IPatientsService {
 

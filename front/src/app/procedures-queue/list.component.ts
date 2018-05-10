@@ -24,7 +24,7 @@ export class ProceduresQueueListComponent implements OnInit {
 
   public myOptions: NgxMasonryOptions = {
     transitionDuration: '0.2s',
-    columnWidth: 250,
+    columnWidth: 200,
     fitWidth: true,
     horizontalOrder: true,
     gutter: 20

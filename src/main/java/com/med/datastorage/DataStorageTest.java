@@ -17,9 +17,6 @@ import java.util.*;
 /**
  * Created by george on 3/9/18.
  */
-
-
-
 @Configuration
 public class DataStorageTest {
 
@@ -517,17 +514,13 @@ public class DataStorageTest {
         patients.stream().forEach(patient
                 -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
 
-       patients.get(0).setLastActivity(LocalDateTime.now().minusMinutes(5));
-       patients.get(1).setLastActivity(LocalDateTime.now().minusMinutes(15));
+        patients.get(0).setLastActivity(LocalDateTime.now().minusMinutes(5));
+        patients.get(1).setLastActivity(LocalDateTime.now().minusMinutes(15));
 
         patientRepository.saveAll(patients);
 
         List<Talon> talons = talonRepository.findAll();
         talons.stream().forEach(talon -> talon.setDate(LocalDate.now()));
         talonRepository.saveAll(talons);
-
     }
-
-
-
 }

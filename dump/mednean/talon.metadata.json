@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"mednean.talon"},{"v":1,"unique":true,"key":{"doctor.user.username":1},"name":"doctor.user.username","ns":"mednean.talon"}]}

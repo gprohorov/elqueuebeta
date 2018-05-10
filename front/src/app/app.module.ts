@@ -10,10 +10,10 @@ import { NgxMasonryModule } from 'ng5-masonry';
 import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { JwtInterceptor, fakeBackendProvider } from './_helpers/index';
+import { JwtInterceptor } from './_helpers/index';
+import { TokenStorage, UserStorage } from './_storage/index';
 import {  AlertService,
-          AuthenticationService,
-          UserService,
+          AuthService,
           UtilService,
           SortService,
           PersonService,
@@ -24,11 +24,7 @@ import {  AlertService,
        } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { NavComponent } from './nav/nav.component';
-
-import { HomeComponent } from './home/home.component';
-import { UsersComponent } from './users/users.component';
 
 import { PersonListComponent } from './person/list.component';
 import { PersonFormComponent } from './person/form.component';
@@ -47,11 +43,8 @@ import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.comp
 import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full', canActivate: [AuthGuard] },
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
 
     { path: 'persons', component: PersonListComponent, canActivate: [AuthGuard] },
     { path: 'person-form', component: PersonFormComponent, canActivate: [AuthGuard] },
@@ -86,11 +79,8 @@ const appRoutes: Routes = [
         AlertComponent,
         SortableTableDirective,
         SortableColumnComponent,
-        HomeComponent,
         LoginComponent,
-        RegisterComponent,
         NavComponent,
-        UsersComponent,
         PersonListComponent, PersonFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -102,8 +92,9 @@ const appRoutes: Routes = [
     providers: [
         AuthGuard,
         AlertService,
-        AuthenticationService,
-        UserService,
+        AuthService,
+        TokenStorage,
+        UserStorage,
         UtilService,
         SortService,
         PersonService,
@@ -111,8 +102,7 @@ const appRoutes: Routes = [
         ProcedureService,
         PatientsQueueService,
         DoctorInterfaceService,
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        fakeBackendProvider
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     schemas: [ NO_ERRORS_SCHEMA ],
     bootstrap: [AppComponent]

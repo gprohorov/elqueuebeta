@@ -6,6 +6,7 @@ import java.util.Set;
 /**
  * Created by george on 3/31/18.
  */
+@SuppressWarnings("ALL")
 public class Card {
     private int id;
     private String name;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by george on 3/9/18.
  */
+@SuppressWarnings("ALL")
 @RequestMapping("/api/appointment")
 @CrossOrigin("*")
 @RestController

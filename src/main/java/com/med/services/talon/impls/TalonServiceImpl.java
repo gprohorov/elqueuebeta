@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
+@SuppressWarnings("ALL")
 @Component
 public class TalonServiceImpl implements ITalonService {
 

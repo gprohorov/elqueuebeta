@@ -1,5 +1,5 @@
 ﻿<!-- main app container -->
-<div class="container" *ngIf="authenticationService.isLoggedIn()">
+<div class="container" *ngIf="authService.isAuth()">
     <app-nav></app-nav>
 </div>
 

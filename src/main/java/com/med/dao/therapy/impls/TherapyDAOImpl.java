@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
+
 @Component
 public class TherapyDAOImpl implements ITherapyDAO {
 

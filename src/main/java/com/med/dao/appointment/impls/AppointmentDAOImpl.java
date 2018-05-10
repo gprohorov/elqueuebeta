@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by george on 3/11/18.
  */
+@SuppressWarnings("ALL")
 @Component
 public class AppointmentDAOImpl implements IAppointmentDAO {
 

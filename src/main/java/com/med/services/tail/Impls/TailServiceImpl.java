@@ -1,7 +1,7 @@
 package com.med.services.tail.Impls;
 
 import com.med.model.*;
-import com.med.services.patient.Impls.PatientServiceIMongoImpl;
+import com.med.services.patient.Impls.PatientServiceMongoImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -25,10 +25,10 @@ public class TailServiceImpl implements ITailService {
     ProcedureServiceImpl procedureService;
 
    @Autowired
-   PatientServiceIMongoImpl patientService;
+   PatientServiceMongoImpl patientService;
 
    @Autowired
-    TalonServiceImpl talonService;
+   TalonServiceImpl talonService;
 
 
 
