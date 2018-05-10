@@ -46,10 +46,10 @@ public class AuthenticationController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final User user = userService.findOne(loginUser.getUsername());
-        final Doctor doctor = doctorService.getDoctorByUserId(user.getId());
         final String token = jwtTokenUtil.generateToken(user);
-        user.setToken(token);
+        final Doctor doctor = doctorService.getDoctorByUserId(user.getId());
         user.setInfo(doctor);
+        user.setToken(token);
         return ResponseEntity.ok(user);
     }
 

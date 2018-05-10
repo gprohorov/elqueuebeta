@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 
@@ -15,12 +16,12 @@ import java.util.ArrayList;
  * Created by george on 27.04.18.
  */
 @Document
-public class User {
+public class User implements UserDetails {
     @JsonIgnore
     @Id
     private ObjectId id;
 
-    private ArrayList<String> authorities;
+    private ArrayList<Role> authorities;
 
     @JsonIgnore
     private String password;
@@ -40,7 +41,7 @@ public class User {
 
     public User() { }
 
-    public User(ArrayList<String> authorities,
+    public User(ArrayList<Role> authorities,
                 String password,
                 String username,
                 boolean enabled,
@@ -54,7 +55,7 @@ public class User {
         this.info = info;
     }
 
-    public User(ArrayList<String> authorities, String password, String username) {
+    public User(ArrayList<Role> authorities, String password, String username) {
         this.authorities = authorities;
         this.password = password;
         this.username = username;
@@ -63,11 +64,11 @@ public class User {
         this.info = null;
     }
 
-    public ArrayList<String> getAuthorities() {
+    public ArrayList<Role> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(ArrayList<String> roles) {
+    public void setAuthorities(ArrayList<Role> roles) {
         this.authorities = roles;
     }
 
@@ -93,6 +94,21 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     public void setUsername(String username) {

@@ -1,16 +1,18 @@
 package com.med.services.user;
 
+import com.med.model.Doctor;
 import com.med.model.User;
 import com.med.repository.user.UserRepository;
+import com.med.services.doctor.impls.DoctorServiceImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +26,18 @@ public class UserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
-    private ArrayList<String> roles;
+    @Autowired
+    DoctorServiceImpl doctorService;
 /*
     @PostConstruct
     void init() {
-        User user = new User(new ArrayList<String>(Arrays.asList("ROLE_ADMIN")),
-                new BCryptPasswordEncoder().encode("admin"),
-                "admin");
+        User user = new User(new ArrayList<Role>(Arrays.asList(Role.ROLE_ADMIN)),
+                new BCryptPasswordEncoder().encode("admin1"),
+                "admin1");
         userRepository.save(user);
     }
 */
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.findOne(username);
         return new org.springframework.security.core.userdetails.User(
@@ -55,7 +59,13 @@ public class UserService implements UserDetailsService {
                         -> new UsernameNotFoundException( username + " was not found") );
     }
 
-    private List<SimpleGrantedAuthority> getAuthority(User user) {
-        return Arrays.asList(new SimpleGrantedAuthority(user.getAuthorities().get(0)));
+    public Doctor getCurrentUserInfo() {
+        return doctorService.getDoctorByUserId(
+            this.findOne(SecurityContextHolder.getContext().getAuthentication().getName()).getId()
+        );
+    }
+
+    public List<SimpleGrantedAuthority> getAuthority(User user) {
+        return Arrays.asList(new SimpleGrantedAuthority(user.getAuthorities().get(0).name()));
     }
 }

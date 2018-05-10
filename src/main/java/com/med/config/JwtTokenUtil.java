@@ -1,15 +1,15 @@
 package com.med.config;
 
 import com.med.model.User;
+import com.med.services.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -18,6 +18,9 @@ import static com.med.config.Constants.SIGNING_KEY;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+
+    @Autowired
+    UserService userService;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -45,13 +48,14 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateToken(User user) {
-        return doGenerateToken(user.getUsername());
+        return doGenerateToken(user);
     }
 
-    private String doGenerateToken(String subject) {
+    private String doGenerateToken(User user) {
 
+        String subject = user.getUsername();
         Claims claims = Jwts.claims().setSubject(subject);
-        claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        claims.put("scopes", userService.getAuthority(user));
 
         return Jwts.builder()
                 .setClaims(claims)

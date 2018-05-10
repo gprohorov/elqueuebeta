@@ -1,10 +1,10 @@
 package com.med;
 
 import com.med.model.*;
-import com.med.repository.patient.PatientRepository;
 import com.med.repository.doctor.DoctorRepository;
-import com.med.repository.procedure.ProcedureRepository;
+import com.med.repository.patient.PatientRepository;
 import com.med.repository.person.PersonRepository;
+import com.med.repository.procedure.ProcedureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -515,7 +515,6 @@ public class DataStorage {
                 -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
 
         patientRepository.saveAll(patients);
-
 
     }
 
