@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
+@SuppressWarnings("ALL")
 public interface IQueueManagerService {
 
     List<Patient> includeApointed();

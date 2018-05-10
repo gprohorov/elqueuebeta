@@ -3,7 +3,7 @@ package com.med.services.tail.Impls;
 import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.Tail;
-import com.med.services.patient.Impls.PatientServiceIMongoImpl;
+import com.med.services.patient.Impls.PatientServiceMongoImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class TailServiceImpl implements ITailService {
     ProcedureServiceImpl procedureService;
 
    @Autowired
-   PatientServiceIMongoImpl patientService;
+   PatientServiceMongoImpl patientService;
 
 
 

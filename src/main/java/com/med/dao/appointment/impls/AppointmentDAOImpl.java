@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/11/18.
  */
+@SuppressWarnings("ALL")
 @Component
 public class AppointmentDAOImpl implements IAppointmentDAO {
 

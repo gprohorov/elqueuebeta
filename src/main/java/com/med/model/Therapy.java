@@ -1,15 +1,19 @@
 package com.med.model;
 
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
+@Document
 public class Therapy {
-   private ObjectId id;
+    @Id
+   private int id;
    private LocalDateTime dateTime;
    private String diag;
    private int codeDiag;
@@ -30,11 +34,11 @@ public class Therapy {
         this.zones = zones;
     }
 
-    public ObjectId getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(int id) {
         this.id = id;
     }
 

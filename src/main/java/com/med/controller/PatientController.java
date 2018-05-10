@@ -2,7 +2,7 @@ package com.med.controller;
 
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceIMongoImpl;
+import com.med.services.patient.Impls.PatientServiceMongoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     @Autowired
-    PatientServiceIMongoImpl service;
+    PatientServiceMongoImpl service;
 
     @Autowired
     AppointmentServiceImpl appointmentService;

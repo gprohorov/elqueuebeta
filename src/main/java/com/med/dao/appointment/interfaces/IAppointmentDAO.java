@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
+@SuppressWarnings("ALL")
 public interface IAppointmentDAO {
     Appointment createAppointment(Appointment appointment);
     Appointment createAppointment(Patient patient, LocalDate date);

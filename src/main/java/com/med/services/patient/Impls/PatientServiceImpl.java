@@ -10,7 +10,6 @@ import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-
 @Service
 public class PatientServiceImpl implements IPatientsService {
 
@@ -265,7 +263,7 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
-    public Patient setTherapy(int patientId, ObjectId therapyId) {
+    public Patient setTherapy(int patientId, int therapyId) {
         Patient patient = this.getPatient(patientId);
         Therapy therapy = therapyService.getTherapy(therapyId);
         patient.setTherapy(therapy);
