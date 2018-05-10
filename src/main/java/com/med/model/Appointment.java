@@ -8,38 +8,16 @@ import java.time.LocalDate;
 
 
 public class Appointment {
-    private long id;
+
     private Patient patient;
     private LocalDate date;
 
+    public Appointment() {
+    }
 
     public Appointment(Patient patient, LocalDate date) {
         this.patient = patient;
         this.date = date;
-    }
-
-    public Appointment(Person person, LocalDate date) {
-        this.patient = new Patient(person);
-        this.date = date;
-    }
-
-    public Appointment(long id, Patient patient, LocalDate date) {
-        this.id = id;
-        this.patient = patient;
-        this.date = date;
-    }
-
-
-
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Patient getPatient() {

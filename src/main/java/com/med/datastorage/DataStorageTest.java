@@ -1,11 +1,11 @@
-package com.med;
+package com.med.datastorage;
 
 import com.med.model.*;
 import com.med.repository.doctor.DoctorRepository;
 import com.med.repository.patient.PatientRepository;
 import com.med.repository.person.PersonRepository;
 import com.med.repository.procedure.ProcedureRepository;
-import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.repository.talon.TalonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,7 +21,7 @@ import java.util.*;
 
 
 @Configuration
-public class DataStorage {
+public class DataStorageTest {
 
 
     @Autowired
@@ -39,7 +39,7 @@ public class DataStorage {
     PersonRepository personRepository;
 
 	@Autowired
-    TalonServiceImpl talonService;
+    TalonRepository talonRepository;
 
 
     @PostConstruct
@@ -71,7 +71,7 @@ public class DataStorage {
      //   patients.clear();
 
    // talonService.deleteAll();
-     talons.stream().forEach(talon -> talonService.createTalon(talon));
+   //  talons.stream().forEach(talon -> talonService.createTalon(talon));
     //    talonService.
 
 
@@ -136,7 +136,14 @@ public class DataStorage {
     Procedure mechmassasge = new Procedure(5, "Mechanical massage",100);
     Procedure massage = new Procedure(6, "Manual massage",100);
     Procedure ultrasound = new Procedure(7, "USound",100);
-///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+    ///--------------------------------------------------------------------------------------
 
     Procedure laserforTrump = new Procedure(3, "Лазерна терапия",50);
     Procedure pullingforTrump = new Procedure(5, "Витяжка",50);
@@ -210,7 +217,7 @@ public class DataStorage {
            , "Ушиб", 1, assigned,executed);
 */
 
-    private Therapy primary = new Therapy();
+    private Therapy primary =null;
 
     Procedure massage5 = new Procedure(6,"Массаж", 5);
     Procedure heating5 = new Procedure(7,"Прогрівання", 5);
@@ -328,11 +335,11 @@ public class DataStorage {
 
 
 
-    private Patient vasa = new Patient(persons.get(4), primary
+    private Patient vasa = new Patient(persons.get(4), null
             , proceduresForVas
             , Status.SOCIAL, LocalDateTime.now().minusMinutes(60), LocalDateTime.now().minusMinutes(120),0, Activity.ACTIVE) ;
 
-   private Patient trump = new Patient(persons.get(9), primary
+   private Patient trump = new Patient(persons.get(9), null
             , proceduresForTrump
             , Status.BUSINESS, LocalDateTime.now().minusMinutes(10), LocalDateTime.now().minusMinutes(99), 0, Activity.NON_ACTIVE) ;
 
@@ -343,51 +350,51 @@ public class DataStorage {
 
 
 
-    private Patient petrovv= new Patient(persons.get(1),primary
+    private Patient petrovv= new Patient(persons.get(1),null
             ,proceduresForPetrov,   Status.SOCIAL
             , LocalDateTime.now().minusMinutes(11),LocalDateTime.now().minusMinutes(77),0,Activity.ACTIVE);
 
     private List<Patient> patients = new LinkedList<>(
             Arrays.asList(
-                    new Patient(persons.get(12), primary, this.schema2()
+                    new Patient(persons.get(12), null, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(12)
                     , LocalDateTime.now().minusMinutes(111),0, Activity.ACTIVE)
 
-                    ,  new Patient(persons.get(13), primary, this.schema1()
+                    ,  new Patient(persons.get(13), null, this.schema1()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(2)
                             ,LocalDateTime.now().minusHours(2), 0, Activity.ACTIVE)
 
-                    ,  new Patient(persons.get(24), primary, this.schema2()
+                    ,  new Patient(persons.get(24), null, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(14), primary, this.schema3()
+                    ,  new Patient(persons.get(14), null, this.schema3()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(31)
                             , LocalDateTime.now().minusMinutes(222),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(15), primary, this.schema4()
+                    ,  new Patient(persons.get(15), null, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
                             , LocalDateTime.now().minusMinutes(156),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(16), primary, this.schema2()
+                    ,  new Patient(persons.get(16), null, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(46)
                             , LocalDateTime.now().minusMinutes(241),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(17), primary, this.schema2()
+                    ,  new Patient(persons.get(17), null, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
                             , LocalDateTime.now().minusMinutes(218),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(18), primary, this.schema1()
+                    ,  new Patient(persons.get(18), null, this.schema1()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
                             , LocalDateTime.now().minusMinutes(180),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(19), primary, this.schema4()
+                    ,  new Patient(persons.get(19), null, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(61)
                             , LocalDateTime.now().minusMinutes(199),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(20), primary, this.schema2()
+                    ,  new Patient(persons.get(20), null, this.schema2()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , LocalDateTime.now().minusMinutes(211),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(21), primary, this.schema4()
+                    ,  new Patient(persons.get(21), null, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(43)
                             , LocalDateTime.now().minusMinutes(232),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(22), primary, this.schema4()
+                    ,  new Patient(persons.get(22), null, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
                             , LocalDateTime.now().minusMinutes(312),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(23), primary, this.schema4()
+                    ,  new Patient(persons.get(23), null, this.schema4()
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
                             , LocalDateTime.now().minusMinutes(195),0, Activity.ACTIVE)
 
@@ -406,48 +413,6 @@ public class DataStorage {
         this.tails = tails;
     }
 
-    //////////////////////////////// TALONS /////////////////
-/*
-
-     registration
-     diagnostics
-    manual
-   pulling
-     mechmassasge
-     massage
-    ultrasound
-*/
-
-    private List<Talon> talons = new ArrayList<>(
-
-            Arrays.asList(
-            //// tail to diagnostics
-             new Talon(12,diagnostics),
-             new Talon(13,diagnostics)
-         ,  new Talon(14,diagnostics),
-             new Talon(15,diagnostics),
-
-              //// tail to massage
-              new Talon(12,massage),
-              new Talon(13,massage),
-              new Talon(14,massage),
-              new Talon(15,massage),
-
-                    /// tail to registrature
-              new Talon(16,registration),
-              new Talon(17,registration),
-              new Talon(14,registration),
-              new Talon(15,registration),
-
-              // manual therapy
-              new Talon(16,manual),
-              new Talon(17,manual),
-              new Talon(14,manual),
-              new Talon(15,manual)
-            )
-    );
-
-
 
 
     ////////////////////////////////////////////////////////////
@@ -461,13 +426,6 @@ public class DataStorage {
            , new Appointment(6, vasa, LocalDate.now().plusDays(5)
     )));
 
-    public List<Talon> getTalons() {
-        return talons;
-    }
-
-    public void setTalons(List<Talon> talons) {
-        this.talons = talons;
-    }
 
     public List<Appointment> getAppointments() {
         return appointments;
@@ -550,7 +508,7 @@ public class DataStorage {
     //    talonRepository.save(talons.get(0));
      //   talonRepository.save(talons.get(1));
 
- /* 
+
         List<Patient> patients = patientRepository.findAll();
         patients.stream().forEach(patient
                 -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
@@ -558,8 +516,14 @@ public class DataStorage {
         patients.stream().forEach(patient
                 -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
 
+       patients.get(0).setLastActivity(LocalDateTime.now().minusMinutes(5));
+       patients.get(1).setLastActivity(LocalDateTime.now().minusMinutes(15));
+
         patientRepository.saveAll(patients);
-*/
+
+        List<Talon> talons = talonRepository.findAll();
+        talons.stream().forEach(talon -> talon.setDate(LocalDate.now()));
+        talonRepository.saveAll(talons);
 
     }
 

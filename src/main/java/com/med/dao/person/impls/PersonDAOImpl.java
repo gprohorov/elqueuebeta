@@ -1,6 +1,6 @@
 package com.med.dao.person.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.person.interfaces.IPersonDAO;
 import com.med.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class PersonDAOImpl implements IPersonDAO {
   //  private List<Person> gersons = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){

@@ -1,6 +1,6 @@
 package com.med.dao.patient.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.patient.interfaces.IPatientDAO;
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
@@ -40,7 +40,7 @@ public class PatientDAOImpl implements IPatientDAO {
     EventsServiceImpl eventsService;
     
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
 
 

@@ -1,6 +1,6 @@
 package com.med.dao.doctor.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.doctor.interfaces.IDoctorDAO;
 import com.med.model.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class DoctorDAOImpl implements IDoctorDAO {
    // private List<Doctor> doctors = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
 /*
     @PostConstruct

@@ -1,6 +1,6 @@
 package com.med.dao.generic.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.generic.interfaces.IGenericDAO;
 import com.med.model.Generic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class GenericDAOImpl implements IGenericDAO {
     private List<Generic> generics = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){

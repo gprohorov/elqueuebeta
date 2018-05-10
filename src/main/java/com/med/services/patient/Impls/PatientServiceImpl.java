@@ -1,6 +1,6 @@
 package com.med.services.patient.Impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.patient.impls.PatientDAOImpl;
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
@@ -10,6 +10,7 @@ import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,7 @@ public class PatientServiceImpl implements IPatientsService {
     TailServiceImpl tailService;
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
 //////////////////////////////repositories//////////////////////////////////////
 
@@ -269,10 +270,10 @@ public class PatientServiceImpl implements IPatientsService {
 
 
 
-    public Patient setTherapy(int patientId, int therapyId) {
+    public Patient setTherapy(int patientId, ObjectId therapyId) {
         Patient patient = this.getPatient(patientId);
         Therapy therapy = therapyService.getTherapy(therapyId);
-        patient.setTherapy(therapy);
+       // patient.setTherapy(therapy);
         this.updatePatient(patient);
         return patient;
     }

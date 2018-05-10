@@ -5,6 +5,7 @@ import com.med.repository.patient.PatientRepository;
 import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
     @Autowired
     TailServiceImpl tailService;
+
+    @Autowired
+    TalonServiceImpl talonService;
 
 
 /*
@@ -79,7 +83,10 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
     @Override
     public Patient getPatient(int id) {
-        return repository.findById(id).get();
+        Patient patient =repository.findById(id).orElse(null);
+        patient.setDelta(ChronoUnit.MINUTES.between(
+                patient.getLastActivity(), LocalDateTime.now()));
+        return  patient;
     }
 
     @Override
@@ -309,9 +316,9 @@ public class PatientServiceIMongoImpl implements IPatientsService {
 
         repository.save(patient);
 
-       Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-               .findAny().get();
+       Tail tail = tailService.getTail(procedureId);
        tail.setVacancies(0);
+       tail.setVacant(false);
        tail.setPatientOnProcedure(patient);
         return patient;
     }
@@ -321,17 +328,20 @@ public class PatientServiceIMongoImpl implements IPatientsService {
     //                                      patient gets a status ACTIVE
     //                                     patient gets the time of lastActivity = now
     //                                     tail gets incremention of a number of responsible  doctors
-    public Patient executeProcedure(int patientId, int procedureId) {
+    public Patient executeProcedure(int patientId, int procedureId, int doctorId) {
 /*        Patient patient = this.getPatient(patientId);
         int index = this.getAll().indexOf(patient);*/
 
-        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get();
+        Tail tail = tailService.getTail(procedureId);
         Patient patient = tail.getPatientOnProcedure();
 
         Procedure procedure = patient.getProceduresForToday().stream()
                 .filter(pr -> pr.getId()== procedureId).findAny().get();
         patient.setOneProcedureForTodayAsExecuted(procedure);
+
+        Talon talon = talonService.getTalonByPatientAndProcedure(patientId, procedureId);
+       talonService.executeTalon(talon.getId(),doctorId);
+
         patient.setLastActivity(LocalDateTime.now());
         patient.setActive(Activity.ACTIVE);
         repository.save(patient);
@@ -356,8 +366,7 @@ public class PatientServiceIMongoImpl implements IPatientsService {
         patient.setLastActivity(LocalDateTime.now());
         repository.save(patient);
 
-        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get();
+        Tail tail = tailService.getTailByProcedure(procedureId);
         tail.setVacancies( 1);
         tail.setVacant(true);
         tail.setPatientOnProcedure(null);

@@ -186,11 +186,13 @@ public class PatientController {
     // procedure executed successfully => patient gets status ACTIVE
     //      the procedure in his schema marked as DONE
     //    the number of vacant doctors responsible for this procedure => + 1
-    @GetMapping("/execute/procedure/{patid}/{procid}")
+    @GetMapping("/execute/procedure/{patid}/{procid}/{docid}")
     public Patient executeProcedure(@PathVariable(value = "patid") int patientId,
-                                @PathVariable(value = "procid") int procedureId) {
+                                @PathVariable(value = "procid") int procedureId,
+                                @PathVariable(value = "docid") int doctorId)
+    {
 
-        return service.executeProcedure(patientId, procedureId);
+        return service.executeProcedure(patientId, procedureId, doctorId);
     }
 
 

@@ -58,6 +58,14 @@ public class TalonServiceImpl implements ITalonService {
     }
 
     @Override
+    public Talon getTalonByPatientAndProcedure(int patientId, int procedureId) {
+        Talon talon = this.getAll().stream().filter(tl -> tl.getPatientId()==patientId)
+                .filter(tl->tl.getProcedure().getId()==procedureId)
+                .findFirst().get();
+        return talon;
+    }
+
+    @Override
     public Talon updateTalon(Talon talon) {
         return repository.save(talon);
     }
@@ -82,9 +90,17 @@ public class TalonServiceImpl implements ITalonService {
     @Override
     public List<Talon> getTalonsForToday() {
 
-        return repository.findAll()
+        List<Talon>  talons =  repository.findAll()
                 .stream().filter(talon ->talon.getDate().equals(LocalDate.now()) )
                 .collect(Collectors.toList());
+
+        return talons;
+    }
+
+    @Override
+    public int getTodayIncome() {
+        return this.getAll().stream().filter(talon -> talon.getSum()!=0)
+                .mapToInt(Talon::getSum).sum();
     }
 
     //------------------------------- BUSINESS LOGIC -------------------------
@@ -94,7 +110,7 @@ public class TalonServiceImpl implements ITalonService {
         Patient  patient = patientService.getPatient(patientId);
         if (patient.getTherapy() != null) return null;
         List<Talon> talons = new ArrayList<>();
-        List<Procedure> procedures = patient.getTherapy().getProcedures();
+        List<Procedure> procedures = new ArrayList<>();//= patient.getTherapy().getProcedures();
 
 
         for (Procedure procedure: procedures) {
@@ -105,8 +121,11 @@ public class TalonServiceImpl implements ITalonService {
             talon.setDate(LocalDate.now());
             talon.setProcedure(procedure);
             talon.setDoctor(null);
-            talon.setZones(patient.getTherapy().getZones());
-            talon.setDesc(patient.getTherapy().getNotes());
+
+            // therapy must be obtained fron Talon service, no longer from patient.getTherapy()
+
+          //  talon.setZones(patient.getTherapy().getZones());
+           // talon.setDesc(patient.getTherapy().getNotes());
             talon.setExecutionTime(null);
             talon.setDoctor(null);
             talon.setSum(0);
@@ -114,19 +133,6 @@ public class TalonServiceImpl implements ITalonService {
 
             talons.add(talon);
         }
-
-    /*    private ObjectId id;
-        private int patientId;
-        private LocalDate date;
-        private Procedure procedure;
-        private int zones;
-        private String desc;
-        private LocalDateTime executionTime;
-        private Doctor doctor;
-        private int sum;
-        private int duration;
-
-        */
 
         return repository.saveAll(talons);
     }
@@ -138,6 +144,7 @@ public class TalonServiceImpl implements ITalonService {
         talon.setPatientId(patiendId);
         talon.setDate(LocalDate.now());
         talon.setProcedure(procedure);
+        ////////// xones must be injected by registrator
         talon.setZones(zones);
         talon.setDesc(desc);
 
@@ -150,16 +157,38 @@ public class TalonServiceImpl implements ITalonService {
         Patient patient = patientService.getPatient(talon.getPatientId());
 
 
-
         talon.setDoctor(doctor);
         talon.setExecutionTime(LocalDateTime.now());
         int delta = (int) patient.getDelta();
         talon.setDuration(delta);
-        int price = talon.getProcedure().getPrice();
+        int price = this.getCorrectPrice(patient,talon.getProcedure());
         int sum = price * talon.getZones();
         talon.setSum(sum);
 
         return this.updateTalon(talon);
+    }
+
+    int getCorrectPrice(Patient patient, Procedure procedure){
+        int price = procedure.getPrice();
+        switch (patient.getStatus()) {
+            case SOCIAL: price = procedure.getSocial();
+            break;
+            case ALL_INCLUSIVE: procedure.getAllInclusive();
+            break;
+            case BUSINESS: procedure.getBusiness();
+            break;
+            case VIP: procedure.getVip();
+            break;
+            case FOREIGNER: procedure.getForeigner();
+            break;
+        }
+        return price;
+    }
+
+
+    public int calculateTotalSumForPatient(int patientId, LocalDate start, LocalDate finish){
+       //  int sum = this.getAll()
+        return 0;
     }
 
 

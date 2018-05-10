@@ -1,10 +1,9 @@
 package com.med.services.appointment.impls;
 
-import com.med.dao.appointment.impls.AppointmentDAOImpl;
-import com.med.model.Appointment;
-import com.med.model.Patient;
-import com.med.model.Person;
+import com.med.model.*;
 import com.med.services.appointment.interfaces.IAppointmentService;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,46 +16,48 @@ import java.util.List;
 @Service
 public class AppointmentServiceImpl implements IAppointmentService {
 
+
     @Autowired
-    AppointmentDAOImpl appointmentDAO;
+    TalonServiceImpl talonService;
+
+    @Autowired
+    ProcedureServiceImpl procedureService;
+
+    // out of sense
 
     @Override
-    public Appointment createAppointment(Appointment appointment) {
-        return appointmentDAO.createAppointment(appointment);
+    public List<Talon> createAppointment(Patient patient, LocalDate date) {
+
+        return null;
     }
 
     @Override
-    public Appointment createAppointment(Patient patient, LocalDate date) {
-        return appointmentDAO.createAppointment(patient,date);
+    public List<Talon> createAppointment(Person person, LocalDate date) {
+        Patient patient = new Patient(person);
+        patient.setActive(Activity.NON_ACTIVE);
+
+        Procedure registration = procedureService.getProcedure(1);
+        Talon talon = new Talon(patient.getId(), registration);
+        talon.setDate(date);
+        talonService.createTalon(talon);
+
+
+        Procedure diagnostics = procedureService.getProcedure(2);
+        talon = new Talon(patient.getId(), diagnostics);
+        talon.setDate(date);
+        talonService.createTalon(talon);
+
+        return null;
     }
 
     @Override
-    public Appointment createAppointment(Person person, LocalDate date) {
-        return appointmentDAO.createAppointment(person, date );
+    public List<Talon> deleteAppointment(Patient patient, LocalDate date) {
+        return null;
     }
 
     @Override
-    public Appointment updateAppointment(Appointment appointment) {
-        return appointmentDAO.updateAppointment(appointment);
+    public List<Patient> getAppointmentsByDate(LocalDate date) {
+        return null;
     }
 
-    @Override
-    public Appointment getAppointment(long id) {
-        return appointmentDAO.getAppointment(id);
-    }
-
-    @Override
-    public Appointment deleteAppointment(long id) {
-        return appointmentDAO.deleteAppointment(id);
-    }
-
-    @Override
-    public List<Appointment> getAppointmentsByDate(LocalDate date) {
-        return appointmentDAO.getAppointmentsByDate(date);
-    }
-
-    @Override
-    public List<Appointment> getAll() {
-        return appointmentDAO.getAll();
-    }
 }

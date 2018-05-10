@@ -66,6 +66,18 @@ public class Talon {
         this.duration =0;
     }
 
+    public Talon(int patientId, LocalDate date, Procedure procedure) {
+        this.patientId = patientId;
+        this.date = date;
+        this.procedure = procedure;
+        this.zones = 0;
+        this.desc = "";
+        this.executionTime = null;
+        this.doctor = null;
+        this.sum = 0;
+        this.duration =0;
+    }
+
     public ObjectId getId() {
         return id;
     }
@@ -134,9 +146,7 @@ public class Talon {
         return sum;
     }
 
-    public void setSum(int sum) {
-        this.sum = sum;
-    }
+    public void setSum(int sum) {this.sum = sum;}
 
     public int getDuration() {
         return duration;

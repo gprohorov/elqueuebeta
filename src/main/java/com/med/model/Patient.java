@@ -1,5 +1,6 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +18,7 @@ public class Patient implements Comparable<Patient> {
     private int id;
 
     private Person person;
-    private Therapy therapy;
+    private ObjectId therapy;
     private List<Procedure> proceduresForToday = new ArrayList<>();
     private List<Talon> talons = new ArrayList<>();
     private Status status;
@@ -34,7 +35,7 @@ public class Patient implements Comparable<Patient> {
     public Patient() {
     }
 
-    public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, long delta, int balance, Activity active, Reckoning reckoning) {
+    public Patient(int id, Person person, ObjectId therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, long delta, int balance, Activity active, Reckoning reckoning) {
         this.id = id;
         this.person = person;
         this.therapy = therapy;
@@ -48,7 +49,7 @@ public class Patient implements Comparable<Patient> {
         this.reckoning = reckoning;
     }
 
-    public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
+    public Patient(int id, Person person, ObjectId therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
         this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
@@ -60,7 +61,7 @@ public class Patient implements Comparable<Patient> {
         this.reckoning = reckoning;
     }
 
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, int balance, Activity active) {
+    public Patient(Person person, ObjectId therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, int balance, Activity active) {
         this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
@@ -75,7 +76,7 @@ public class Patient implements Comparable<Patient> {
 
 
 
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
+    public Patient(Person person, ObjectId therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
         this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
@@ -87,7 +88,7 @@ public class Patient implements Comparable<Patient> {
         this.reckoning = reckoning;
     }
 
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active) {
+    public Patient(Person person, ObjectId therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active) {
         this.id = person.getId();
         this.person = person;
         this.therapy = therapy;
@@ -133,11 +134,11 @@ public class Patient implements Comparable<Patient> {
         this.person = person;
     }
 
-    public Therapy getTherapy() {
+    public ObjectId getTherapy() {
         return therapy;
     }
 
-    public void setTherapy(Therapy therapy) {
+    public void setTherapy(ObjectId therapy) {
         this.therapy = therapy;
     }
 

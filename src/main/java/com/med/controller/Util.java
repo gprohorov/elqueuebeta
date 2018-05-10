@@ -1,6 +1,6 @@
 package com.med.controller;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Util {
 
      @Autowired
-    DataStorage dataStorage;
+     DataStorageTest dataStorage;
 
     @RequestMapping("/util/reset-db")
     public void resetPatientsTable(){ dataStorage.resetPatientsTable(); }

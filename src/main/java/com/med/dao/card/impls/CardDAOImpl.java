@@ -1,6 +1,6 @@
 package com.med.dao.card.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.card.interfaces.ICardDAO;
 import com.med.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CardDAOImpl implements ICardDAO {
     private List<Card> cards = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){

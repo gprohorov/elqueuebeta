@@ -1,8 +1,9 @@
 package com.med.services.therapy.impls;
 
-import com.med.dao.therapy.impls.TherapyDAOImpl;
 import com.med.dao.therapy.interfaces.ITherapyDAO;
 import com.med.model.Therapy;
+import com.med.repository.therapy.TherapyRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ public class TherapyServiceImpl implements ITherapyDAO {
 
 
     @Autowired
-    TherapyDAOImpl therapyDAO;
+    TherapyRepository repository;
 
     @PostConstruct
     void init(){
@@ -33,26 +34,26 @@ public class TherapyServiceImpl implements ITherapyDAO {
     @Override
     public Therapy createTherapy(Therapy therapy) {
 
-        return null;
+        return repository.save(therapy);
     }
 
     @Override
     public Therapy updateTherapy(Therapy therapy) {
-        return null;
+        return repository.save(therapy);
     }
 
     @Override
-    public Therapy getTherapy(int id) {
-        return therapyDAO.getTherapy(id);
+    public Therapy getTherapy(ObjectId id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public Therapy deleteTherapy(int id) {
+    public Therapy deleteTherapy(ObjectId id) {
         return null;
     }
 
     @Override
     public List<Therapy> getAll() {
-        return therapyDAO.getAll();
+        return repository.findAll();
     }
 }

@@ -12,6 +12,8 @@ public interface ITailService {
 
 
     List<Tail> getAll();
+    Tail getTail(int procedureId);
+    Tail getTailByProcedure(int procedureId);
 
     List<Patient> getPatients(int procedureId);
 

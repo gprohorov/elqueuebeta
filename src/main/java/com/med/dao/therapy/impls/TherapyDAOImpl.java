@@ -1,8 +1,9 @@
 package com.med.dao.therapy.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.therapy.interfaces.ITherapyDAO;
 import com.med.model.Therapy;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class TherapyDAOImpl implements ITherapyDAO {
     private List<Therapy> therapys = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){
@@ -39,14 +40,14 @@ public class TherapyDAOImpl implements ITherapyDAO {
     }
 
     @Override
-    public Therapy getTherapy(int therapyId) {
+    public Therapy getTherapy(ObjectId therapyId) {
 
         return this.getAll().stream().filter(therapy -> therapy.getId()==therapyId)
                 .findAny().get();
     }
 
     @Override
-    public Therapy deleteTherapy(int id) {
+    public Therapy deleteTherapy(ObjectId id) {
         return null;
     }
 

@@ -1,6 +1,6 @@
 package com.med.dao.event.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.event.interfaces.IEventDAO;
 import com.med.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class EventDAOImpl implements IEventDAO {
   //  private List<Event> event= new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init() {

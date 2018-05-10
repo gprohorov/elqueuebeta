@@ -178,7 +178,23 @@ public class Procedure {
     public void setExecuted(boolean executed) {
         this.executed = executed;
     }
-/**
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Procedure procedure = (Procedure) o;
+
+        return getId() == procedure.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    /**
      * Returns a hash code value for the object. This method is
      * supported for the benefit of hash tables such as those provided by
      * {@link HashMap}.
@@ -213,6 +229,9 @@ public class Procedure {
      * @see Object#equals(Object)
      * @see System#identityHashCode
      */
+
+
+
     @Override
     public String toString() {
         return "Procedure{" +

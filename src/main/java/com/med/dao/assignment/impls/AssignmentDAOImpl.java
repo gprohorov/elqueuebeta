@@ -1,6 +1,6 @@
 package com.med.dao.assignment.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.assignment.interfaces.IAssignmentDAO;
 import com.med.model.Assignment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class AssignmentDAOImpl implements IAssignmentDAO {
     private List<Assignment> assignments = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){

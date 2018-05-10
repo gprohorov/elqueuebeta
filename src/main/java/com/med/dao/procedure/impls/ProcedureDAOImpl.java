@@ -1,6 +1,6 @@
 package com.med.dao.procedure.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.dao.procedure.interfaces.IProcedureDAO;
 import com.med.model.Procedure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ProcedureDAOImpl implements IProcedureDAO {
     private List<Procedure> procedures = new ArrayList<>();
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @PostConstruct
     void init(){

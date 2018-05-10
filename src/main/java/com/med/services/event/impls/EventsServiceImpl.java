@@ -1,6 +1,6 @@
 package com.med.services.event.impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.model.Event;
 import com.med.services.event.interfaces.IEventsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class EventsServiceImpl implements IEventsService {
 
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @Override
     public Event addEvent(Event event) {

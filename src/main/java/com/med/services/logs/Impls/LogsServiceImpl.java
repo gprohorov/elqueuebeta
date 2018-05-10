@@ -1,6 +1,6 @@
 package com.med.services.logs.Impls;
 
-import com.med.DataStorage;
+import com.med.datastorage.DataStorageTest;
 import com.med.model.Event;
 import com.med.services.logs.interfaces.ILogsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class LogsServiceImpl implements ILogsService {
 
 
     @Autowired
-    DataStorage dataStorage;
+    DataStorageTest dataStorage;
 
     @Override
     public List<Event> getAll() {
