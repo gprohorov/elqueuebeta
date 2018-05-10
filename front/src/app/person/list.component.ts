@@ -44,9 +44,9 @@ export class PersonListComponent implements OnInit {
 
   load(search: string = '') {
     this.loading = true;
-    this.sub = this.service.getAll(search).subscribe(data => { 
-      this.items = this.service.sortBy({sortColumn: 'lastName', sortDirection: 'asc'}, data); 
-      this.loading = false; 
+    this.sub = this.service.getAll(search).subscribe(data => {
+      this.items = this.service.sortBy({sortColumn: 'lastName', sortDirection: 'asc'}, data);
+      this.loading = false;
     });
   }
 

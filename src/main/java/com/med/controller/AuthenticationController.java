@@ -39,10 +39,10 @@ public class AuthenticationController {
         // System.out.println(encoder.encode("password"));
 
         final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginUser.getUsername(),
-                        loginUser.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(
+                loginUser.getUsername(),
+                loginUser.getPassword()
+            )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final User user = userService.findOne(loginUser.getUsername());
@@ -50,7 +50,6 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(user);
         user.setToken(token);
         user.setInfo(doctor);
-        System.out.println(user);
         return ResponseEntity.ok(user);
     }
 

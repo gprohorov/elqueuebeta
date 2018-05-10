@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../_models/index';
-import { UserService, AuthService, UtilService, AlertService } from '../_services/index';
+import { AuthService, UtilService, AlertService } from '../_services/index';
 
 @Component({
   selector: 'app-nav',
@@ -10,16 +9,15 @@ import { UserService, AuthService, UtilService, AlertService } from '../_service
 })
 export class NavComponent implements OnInit {
 
-  currentUser: User;
+  user: any;
 
   constructor(public authService: AuthService,
-              private userService: UserService,
               private utilService: UtilService,
               private alertService: AlertService,
               private router: Router
             ) {
     if (this.authService.isAuth()) {
-      //this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.user = this.authService.getUserInfo();
     }
   }
 
