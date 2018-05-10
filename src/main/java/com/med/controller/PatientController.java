@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -71,6 +69,7 @@ public class PatientController {
 
     //////////////////////END OF CRUD ////////////////////////////////////
 
+/*
 
     @GetMapping("/list/appointed/today")
     public List<Patient> getPatientsAppointedForToday() {
@@ -79,6 +78,7 @@ public class PatientController {
                 .stream().map(appointment -> appointment.getPatient())
                 .collect(Collectors.toList());
     }
+*/
 
 
     // insert into patients list all appointed for today

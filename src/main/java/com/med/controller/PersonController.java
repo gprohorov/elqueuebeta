@@ -94,7 +94,8 @@ public class PersonController {
                                            @Valid @RequestBody LocalDate date) {
         Person person = service.getPerson(personId);
 
-        return appointmentService.createAppointment(person, date);
+       // return appointmentService.createAppointment(person, date);
+        return null;
 
     }
 
@@ -103,8 +104,8 @@ public class PersonController {
     public Appointment appointPersonOnToday(@PathVariable(value = "id") int personId) {
         Person person = service.getPerson(personId);
 
-        return appointmentService.createAppointment(person, LocalDate.now());
-
+     //   return appointmentService.createAppointment(person, LocalDate.now());
+        return null;
     }
 
     //  person  ->   patient   i.e. insert into crowd (general queue) of today

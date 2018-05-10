@@ -1,7 +1,7 @@
 package com.med.dao.patient.impls;
 
-import com.med.datastorage.DataStorageTest;
 import com.med.dao.patient.interfaces.IPatientDAO;
+import com.med.datastorage.DataStorageTest;
 import com.med.model.*;
 import com.med.services.appointment.impls.AppointmentServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,6 +127,7 @@ public class PatientDAOImpl implements IPatientDAO {
     public List<Patient> getAll() {
 
         return dataStorage.getPatients().stream().sorted().collect(Collectors.toList());
+
     }
 
 
@@ -136,12 +136,12 @@ public class PatientDAOImpl implements IPatientDAO {
 
         System.out.println(this.getAll().size());
 
-        for(Appointment appointment: appointmentService.getAppointmentsByDate(LocalDate.now())){
+ /*       for(Appointment appointment: appointmentService.getAppointmentsByDate(LocalDate.now())){
 
             Patient patient = appointment.getPatient();
             this.getAll().add(patient);
         }
-
+*/
         return this.getAll();
     }
 }

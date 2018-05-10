@@ -417,15 +417,16 @@ public class DataStorageTest {
 
     ////////////////////////////////////////////////////////////
 
-    private List<Appointment> appointments = new LinkedList<>( Arrays.asList(
-            new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
+    private List<Appointment> appointments;
+/*             = new LinkedList<>( Arrays.asList(
+           new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
             new Appointment(2, new Patient(persons.get(1)), LocalDate.now()),
             new Appointment(3, new Patient(persons.get(2)), LocalDate.now().plusDays(1)),
             new Appointment(4, new Patient(persons.get(3)), LocalDate.now()),
             new Appointment(5, new Patient(persons.get(3)), LocalDate.now().plusDays(2))
            , new Appointment(6, vasa, LocalDate.now().plusDays(5)
     )));
-
+*/
 
     public List<Appointment> getAppointments() {
         return appointments;

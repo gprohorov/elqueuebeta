@@ -1,13 +1,8 @@
 package com.med.controller;
 
-import com.med.model.Appointment;
-import com.med.services.appointment.impls.AppointmentServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by george on 3/9/18.
@@ -15,7 +10,7 @@ import java.util.List;
 @RequestMapping("/api/appointment")
 @CrossOrigin("*")
 @RestController
-public class AppointmentController {
+public class AppointmentController {/*
 
     @Autowired
     AppointmentServiceImpl service;
@@ -23,7 +18,8 @@ public class AppointmentController {
 
     @RequestMapping("/list")
    public List<Appointment> showAllAppointments(){
-        return service.getAll();
+      //  return service.getAll();
+        return null;
     }
 
 
@@ -33,7 +29,7 @@ public class AppointmentController {
     // CREATE a new Appointment
     @PostMapping("/create")
     public Appointment createAppointment(@Valid @RequestBody Appointment appointment) {
-        System.out.println("----");
+
         return service.createAppointment(appointment);
     }
 
@@ -83,5 +79,5 @@ public class AppointmentController {
     }
 
 
-
+*/
 }
