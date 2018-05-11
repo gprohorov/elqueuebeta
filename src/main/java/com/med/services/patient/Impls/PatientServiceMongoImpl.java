@@ -306,8 +306,7 @@ public class PatientServiceMongoImpl implements IPatientsService {
         Patient patient = this.getPatient(patientId);
         int index = this.getAll().indexOf(patient);
 
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
+        Procedure procedure =procedureService.getProcedure(patientId);
 
         patient.setActive(Activity.ON_PROCEDURE);
         patient.setLastActivity(LocalDateTime.now());
@@ -327,23 +326,23 @@ public class PatientServiceMongoImpl implements IPatientsService {
     //                                      patient gets a status ACTIVE
     //                                     patient gets the time of lastActivity = now
     //                                     tail gets incremention of a number of responsible  doctors
-    public Patient executeProcedure(int patientId, int procedureId, int doctorId) {
-/*        Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);*/
+    public Patient executeProcedure(int patientId, int procedureId) {
 
         Tail tail = tailService.getTail(procedureId);
         Patient patient = tail.getPatientOnProcedure();
+        Procedure procedure = procedureService.getProcedure(procedureId);
 
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
-        patient.setOneProcedureForTodayAsExecuted(procedure);
-
-        Talon talon = talonService.getTalonByPatientAndProcedure(patientId, procedureId);
-       talonService.executeTalon(talon.getId(),doctorId);
-
+        patient.setDelta();
+        int duration = (int) patient.getDelta();
         patient.setLastActivity(LocalDateTime.now());
         patient.setActive(Activity.ACTIVE);
         repository.save(patient);
+
+
+        Talon talon = talonService.getTalonByPatientAndProcedure(patientId
+                , procedureId);
+        talonService.executeTalon(talon.getId(),1, duration);
+
 
         tail.setVacancies( 1);
         tail.setVacant(true);

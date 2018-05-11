@@ -4,8 +4,8 @@ import com.med.config.JwtTokenUtil;
 import com.med.model.Doctor;
 import com.med.model.LoginUser;
 import com.med.model.User;
-import com.med.services.user.UserService;
 import com.med.services.doctor.impls.DoctorServiceImpl;
+import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,8 +35,8 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
-        // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        // System.out.println(encoder.encode("password"));
+     //   BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+      //  System.out.println(encoder.encode("massage"));
 
         final Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(

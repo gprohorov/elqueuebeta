@@ -31,7 +31,7 @@ public class TailController {
 
     @RequestMapping("/first/{procid}")
     public Patient showFirstActiveAndOnProcedure(@PathVariable(value = "procid") int procedureId){
-        return service.getFirstActiveAndOnProcedure(procedureId);
+        return service.getFirstForProcedure(procedureId);
     }
 
 }

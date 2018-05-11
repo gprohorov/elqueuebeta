@@ -2,12 +2,14 @@ package com.med.services.appointment.impls;
 
 import com.med.model.*;
 import com.med.services.appointment.interfaces.IAppointmentService;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,41 +26,72 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Autowired
     ProcedureServiceImpl procedureService;
 
-    // out of sense
+    @Autowired
+    PatientServiceImpl patientService;
 
     @Override
-    public List<Talon> createAppointment(Patient patient, LocalDate date) {
+    public List<Talon> createAppointmentToDate(Person person, LocalDate date) {
 
-        return null;
-    }
-
-    @Override
-    public List<Talon> createAppointment(Person person, LocalDate date) {
         Patient patient = new Patient(person);
+        List<Talon> talons = new ArrayList<>();
+
         patient.setActive(Activity.NON_ACTIVE);
 
         Procedure registration = procedureService.getProcedure(1);
-        Talon talon = new Talon(patient.getId(), registration);
-        talon.setDate(date);
-        talonService.createTalon(talon);
+        Talon talon1 = new Talon(patient.getId(), registration);
+        talon1.setDate(date);
+        talons.add(talon1);
 
 
         Procedure diagnostics = procedureService.getProcedure(2);
-        talon = new Talon(patient.getId(), diagnostics);
-        talon.setDate(date);
-        talonService.createTalon(talon);
+        Talon talon2 = new Talon(patient.getId(), diagnostics);
+        talon2.setDate(date);
+        talons.add(talon2);
 
-        return null;
+       talons.stream().forEach(talon -> talonService.createTalon(talon));
+
+        return talons;
+    }
+
+    @Override
+    public List<Talon> createAppointmentToDate(Patient patient, LocalDate date) {
+        List<Talon> talons = new ArrayList<>();
+
+        patient.setActive(Activity.NON_ACTIVE);
+
+        Procedure registration = procedureService.getProcedure(1);
+        Talon talon1 = new Talon(patient.getId(), registration);
+        talon1.setDate(date);
+        talons.add(talon1);
+
+        talons.stream().forEach(talon -> talonService.createTalon(talon));
+
+        return talons;
     }
 
     @Override
     public List<Talon> deleteAppointment(Patient patient, LocalDate date) {
-        return null;
+          return null;
     }
 
     @Override
-    public List<Patient> getAppointmentsByDate(LocalDate date) {
-        return null;
+    public List<Patient> getPatientsAppointedByDate(LocalDate date) {
+
+        List<Patient> patients = new ArrayList<>();
+
+        talonService.getAll().stream()
+                .filter(talon -> talon.getDate().equals(date))
+                .mapToInt(Talon::getPatientId)
+                .distinct()
+                .forEach(el-> patients.add(patientService.getPatient(el)));
+
+        return patients;
     }
+
+    @Override
+    public List<Patient> getPatientsAppointedForToday(LocalDate date) {
+        return this.getPatientsAppointedByDate(LocalDate.now());
+    }
+
 
 }

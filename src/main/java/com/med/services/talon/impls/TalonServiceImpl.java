@@ -152,7 +152,7 @@ public class TalonServiceImpl implements ITalonService {
         return this.createTalon(talon);
     }
 
-    public Talon executeTalon(ObjectId talonId, int doctorId){
+    public Talon executeTalon(ObjectId talonId, int doctorId, int duration){
         Talon talon = this.getTalon(talonId);
         Doctor doctor = doctorService.getDoctor(doctorId);
         Patient patient = patientService.getPatient(talon.getPatientId());
@@ -160,9 +160,9 @@ public class TalonServiceImpl implements ITalonService {
 
         talon.setDoctor(doctor);
         talon.setExecutionTime(LocalDateTime.now());
-        int delta = (int) patient.getDelta();
-        talon.setDuration(delta);
+        talon.setDuration(duration);
         int price = this.getCorrectPrice(patient,talon.getProcedure());
+        if (talon.getZones()==0) talon.setZones(1);
         int sum = price * talon.getZones();
         talon.setSum(sum);
 
@@ -172,7 +172,7 @@ public class TalonServiceImpl implements ITalonService {
     int getCorrectPrice(Patient patient, Procedure procedure){
         int price = procedure.getPrice();
         switch (patient.getStatus()) {
-            case SOCIAL: price = procedure.getSocial();
+            case SOCIAL: price = procedure.getPrice();
             break;
             case ALL_INCLUSIVE: procedure.getAllInclusive();
             break;
@@ -183,6 +183,8 @@ public class TalonServiceImpl implements ITalonService {
             case FOREIGNER: procedure.getForeigner();
             break;
         }
+
+
         return price;
     }
 

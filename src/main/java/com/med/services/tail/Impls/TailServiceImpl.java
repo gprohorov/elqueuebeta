@@ -190,7 +190,7 @@ public class TailServiceImpl implements ITailService {
     }
 
 
-    Patient getFirstForProcedure(int procedureId){
+    public Patient getFirstForProcedure(int procedureId){
          Patient first = this.getPatientsInTail(procedureId).stream().findFirst().orElse(null);
          Tail tail = this.getTail(procedureId);
          tail.setPatientOnProcedure(first);

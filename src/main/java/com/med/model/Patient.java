@@ -118,6 +118,14 @@ public class Patient implements Comparable<Patient> {
                 this.getLastActivity(), LocalDateTime.now());
     }
 
+    public List<Talon> getTalons() {
+        return talons;
+    }
+
+    public void setTalons(List<Talon> talons) {
+        this.talons = talons;
+    }
+
     public int getId() {
         return id;
     }

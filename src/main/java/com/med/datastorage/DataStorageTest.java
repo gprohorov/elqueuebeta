@@ -475,38 +475,6 @@ public class DataStorageTest {
 
 
     public void resetPatientsTable(){
-/*
-       assigned.put(massage, 10);
-        assigned.put(pulling, 10);
-        // usualTherapy.setProgress(assigned);
-        therapies.add(primary);
-        therapies.add(usualTherapy);
-
-
-        progres2.put(massage, true);
-        progres2.put(pulling, false);
-
-        progres.put(massage,false);
-        progres.put(pulling,false);
-
-        patients.add(vasa);
-        patients.add(trump);
-        patients.add(ivanov);
-        patients.add(petrovv);
-
-        patients.get(2).setTherapy(therapies.get(1));
-        //patients.get(0).setAssignedProcedures(progres);
-        patientRepository.deleteAll();
-        patientRepository.saveAll(patients);
-
-        patients.clear();*/
-
-     // talonRepository.deleteAll();
-     //   talons.stream().forEach(System.out::println);
-    //    talonRepository.save(talons.get(0));
-     //   talonRepository.save(talons.get(1));
-
-
         List<Patient> patients = patientRepository.findAll();
         patients.stream().forEach(patient
                 -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
@@ -514,13 +482,19 @@ public class DataStorageTest {
         patients.stream().forEach(patient
                 -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
 
+        patients.stream().forEach(patient
+                -> patient.setActive(Activity.ACTIVE));
+
         patients.get(0).setLastActivity(LocalDateTime.now().minusMinutes(5));
         patients.get(1).setLastActivity(LocalDateTime.now().minusMinutes(15));
 
         patientRepository.saveAll(patients);
+        System.out.println(" patient table updated");
 
         List<Talon> talons = talonRepository.findAll();
         talons.stream().forEach(talon -> talon.setDate(LocalDate.now()));
+        talons.stream().forEach(talon -> talon.setExecutionTime(null));
         talonRepository.saveAll(talons);
+        System.out.println(" talon table updated");
     }
 }
