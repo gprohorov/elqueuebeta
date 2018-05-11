@@ -130,7 +130,7 @@ public class TalonServiceImpl implements ITalonService {
             talon.setExecutionTime(null);
             talon.setDoctor(null);
             talon.setSum(0);
-            talon.setDuration(0);
+
 
             talons.add(talon);
         }
@@ -152,7 +152,7 @@ public class TalonServiceImpl implements ITalonService {
         return this.createTalon(talon);
     }
 
-    public Talon executeTalon(ObjectId talonId, int doctorId, int duration){
+    public Talon executeTalon(ObjectId talonId, int doctorId){
         Talon talon = this.getTalon(talonId);
         Doctor doctor = doctorService.getDoctor(doctorId);
         Patient patient = patientService.getPatient(talon.getPatientId());
@@ -160,7 +160,6 @@ public class TalonServiceImpl implements ITalonService {
 
         talon.setDoctor(doctor);
         talon.setExecutionTime(LocalDateTime.now());
-        talon.setDuration(duration);
         int price = this.getCorrectPrice(patient,talon.getProcedure());
         if (talon.getZones()==0) talon.setZones(1);
         int sum = price * talon.getZones();
@@ -195,5 +194,14 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
+   public List<Talon> getAllTalonsForPatient(int patientId,LocalDate date){
+        return this.getAll().stream().filter(talon -> talon.getDate().equals(date))
+                .filter(talon -> talon.getPatientId()==patientId).collect(Collectors.toList());
+   }
+
+
+    List<Talon> getAllTalonsForPatienForToday(int patientId){
+       return getAllTalonsForPatient(patientId, LocalDate.now());
+    }
 
 }

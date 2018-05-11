@@ -140,7 +140,7 @@ public class PatientController {
 
   // get progress in crowd :  ratio of executed procedures to assigned ones
     @PostMapping("/progress/{id}")
-    public Double getProgress(@PathVariable(value = "id") int patientId) {
+    public String getProgress(@PathVariable(value = "id") int patientId) {
 
         return service.getProgress(patientId);
     }

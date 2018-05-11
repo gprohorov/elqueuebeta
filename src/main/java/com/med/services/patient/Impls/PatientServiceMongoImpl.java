@@ -6,9 +6,11 @@ import com.med.services.patient.interfaces.IPatientsService;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -35,7 +37,8 @@ public class PatientServiceMongoImpl implements IPatientsService {
     @Autowired
     TalonServiceImpl talonService;
 
-
+@Autowired
+    UserService userService;
 /*
     @Autowired
     DataStorage dataStorage;
@@ -167,17 +170,14 @@ public class PatientServiceMongoImpl implements IPatientsService {
     }
 
     // get progress in crowd :  ratio of executed procedures to assigned ones
-    public Double getProgress(int patientId) {
-        Double progress = 0.0;
-/*        Patient patient = this.getPatient(patientId);
-        HashMap<Procedure,Boolean> map = patient.getAssignedProcedures();
-        if (!map.isEmpty()){
-           int nominator = (int) map.entrySet().stream()
-                   .filter(entry->entry.getValue().equals(true)).count();
-           int denominator = map.size();
-           progress = Double.valueOf(nominator) /denominator;
-        }*/
-        return progress;
+    public String getProgress(int patientId) {
+        List<Talon> talons = talonService.getAllTalonsForPatient(patientId,LocalDate.now());
+        Integer total = talons.size();
+        Long executed = talons.stream().filter(talon -> talon.getExecutionTime() !=null)
+                .count();
+
+
+        return executed.toString() + "/" + total.toString();
     }
 
 /*
@@ -303,21 +303,20 @@ public class PatientServiceMongoImpl implements IPatientsService {
     //                  tail gets decremention of a number of responsible  doctors
     public Patient startProcedure(int patientId, int procedureId) {
 
+        Talon talon = talonService.getTalonByPatientAndProcedure(patientId
+                , procedureId);
+        talon.setStart(LocalDateTime.now());
+        talonService.updateTalon(talon);
         Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);
-
-        Procedure procedure =procedureService.getProcedure(patientId);
-
         patient.setActive(Activity.ON_PROCEDURE);
         patient.setLastActivity(LocalDateTime.now());
-
-
         repository.save(patient);
 
        Tail tail = tailService.getTail(procedureId);
        tail.setVacancies(0);
        tail.setVacant(false);
        tail.setPatientOnProcedure(patient);
+
         return patient;
     }
 
@@ -332,16 +331,17 @@ public class PatientServiceMongoImpl implements IPatientsService {
         Patient patient = tail.getPatientOnProcedure();
         Procedure procedure = procedureService.getProcedure(procedureId);
 
-        patient.setDelta();
-        int duration = (int) patient.getDelta();
+
         patient.setLastActivity(LocalDateTime.now());
+
         patient.setActive(Activity.ACTIVE);
         repository.save(patient);
 
 
         Talon talon = talonService.getTalonByPatientAndProcedure(patientId
                 , procedureId);
-        talonService.executeTalon(talon.getId(),1, duration);
+
+        talonService.executeTalon(talon.getId(), userService.getCurrentUserInfo().getId());
 
 
         tail.setVacancies( 1);
