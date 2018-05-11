@@ -34,4 +34,10 @@ public class TailController {
         return service.getFirstForProcedure(procedureId);
     }
 
+    @RequestMapping("/onprocedure/{procid}")
+    public Patient getPatientThatIsCurrentlyOnProcedure(@PathVariable(value = "procid") int procedureId){
+        return service.getTail(procedureId).getPatientOnProcedure();
+
+    }
+
 }

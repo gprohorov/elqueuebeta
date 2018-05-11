@@ -21,10 +21,11 @@ public class Talon {
     private Procedure procedure;
     private int zones;
     private String desc;
+    private  LocalDateTime start;
     private LocalDateTime executionTime;
     private Doctor doctor;
     private int sum;
-    private int duration;
+
 
 
     public Talon() {
@@ -63,7 +64,7 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
-        this.duration =0;
+
     }
 
     public Talon(int patientId, LocalDate date, Procedure procedure) {
@@ -75,7 +76,15 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
-        this.duration =0;
+
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
     public ObjectId getId() {
@@ -148,13 +157,6 @@ public class Talon {
 
     public void setSum(int sum) {this.sum = sum;}
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
 
     @Override
@@ -169,7 +171,7 @@ public class Talon {
                 ", executionTime=" + executionTime +
                 ", doctor=" + doctor +
                 ", sum=" + sum +
-                ", duration=" + duration +
+
                 '}';
     }
 }

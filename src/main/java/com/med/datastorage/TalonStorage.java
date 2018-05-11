@@ -104,7 +104,7 @@ public class TalonStorage   {
 private Talon resetTestTalon(Talon talon){
 
     talon.setDate(LocalDate.now());
-    talon.setDuration(0);
+    talon.setStart(null);
     talon.setExecutionTime(null);
     talon.setDoctor(null);
     talon.setSum(0);
