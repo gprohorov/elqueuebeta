@@ -19,7 +19,7 @@ export class AuthService {
   attemptAuth( username: string, password: string ): Observable<any> {
     const credentials = {username: username, password: password};
     return this.http.post(this.authUrl, credentials).pipe(
-      //catchError(this.handleError)
+      catchError(this.handleError)
     );
   }
 
