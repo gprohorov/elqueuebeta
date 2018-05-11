@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
+import { NgxPermissionsModule, NgxPermissionsGuard } from 'ngx-permissions';
 import { NgxMasonryModule } from 'ng5-masonry';
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import {  AlertService,
 
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
+import { HomeComponent } from './home/home.component';
 
 import { PersonListComponent } from './person/list.component';
 import { PersonFormComponent } from './person/form.component';
@@ -42,8 +44,22 @@ import { ProceduresQueueListComponent } from './procedures-queue/list.component'
 import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.component';
 import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
 
-const appRoutes: Routes = [
-    { path: '', redirectTo: 'procedures-queue', pathMatch: 'full' },
+const appRoutes: Routes = [{ 
+        path: '',
+        component: HomeComponent,
+        canActivate: [NgxPermissionsGuard],
+        data: {
+            permissions: {
+                except: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'],
+                redirectTo: {
+                    ROLE_ADMIN: 'procedures-queue',
+                    ROLE_USER: 'patients-queue',
+                    ROLE_MASSAGE: 'doctor-interface-massage',
+                    default: 'login'
+                }
+            }
+        }
+    },
     { path: 'login', component: LoginComponent },
 
     { path: 'persons', component: PersonListComponent, canActivate: [AuthGuard] },
@@ -61,7 +77,7 @@ const appRoutes: Routes = [
 
     { path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent, canActivate: [AuthGuard] },
     { path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent, canActivate: [AuthGuard] },
-
+    
     { path: '**', redirectTo: '' }
 ];
 
@@ -72,10 +88,12 @@ const appRoutes: Routes = [
         HttpClientModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
+        NgxPermissionsModule.forRoot(),
         RouterModule.forRoot(appRoutes)
     ],
     declarations: [
         AppComponent,
+        HomeComponent,
         AlertComponent,
         SortableTableDirective,
         SortableColumnComponent,
@@ -91,6 +109,7 @@ const appRoutes: Routes = [
     ],
     providers: [
         AuthGuard,
+        NgxPermissionsGuard,
         AlertService,
         AuthService,
         TokenStorage,

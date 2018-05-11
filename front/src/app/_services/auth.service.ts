@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { NgxPermissionsService } from 'ngx-permissions';
+
 import { TokenStorage, UserStorage } from '../_storage/index';
 
 @Injectable()
@@ -13,7 +15,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private token: TokenStorage,
-    private user: UserStorage
+    private user: UserStorage,
+    private permissionsService: NgxPermissionsService
   ) { }
 
   attemptAuth( username: string, password: string ): Observable<any> {
@@ -25,12 +28,14 @@ export class AuthService {
 
   setAuth(data): void {
     this.token.saveToken(data.token);
-    this.user.saveUser(data.info);
+    this.user.saveUser(data);
+    this.permissionsService.loadPermissions(data.authorities);
   }
 
   deAuth(): void {
     this.token.signOut();
     this.user.signOut();
+    this.permissionsService.flushPermissions();
   }
 
   getUserInfo() {
