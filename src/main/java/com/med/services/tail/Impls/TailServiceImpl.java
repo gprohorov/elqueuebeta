@@ -191,10 +191,16 @@ public class TailServiceImpl implements ITailService {
 
 
     public Patient getFirstForProcedure(int procedureId){
-         Patient first = this.getPatientsInTail(procedureId).stream().findFirst().orElse(null);
-         Tail tail = this.getTail(procedureId);
-         tail.setPatientOnProcedure(first);
-         tail.setVacant(false);
+        Tail tail = this.getTail(procedureId);
+
+         if(tail.getPatientOnProcedure()!=null){
+             return tail.getPatientOnProcedure();
+         }
+
+        Patient first = this.getPatientsInTail(procedureId).stream()
+                .findFirst().orElse(null);
+        tail.setPatientOnProcedure(first);
+        tail.setVacant(false);
        // if(tail.getPatients().size()!=0){tail.getPatients().remove(0);}
         return first;
     }
