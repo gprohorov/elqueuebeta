@@ -24,6 +24,7 @@ public class Therapy {
     private int codeDiag;
     private String notes;
     private String picture;
+   // private List<Point> hord;
     private List<Procedure> procedures = new ArrayList<>();
     private int zones;
 
