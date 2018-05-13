@@ -27,10 +27,10 @@ public class PatientStorage {
 
     @PostConstruct
             void init(){
-
+/*
         repository.deleteAll();
         this.createPatientList();
-        repository.saveAll(patients);
+        repository.saveAll(patients);*/
 
 
     }
