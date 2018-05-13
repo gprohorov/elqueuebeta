@@ -1,13 +1,15 @@
 package com.med.model;
 
+import org.bson.types.ObjectId;
+
 /**
  * Created by george on 3/11/18.
  */
 public class Generic {
-    private int id;
+    private ObjectId id;
     private String name;
 
-    public Generic(int id, String name) {
+    public Generic(ObjectId id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -15,11 +17,11 @@ public class Generic {
     public Generic() {
     }
 
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

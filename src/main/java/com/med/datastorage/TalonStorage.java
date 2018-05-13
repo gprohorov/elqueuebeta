@@ -1,24 +1,13 @@
 package com.med.datastorage;
 
-import com.med.model.Procedure;
-import com.med.model.Talon;
-import com.med.repository.talon.TalonRepository;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by george on 07.05.18.
  */
-
 @Component
 public class TalonStorage   {
+/*
 
     private List<Talon> talons;
     private Procedure registration;
@@ -120,5 +109,6 @@ private Talon resetTestTalon(Talon talon){
 
  }
 
+*/
 
 }

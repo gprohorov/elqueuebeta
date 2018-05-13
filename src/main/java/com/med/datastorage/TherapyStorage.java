@@ -1,25 +1,13 @@
 package com.med.datastorage;
 
-import com.med.model.Procedure;
-import com.med.model.Therapy;
-import com.med.repository.therapy.TherapyRepository;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by george on 07.05.18.
  */
-
 @Component
 public class TherapyStorage {
-
+/*
     private List<Therapy> therapies;
 
     private Procedure registration;
@@ -38,22 +26,17 @@ public class TherapyStorage {
     @Autowired
     TherapyRepository therapyRepository;
 
-
-
-
-
-
     @PostConstruct
      void init() {
-/*        registration = procedureService.getProcedure(1);
+       registration = procedureService.getProcedure(1);
         diagnostics = procedureService.getProcedure(2);
         manual = procedureService.getProcedure(3);
      pulling = procedureService.getProcedure(4);
 
         massage = procedureService.getProcedure(6);
         ultrasound= procedureService.getProcedure(7);
-     */
-        mechmassasge= procedureService.getProcedure(5);
+
+        mechmassasge = procedureService.getProcedure(5);
 
 
         procedures = new ArrayList<>(
@@ -72,14 +55,11 @@ public class TherapyStorage {
                             ,"pic", procedures, 3)
             )
     );
-/*
 
         therapyRepository.deleteAll();
         therapyRepository.saveAll(therapies);
-*/
 
 }
-/*
 private Talon resetTestTalon(Talon talon){
 
     talon.setDate(LocalDate.now());
@@ -97,7 +77,9 @@ private Talon resetTestTalon(Talon talon){
         repository.saveAll(talons);
 
 
- }*/
+ }
 
+
+*/
 
 }

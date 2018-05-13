@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-public interface IPatientsService {
+public interface IPatientService {
  Patient updateStatus(ObjectId patientId, Status status);
  Patient savePatient(Patient patient);
  Patient getPatient(ObjectId id);

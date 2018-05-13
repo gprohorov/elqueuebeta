@@ -1,25 +1,13 @@
 package com.med.datastorage;
 
-import com.med.model.*;
-import com.med.repository.doctor.DoctorRepository;
-import com.med.repository.patient.PatientRepository;
-import com.med.repository.person.PersonRepository;
-import com.med.repository.procedure.ProcedureRepository;
-import com.med.repository.talon.TalonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
 
 /**
  * Created by george on 3/9/18.
  */
 @Configuration
 public class DataStorageTest {
-
+/*
 
     @Autowired
     PatientRepository patientRepository;
@@ -41,7 +29,7 @@ public class DataStorageTest {
 
     @PostConstruct
            void init(){
-  /*        assigned.put(massage, 10);
+  *//*        assigned.put(massage, 10);
          assigned.put(pulling, 10);
        // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -60,7 +48,7 @@ public class DataStorageTest {
         patients.add(ivanov);
         patients.add(petrovv);
 
-        patients.get(2).setTherapy(therapies.get(1));*/
+        patients.get(2).setTherapy(therapies.get(1));*//*
         //patients.get(0).setAssignedProcedures(progres);
       //  patientRepository.deleteAll();
       //  patientRepository.saveAll(patients);
@@ -209,10 +197,10 @@ public class DataStorageTest {
    HashMap<Procedure, Boolean> progres = new HashMap<>();
    LocalDate today = LocalDate.now();
 
-/*
+*//*
    Therapy standardTherapy = new Therapy(1, LocalDateTime.now().minusDays(2)
            , "Ушиб", 1, assigned,executed);
-*/
+*//*
 
     private Therapy primary =null;
 
@@ -224,21 +212,21 @@ public class DataStorageTest {
     );
 
     private Therapy usualTherapy = null;
-/*
+*//*
 
             new Therapy(null, LocalDateTime.now()
             ,"Osteohondroz",1, "Шейный участок",
             "url", testList);
-*/
+*//*
 
     private Therapy therapy1 = null;
-/*
+*//*
             new Therapy(2, LocalDateTime.now()
             , "Грижа", 77
             ," поперек", "url:", this.schema4()
     );
 
-*/
+*//*
 
     private List<Therapy> therapies = new ArrayList<>(
             Arrays.asList(usualTherapy, therapy1)
@@ -307,13 +295,13 @@ public class DataStorageTest {
 
 
 
-/*
+*//*
 
     Procedure laserforTrump = new Procedure(3, "Лазерна терапия",2,"",3,50);
     Procedure pullingforTrump = new Procedure(5, "Витяжка",5,50);
     Procedure massageForTrump = new Procedure(6, "Массаж",3,70);
 
-*/
+*//*
 
 
 
@@ -415,7 +403,7 @@ public class DataStorageTest {
     ////////////////////////////////////////////////////////////
 
     private List<Appointment> appointments;
-/*             = new LinkedList<>( Arrays.asList(
+*//*             = new LinkedList<>( Arrays.asList(
            new Appointment(1, new Patient(persons.get(0)), LocalDate.now().plusDays(1)),
             new Appointment(2, new Patient(persons.get(1)), LocalDate.now()),
             new Appointment(3, new Patient(persons.get(2)), LocalDate.now().plusDays(1)),
@@ -423,7 +411,7 @@ public class DataStorageTest {
             new Appointment(5, new Patient(persons.get(3)), LocalDate.now().plusDays(2))
            , new Appointment(6, vasa, LocalDate.now().plusDays(5)
     )));
-*/
+*//*
 
     public List<Appointment> getAppointments() {
         return appointments;
@@ -474,7 +462,7 @@ public class DataStorageTest {
     }
 
 
-    public void resetPatientsTable(){
+    public void resetPatientsTable() {
         List<Patient> patients = patientRepository.findAll();
         patients.stream().forEach(patient
                 -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
@@ -497,4 +485,5 @@ public class DataStorageTest {
         talonRepository.saveAll(talons);
         System.out.println(" talon table updated");
     }
+*/
 }

@@ -1,20 +1,12 @@
 package com.med.model;
 
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 
 /**
  * Created by george on 3/9/18.
  */
-@Document(collection = "person")
 public class Person {
 
-    @Id
-    private int id;
-    
     private String firstName;
     private String patronymic;
     private String lastName;
@@ -27,15 +19,15 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String firstName, String lastName) {
-        this.id = id;
+    public Person(String firstName, String lastName) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = true;
     }
 
-    public Person(int id, String firstName, String patronymic, String lastName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
-        this.id = id;
+    public Person( String firstName, String patronymic, String lastName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
+
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.lastName = lastName;
@@ -44,14 +36,6 @@ public class Person {
         this.address = address;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -121,31 +105,9 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", cellPhone='" + cellPhone + '\'' +
-                ", town='" + town + '\'' +
-                ", address='" + address + '\'' +
-                ", gender=" + gender +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
+                 '}';
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Person person = (Person) o;
-
-        return getId() == person.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
-    }
 }

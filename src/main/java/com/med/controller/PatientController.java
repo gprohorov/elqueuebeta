@@ -1,8 +1,8 @@
 package com.med.controller;
 
-import com.med.model.*;
-import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceMongoImpl;
+import com.med.model.Patient;
+import com.med.services.patient.Impls.PatientServiceImpl;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,57 +18,47 @@ import java.util.List;
 public class PatientController {
 
     @Autowired
-    PatientServiceMongoImpl service;
-
-    @Autowired
-    AppointmentServiceImpl appointmentService;
-
+    PatientServiceImpl service;
 
     ////////////////////////// CRUD//////////////////////////
 
     // getAll
     @GetMapping("/list")
     public List<Patient> showPatients() {
-        return service.getAll();
+        return service.getAll("");
     }
 
-
+/*
     // CREATE a new Patient
     @PostMapping("/create")
     public Patient createPatient(@Valid @RequestBody Person person) {
 
         return service.createPatient(person);
     }
+*/
 
 
     // READ the Patient by id
     @GetMapping("/get/{id}")
-    public Patient showOnePatient(@PathVariable(value = "id") int patientId) {
-
+    public Patient showOnePatient(@PathVariable(value = "id") ObjectId patientId) {
         return service.getPatient(patientId);
     }
 
-    // UPDATE the patient by id
-    @PostMapping("/update/{id}")
-    public Patient updatePatient(@PathVariable(value = "id") int patientId,
-                                 @Valid @RequestBody Patient updates) {
-        updates.setId(patientId);
-
-        return service.updatePatient(updates);
-
+    // Save the patient
+    @PostMapping("/save")
+    public Patient savePatient(@Valid @RequestBody Patient patient) {
+        return service.savePatient(patient);
     }
 
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
-    public Patient delPatient(@PathVariable(value = "id") int patientId) {
-
+    public Patient delPatient(@PathVariable(value = "id") ObjectId patientId) {
         return service.deletePatient(patientId);
     }
 
 
 
     //////////////////////END OF CRUD ////////////////////////////////////
-
 /*
 
     @GetMapping("/list/appointed/today")
@@ -78,8 +68,6 @@ public class PatientController {
                 .stream().map(appointment -> appointment.getPatient())
                 .collect(Collectors.toList());
     }
-*/
-
 
     // insert into patients list all appointed for today
     @PostMapping("/list/today/insert")
@@ -87,12 +75,10 @@ public class PatientController {
         return service.insertAppointedForToday();
     }
 
-
     // UPDATE the patient's status
     @GetMapping("/update/status/{id}/{status}")
-    public Patient updatePatientStatus(@PathVariable(value = "id") int patientId,
+    public Patient updatePatientStatus(@PathVariable(value = "id") ObjectId patientId,
                                        @PathVariable(value = "status") Status status) {
-
         return service.updateStatus(patientId, status);
     }
 
@@ -101,7 +87,7 @@ public class PatientController {
     @GetMapping("/update/activity/{id}/{activity}")
     public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
                                        @PathVariable(value = "activity") Activity activity) {
-/*        if (activity.equals(Activity.ON_PROCEDURE)) {
+        if (activity.equals(Activity.ON_PROCEDURE)) {
         Tail tail = this.getTails().stream()
                 .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
         tail.setVacancies(tail.getVacancies()-1);
@@ -114,8 +100,6 @@ public class PatientController {
         tail.setVacancies(tail.getVacancies()+1);
         tail.setVacant(true);
         }
-        */
-
         return service.updateActivity(patientId, activity);
     }
 
@@ -144,7 +128,7 @@ public class PatientController {
 
         return service.getProgress(patientId);
     }
-/*
+
     // get a list of patients to procedure orderd by time and status
     // example   http://localhost:8088/api/patient/list/procedure/7
       @GetMapping("/list/procedure/{id}")
@@ -169,9 +153,6 @@ public class PatientController {
 
         return service.removeProcedure(patientId, procedureId);
     }
-*/
-
-
 
      // start procedure i.e. set patient's status as ON_PROCEDURE
     // and decrement the number of vacant doctors responsible for this procedure
@@ -210,16 +191,13 @@ public class PatientController {
 
 
     // set therapy for patient
-/*
+
     @GetMapping("/set/therapy/{patient_id}/{therapy_id}")
     public Patient setTherapy(@PathVariable(value = "patient_id") int patientId,
                                 @PathVariable(value = "therapy_id") int therapyId) {
 
         return service.setTherapy(patientId, therapyId);
     }
-*/
-
-/*
 
     // get tails for each procedure
     @GetMapping("/get/tails")
@@ -227,7 +205,6 @@ public class PatientController {
 
         return service.getTails();
     }
-*/
 
 //  get the first patient for the procedure from tail
     @GetMapping("/tail/get/first/{procid}")
@@ -237,6 +214,6 @@ public class PatientController {
         return service.getFirstFromTail(procedureId);
     }
 
-
+*/
 
 }

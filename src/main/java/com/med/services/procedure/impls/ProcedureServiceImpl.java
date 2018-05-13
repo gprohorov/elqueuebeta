@@ -1,23 +1,15 @@
 package com.med.services.procedure.impls;
 
-import com.med.model.Procedure;
-import com.med.model.Tail;
-import com.med.repository.procedure.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
-import com.med.services.tail.Impls.TailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
-
-@SuppressWarnings("ALL")
 @Service
 public class ProcedureServiceImpl implements IProcedureService {
 
+/*
 
   //  private List<Procedure> procedures = new ArrayList<>();
 
@@ -26,10 +18,6 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @Autowired
     TailServiceImpl tailService;
-
-
-/*
-
 
     @Autowired
     DataStorage dataStorage;
@@ -41,7 +29,8 @@ public class ProcedureServiceImpl implements IProcedureService {
     }
 
 
-*/
+*//*
+
 
 
     @Override
@@ -96,6 +85,7 @@ public class ProcedureServiceImpl implements IProcedureService {
     public List<Procedure> getAll() {
         return repository.findAll();
     }
+*/
 /*
 
     @Override
@@ -105,7 +95,9 @@ public class ProcedureServiceImpl implements IProcedureService {
                 .filter(procedure -> procedure.getLastName().equals(lastName))
                 .findFirst().get();
     }
-*/
+*//*
 
+
+*/
 
 }

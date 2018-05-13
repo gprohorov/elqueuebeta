@@ -1,17 +1,15 @@
 package com.med.services.tail.Impls;
 
-import com.med.model.*;
-import com.med.services.patient.Impls.PatientServiceMongoImpl;
+import com.med.model.Tail;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -25,18 +23,17 @@ public class TailServiceImpl implements ITailService {
     ProcedureServiceImpl procedureService;
 
    @Autowired
-   PatientServiceMongoImpl patientService;
+   PatientServiceImpl patientService;
 
    @Autowired
    TalonServiceImpl talonService;
-
-
+/*
 
    @PostConstruct
-   void init(){
-       procedureService.getAll()
-               .stream().forEach(procedure
-               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
+   void init() {
+//       procedureService.getAll()
+//               .stream().forEach(procedure
+//               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
 
      //  this.setPatientsToAllTails();
 
@@ -204,9 +201,6 @@ public class TailServiceImpl implements ITailService {
        // if(tail.getPatients().size()!=0){tail.getPatients().remove(0);}
         return first;
     }
-
-
-
-
+*/
 
 }

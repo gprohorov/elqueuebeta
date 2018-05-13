@@ -1,18 +1,6 @@
 package com.med.datastorage;
 
-import com.med.model.*;
-import com.med.repository.patient.PatientRepository;
-import com.med.repository.person.PersonRepository;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by george on 07.05.18.
@@ -20,6 +8,7 @@ import java.util.List;
 
 @Component
 public class PatientStorage {
+/*
 
     private List<Patient> patients;
 
@@ -73,7 +62,8 @@ public class PatientStorage {
 
         patients = new ArrayList<>(
 
-            Arrays.asList(
+            Arrays.asList(*/
+/*
                     new Patient(persons.get(11), null, schema2
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(8)
                             , LocalDateTime.now().minusMinutes(112),0, Activity.ACTIVE),
@@ -117,10 +107,12 @@ public class PatientStorage {
                     ,  new Patient(persons.get(24), null, schema2
                             , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
                             , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
-            )
+          *//*
+  )
 
 
     );
+*/
 /*        patients.stream().forEach(patient
                 -> patient.setTalons(talonService
                 .getAllTalonsForPatient(patient.getId(), LocalDate.now())));
@@ -129,9 +121,11 @@ public class PatientStorage {
 
        repository.deleteAll();
        repository.saveAll(patients);
-       */
+       *//*
+
 
 }
 
+*/
 
 }

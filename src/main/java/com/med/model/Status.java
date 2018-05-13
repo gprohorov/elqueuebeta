@@ -4,7 +4,7 @@ package com.med.model;
  * Created by george on 3/9/18.
  */
 public enum Status {
-    HAND(8),
+    MANUALLY(8),
     FOREIGNER(7),
     VIP(6),
     BUSINESS(5),
@@ -20,6 +20,5 @@ public enum Status {
     public int getLevel() {
         return level;
     }
-
 
 }

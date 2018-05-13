@@ -1,15 +1,8 @@
 package com.med.controller;
 
-import com.med.model.Patient;
-import com.med.model.Tail;
-import com.med.services.tail.Impls.TailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -19,6 +12,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 public class TailController {
+/*
 
     @Autowired
     TailServiceImpl service;
@@ -39,5 +33,6 @@ public class TailController {
         return service.getTail(procedureId).getPatientOnProcedure();
 
     }
+*/
 
 }

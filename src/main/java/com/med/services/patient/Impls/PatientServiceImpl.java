@@ -3,7 +3,7 @@ package com.med.services.patient.Impls;
 import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.repository.patient.PatientRepository;
-import com.med.services.patient.interfaces.IPatientsService;
+import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Created by george on 3/9/18.
  */
 @Service 
-public class PatientServiceMongoImpl implements IPatientsService {
+public class PatientServiceImpl implements IPatientService {
 
     @Autowired
     PatientRepository repository;

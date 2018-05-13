@@ -1,30 +1,14 @@
 package com.med.services.talon.impls;
 
-import com.med.model.Doctor;
-import com.med.model.Patient;
-import com.med.model.Procedure;
-import com.med.model.Talon;
-import com.med.repository.talon.TalonRepository;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
  */
-@SuppressWarnings("ALL")
 @Component
 public class TalonServiceImpl implements ITalonService {
+/*
 
     @Autowired
     TalonRepository repository;
@@ -42,6 +26,7 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public Talon createTalon(Talon talon) {
+*/
 /*        if (this.getAll().size()==0){talon.setId(5L);}
 
         if (talon.getId() == null){
@@ -49,7 +34,8 @@ public class TalonServiceImpl implements ITalonService {
             talon.setId(id);
             System.out.println(talon.getId()
             );
-        }*/
+        }*//*
+
         return repository.save(talon);
     }
 
@@ -59,7 +45,7 @@ public class TalonServiceImpl implements ITalonService {
     }
 
     @Override
-    public Talon getTalonByPatientAndProcedure(int patientId, int procedureId) {
+    public Talon getTalonByPatientAndProcedure(ObjectId patientId, int procedureId) {
         Talon talon = this.getAll().stream().filter(tl -> tl.getPatientId()==patientId)
                 .filter(tl->tl.getProcedure().getId()==procedureId)
                 .findFirst().get();
@@ -106,7 +92,7 @@ public class TalonServiceImpl implements ITalonService {
 
     //------------------------------- BUSINESS LOGIC -------------------------
 
-    public List<Talon> createActiveTalonsFromTherapy(int patientId){
+    public List<Talon> createActiveTalonsFromTherapy(ObjectId patientId){
 
         Patient  patient = patientService.getPatient(patientId);
         if (patient.getTherapy() != null) return null;
@@ -188,20 +174,21 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-    public int calculateTotalSumForPatient(int patientId, LocalDate start, LocalDate finish){
+    public int calculateTotalSumForPatient(ObjectId patientId, LocalDate start, LocalDate finish){
        //  int sum = this.getAll()
         return 0;
     }
 
 
-   public List<Talon> getAllTalonsForPatient(int patientId,LocalDate date){
+   public List<Talon> getAllTalonsForPatient(ObjectId patientId,LocalDate date){
         return this.getAll().stream().filter(talon -> talon.getDate().equals(date))
                 .filter(talon -> talon.getPatientId()==patientId).collect(Collectors.toList());
    }
 
 
-    List<Talon> getAllTalonsForPatienForToday(int patientId){
+    List<Talon> getAllTalonsForPatienForToday(ObjectId patientId){
        return getAllTalonsForPatient(patientId, LocalDate.now());
     }
 
+*/
 }

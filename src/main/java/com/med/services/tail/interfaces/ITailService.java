@@ -1,16 +1,11 @@
 package com.med.services.tail.interfaces;
 
-import com.med.model.Patient;
-import com.med.model.Tail;
-
-import java.util.List;
-
 /**
  * Created by george on 3/9/18.
  */
 public interface ITailService {
 
-
+/*
     List<Tail> getAll();
     Tail getTail(int procedureId);
     Tail getTailByProcedure(int procedureId);
@@ -26,5 +21,6 @@ public interface ITailService {
     Patient getFirstActiveAndOnProcedure(int procedureId);
 
     List<Patient> getPatientsOnProcedure(int procedureId);
+*/
 
 }

@@ -22,7 +22,7 @@ public class UtilController {
     @GetMapping("/util/reset-db")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String resetPatientsTable() {
-        dataStorage.resetPatientsTable();
+        // dataStorage.resetPatientsTable();
         return "OK";
     }
 
