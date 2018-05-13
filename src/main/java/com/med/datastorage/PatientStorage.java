@@ -1,6 +1,17 @@
 package com.med.datastorage;
 
+import com.med.model.Patient;
+import com.med.model.Person;
+import com.med.repository.patient.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by george on 07.05.18.
@@ -8,111 +19,82 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PatientStorage {
-/*
 
-    private List<Patient> patients;
-
-    private List<Procedure> schema1;
-    private List<Procedure> schema2;
-    private List<Procedure> schema3;
-    private List<Procedure> schema4;
-
-    private Procedure registration;
-    private Procedure diagnostics ;
-    private Procedure manual ;
-    private Procedure pulling ;
-    private Procedure mechmassasge;
-    private Procedure massage ;
-    private Procedure ultrasound ;
-
-    @Autowired
-    ProcedureServiceImpl procedureService;
-
-    @Autowired
-    PersonRepository personRepository;
+    List<Patient> patients = new ArrayList<>();
 
     @Autowired
     PatientRepository repository;
 
-    @Autowired
-    TalonServiceImpl talonService;
-
-
-
-
     @PostConstruct
-     void init() {
+            void init(){
 
-        List<Person> persons = personRepository.findAll();
-
-       registration = procedureService.getProcedure(1);
-        diagnostics = procedureService.getProcedure(2);
-        manual = procedureService.getProcedure(3);
-        pulling = procedureService.getProcedure(4);
-        mechmassasge= procedureService.getProcedure(5);
-        massage = procedureService.getProcedure(6);
-        ultrasound= procedureService.getProcedure(7);
-
-       schema1 = new ArrayList<>(Arrays.asList(diagnostics));
-       schema2 = new ArrayList<>(Arrays.asList(manual,massage));
-       schema3 = new ArrayList<>(Arrays.asList(manual,ultrasound,pulling));
-       schema4 = new ArrayList<>(Arrays.asList(massage));
+        repository.deleteAll();
+        this.createPatientList();
+        repository.saveAll(patients);
 
 
+    }
 
-        patients = new ArrayList<>(
+    List<Person> persons = new LinkedList<>( Arrays.asList(
+            new Person("Іван",  "Іванов"),
+            new Person("Петро",  "Петров"),
+            new Person("Сидор", "Сидорович",  "Сидоров"
+                    , "050-0000000", "Герца",
+                    "Головна,5", true, LocalDate.now().minusYears(38).minusDays(20)),
+            new Person("Павел", "Павлов"),
+            new Person("Василий",  "Васильев"),
+            new Person("Леон", "Леонов"),
+            new Person("Ілля",  "Івкін"),
+            new Person("Барак",  "Хусейнович","Обама", "066 6666666", "Гербедж-Таун"
+                    , "Треш-авеню, 6", true, LocalDate.now().minusYears(60)),
+            new Person("Олександр ",  "Іванов"),
+            new Person("Дональд",  "Фредович","Трамп", "067 7777777", "Вашингтон"
+                    , "Білий Дім, 1, кв.1", true, LocalDate.now().minusYears(73)),
+            new Person("Павел", "Майков"),
+            new Person("Василий",  "Ливанов"),
+            new Person("Леон", "Киллер"),
+            new Person("Ілля",  "Муромец"),
+            new Person("Павел", "Куракин"),
+            new Person("Василий",  "Шукшин"),
+            new Person("Евгений", "Леонов"),
+            new Person("Иван",  "Никитин"),
+            new Person("Юрий", "Шевчук"),
+            new Person("Василий",  "Лановой"),
+            new Person("Игнат", "Лобов"),
+            new Person("Руслан",  "Аушев"),
+            new Person("Алексей", "Баталов"),
+            new Person("Леонид",  "Харитонов"),
+            new Person("Игорь", "Строев"),
+            new Person("Ілля",  "Івашов"),
+            new Person("Василий",  "Бубка"),
+            new Person("Евгений", "Онегин"),
+            new Person("Юрий", "Продан"),
+            new Person("Василий",  "Чапаев"),
+            new Person("Игнат", "Ложкин"),
+            new Person("Руслан",  "Бахтияров"),
+            new Person("Алексей", "Новиков"),
+            new Person("Леонид",  "Леонидов"),
+            new Person("Игорь", "Мамчин"),
+            new Person("Иван",  "Силаев"),
+            new Person("Ілля",  "Куц"),
+            new Person("Дмитрий", "Донской"),
+            new Person("Владимир",  "Мономах"),
+            new Person("Алексей", "Крутов"),
+            new Person("Леонид",  "Брежнев"),
+            new Person("Игорь", "Кривин"),
+            new Person("Иван",  "Калита"),
+            new Person("Xopxe",  "Tuxepoc")
+    ));
 
-            Arrays.asList(*/
-/*
-                    new Patient(persons.get(11), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(8)
-                            , LocalDateTime.now().minusMinutes(112),0, Activity.ACTIVE),
-                    new Patient(persons.get(12), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(12)
-                            , LocalDateTime.now().minusMinutes(111),0, Activity.ACTIVE)
-
-                    ,  new Patient(persons.get(13), null, schema1
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(2)
-                            ,LocalDateTime.now().minusHours(2), 0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(14), null, schema3
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(31)
-                            , LocalDateTime.now().minusMinutes(222),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(15), null, schema4
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(4)
-                            , LocalDateTime.now().minusMinutes(156),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(16), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(46)
-                            , LocalDateTime.now().minusMinutes(241),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(17), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(3)
-                            , LocalDateTime.now().minusMinutes(218),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(18), null, schema1
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(13)
-                            , LocalDateTime.now().minusMinutes(180),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(19), null, schema4
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(61)
-                            , LocalDateTime.now().minusMinutes(199),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(20), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
-                            , LocalDateTime.now().minusMinutes(211),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(21), null, schema3
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(43)
-                            , LocalDateTime.now().minusMinutes(232),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(22), null, schema4
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
-                            , LocalDateTime.now().minusMinutes(312),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(23), null, schema4
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(23)
-                            , LocalDateTime.now().minusMinutes(195),0, Activity.ACTIVE)
-                    ,  new Patient(persons.get(24), null, schema2
-                            , Status.SOCIAL, LocalDateTime.now().minusMinutes(22)
-                            , LocalDateTime.now().minusMinutes(123),0, Activity.ACTIVE)
-          *//*
-  )
 
 
-    );
-*/
+    private List<Patient> createPatientList(){
+        persons.stream().forEach(person -> patients.add(new Patient(person)));
+        return this.patients;
+    }
+
+
+
 /*        patients.stream().forEach(patient
                 -> patient.setTalons(talonService
                 .getAllTalonsForPatient(patient.getId(), LocalDate.now())));
@@ -124,7 +106,7 @@ public class PatientStorage {
        *//*
 
 
-}
+
 
 */
 

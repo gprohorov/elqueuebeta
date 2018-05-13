@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class DataStorageTest {
+
+
 /*
 
     @Autowired
@@ -62,55 +64,55 @@ public class DataStorageTest {
 
     }
 
-    List<Person> persons = new LinkedList<>( Arrays.asList(
-        new Person(1,"Іван",  "Іванов"),
-            new Person(2,"Петро",  "Петров"),
-            new Person(3,"Сидор", "Сидорович",  "Сидоров"
+    List<Patient> patients = new LinkedList<>( Arrays.asList(
+        new Patient("Іван",  "Іванов"),
+            new Patient("Петро",  "Петров"),
+            new Patient("Сидор", "Сидорович",  "Сидоров"
                     , "050-0000000", "Герца",
                     "Головна,5", true, LocalDate.now().minusYears(38).minusDays(20)),
-            new Person(4,"Павел", "Павлов"),
-            new Person(5,"Василий",  "Васильев"),
-            new Person(6,"Леон", "Леонов"),
-            new Person(7,"Ілля",  "Івкін"),
-            new Person(8,"Барак",  "Хусейнович","Обама", "066 6666666", "Гербедж-Таун"
+            new Patient("Павел", "Павлов"),
+            new Patient("Василий",  "Васильев"),
+            new Patient("Леон", "Леонов"),
+            new Patient("Ілля",  "Івкін"),
+            new Patient("Барак",  "Хусейнович","Обама", "066 6666666", "Гербедж-Таун"
                     , "Треш-авеню, 6", true, LocalDate.now().minusYears(60)),
-            new Person(9,"Олександр ",  "Іванов"),
-            new Person(10,"Дональд",  "Фредович","Трамп", "067 7777777", "Вашингтон"
+            new Patient("Олександр ",  "Іванов"),
+            new Patient("Дональд",  "Фредович","Трамп", "067 7777777", "Вашингтон"
                     , "Білий Дім, 1, кв.1", true, LocalDate.now().minusYears(73)),
-           new Person(11,"Павел", "Майков"),
-           new Person(12,"Василий",  "Ливанов"),
-           new Person(13,"Леон", "Киллер"),
-           new Person(14,"Ілля",  "Муромец"),
-           new Person(15,"Павел", "Куракин"),
-           new Person(16,"Василий",  "Шукшин"),
-           new Person(17,"Евгений", "Леонов"),
-           new Person(18,"Иван",  "Никитин"),
-           new Person(19,"Юрий", "Шевчук"),
-           new Person(20,"Василий",  "Лановой"),
-           new Person(21,"Игнат", "Лобов"),
-           new Person(22,"Руслан",  "Аушев"),
-           new Person(23,"Алексей", "Баталов"),
-           new Person(24,"Леонид",  "Харитонов"),
-           new Person(25,"Игорь", "Строев"),
-           new Person(26,"Ілля",  "Івашов"),
-            new Person(27,"Василий",  "Бубка"),
-            new Person(28,"Евгений", "Онегин"),
-            new Person(29,"Юрий", "Продан"),
-            new Person(30,"Василий",  "Чапаев"),
-            new Person(31,"Игнат", "Ложкин"),
-            new Person(32,"Руслан",  "Бахтияров"),
-            new Person(33,"Алексей", "Новиков"),
-            new Person(34,"Леонид",  "Леонидов"),
-            new Person(35,"Игорь", "Мамчин"),
-            new Person(36,"Иван",  "Силаев"),
-            new Person(37,"Ілля",  "Куц"),
-            new Person(38,"Дмитрий", "Донской"),
-            new Person(39,"Владимир",  "Мономах"),
-            new Person(40,"Алексей", "Крутов"),
-            new Person(41,"Леонид",  "Брежнев"),
-            new Person(42,"Игорь", "Кривин"),
-        //    new Person(43,"Иван",  "Калита"),
-            new Person(344,"Дмитрий",  "Гук")
+           new Patient("Павел", "Майков"),
+           new Patient("Василий",  "Ливанов"),
+           new Patient("Леон", "Киллер"),
+           new Patient("Ілля",  "Муромец"),
+           new Patient("Павел", "Куракин"),
+           new Patient("Василий",  "Шукшин"),
+           new Patient("Евгений", "Леонов"),
+           new Patient("Иван",  "Никитин"),
+           new Patient("Юрий", "Шевчук"),
+           new Patient("Василий",  "Лановой"),
+           new Patient("Игнат", "Лобов"),
+           new Patient("Руслан",  "Аушев"),
+           new Patient("Алексей", "Баталов"),
+           new Patient("Леонид",  "Харитонов"),
+           new Patient("Игорь", "Строев"),
+           new Patient("Ілля",  "Івашов"),
+            new Patient("Василий",  "Бубка"),
+            new Patient("Евгений", "Онегин"),
+            new Patient("Юрий", "Продан"),
+            new Patient("Василий",  "Чапаев"),
+            new Patient("Игнат", "Ложкин"),
+            new Patient("Руслан",  "Бахтияров"),
+            new Patient("Алексей", "Новиков"),
+            new Patient("Леонид",  "Леонидов"),
+            new Patient("Игорь", "Мамчин"),
+            new Patient("Иван",  "Силаев"),
+            new Patient("Ілля",  "Куц"),
+            new Patient("Дмитрий", "Донской"),
+            new Patient("Владимир",  "Мономах"),
+            new Patient("Алексей", "Крутов"),
+            new Patient("Леонид",  "Брежнев"),
+            new Patient("Игорь", "Кривин"),
+        //    new Patient("Иван",  "Калита"),
+            new Patient("Дмитрий",  "Гук")
          ));
 
 

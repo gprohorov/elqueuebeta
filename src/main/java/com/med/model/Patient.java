@@ -51,6 +51,10 @@ public class Patient {
         this.startActivity = startActivity;
     }
 
+    public Patient(Person person) {
+        this.person = person;
+    }
+
     public ObjectId getId() {
         return id;
     }

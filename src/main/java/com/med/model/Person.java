@@ -26,6 +26,7 @@ public class Person {
         this.gender = true;
     }
 
+
     public Person( String firstName, String patronymic, String lastName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
 
         this.firstName = firstName;
