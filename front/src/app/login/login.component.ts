@@ -24,9 +24,6 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         // reset login status
         this.authService.deAuth();
-
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     login() {
@@ -35,7 +32,8 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.authService.setAuth(data);
-                    this.router.navigate([this.returnUrl]);
+                    console.log(data.authorities);
+                    this.router.navigate(['']);
                 },
                 error => {
                     const mes = error.status === 401 
