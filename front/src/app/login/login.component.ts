@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.authService.setAuth(data);
-                    console.log(data.authorities);
                     this.router.navigate(['']);
                 },
                 error => {
