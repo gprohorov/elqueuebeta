@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, UtilService, AlertService } from '../_services/index';
 
@@ -7,7 +7,7 @@ import { AuthService, UtilService, AlertService } from '../_services/index';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent {
 
   user: any;
 
@@ -28,9 +28,6 @@ export class NavComponent implements OnInit {
          this.router.navigate(['/']);
       });
     }
-  }
-
-  ngOnInit() {
   }
 
 }
