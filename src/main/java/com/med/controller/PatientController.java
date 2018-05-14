@@ -23,6 +23,11 @@ public class PatientController {
     ////////////////////////// CRUD//////////////////////////
 
     // getAll
+    @GetMapping("/list/")
+    public List<Patient> showPatients() {
+        return service.getAll("");
+    }
+
     @GetMapping("/list/{search}")
     public List<Patient> showPatients(@PathVariable(value = "search") String search) {
         return service.getAll(search);
@@ -35,7 +40,7 @@ public class PatientController {
     }
 
     // Save the patient
-    @PostMapping("/save")
+    @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
         return service.savePatient(patient);
     }
@@ -51,7 +56,7 @@ public class PatientController {
     //////////////////////END OF CRUD ////////////////////////////////////
 
 
-    // create talon to d
+    // create talon to date for patient on procedure
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
                                  @PathVariable(value = "procedureId") int procedureId,
