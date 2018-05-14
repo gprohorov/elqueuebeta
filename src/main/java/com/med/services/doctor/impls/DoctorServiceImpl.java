@@ -3,6 +3,7 @@ package com.med.services.doctor.impls;
 import com.med.model.Doctor;
 import com.med.repository.doctor.DoctorRepository;
 import com.med.services.doctor.interfaces.IDoctorService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,8 @@ public class DoctorServiceImpl implements IDoctorService {
     @Override
     public Doctor updateDoctor(Doctor doctor) {
         if (doctor.getId()==0) {
-            int id = this.getAll().stream().mapToInt(Doctor::getId).max().getAsInt() + 1;
+            int id = this.getAll().stream()
+                    .mapToInt(Doctor::getId).max().getAsInt() + 1;
             doctor.setId(id);
         }
         return repository.save(doctor);
@@ -60,7 +62,8 @@ public class DoctorServiceImpl implements IDoctorService {
 
     public Doctor getDoctorByUserId(String id) {
         return repository.findAll().stream().filter(doctor ->
-                doctor.getUserId().equals(id)).findFirst().orElse(null);
+                doctor.getUserId().equals(new ObjectId(id)))
+                .findFirst().orElse(null);
     }
 
     @Override

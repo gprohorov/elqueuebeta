@@ -3,6 +3,7 @@ package com.med.datastorage;
 import com.med.model.Patient;
 import com.med.model.Person;
 import com.med.repository.patient.PatientRepository;
+import com.med.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,12 +26,20 @@ public class PatientStorage {
     @Autowired
     PatientRepository repository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostConstruct
-            void init(){
-        repository.deleteAll();
+    void init(){
+/*        repository.deleteAll();
         this.createPatientList();
         repository.saveAll(patients);
 
+        System.out.println("============================");
+
+        String id ="5af4466df363362f8cc69b5d";
+        System.out.println(userRepository.findById(id));
+  */
 
     }
 
