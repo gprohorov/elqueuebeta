@@ -86,7 +86,7 @@ public class TalonStorage {
 
 
                         //// tail to massage
-                        new Talon(patients.get(117).getId(),manual),
+                        new Talon(patients.get(17).getId(),manual),
                         new Talon(patients.get(18).getId(), manual),
                         new Talon(patients.get(19).getId(), manual),
                         new Talon(patients.get(20).getId(), manual),

@@ -11,6 +11,7 @@ import java.util.List;
 public interface ITalonService {
 
     Talon createTalon(String patientId, int procedureId, int days);
+    Talon createTalon(String patientId, int procedureId, LocalDate date);
     List<Talon> getAll();
     Talon getTalon(String id);
     List<Talon>  getTalonsForToday();

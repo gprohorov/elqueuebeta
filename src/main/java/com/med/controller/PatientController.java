@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -68,6 +69,16 @@ public class PatientController {
 
 
         return talonService.createTalon(patientId,procedureId,days);}
+
+     // final
+    // create talon to date for patient on procedure
+    @GetMapping("/create/talon/{patientId}/{procedureId}/{date}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+                             @PathVariable(value = "procedureId") int procedureId,
+                             @PathVariable(value = "date") LocalDate date) {
+
+
+        return talonService.createTalon(patientId,procedureId,date);}
 
 
     // create talon to today for patient on registration

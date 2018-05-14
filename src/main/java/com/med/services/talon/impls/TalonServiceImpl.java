@@ -42,6 +42,14 @@ public class TalonServiceImpl implements ITalonService {
 
         return repository.save(talon);
     }
+   @Override
+    public Talon createTalon(String patientId, int procedureId, LocalDate date) {
+
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        Talon talon = new Talon(patientId, procedure, date);
+
+        return repository.save(talon);
+    }
 
     @Override
     public List<Talon> getAll() {
