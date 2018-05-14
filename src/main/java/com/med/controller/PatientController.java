@@ -3,6 +3,7 @@ package com.med.controller;
 import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,9 @@ public class PatientController {
 
     @Autowired
     PatientServiceImpl service;
+
+    @Autowired
+    TalonServiceImpl talonService;
 
     ////////////////////////// CRUD//////////////////////////
 
@@ -63,7 +67,17 @@ public class PatientController {
                                  @PathVariable(value = "days") int days) {
 
 
-        return null;}
+        return talonService.createTalon(patientId,procedureId,days);}
+
+
+    // create talon to today for patient on registration
+    @GetMapping("/create/talon/today/{patientId}")
+    public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId)
+                                  {
+        // registration - id==1
+        // today  plus 0
+
+        return talonService.createTalon(patientId,1,0);}
 
 
 
