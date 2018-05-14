@@ -1,44 +1,56 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ViewChild, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Patient } from '../_models/index';
-import { AlertService, PatientService, PatientSearchCriteria } from '../_services/index';
+import { Patient, Procedure } from '../_models/index';
+import { AlertService, ProcedureService, PatientService, PatientSearchCriteria } from '../_services/index';
 
 @Component({
     templateUrl: './list.component.html'
 })
 export class PatientListComponent implements OnInit {
-
+    
     sub: Subscription;
+    subProcedures: Subscription;
     items: Patient[];
+    procedures: Procedure[];
     loading = false;
     rows = [];
 
     constructor(
-        private service: PatientService,
+        private patientService: PatientService,
+        private procedureService: ProcedureService,
         private alertService: AlertService
     ) { }
 
     ngOnInit() {
         this.load();
+        this.subProcedures = this.procedureService.getAll().subscribe(data => {
+            this.procedures = data;
+        });
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+        this.subProcedures.unsubscribe();
     }
 
     onSorted($event: PatientSearchCriteria) {
-        this.items = this.service.sortBy($event, this.items);
+        this.items = this.patientService.sortBy($event, this.items);
     }
 
     delete(id: string, name: string) {
         if (confirm('Видалити "' + name + '" ?')) {
-            this.service.delete(id).subscribe(() => { this.load(); });
+            this.patientService.delete(id).subscribe(() => { this.load(); });
         }
     }
 
-    toPatientToday(id: string) {
-        this.service.toPatientToday(id).subscribe(() => {
+    showAssignProcedurePopup(patientId: string) {
+        const patient = this.items.find(x => x.id == patientId);
+        console.log(this.modal);
+    }
+    
+    assignProcedure(patientId: string, procedureId: number, date: string) {
+        this.patientService.assignProcedure(patientId, procedureId, date).subscribe(() => {
             this.alertService.success('Операція пройшла успішно');
         });
     }
@@ -49,8 +61,8 @@ export class PatientListComponent implements OnInit {
 
     load(search: string = '') {
         this.loading = true;
-        this.sub = this.service.getAll(search).subscribe(data => {
-            this.items = this.service.sortBy({ sortColumn: 'lastName', sortDirection: 'asc' }, data);
+        this.sub = this.patientService.getAll(search).subscribe(data => {
+            this.items = this.patientService.sortBy({ sortColumn: 'lastName', sortDirection: 'asc' }, data);
             this.loading = false;
         });
     }
