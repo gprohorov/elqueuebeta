@@ -82,7 +82,7 @@ public class PatientServiceImpl implements IPatientService {
             // TODO: make sorting, paging, filtering
             patients = repository.findAll().stream()
                     .filter(patient -> patient.getPerson()
-                    .getLastName().contains(lastName.toLowerCase()))
+                    .getLastName().toLowerCase().contains(lastName.toLowerCase()))
                     .collect(Collectors.toList());
         }
 

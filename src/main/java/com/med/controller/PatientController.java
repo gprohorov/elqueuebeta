@@ -51,7 +51,7 @@ public class PatientController {
     //////////////////////END OF CRUD ////////////////////////////////////
 
 
-    // remove the procedure from the map of assigned for today
+    // create talon to d
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
                                  @PathVariable(value = "procedureId") int procedureId,
