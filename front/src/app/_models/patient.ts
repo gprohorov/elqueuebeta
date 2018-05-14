@@ -1,15 +1,18 @@
+export class Person {
+    id: string;
+    firstName: string;
+    patronymic: string;
+    lastName: string;
+    cellPhone: string;
+    town: string;
+    address: string;
+    gender: string;
+    dateOfBirth: string;
+}
+
 export class Patient {
     id: string;
-    person: {
-        firstName: string;
-        patronymic: string;
-        lastName: string;
-        cellPhone: string;
-        town: string;
-        address: string;
-        gender: string;
-        dateOfBirth: string;
-    };
+    person: Person;
     therapy: {};
     talons: [{}];
     lastActivity: string;
