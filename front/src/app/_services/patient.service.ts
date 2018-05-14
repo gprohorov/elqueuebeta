@@ -13,7 +13,7 @@ export class PatientService {
     private listUrl = config.api_path + '/patient/list/';
     private getUrl = config.api_path + '/patient/get/';
     private deleteUrl = config.api_path + '/patient/delete/';
-    private saveUrl = config.api_path + '/patient/update/';
+    private saveUrl = config.api_path + '/patient/save/';
     private toPatientTodayUrl = config.api_path + '/patient/topatient/';
 
     constructor(private http: HttpClient) { }

@@ -21,7 +21,7 @@ export class PatientFormComponent {
 
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');
-        if (id !== '') this.load(id);
+        if (id && id != '') this.load(id);
     }
 
     ngOnDestroy() {
