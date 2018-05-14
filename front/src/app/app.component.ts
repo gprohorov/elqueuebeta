@@ -9,13 +9,13 @@ import { NgxPermissionsService } from 'ngx-permissions';
 })
 
 export class AppComponent implements OnInit {
-  
-  constructor(private permissionsService: NgxPermissionsService, public authService: AuthService) { }
-  
-  ngOnInit(): void {
-      const user: any = this.authService.getUserInfo();
-      if (user && user.authorities) {
-          this.permissionsService.loadPermissions(user.authorities);
-      }
-  }
+
+    constructor(private permissionsService: NgxPermissionsService, public authService: AuthService) { }
+
+    ngOnInit(): void {
+        const user: any = this.authService.getUserInfo();
+        if (user && user.authorities) {
+            this.permissionsService.loadPermissions(user.authorities);
+        }
+    }
 }

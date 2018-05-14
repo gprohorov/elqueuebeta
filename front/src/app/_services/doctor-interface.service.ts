@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { config } from '../../config';
 
-import { Person } from '../_models/index';
+import { Patient } from '../_models/index';
 
 @Injectable()
 export class DoctorInterfaceService {
@@ -16,17 +16,9 @@ export class DoctorInterfaceService {
 
   constructor(private http: HttpClient) { }
 
-  getList(search: string = '') {
+  getPatient() {
     return this.http
-      .get<Person[]>(this.listUrl)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getPatient(id: number) {
-    return this.http
-      .get<Person>(this.getPatientUrl + id)
+      .get<Patient>(this.getPatientUrl)
       .pipe(
         catchError(this.handleError)
       );

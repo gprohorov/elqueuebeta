@@ -1,19 +1,24 @@
 ﻿<div class="content">
-  <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-  <ngx-masonry [options]="myOptions" [updateLayout]="updateMasonryLayout" (layoutComplete)="updateMasonryLayout = false">
-     <ngx-masonry-item class="masonry-item" *ngFor="let group of items; let i = index">
-      <div [ngClass]="{'masonry-header': true, 'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}"
-        (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}" title="{{group.procedureName}}">
+    <img *ngIf="loading"
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    <ngx-masonry [options]="myOptions"
+        [updateLayout]="updateMasonryLayout"
+        (layoutComplete)="updateMasonryLayout = false"> <ngx-masonry-item
+        class="masonry-item" *ngFor="let group of items; let i = index">
+    <div
+        [ngClass]="{'masonry-header': true, 'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}"
+        (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
+        title="{{group.procedureName}}">
         <span class="badge pull-right">{{group.patients?.length}}</span>
         <span class="masonry-header-title">{{group.procedureName}}</span>
-      </div>
-      <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
+    </div>
+    <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
         <div *ngFor="let item of group.patients">
-	        <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta}} хв.</span>
-	        <span class="masonry-list-item {{Activity[item.active].cssClass}}"
-            title="{{getFullName(item.person)}}">{{getFullName(item.person)}}</span>
+            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta}}
+                хв.</span> <span
+                class="masonry-list-item {{Activity[item.active].cssClass}}"
+                title="{{getFullName(item.person)}}">{{getFullName(item.person)}}</span>
         </div>
-      </div>
-     </ngx-masonry-item>
-  </ngx-masonry>
+    </div>
+    </ngx-masonry-item> </ngx-masonry>
 </div>

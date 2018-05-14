@@ -13,23 +13,24 @@ import { AlertComponent, SortableTableDirective, SortableColumnComponent } from 
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor } from './_helpers/index';
 import { TokenStorage, UserStorage } from './_storage/index';
-import {  AlertService,
-          AuthService,
-          UtilService,
-          SortService,
-          PersonService,
-          DoctorService,
-          ProcedureService,
-          PatientsQueueService,
-          DoctorInterfaceService
-       } from './_services/index';
+import {
+    AlertService,
+    AuthService,
+    UtilService,
+    SortService,
+    PatientService,
+    DoctorService,
+    ProcedureService,
+    PatientsQueueService,
+    DoctorInterfaceService
+} from './_services/index';
 
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 
-import { PersonListComponent } from './person/list.component';
-import { PersonFormComponent } from './person/form.component';
+import { PatientListComponent } from './patient/list.component';
+import { PatientFormComponent } from './patient/form.component';
 
 import { DoctorListComponent } from './doctor/list.component';
 import { DoctorFormComponent } from './doctor/form.component';
@@ -45,68 +46,79 @@ import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.comp
 import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent,
+    {
+        path: '', component: HomeComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: {
             permissions: {
                 except: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'],
                 redirectTo: {
-                    ROLE_ADMIN:     'procedures-queue',
-                    ROLE_USER:      'procedures-queue',
-                    ROLE_MASSAGE:   'doctor-interface-massage',
-                    default:        'login'
+                    ROLE_ADMIN: 'patients',
+                    ROLE_USER: 'patients',
+                    ROLE_MASSAGE: 'doctor-interface-massage',
+                    default: 'login'
                 }
             }
         }
     },
     { path: 'login', component: LoginComponent },
 
-    { path: 'persons', component: PersonListComponent, 
+    {
+        path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
-    { path: 'person-form', component: PersonFormComponent, 
+    {
+        path: 'patient-form', component: PatientFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
-    },
-
-    { path: 'doctors', component: DoctorListComponent, 
-        canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
-    },
-    { path: 'doctor-form', component: DoctorFormComponent, 
-        canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
 
-    { path: 'procedures', component: ProcedureListComponent, 
+    {
+        path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
-    { path: 'procedure-form', component: ProcedureFormComponent, 
+    {
+        path: 'doctor-form', component: DoctorFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
-    },
-
-    { path: 'patients-queue', component: PatientsQueueListComponent, 
-        canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
 
-    { path: 'procedures-queue', component: ProceduresQueueListComponent,
+    {
+        path: 'procedures', component: ProcedureListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+    },
+    {
+        path: 'procedure-form', component: ProcedureFormComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
 
-    { path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent, 
+    {
+        path: 'patients-queue', component: PatientsQueueListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
-    { path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent, 
+
+    {
+        path: 'procedures-queue', component: ProceduresQueueListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_DIAG'], redirectTo:  'login' } } 
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
     },
-    
+
+    {
+        path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'], redirectTo: 'login' } }
+    },
+    {
+        path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_DIAG'], redirectTo: 'login' } }
+    },
+
     { path: '**', redirectTo: '' }
 ];
 
@@ -128,7 +140,7 @@ const appRoutes: Routes = [
         SortableColumnComponent,
         LoginComponent,
         NavComponent,
-        PersonListComponent, PersonFormComponent,
+        PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
@@ -145,14 +157,14 @@ const appRoutes: Routes = [
         UserStorage,
         UtilService,
         SortService,
-        PersonService,
+        PatientService,
         DoctorService,
         ProcedureService,
         PatientsQueueService,
         DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
-    schemas: [ NO_ERRORS_SCHEMA ],
+    schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
 })
 
