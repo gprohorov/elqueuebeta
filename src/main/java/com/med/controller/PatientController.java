@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.model.Patient;
+import com.med.model.Talon;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,20 +23,10 @@ public class PatientController {
     ////////////////////////// CRUD//////////////////////////
 
     // getAll
-    @GetMapping("/list")
-    public List<Patient> showPatients() {
-        return service.getAll("");
+    @GetMapping("/list/{search}")
+    public List<Patient> showPatients(@PathVariable(value = "search") String search) {
+        return service.getAll(search);
     }
-
-/*
-    // CREATE a new Patient
-    @PostMapping("/create")
-    public Patient createPatient(@Valid @RequestBody Person person) {
-
-        return service.createPatient(person);
-    }
-*/
-
 
     // READ the Patient by id
     @GetMapping("/get/{id}")
@@ -58,6 +49,22 @@ public class PatientController {
 
 
     //////////////////////END OF CRUD ////////////////////////////////////
+
+
+    // remove the procedure from the map of assigned for today
+    @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+                                 @PathVariable(value = "procedureId") int procedureId,
+                                 @PathVariable(value = "days") int days) {
+
+
+        return null;}
+
+
+
+
+
+
 /*
 
     @GetMapping("/list/appointed/today")

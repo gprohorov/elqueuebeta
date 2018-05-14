@@ -15,7 +15,7 @@ public class Talon {
     @Id
     private String id;
 
-    private int patientId;
+    private String patientId;
     private LocalDate date;
     private Procedure procedure;
     private int zones;
@@ -31,7 +31,7 @@ public class Talon {
     }
 
     // full
-    public Talon(String id, int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+    public Talon(String id, String patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.id = id;
         this.patientId = patientId;
         this.date = date;
@@ -43,7 +43,7 @@ public class Talon {
         this.sum = sum;
     }
     // without id
-    public Talon(int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+    public Talon(String patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.patientId = patientId;
         this.date = date;
         this.procedure = procedure;
@@ -54,7 +54,7 @@ public class Talon {
         this.sum = sum;
     }
     //  patient and procedure  for today
-    public Talon(int patientId, Procedure procedure) {
+    public Talon(String patientId, Procedure procedure) {
         this.patientId = patientId;
         this.date = LocalDate.now();
         this.procedure = procedure;
@@ -66,9 +66,20 @@ public class Talon {
 
     }
 
-    public Talon(int patientId, LocalDate date, Procedure procedure) {
+    public Talon(String patientId, Procedure procedure, LocalDate date) {
         this.patientId = patientId;
         this.date = date;
+        this.procedure = procedure;
+        this.zones = 0;
+        this.desc = "";
+        this.executionTime = null;
+        this.doctor = null;
+        this.sum = 0;
+
+    }
+    public Talon(String patientId, Procedure procedure, int days) {
+        this.patientId = patientId;
+        this.date = LocalDate.now().plusDays(days);
         this.procedure = procedure;
         this.zones = 0;
         this.desc = "";
@@ -94,11 +105,11 @@ public class Talon {
         this.id = id;
     }
 
-    public int getPatientId() {
+    public String getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(int patientId) {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 

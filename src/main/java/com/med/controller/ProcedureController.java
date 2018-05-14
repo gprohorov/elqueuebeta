@@ -1,8 +1,11 @@
 package com.med.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.med.model.Procedure;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class ProcedureController {
 
-/*
+
 
     @Autowired
     ProcedureServiceImpl service;
@@ -28,7 +31,7 @@ public class ProcedureController {
 
         return service.getProcedure(procedureId);
     }
-
+/*
     // UPDATE the procedure by id
     @PostMapping("/procedure/update/")
     public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {

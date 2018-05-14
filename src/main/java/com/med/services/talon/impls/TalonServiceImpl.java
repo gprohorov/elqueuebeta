@@ -1,14 +1,25 @@
 package com.med.services.talon.impls;
 
+import com.med.model.Procedure;
+import com.med.model.Talon;
+import com.med.repository.talon.TalonRepository;
+import com.med.services.doctor.impls.DoctorServiceImpl;
+import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
  */
 @Component
 public class TalonServiceImpl implements ITalonService {
-/*
+
 
     @Autowired
     TalonRepository repository;
@@ -17,12 +28,53 @@ public class TalonServiceImpl implements ITalonService {
     PatientServiceImpl patientService;
 
     @Autowired
-    ProcedureServiceImpl procedureServicee;
+    ProcedureServiceImpl procedureService;
 
     @Autowired
     DoctorServiceImpl doctorService;
 
 
+    @Override
+    public Talon createTalon(String patientId, int procedureId, int days) {
+
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        Talon talon = new Talon(patientId, procedure,days);
+
+        return repository.save(talon);
+    }
+
+    @Override
+    public List<Talon> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Talon getTalon(String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Talon> getTalonsForToday() {
+        return this.getAll().stream()
+                .filter(talon -> talon.getDate().equals(LocalDate.now()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Talon> getTalonsForDate(LocalDate date) {
+        return this.getAll().stream()
+                .filter(talon -> talon.getDate().equals(date))
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+
+/*
 
     @Override
     public Talon createTalon(Talon talon) {
