@@ -1,7 +1,6 @@
 package com.med.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 public class User implements UserDetails {
     @JsonIgnore
     @Id
-    private ObjectId id;
+    private String id;
 
     private ArrayList<Role> authorities;
 
@@ -72,7 +71,7 @@ public class User implements UserDetails {
         this.authorities = roles;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

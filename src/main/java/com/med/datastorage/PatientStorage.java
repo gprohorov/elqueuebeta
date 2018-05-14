@@ -27,10 +27,9 @@ public class PatientStorage {
 
     @PostConstruct
             void init(){
-/*
         repository.deleteAll();
         this.createPatientList();
-        repository.saveAll(patients);*/
+        repository.saveAll(patients);
 
 
     }
@@ -95,6 +94,8 @@ public class PatientStorage {
 
 
 
+
+
 /*        patients.stream().forEach(patient
                 -> patient.setTalons(talonService
                 .getAllTalonsForPatient(patient.getId(), LocalDate.now())));
@@ -103,7 +104,7 @@ public class PatientStorage {
 
        repository.deleteAll();
        repository.saveAll(patients);
-       *//*
+
 
 
 

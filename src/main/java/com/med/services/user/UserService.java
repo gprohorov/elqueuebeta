@@ -4,7 +4,6 @@ import com.med.model.Doctor;
 import com.med.model.User;
 import com.med.repository.user.UserRepository;
 import com.med.services.doctor.impls.DoctorServiceImpl;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +43,7 @@ public class UserService implements UserDetailsService {
                 user.getUsername(), user.getPassword(), getAuthority(user) );
     }
 
-    public Optional<User> findById(ObjectId id) {
+    public Optional<User> findById(String id) {
         return userRepository.findById(id);
     }
 

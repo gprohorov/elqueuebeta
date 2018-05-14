@@ -5,7 +5,6 @@ import com.med.model.Status;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,13 +58,13 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public Patient getPatient(ObjectId id) {
+    public Patient getPatient(String id) {
         Patient patient = repository.findById(id).orElse(null);
         return  patient;
     }
 
     @Override
-    public Patient deletePatient(ObjectId id) {
+    public Patient deletePatient(String id) {
         Patient patient = this.getPatient(id);
         repository.deleteById(id);
         return patient;
@@ -90,7 +89,7 @@ public class PatientServiceImpl implements IPatientService {
         return patients;
     }
 
-    public Patient updateStatus(ObjectId patientId, Status status) {
+    public Patient updateStatus(String patientId, Status status) {
         /*
         Patient patient = this.getPatient(patientId);
         patient.setStatus(status);
@@ -104,7 +103,7 @@ public class PatientServiceImpl implements IPatientService {
 /*
     public Patient setStatus(int patientID, Status status){return null;}
 
-    public Patient updateActivity(ObjectId patientId, Activity activity) {
+    public Patient updateActivity(String patientId, Activity activity) {
         Patient patient = this.getPatient(patientId);
     //    patient.setActive(activity);
         patient.setLastActivity(LocalDateTime.now());
@@ -112,13 +111,13 @@ public class PatientServiceImpl implements IPatientService {
         return patient;
     }
 
-    public Patient updateBalance(ObjectId patientId, int balance) {
+    public Patient updateBalance(String patientId, int balance) {
         Patient patient = this.getPatient(patientId);
     //    patient.setBalance(balance);
         this.savePatient(patient);
         return patient;
     }
-    public Patient updateReckoning(ObjectId patientId, Reckoning reckoning) {
+    public Patient updateReckoning(String patientId, Reckoning reckoning) {
         Patient patient = this.getPatient(patientId);
     //    patient.setReckoning(reckoning);
         this.savePatient(patient);

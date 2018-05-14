@@ -2,7 +2,6 @@ package com.med.controller;
 
 import com.med.model.Patient;
 import com.med.services.patient.Impls.PatientServiceImpl;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +39,7 @@ public class PatientController {
 
     // READ the Patient by id
     @GetMapping("/get/{id}")
-    public Patient showOnePatient(@PathVariable(value = "id") ObjectId patientId) {
+    public Patient showOnePatient(@PathVariable(value = "id") String patientId) {
         return service.getPatient(patientId);
     }
 
@@ -52,7 +51,7 @@ public class PatientController {
 
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
-    public Patient delPatient(@PathVariable(value = "id") ObjectId patientId) {
+    public Patient delPatient(@PathVariable(value = "id") String patientId) {
         return service.deletePatient(patientId);
     }
 
@@ -77,7 +76,7 @@ public class PatientController {
 
     // UPDATE the patient's status
     @GetMapping("/update/status/{id}/{status}")
-    public Patient updatePatientStatus(@PathVariable(value = "id") ObjectId patientId,
+    public Patient updatePatientStatus(@PathVariable(value = "id") String patientId,
                                        @PathVariable(value = "status") Status status) {
         return service.updateStatus(patientId, status);
     }

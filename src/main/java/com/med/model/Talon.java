@@ -1,6 +1,5 @@
 package com.med.model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 public class Talon {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private int patientId;
     private LocalDate date;
@@ -32,7 +31,7 @@ public class Talon {
     }
 
     // full
-    public Talon(ObjectId id, int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+    public Talon(String id, int patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.id = id;
         this.patientId = patientId;
         this.date = date;
@@ -87,11 +86,11 @@ public class Talon {
         this.start = start;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

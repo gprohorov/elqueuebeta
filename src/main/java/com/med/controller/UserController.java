@@ -1,11 +1,11 @@
 package com.med.controller;
 
-import java.util.List;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.med.model.User;
 import com.med.services.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getOne(@PathVariable(value = "id") ObjectId id){
+    public User getOne(@PathVariable(value = "id") String id){
         return service.findById(id).get();
     }
 

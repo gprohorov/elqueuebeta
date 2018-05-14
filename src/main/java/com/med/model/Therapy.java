@@ -1,7 +1,5 @@
 package com.med.model;
 
-import org.bson.types.ObjectId;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +14,7 @@ import java.util.List;
 public class Therapy {
 
     @Id
-    private ObjectId id;
+    private String id;
     private int personId;
     private LocalDateTime start;
     private LocalDateTime finish;
@@ -54,11 +52,11 @@ public class Therapy {
         this.zones = zones;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

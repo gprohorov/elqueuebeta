@@ -1,6 +1,5 @@
 package com.med.model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,7 +15,7 @@ import java.util.List;
 public class Patient {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private Person person;
     @Transient
@@ -34,7 +33,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(ObjectId id, Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity) {
+    public Patient(String id, Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity) {
         this.id = id;
         this.person = person;
         this.therapy = therapy;
@@ -55,11 +54,11 @@ public class Patient {
         this.person = person;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

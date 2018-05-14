@@ -3,7 +3,6 @@ package com.med.services.therapy.impls;
 import com.med.model.Therapy;
 import com.med.repository.therapy.TherapyRepository;
 import com.med.services.therapy.interfaces.ITherapyService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +28,11 @@ public class TherapyServiceImpl implements ITherapyService {
         return repository.save(therapy);
     }
 
-    public Therapy getTherapy(ObjectId id) {
+    public Therapy getTherapy(String id) {
         return repository.findById(id).orElse(null);
     }
 
-    public Therapy deleteTherapy(ObjectId id) {
+    public Therapy deleteTherapy(String id) {
         return null;
     }
 

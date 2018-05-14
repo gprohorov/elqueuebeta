@@ -1,47 +1,37 @@
 package com.med.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by george on 3/31/18.
  */
-@SuppressWarnings("ALL")
+@Document
 public class Card {
+    @Id
     private int id;
     private String name;
     private int days;
-    private Set<Procedure> deniedBefore = new HashSet<>();
-    private Set<Procedure> deniedAfter = new HashSet<>();
-    private Set<Procedure> needBefore = new HashSet<>();
-    private Set<Procedure> needAfter = new HashSet<>();
-    private Set<Procedure> changing = new HashSet<>();
+    private List<Procedure> deniedByDay = new ArrayList<>();
+    private List<Procedure> deniedAfter = new ArrayList<>();
+    private List<Procedure> needAfter = new ArrayList<>();
+
 
     public Card() {
     }
 
-    public Card(int id, String name, int days, Set<Procedure> deniedBefore, Set<Procedure> deniedAfter, Set<Procedure> needBefore, Set<Procedure> needAfter, Set<Procedure> changing) {
-        this.id = id;
-        this.name =name;
-        this.days = days;
-        this.deniedBefore = deniedBefore;
-        this.deniedAfter = deniedAfter;
-        this.needBefore = needBefore;
-        this.needAfter = needAfter;
-        this.changing = changing;
-    }
-
     public Card(int id, String name, int days) {
         this.id = id;
-        this.name= name;
+        this.name = name;
         this.days = days;
-        this.deniedBefore = new HashSet<>();
-        this.deniedAfter = new HashSet<>();
-        this.needBefore = new HashSet<>();
-        this.needAfter = new HashSet<>();
-        this.changing = new HashSet<>();
     }
 
+    public Card(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -65,45 +55,5 @@ public class Card {
 
     public void setDays(int days) {
         this.days = days;
-    }
-
-    public Set<Procedure> getDeniedBefore() {
-        return deniedBefore;
-    }
-
-    public void setDeniedBefore(Set<Procedure> deniedBefore) {
-        this.deniedBefore = deniedBefore;
-    }
-
-    public Set<Procedure> getDeniedAfter() {
-        return deniedAfter;
-    }
-
-    public void setDeniedAfter(Set<Procedure> deniedAfter) {
-        this.deniedAfter = deniedAfter;
-    }
-
-    public Set<Procedure> getNeedBefore() {
-        return needBefore;
-    }
-
-    public void setNeedBefore(Set<Procedure> needBefore) {
-        this.needBefore = needBefore;
-    }
-
-    public Set<Procedure> getNeedAfter() {
-        return needAfter;
-    }
-
-    public void setNeedAfter(Set<Procedure> needAfter) {
-        this.needAfter = needAfter;
-    }
-
-    public Set<Procedure> getChanging() {
-        return changing;
-    }
-
-    public void setChanging(Set<Procedure> changing) {
-        this.changing = changing;
     }
 }
