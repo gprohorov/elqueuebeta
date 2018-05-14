@@ -96,11 +96,7 @@ public class TalonStorage {
                         new Talon(patients.get(20).getId(), ultrasound),
                         new Talon(patients.get(21).getId(), ultrasound),
                         new Talon(patients.get(22).getId(), ultrasound)
-
-
                 )
-
-
         );
         //  System.out.println(talons.get(0).getDate());
      //   repository.deleteAll();
