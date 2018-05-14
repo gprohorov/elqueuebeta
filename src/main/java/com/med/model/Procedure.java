@@ -22,16 +22,14 @@ public class Procedure {
     private int social;
     private boolean zoned;
 
-
-    private int area;
     private Card card;
 
-    private boolean executed = false;
+
 
     public Procedure() {
     }
 
-    public Procedure(int id, String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, int area, Card card, boolean executed) {
+    public Procedure(int id, String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, Card card) {
         this.id = id;
         this.name = name;
         this.cabinet = cabinet;
@@ -42,12 +40,10 @@ public class Procedure {
         this.allInclusive = allInclusive;
         this.social = social;
         this.zoned = zoned;
-        this.area = area;
         this.card = card;
-        this.executed = executed;
     }
 
-    public Procedure(String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, int area, Card card, boolean executed) {
+    public Procedure(String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, Card card) {
         this.name = name;
         this.cabinet = cabinet;
         this.price = price;
@@ -57,9 +53,7 @@ public class Procedure {
         this.allInclusive = allInclusive;
         this.social = social;
         this.zoned = zoned;
-        this.area = area;
         this.card = card;
-        this.executed = executed;
     }
 
     public Procedure(String name, int cabinet, int price, boolean zoned) {
@@ -155,13 +149,7 @@ public class Procedure {
         this.zoned = zoned;
     }
 
-    public int getArea() {
-        return area;
-    }
 
-    public void setArea(int area) {
-        this.area = area;
-    }
 
     public Card getCard() {
         return card;
@@ -171,13 +159,7 @@ public class Procedure {
         this.card = card;
     }
 
-    public boolean isExecuted() {
-        return executed;
-    }
 
-    public void setExecuted(boolean executed) {
-        this.executed = executed;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -245,9 +227,8 @@ public class Procedure {
                 ", allInclusive=" + allInclusive +
                 ", social=" + social +
                 ", zoned=" + zoned +
-                ", area=" + area +
                 ", card=" + card +
-                ", executed=" + executed +
+
                 '}';
     }
 }

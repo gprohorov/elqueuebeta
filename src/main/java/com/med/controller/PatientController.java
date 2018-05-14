@@ -75,10 +75,10 @@ public class PatientController {
     @GetMapping("/create/talon/{patientId}/{procedureId}/{date}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
                              @PathVariable(value = "procedureId") int procedureId,
-                             @PathVariable(value = "date") LocalDate date) {
+                             @PathVariable(value = "date") String date) {
 
 
-        return talonService.createTalon(patientId,procedureId,date);}
+        return talonService.createTalon(patientId,procedureId, LocalDate.parse(date));}
 
 
     // create talon to today for patient on registration
@@ -91,9 +91,14 @@ public class PatientController {
         return talonService.createTalon(patientId,1,0);}
 
 
+/////////////////////////////////////////////////////////////////////////
 
+    // getAll patientss for today together with their's talons
+    @GetMapping("/list/today")
+    public List<Patient> showPatientsForToday() {
 
-
+        return service.getAllForToday();
+    }
 
 /*
 

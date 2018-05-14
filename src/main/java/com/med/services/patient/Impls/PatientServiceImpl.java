@@ -2,12 +2,14 @@ package com.med.services.patient.Impls;
 
 import com.med.model.Patient;
 import com.med.model.Status;
+import com.med.model.Talon;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,6 +91,25 @@ public class PatientServiceImpl implements IPatientService {
         return patients;
     }
 
+    @Override
+    public List<Patient> getAllForToday() {
+
+        List<Patient> patients = new ArrayList<>();
+        List<Talon> talons =talonService.getTalonsForToday();
+
+
+        talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
+                .entrySet().stream().forEach(entry ->
+               {
+                   Patient patient = this.getPatient(entry.getKey());
+                   patient.setTalons(entry.getValue());
+                   patients.add(patient);
+               }
+       );
+        System.out.println(patients.size());
+        return patients;
+    }
+
     public Patient updateStatus(String patientId, Status status) {
         /*
         Patient patient = this.getPatient(patientId);
@@ -97,6 +118,8 @@ public class PatientServiceImpl implements IPatientService {
         */
         return null;
     }
+
+
 
 ////////////////////////////////////////////////////////////////////////
 
