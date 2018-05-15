@@ -14,7 +14,7 @@ export class PatientService {
     private getUrl = config.api_path + '/patient/get/';
     private deleteUrl = config.api_path + '/patient/delete/';
     private saveUrl = config.api_path + '/patient/save/';
-    private toPatientTodayUrl = config.api_path + '/patient/topatient/';
+    private assignProcedureUrl = config.api_path + '/patient/create/talon/';
 
     constructor(private http: HttpClient) { }
 
@@ -42,9 +42,9 @@ export class PatientService {
             .pipe(catchError(this.handleError));
     }
 
-    toPatientToday(id: string) {
+    assignProcedure(patientId: string, procedureId: number, date: string) {
         return this.http
-            .get(this.toPatientTodayUrl + id)
+            .get(this.assignProcedureUrl + [patientId, procedureId, date].join('/'))
             .pipe(catchError(this.handleError));
     }
 

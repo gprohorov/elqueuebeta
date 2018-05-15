@@ -1,8 +1,12 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+
+import { ModalDialogService, SimpleModalComponent } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
 import { AlertService, PatientService, PatientSearchCriteria } from '../_services/index';
+
+import { PatientAssignProcedureModalComponent } from './assign-procedure.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
@@ -15,7 +19,9 @@ export class PatientListComponent implements OnInit {
     rows = [];
 
     constructor(
-        private service: PatientService,
+        private modalService: ModalDialogService,
+        private viewRef: ViewContainerRef,
+        private patientService: PatientService,
         private alertService: AlertService
     ) { }
 
@@ -28,18 +34,21 @@ export class PatientListComponent implements OnInit {
     }
 
     onSorted($event: PatientSearchCriteria) {
-        this.items = this.service.sortBy($event, this.items);
+        this.items = this.patientService.sortBy($event, this.items);
     }
 
     delete(id: string, name: string) {
         if (confirm('Видалити "' + name + '" ?')) {
-            this.service.delete(id).subscribe(() => { this.load(); });
+            this.patientService.delete(id).subscribe(() => { this.load(); });
         }
     }
 
-    toPatientToday(id: string) {
-        this.service.toPatientToday(id).subscribe(() => {
-            this.alertService.success('Операція пройшла успішно');
+    showAssignProcedurePopup(patientId: string) {
+        const patient = this.items.find(x => x.id == patientId);
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + this.getFullName(patient),
+            childComponent: PatientAssignProcedureModalComponent,
+            data: { patientId: patientId, patientName: this.getFullName(patient) }
         });
     }
 
@@ -49,8 +58,8 @@ export class PatientListComponent implements OnInit {
 
     load(search: string = '') {
         this.loading = true;
-        this.sub = this.service.getAll(search).subscribe(data => {
-            this.items = this.service.sortBy({ sortColumn: 'lastName', sortDirection: 'asc' }, data);
+        this.sub = this.patientService.getAll(search).subscribe(data => {
+            this.items = this.patientService.sortBy({ sortColumn: 'lastName', sortDirection: 'asc' }, data);
             this.loading = false;
         });
     }

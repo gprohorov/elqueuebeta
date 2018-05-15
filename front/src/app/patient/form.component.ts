@@ -45,12 +45,12 @@ export class PatientFormComponent {
 
     submit() {
         this.loading = true;
-        
+
         let data = this.model;
         const id = data.id;
         delete data.id;
-        data = {id: id, person: data};
-        
+        data = { id: id, person: data };
+
         this.service.update(data)
             .subscribe(
             data => {

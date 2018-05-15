@@ -1,0 +1,15 @@
+<form name="form" (ngSubmit)="submit(f)" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !date.valid }">
+        <label for="date">Дата</label> <input type="date" class="form-control" name="date"
+            [(ngModel)]="data.date" #date="ngModel" required />
+        <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+        <label for="procedureId">Процедура</label> <select class="form-control" name="procedureId"
+            [(ngModel)]="data.procedureId" #procedureId="ngModel" required>
+            <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
+                {{procedure.name}}</option>
+        </select>
+        <div *ngIf="f.submitted && !procedureId.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+    </div>
+</form>
