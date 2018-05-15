@@ -31,8 +31,8 @@
                         <th>Місто / село</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
-                    <tr [ngStyle]="{'cursor': 'pointer'}">
+                <tbody *ngFor="let item of items; let i = index">
+                    <tr [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]">
                         <td><i
                             [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
                         <td>{{getFullName(item)}}</td>

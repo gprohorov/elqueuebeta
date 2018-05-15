@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
 
 import { Procedure } from '../_models/index';
-import { ProcedureService, PatientService } from '../_services/index';
+import { ProcedureService, PatientService, AlertService } from '../_services/index';
 
 @Component({
     templateUrl: './assign-procedure.modal.component.html',
@@ -15,8 +15,11 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
     sub: Subscription;
 
     @ViewChild('f') myForm;
-    constructor(private procedureService: ProcedureService, private patientService: PatientService) {
-    }
+    constructor(
+        private alertService: AlertService,
+        private procedureService: ProcedureService,
+        private patientService: PatientService
+    ) { }
 
     dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
         options.actionButtons = [{
@@ -29,7 +32,6 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         this.data.date = (new Date()).toISOString().split('T')[0];
         this.sub = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
-            console.log(this.procedures);
             this.data.procedureId = this.procedures[0].id;
         });
     }
@@ -37,11 +39,13 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
     submit(f) {
         f.submitted = true;
         if (!f.form.valid) return false;
-        
-        this.patientService.assignProcedure(this.data.patientId, this.data.procedureId, this.data.date).subscribe(() => {
-            //this.alertService.success('Операція пройшла успішно');
-            return true;
-        });
+
+        this.patientService.assignProcedure(this.data.patientId, this.data.procedureId, this.data.date)
+            .subscribe(() => {
+                this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
+                    + this.procedures.find(x => x.id == this.data.procedureId).name);
+            });
+        return true;
     }
 
     ngOnDestroy() {

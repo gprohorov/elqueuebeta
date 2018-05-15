@@ -48,7 +48,7 @@ export class PatientListComponent implements OnInit {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + this.getFullName(patient),
             childComponent: PatientAssignProcedureModalComponent,
-            data: { patientId: patientId }
+            data: { patientId: patientId, patientName: this.getFullName(patient) }
         });
     }
 
