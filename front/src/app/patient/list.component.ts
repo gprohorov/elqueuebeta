@@ -1,37 +1,36 @@
-﻿import { Component, ViewChild, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Patient, Procedure } from '../_models/index';
-import { AlertService, ProcedureService, PatientService, PatientSearchCriteria } from '../_services/index';
+import { ModalDialogService, SimpleModalComponent } from 'ngx-modal-dialog';
+
+import { Patient } from '../_models/index';
+import { AlertService, PatientService, PatientSearchCriteria } from '../_services/index';
+
+import { PatientAssignProcedureModalComponent } from './assign-procedure.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
 })
 export class PatientListComponent implements OnInit {
-    
+
     sub: Subscription;
-    subProcedures: Subscription;
     items: Patient[];
-    procedures: Procedure[];
     loading = false;
     rows = [];
 
     constructor(
+        private modalService: ModalDialogService,
+        private viewRef: ViewContainerRef,
         private patientService: PatientService,
-        private procedureService: ProcedureService,
         private alertService: AlertService
     ) { }
 
     ngOnInit() {
         this.load();
-        this.subProcedures = this.procedureService.getAll().subscribe(data => {
-            this.procedures = data;
-        });
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-        this.subProcedures.unsubscribe();
     }
 
     onSorted($event: PatientSearchCriteria) {
@@ -46,12 +45,10 @@ export class PatientListComponent implements OnInit {
 
     showAssignProcedurePopup(patientId: string) {
         const patient = this.items.find(x => x.id == patientId);
-        console.log(this.modal);
-    }
-    
-    assignProcedure(patientId: string, procedureId: number, date: string) {
-        this.patientService.assignProcedure(patientId, procedureId, date).subscribe(() => {
-            this.alertService.success('Операція пройшла успішно');
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + this.getFullName(patient),
+            childComponent: PatientAssignProcedureModalComponent,
+            data: { patientId: patientId }
         });
     }
 

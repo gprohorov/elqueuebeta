@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NgxPermissionsModule, NgxPermissionsGuard } from 'ngx-permissions';
 import { NgxMasonryModule } from 'ng5-masonry';
+import { ModalDialogModule } from 'ngx-modal-dialog';
 
 import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
@@ -29,6 +30,7 @@ import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 
+import { PatientAssignProcedureModalComponent } from './patient/assign-procedure.modal.component';
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
 
@@ -130,6 +132,7 @@ const appRoutes: Routes = [
         NgxMasonryModule,
         NgbModule.forRoot(),
         NgxPermissionsModule.forRoot(),
+        ModalDialogModule.forRoot(),
         RouterModule.forRoot(appRoutes)
     ],
     declarations: [
@@ -140,6 +143,7 @@ const appRoutes: Routes = [
         SortableColumnComponent,
         LoginComponent,
         NavComponent,
+        PatientAssignProcedureModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -164,6 +168,7 @@ const appRoutes: Routes = [
         DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
+    entryComponents: [PatientAssignProcedureModalComponent],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
 })
