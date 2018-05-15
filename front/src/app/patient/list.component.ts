@@ -1,7 +1,6 @@
 ﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
-import { ModalDialogService, SimpleModalComponent } from 'ngx-modal-dialog';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
 import { AlertService, PatientService, PatientSearchCriteria } from '../_services/index';

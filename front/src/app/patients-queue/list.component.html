@@ -1,56 +1,69 @@
 ﻿<div class="row">
-  <div class="col">
-    <div class="form-row mb-4">
-      <div class="col-auto">
-        <h3>Список пацієнтів, записаних на сьогодні</h3>
-      </div>
-      <div class="col-auto mr-auto">
-        <img *ngIf="loading" alt="loading" src="/assets/loading.gif">
-      </div>
-    </div>
-    <div class="content table-responsive table-full-width">
-      <table class="table table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th></th>
-            <th [style.min-width.px]="300">ПІБ</th>
-            <th>Статус</th>
-            <th>Баланс</th>
-            <th>Активність</th>
-            <th>Прогрес</th>
-            <th>Час очікування</th>
-            <th>Початок</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let item of items; let i = index">
-          <tr (click)="rows[i]=!rows[i]">
-            <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-            <td>{{getFullName(item.person)}}</td>
-            <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
-            <td>{{item.balance}}</td>
-            <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
-            <td>{{getProgress(item.proceduresForToday)}}</td>
-            <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span> хв.</td>
-            <td>{{item.startActivity | date: 'HH:mm'}}</td>
-          </tr>
-          <tr [hidden]="!rows[i]">
-            <td colspan="100">
-              <div class="card">
-                <div class="card-header">
-                  <div class="row">
-                    <h4 class="col-auto mr-auto">Призначені процедури</h4>
-                    <div class="col-auto">
-                      <button class="btn btn-danger" (click)="delete(item.id, getFullName(item.person))">Видалити з черги</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngFor="let proc of item.proceduresForToday" title="{{!proc.executed ? 'не пройдено' : 'пройдено'}}">
-                        <span class="fa fa-{{!proc.executed ? 'minus text-danger' : 'check text-success'}}"></span> {{proc.name}}
-                      </p>
-                    </div>
+    <div class="col">
+        <div class="form-row mb-4">
+            <div class="col-auto">
+                <h3>Список пацієнтів, записаних на сьогодні</h3>
+            </div>
+            <div class="col-auto mr-auto">
+                <button class="fa fa-refresh text-success btn btn-light" (click)="load()"></button>
+                <img *ngIf="loading" alt="loading" src="/assets/loading.gif">
+            </div>
+        </div>
+        <div class="content table-responsive table-full-width">
+            <table class="table table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th [style.min-width.px]="300">ПІБ</th>
+                        <!-- 
+                        <th>Статус</th>
+                        <th>Баланс</th>
+                        <th>Активність</th>
+                        -->
+                        <th>Прогрес</th>
+                        <th>Час очікування</th>
+                        <th>Початок</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of items; let i = index">
+                    <tr (click)="rows[i]=!rows[i]">
+                        <td><i
+                            [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
+                        <td>{{getFullName(item)}}</td>
+                        <!-- 
+                        <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
+                        <td>{{item.balance}}</td>
+                        <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
+                        -->
+                        <td>{{getProgress(item.talons)}}</td>
+                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span>
+                            хв.</td>
+                        <td>{{item.startActivity | date: 'HH:mm'}}</td>
+                    </tr>
+                    <tr [hidden]="!rows[i]">
+                        <td colspan="100">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h4 class="col-auto mr-auto">Призначені процедури</h4>
+                                        <div class="col-auto">
+                                            <button class="btn btn-success fa fa-plus"
+                                                (click)="showAssignProcedurePopup(item)">
+                                                Призначити процедуру</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p *ngFor="let talon of item.talons"
+                                                title="{{Activity[talon.activity].text}}">
+                                                <span
+                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}} {{Activity[talon.activity].cssClass}}">
+                                                    {{talon.procedure.name}} </span>
+                                            </p>
+                                        </div>
+                                        <!-- 
                     <div class="col text-right">
                       <p>
                         <b class="col-md-5">Встановити статус:</b>
@@ -73,13 +86,14 @@
                         <input type="number" [(ngModel)]="item.balance" (change)="updateBalance(item.id, item.balance)" [style.width.px]="120"/>
                       </p>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                     -->
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>

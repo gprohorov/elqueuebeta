@@ -1,9 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
 import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
+
+import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
@@ -21,6 +25,8 @@ export class PatientsQueueListComponent implements OnInit {
     ActivityArr = ActivityArr;
 
     constructor(
+        private modalService: ModalDialogService,
+        private viewRef: ViewContainerRef,
         private service: PatientsQueueService,
         private alertService: AlertService
     ) { }
@@ -46,11 +52,20 @@ export class PatientsQueueListComponent implements OnInit {
     getProgress(list: any[]) {
         let executed = 0;
         list.forEach(function (item) {
-            if (item.executed) executed++;
+            if (item.activity == 'EXECUTED') executed++;
         });
         return executed + '/' + list.length;
     }
 
+    showAssignProcedurePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + this.getFullName(patient),
+            childComponent: PatientAssignProcedureModalComponent,
+            data: { patientId: patient.id, patientName: this.getFullName(patient) }
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
+    
     updateActivity(id: string, value: string) {
         this.subTemp = this.service.updateActivity(id, value).subscribe(data => { });
     }
@@ -67,7 +82,7 @@ export class PatientsQueueListComponent implements OnInit {
         return 'badge badge-pill badge-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
-    load(search: string = '') {
+    load(search: any = null) {
         this.loading = true;
         this.sub = this.service.getAll().subscribe(data => {
             this.items = data.sort(function (a, b) {

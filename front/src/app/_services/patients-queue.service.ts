@@ -8,7 +8,7 @@ import { config } from '../../config';
 @Injectable()
 export class PatientsQueueService {
     // Define the routes we are going to interact with
-    private listUrl = config.api_path + '/patient/list/';
+    private listUrl = config.api_path + '/patient/list/today';
     private tailsUrl = config.api_path + '/tail/list';
     private listByProcedureUrl = config.api_path + '/patient/list/procedure/';
     private deleteUrl = config.api_path + '/patient/delete/';

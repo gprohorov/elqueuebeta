@@ -25,7 +25,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         options.actionButtons = [{
             text: 'Призначити',
             onAction: () => {
-                return this.submit(this.myForm);
+                return this.submit(this.myForm, options);
             }
         }, { text: 'Відміна', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
@@ -36,7 +36,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         });
     }
 
-    submit(f) {
+    submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
 
@@ -44,8 +44,8 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
             .subscribe(() => {
                 this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
                     + this.procedures.find(x => x.id == this.data.procedureId).name);
+                options.closeDialogSubject.next();
             });
-        return true;
     }
 
     ngOnDestroy() {
