@@ -34,6 +34,7 @@ public class ProcedureServiceImpl implements IProcedureService {
             } else {
                 procedure.setId(repository.findAll()
                         .stream().mapToInt(Procedure::getId).max().getAsInt());
+                //tailService.
             }
         }
         return repository.save(procedure);
