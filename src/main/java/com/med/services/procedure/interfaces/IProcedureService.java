@@ -12,5 +12,7 @@ public interface IProcedureService {
     List<Procedure> getAll();
     Procedure saveProcedure(Procedure procedure);
     Procedure getProcedure(int procedureId);
+    void deleteProcedure(int procedureId);
+    Procedure updateProcedure(Procedure procedure);
 
 }

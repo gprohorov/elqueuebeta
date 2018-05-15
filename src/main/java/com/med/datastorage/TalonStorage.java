@@ -99,8 +99,8 @@ public class TalonStorage {
                 )
         );
         //  System.out.println(talons.get(0).getDate());
-     //   repository.deleteAll();
-     //    repository.saveAll(talons);
+   //   repository.deleteAll();
+    //   repository.saveAll(talons);
         // System.out.println(repository.findAll().get(1).getDate());
 /*
     }

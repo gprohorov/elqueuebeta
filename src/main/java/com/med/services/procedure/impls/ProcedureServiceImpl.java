@@ -3,6 +3,7 @@ package com.med.services.procedure.impls;
 import com.med.model.Procedure;
 import com.med.repository.procedure.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
+import com.med.services.tail.Impls.TailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @Autowired
     ProcedureRepository repository;
+
+    @Autowired
+    TailServiceImpl tailService;
 
     @Override
     public List<Procedure> getAll() {
@@ -38,6 +42,15 @@ public class ProcedureServiceImpl implements IProcedureService {
     @Override
     public Procedure getProcedure(int procedureId) {
         return repository.findById(procedureId).orElse(null);
+    }
+    @Override
+    public void deleteProcedure(int procedureId) {
+        repository.deleteById(procedureId);
+    }
+
+    @Override
+    public Procedure updateProcedure(Procedure procedure) {
+        return repository.save(procedure);
     }
 
 

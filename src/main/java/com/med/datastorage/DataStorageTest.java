@@ -1,6 +1,12 @@
 package com.med.datastorage;
 
+import com.med.model.Talon;
+import com.med.repository.talon.TalonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -9,29 +15,30 @@ import org.springframework.context.annotation.Configuration;
 public class DataStorageTest {
 
 
-/*
 
     @Autowired
-    PatientRepository patientRepository;
-
-
-
-	@Autowired
-    DoctorRepository doctorRepository;
-
-	@Autowired
-    ProcedureRepository procedureRepository;
-	
-	@Autowired
-    PersonRepository personRepository;
-
-	@Autowired
     TalonRepository talonRepository;
 
+    /* @Autowired
+     PatientRepository patientRepository;
 
-    @PostConstruct
-           void init(){
-  *//*        assigned.put(massage, 10);
+
+
+     @Autowired
+     DoctorRepository doctorRepository;
+
+     @Autowired
+     ProcedureRepository procedureRepository;
+
+     @Autowired
+     PersonRepository personRepository;
+
+
+ /*
+
+     @PostConstruct
+            void init(){
+   *//*        assigned.put(massage, 10);
          assigned.put(pulling, 10);
        // usualTherapy.setProgress(assigned);
         therapies.add(primary);
@@ -462,24 +469,10 @@ public class DataStorageTest {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
-
+*/
 
     public void resetPatientsTable() {
-        List<Patient> patients = patientRepository.findAll();
-        patients.stream().forEach(patient
-                -> patient.setLastActivity(LocalDateTime.now().minusMinutes((patient.getId()*3))));
 
-        patients.stream().forEach(patient
-                -> patient.setStartActivity(LocalDateTime.now().minusMinutes(patient.getId()*10)));
-
-        patients.stream().forEach(patient
-                -> patient.setActive(Activity.ACTIVE));
-
-        patients.get(0).setLastActivity(LocalDateTime.now().minusMinutes(5));
-        patients.get(1).setLastActivity(LocalDateTime.now().minusMinutes(15));
-
-        patientRepository.saveAll(patients);
-        System.out.println(" patient table updated");
 
         List<Talon> talons = talonRepository.findAll();
         talons.stream().forEach(talon -> talon.setDate(LocalDate.now()));
@@ -487,5 +480,5 @@ public class DataStorageTest {
         talonRepository.saveAll(talons);
         System.out.println(" talon table updated");
     }
-*/
+
 }

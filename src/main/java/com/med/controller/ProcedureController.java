@@ -31,6 +31,15 @@ public class ProcedureController {
 
         return service.getProcedure(procedureId);
     }
+
+    // DELETE the procedure by id
+    @PostMapping("/procedure/delete/{id}")
+    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
+
+        return service.deleteProcedure(procedureId);
+
+    }
+
 /*
     // UPDATE the procedure by id
     @PostMapping("/procedure/update/")
@@ -41,13 +50,6 @@ public class ProcedureController {
 
     }
 
-    // DELETE the procedure by id
-    @PostMapping("/procedure/delete/{id}")
-    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
-
-        return service.deleteProcedure(procedureId);
-
-    }
 
 */
 
