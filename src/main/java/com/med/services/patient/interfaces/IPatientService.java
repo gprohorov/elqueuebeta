@@ -14,4 +14,6 @@ public interface IPatientService {
  Patient getPatient(String id);
  Patient deletePatient(String id);
  List<Patient> getAll(String lastName);
+ List<Patient> getAllForToday();
+
 }

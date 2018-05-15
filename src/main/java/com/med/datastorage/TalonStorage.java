@@ -72,7 +72,7 @@ public class TalonStorage {
                         new Talon(patients.get(15).getId(), diagnostics),
 
 
-                        // manual therapy
+                        // massage therapy
                         new Talon(patients.get(13).getId(), massage),
                         new Talon(patients.get(14).getId(), massage),
                         new Talon(patients.get(15).getId(), massage),
@@ -85,7 +85,7 @@ public class TalonStorage {
                         new Talon(patients.get(18).getId(), pulling),
 
 
-                        //// tail to massage
+                        //// tail to manual
                         new Talon(patients.get(17).getId(),manual),
                         new Talon(patients.get(18).getId(), manual),
                         new Talon(patients.get(19).getId(), manual),
@@ -96,15 +96,11 @@ public class TalonStorage {
                         new Talon(patients.get(20).getId(), ultrasound),
                         new Talon(patients.get(21).getId(), ultrasound),
                         new Talon(patients.get(22).getId(), ultrasound)
-
-
                 )
-
-
         );
         //  System.out.println(talons.get(0).getDate());
-        //  repository.deleteAll();
-        //  repository.saveAll(talons);
+     //   repository.deleteAll();
+     //    repository.saveAll(talons);
         // System.out.println(repository.findAll().get(1).getDate());
 /*
     }
