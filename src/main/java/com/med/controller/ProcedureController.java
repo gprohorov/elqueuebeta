@@ -36,7 +36,8 @@ public class ProcedureController {
     @PostMapping("/procedure/delete/{id}")
     public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
 
-        return service.deleteProcedure(procedureId);
+        return null;
+                //service.deleteProcedure(procedureId);
 
     }
 
