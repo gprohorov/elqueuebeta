@@ -1,5 +1,6 @@
 package com.med.controller;
 
+import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -99,6 +100,29 @@ public class PatientController {
 
         return service.getAllForToday();
     }
+
+
+
+    @GetMapping("/talon/set/activity/{talonId}/{activity}")
+    public Talon talonSetActivity(
+            @PathVariable(value = "talonId") String talonId,
+            @PathVariable(value = "activity") Activity activity)
+    {
+
+        return  talonService.setActivity(talonId, activity);
+    }
+
+
+
+
+    @GetMapping("/talon/setall/activity/{patientId}/{activity}")
+    public List<Talon> setAllActivity(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "activity") Activity activity){
+
+        return  talonService.setAllActivity(patientId, activity);
+    }
+
 
 /*
 

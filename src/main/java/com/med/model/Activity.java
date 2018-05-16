@@ -9,5 +9,6 @@ public enum Activity {
     ,ON_PROCEDURE
     , TEMPORARY_NA
     , EXECUTED,
-    CANCELED
+    CANCELED,
+    EXPIRED
 }

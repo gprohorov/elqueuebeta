@@ -1,5 +1,6 @@
 package com.med.services.talon.interfaces;
 
+import com.med.model.Activity;
 import com.med.model.Talon;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public interface ITalonService {
     Talon getTalon(String id);
     List<Talon>  getTalonsForToday();
     List<Talon>  getTalonsForDate(LocalDate date);
-
+    Talon setActivity(String talonId, Activity activity);
 /*
 
     Talon createTalon(Talon talon);

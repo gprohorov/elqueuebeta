@@ -1,5 +1,6 @@
 package com.med.services.talon.impls;
 
+import com.med.model.Activity;
 import com.med.model.Procedure;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +77,38 @@ public class TalonServiceImpl implements ITalonService {
                 .filter(talon -> talon.getDate().equals(date))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Talon setActivity(String talonId, Activity activity) {
+        List<Activity> activities = new ArrayList<>(
+                Arrays.asList(Activity.EXECUTED, Activity.EXPIRED, Activity.CANCELED)
+        );
+
+        Talon talon = this.getTalon(talonId);
+        if(!activities.contains(talon.getActivity())){
+            talon.setActivity(activity);
+        }
+
+        return talon;
+    }
+
+
+    public List<Talon> setAllActivity(String patientId, Activity activity) {
+
+        List<Activity> activities = new ArrayList<>(
+                Arrays.asList(Activity.ACTIVE, Activity.NON_ACTIVE, Activity.TEMPORARY_NA)
+        );
+
+        List<Talon> talons = this.getTalonsForToday().stream()
+                .filter(talon -> talon.getPatientId().equals(patientId))
+                .filter(talon -> !activities.contains(talon.getActivity()))
+                .collect(Collectors.toList());
+
+        talons.stream().forEach(talon -> talon.setActivity(activity));
+
+        return talons;
+    }
+
 
 
 
