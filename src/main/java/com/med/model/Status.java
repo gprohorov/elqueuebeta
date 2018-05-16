@@ -5,7 +5,7 @@ package com.med.model;
  */
 public enum Status {
 
-    FOREIGNER(7),
+    FOREIGN(7),
     VIP(6),
     BUSINESS(5),
     ALL_INCLUSIVE(4),

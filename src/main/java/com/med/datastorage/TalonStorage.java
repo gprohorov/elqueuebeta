@@ -7,7 +7,6 @@ import com.med.repository.patient.PatientRepository;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
 /**
  * Created by george on 07.05.18.
  */
-@Component
+//@Component
 public class TalonStorage {
 
 

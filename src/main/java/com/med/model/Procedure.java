@@ -14,59 +14,48 @@ public class Procedure {
     private int id;
     private String name;
     private int cabinet;
-    private int price;
-    private int foreigner;
-    private int vip;
-    private int business;
-    private int allInclusive;
-    private int social;
+    private int FOREIGN;
+    private int VIP;
+    private int BUSINESS;
+    private int ALL_INCLUSIVE;
+    private int SOCIAL;
     private boolean zoned;
-
     private Card card;
 
-
-
-    public Procedure() {
-    }
-
-    public Procedure(int id, String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, Card card) {
+    public Procedure(int id, String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
         this.id = id;
         this.name = name;
         this.cabinet = cabinet;
-        this.price = price;
-        this.foreigner = foreigner;
-        this.vip = vip;
-        this.business = business;
-        this.allInclusive = allInclusive;
-        this.social = social;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
         this.zoned = zoned;
         this.card = card;
     }
 
-    public Procedure(String name, int cabinet, int price, int foreigner, int vip, int business, int allInclusive, int social, boolean zoned, Card card) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
         this.name = name;
         this.cabinet = cabinet;
-        this.price = price;
-        this.foreigner = foreigner;
-        this.vip = vip;
-        this.business = business;
-        this.allInclusive = allInclusive;
-        this.social = social;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
         this.zoned = zoned;
         this.card = card;
     }
 
-    public Procedure(String name, int cabinet, int price, boolean zoned) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned) {
         this.name = name;
         this.cabinet = cabinet;
-        this.price = price;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
         this.zoned = zoned;
-    }
-
-    public Procedure(int id, String name, int price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
     }
 
     public int getId() {
@@ -93,52 +82,44 @@ public class Procedure {
         this.cabinet = cabinet;
     }
 
-    public int getPrice() {
-        return price;
+    public int getFOREIGN() {
+        return FOREIGN;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setFOREIGN(int FOREIGN) {
+        this.FOREIGN = FOREIGN;
     }
 
-    public int getForeigner() {
-        return foreigner;
+    public int getVIP() {
+        return VIP;
     }
 
-    public void setForeigner(int foreigner) {
-        this.foreigner = foreigner;
+    public void setVIP(int VIP) {
+        this.VIP = VIP;
     }
 
-    public int getVip() {
-        return vip;
+    public int getBUSINESS() {
+        return BUSINESS;
     }
 
-    public void setVip(int vip) {
-        this.vip = vip;
+    public void setBUSINESS(int BUSINESS) {
+        this.BUSINESS = BUSINESS;
     }
 
-    public int getBusiness() {
-        return business;
+    public int getALL_INCLUSIVE() {
+        return ALL_INCLUSIVE;
     }
 
-    public void setBusiness(int business) {
-        this.business = business;
+    public void setALL_INCLUSIVE(int ALL_INCLUSIVE) {
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
     }
 
-    public int getAllInclusive() {
-        return allInclusive;
+    public int getSOCIAL() {
+        return SOCIAL;
     }
 
-    public void setAllInclusive(int allInclusive) {
-        this.allInclusive = allInclusive;
-    }
-
-    public int getSocial() {
-        return social;
-    }
-
-    public void setSocial(int social) {
-        this.social = social;
+    public void setSOCIAL(int SOCIAL) {
+        this.SOCIAL = SOCIAL;
     }
 
     public boolean isZoned() {
@@ -149,8 +130,6 @@ public class Procedure {
         this.zoned = zoned;
     }
 
-
-
     public Card getCard() {
         return card;
     }
@@ -158,8 +137,6 @@ public class Procedure {
     public void setCard(Card card) {
         this.card = card;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -214,21 +191,4 @@ public class Procedure {
 
 
 
-    @Override
-    public String toString() {
-        return "Procedure{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", cabinet=" + cabinet +
-                ", price=" + price +
-                ", foreigner=" + foreigner +
-                ", vip=" + vip +
-                ", business=" + business +
-                ", allInclusive=" + allInclusive +
-                ", social=" + social +
-                ", zoned=" + zoned +
-                ", card=" + card +
-
-                '}';
-    }
 }
