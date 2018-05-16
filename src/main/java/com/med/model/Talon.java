@@ -26,7 +26,7 @@ public class Talon {
     private int sum;
     /////////
     private Activity activity= Activity.NON_ACTIVE;
-    private Status status = Status.SOCIAL;
+
 
     public Activity getActivity() {
         return activity;
@@ -36,13 +36,7 @@ public class Talon {
         this.activity = activity;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public Talon() {
     }
