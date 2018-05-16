@@ -15,8 +15,10 @@
       <table class="table table-sm">
         <thead class="thead-light">
           <tr>
-            <th></th> <th>Назва</th> <th>Кабінет</th> <th>Ціна:</th> <th>Базова</th>
-            <th *ngFor="let status of StatusesArr"><span [class]="Statuses[status].cssClass">{{Statuses[status].text}}</span></th> 
+            <th></th>
+            <th>Назва</th>
+            <th>Кабінет</th>
+            <th *ngFor="let status of Statuses">{{Status[status].text}}</th>
             <th></th>
           </tr>
         </thead>
@@ -25,13 +27,7 @@
             <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
             <td>{{item.name}}</td>
             <td>{{item.cabinet}}</td>
-            <td></td>
-            <td>{{item.price}}</td>
-            <td>{{item.foreigner}}</td>
-            <td>{{item.vip}}</td>
-            <td>{{item.business}}</td>
-            <td>{{item.allInclusive}}</td>
-            <td>{{item.social}}</td>
+            <td *ngFor="let status of Statuses">{{item[status]}}</td>
             <td align="right">
               <button class="btn btn-primary btn-sm" [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
               <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.name)">Видалити</button>

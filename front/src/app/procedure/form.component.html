@@ -11,18 +11,10 @@
         <label for="cabinet">Кабінет</label>
         <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
       </div>
-      <label>Ціни</label>
+      <label>Ціни для статуса:</label>
       <div class="row form-group">
         <div class="col-md-3">
-          Базова
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="price" [(ngModel)]="model.price" #foreigner="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.FOREIGNER.cssClass">{{Statuses.FOREIGNER.text}}</span>
+          <span [class]="Status.FOREIGNER.cssClass">{{Status.FOREIGNER.text}}</span>
         </div>
         <div class="col-md-3">
           <input type="number" class="form-control" name="foreigner" [(ngModel)]="model.foreigner" #foreigner="ngModel" />
@@ -30,7 +22,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-3">
-          <span [class]="Statuses.VIP.cssClass">{{Statuses.VIP.text}}</span>
+          <span [class]="Status.VIP.cssClass">{{Status.VIP.text}}</span>
         </div>
         <div class="col-md-3">
           <input type="number" class="form-control" name="vip" [(ngModel)]="model.vip" #vip="ngModel" />
@@ -38,7 +30,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-3">
-          <span [class]="Statuses.BUSINESS.cssClass">{{Statuses.BUSINESS.text}}</span>
+          <span [class]="Status.BUSINESS.cssClass">{{Status.BUSINESS.text}}</span>
         </div>
         <div class="col-md-3">
           <input type="number" class="form-control" name="business" [(ngModel)]="model.business" #business="ngModel" />
@@ -46,7 +38,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-3">
-          <span [class]="Statuses.ALL_INCLUSIVE.cssClass">{{Statuses.ALL_INCLUSIVE.text}}</span>
+          <span [class]="Status.ALL_INCLUSIVE.cssClass">{{Status.ALL_INCLUSIVE.text}}</span>
         </div>
         <div class="col-md-3">
           <input type="number" class="form-control" name="allInclusive" [(ngModel)]="model.allInclusive" #allInclusive="ngModel" />
@@ -54,7 +46,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-3">
-          <span [class]="Statuses.SOCIAL.cssClass">{{Statuses.SOCIAL.text}}</span>
+          <span [class]="Status.SOCIAL.cssClass">{{Status.SOCIAL.text}}</span>
         </div>
         <div class="col-md-3">
           <input type="number" class="form-control" name="social" [(ngModel)]="model.social" #social="ngModel" />

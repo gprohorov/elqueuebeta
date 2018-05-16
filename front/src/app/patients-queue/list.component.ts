@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
-import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
+import { Status, Activity } from '../_storage/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
 
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
@@ -19,10 +19,10 @@ export class PatientsQueueListComponent implements OnInit {
     items: any[] = [];
     loading = false;
     rows = [];
-    Statuses = Statuses;
-    StatusesArr = StatusesArr;
+    Status = Status;
+    Statuses = Object.keys(Status);
     Activity = Activity;
-    ActivityArr = ActivityArr;
+    Activities = Object.keys(Activity);
 
     constructor(
         private modalService: ModalDialogService,
@@ -51,11 +51,12 @@ export class PatientsQueueListComponent implements OnInit {
     }
 
     getProgress(list: any[]) {
-        let executed = 0;
+        let executed = 0, total = 0;
         list.forEach(function (item) {
             if (item.activity == 'EXECUTED') executed++;
+            if (item.activity != 'CANCELED') total++;
         });
-        return executed + '/' + list.length;
+        return executed + '/' + total;
     }
 
     showAssignProcedurePopup(patient: any) {

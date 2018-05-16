@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
 import { Patient } from '../_models/index';
-import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
+import { Status, Activity } from '../_storage/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
 
 @Component({
@@ -15,10 +15,8 @@ export class ProceduresQueueListComponent implements OnInit {
     sub: Subscription;
     items: any[] = [];
     loading = false;
-    Statuses = Statuses;
-    StatusesArr = StatusesArr;
     Activity = Activity;
-    ActivityArr = ActivityArr;
+    Status = Status;
     updateMasonryLayout = false;
 
     public myOptions: NgxMasonryOptions = {

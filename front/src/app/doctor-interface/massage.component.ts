@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Patient } from '../_models/index';
 import { PatientsQueueService, AlertService } from '../_services/index';
-import { Statuses, Activity } from '../_storage';
+import { Status, Activity } from '../_storage';
 
 @Component({
     templateUrl: './massage.component.html'

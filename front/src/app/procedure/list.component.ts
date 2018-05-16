@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
 import { ProcedureService, AlertService } from '../_services/index';
-import { Statuses, StatusesArr } from '../_storage/index';
+import { Status } from '../_storage/index';
 
 @Component({
   moduleId: module.id,
@@ -15,8 +15,8 @@ export class ProcedureListComponent implements OnInit {
   items: Procedure[] = [];
   loading = false;
   rows = [];
-  Statuses = Statuses;
-  StatusesArr = StatusesArr;
+  Status = Status;
+  Statuses = Object.keys(Status);
 
   constructor(private service: ProcedureService, private alertService: AlertService) {
   }

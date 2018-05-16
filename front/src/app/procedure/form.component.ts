@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
 import { ProcedureService, AlertService } from '../_services/index';
-import { Statuses, StatusesArr } from '../_storage/index';
+import { Status } from '../_storage/index';
 
 @Component({
     moduleId: module.id,
@@ -15,8 +15,7 @@ export class ProcedureFormComponent {
     model: any = {};
     sub: Subscription;
     loading = false;
-    Statuses = Statuses;
-    StatusesArr = StatusesArr;
+    Status = Status;
 
     constructor(
         private route: ActivatedRoute,
