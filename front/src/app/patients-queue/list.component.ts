@@ -66,16 +66,28 @@ export class PatientsQueueListComponent implements OnInit {
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }
-    
+
     updateActivity(id: string, value: string) {
-        this.subTemp = this.service.updateActivity(id, value).subscribe(data => { });
+        if (value === 'CANCELED') {
+          if (confirm('Встановити процедурі "' + Activity[value].text + '" ?')) {
+            this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
+              this.load();
+            });
+          }
+        } else {
+          this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
+            this.load();
+          });
+        }
+
     }
-    
+
     updateActivityAll(id: string, value: string) {
-        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) { 
-            
-        } 
-        this.subTemp = this.service.updateActivityAll(id, value).subscribe(data => { });
+        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
+          this.subTemp = this.service.updateActivityAll(id, value).subscribe(data => {
+            this.load();
+          });
+        }
     }
 
     updateStatus(id: string, value: string) {

@@ -61,6 +61,7 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public Talon getTalon(String id) {
+
         return repository.findById(id).orElse(null);
     }
 
@@ -81,32 +82,33 @@ public class TalonServiceImpl implements ITalonService {
     @Override
     public Talon setActivity(String talonId, Activity activity) {
         List<Activity> activities = new ArrayList<>(
-                Arrays.asList(Activity.EXECUTED, Activity.EXPIRED, Activity.CANCELED)
+                Arrays.asList(Activity.EXECUTED, Activity.EXPIRED, Activity.CANCELED, Activity.ON_PROCEDURE)
         );
-
         Talon talon = this.getTalon(talonId);
-        if(!activities.contains(talon.getActivity())){
+        if(talon != null && !activities.contains(talon.getActivity())){
             talon.setActivity(activity);
         }
-
-        return talon;
+       // System.out.println(talon.getActivity());
+        return repository.save(talon);
     }
 
 
     public List<Talon> setAllActivity(String patientId, Activity activity) {
+/*
 
         List<Activity> activities = new ArrayList<>(
-                Arrays.asList(Activity.ACTIVE, Activity.NON_ACTIVE, Activity.TEMPORARY_NA)
+                Arrays.asList(Activity.E, Activity.NON_ACTIVE, Activity.TEMPORARY_NA)
         );
+*/
 
         List<Talon> talons = this.getTalonsForToday().stream()
                 .filter(talon -> talon.getPatientId().equals(patientId))
-                .filter(talon -> !activities.contains(talon.getActivity()))
+             //   .filter(talon -> !activities.contains(talon.getActivity()))
                 .collect(Collectors.toList());
 
-        talons.stream().forEach(talon -> talon.setActivity(activity));
+        talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
-        return talons;
+        return null;
     }
 
 

@@ -15,7 +15,7 @@
                     <tr>
                         <th></th>
                         <th [style.min-width.px]="300">ПІБ</th>
-                        <!-- 
+                        <!--
                         <th>Статус</th>
                         <th>Баланс</th>
                         <th>Активність</th>
@@ -30,7 +30,7 @@
                         <td><i
                             [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                         <td>{{getFullName(item)}}</td>
-                        <!-- 
+                        <!--
                         <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
                         <td>{{item.balance}}</td>
                         <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
@@ -72,7 +72,7 @@
                                             </button>
                                             <button
                                                 title='Встановити всім процедурам "{{Activity.CANCELED.text}}"'
-                                                class="btn btn-warning text-white"
+                                                class="btn btn-secondary text-white"
                                                 (click)="updateActivityAll(item.id, 'CANCELED')"> <i
                                                 class="fa fa-ban"></i>
                                             </button>
@@ -85,38 +85,38 @@
                                             <p
                                                 title="{{Activity[talon.activity].text}}">
                                                 <span
-                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}} 
+                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}}
                                                             btn btn-{{Activity[talon.activity].cssClass}}">
                                                     {{talon.procedure.name}} </span>
                                             </p>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto" *ngIf="['EXECUTED', 'CANCELED', 'ON_PROCEDURE'].indexOf(talon.activity) < 0">
                                             <button
                                                 title='Встановити "{{Activity.ACTIVE.text}}"'
                                                 class="btn btn-sm btn-success text-white"
-                                                (click)="updateActivity(item.id, 'ACTIVE')"> <i
+                                                (click)="updateActivity(talon.id, 'ACTIVE')"> <i
                                                 class="fa fa-play"></i>
                                             </button>
                                             <button
                                                 title='Встановити "{{Activity.TEMPORARY_NA.text}}"'
                                                 class="btn btn-sm btn-primary text-white"
-                                                (click)="updateActivity(item.id, 'TEMPORARY_NA')"> <i
+                                                (click)="updateActivity(talon.id, 'TEMPORARY_NA')"> <i
                                                 class="fa fa-pause"></i>
                                             </button>
                                             <button
                                                 title='Встановити "{{Activity.NON_ACTIVE.text}}"'
                                                 class="btn btn-sm btn-danger text-white"
-                                                (click)="updateActivity(item.id, 'NON_ACTIVE')"> <i
+                                                (click)="updateActivity(talon.id, 'NON_ACTIVE')"> <i
                                                 class="fa fa-stop"></i>
                                             </button>
                                             <button
                                                 title='Встановити "{{Activity.CANCELED.text}}"'
-                                                class="btn btn-sm btn-warning text-white"
-                                                (click)="updateActivity(item.id, 'CANCELED')"> <i
+                                                class="btn btn-sm btn-secondary text-white"
+                                                (click)="updateActivity(talon.id, 'CANCELED')"> <i
                                                 class="fa fa-ban"></i>
                                             </button>
                                         </div>
-                                        <!-- 
+                                        <!--
                     <div class="col text-right">
                       <p>
                         <b class="col-md-5">Встановити статус:</b>
