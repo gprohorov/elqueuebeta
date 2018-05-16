@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.Activity;
 import com.med.model.Patient;
+import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -110,6 +111,16 @@ public class PatientController {
     {
 
         return  talonService.setActivity(talonId, activity);
+    }
+
+
+    @GetMapping("/set/status/{patientId}/{status}")
+    public Patient patientSetStatus(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "status") Status status)
+    {
+
+        return  service.setStatus(patientId, status);
     }
 
 

@@ -42,21 +42,6 @@ public class PatientServiceImpl implements IPatientService {
     @Override
     public Patient savePatient(Patient patient) {
         return repository.save(patient);
-        /*
-        Patient patient = new Patient(person);
-        if (!this.getAll().contains(patient)) {
-            patient.setId(person.getId());
-            patient.setLastActivity(LocalDateTime.now());
-            patient.setStartActivity(LocalDateTime.now());
-            patient.setStatus(Status.SOCIAL);
-            patient.setActive(Activity.ACTIVE);
-            Procedure registration = procedureService.getProcedure(1);
-            registration.setExecuted(false);
-            patient.setOneProcedureForTodayToExecute(registration);
-            return this.createPatient(patient);
-        }
-        else return null;
-        */
     }
 
     @Override
@@ -106,17 +91,15 @@ public class PatientServiceImpl implements IPatientService {
                    patients.add(patient);
                }
        );
-        System.out.println(patients.size());
         return patients;
     }
 
-    public Patient updateStatus(String patientId, Status status) {
-        /*
+    public Patient setStatus(String patientId, Status status) {
+
         Patient patient = this.getPatient(patientId);
         patient.setStatus(status);
         return repository.save(patient);
-        */
-        return null;
+
     }
 
 
