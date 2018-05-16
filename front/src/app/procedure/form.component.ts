@@ -48,7 +48,7 @@ export class ProcedureFormComponent {
 
     submit() {
         this.loading = true;
-          this.service.update(this.model)
+          this.service.save(this.model)
               .subscribe(
                   data => {
                       this.alertService.success('Процедуру збережено.', true);

@@ -32,6 +32,14 @@ public class ProcedureController {
         return service.getProcedure(procedureId);
     }
 
+    // CREATE the Procedure
+    @PostMapping("/procedure/save")
+    public Procedure saveProcedure(@RequestBody Procedure procedure) {
+
+//
+        return service.saveProcedure(procedure);
+    }
+
     // DELETE the procedure by id
     @PostMapping("/procedure/delete/{id}")
     public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {

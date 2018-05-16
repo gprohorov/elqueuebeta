@@ -1,5 +1,6 @@
 package com.med.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,13 +15,21 @@ public class Procedure {
     private int id;
     private String name;
     private int cabinet;
+    @JsonProperty("FOREIGN")
     private int FOREIGN;
+    @JsonProperty("VIP")
     private int VIP;
+    @JsonProperty("BUSINESS")
     private int BUSINESS;
+    @JsonProperty("ALL_INCLUSIVE")
     private int ALL_INCLUSIVE;
+    @JsonProperty("SOCIAL")
     private int SOCIAL;
     private boolean zoned;
     private Card card;
+
+    public Procedure() {
+    }
 
     public Procedure(int id, String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
         this.id = id;
@@ -58,6 +67,10 @@ public class Procedure {
         this.zoned = zoned;
     }
 
+    public Procedure(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -82,42 +95,52 @@ public class Procedure {
         this.cabinet = cabinet;
     }
 
+    @JsonProperty("FOREIGN")
     public int getFOREIGN() {
         return FOREIGN;
     }
 
+    @JsonProperty("FOREIGN")
     public void setFOREIGN(int FOREIGN) {
         this.FOREIGN = FOREIGN;
     }
 
+    @JsonProperty("VIP")
     public int getVIP() {
         return VIP;
     }
 
+    @JsonProperty("VIP")
     public void setVIP(int VIP) {
         this.VIP = VIP;
     }
 
+    @JsonProperty("BUSINESS")
     public int getBUSINESS() {
         return BUSINESS;
     }
 
+    @JsonProperty("BUSINESS")
     public void setBUSINESS(int BUSINESS) {
         this.BUSINESS = BUSINESS;
     }
 
+    @JsonProperty("ALL_INCLUSIVE")
     public int getALL_INCLUSIVE() {
         return ALL_INCLUSIVE;
     }
 
+    @JsonProperty("ALL_INCLUSIVE")
     public void setALL_INCLUSIVE(int ALL_INCLUSIVE) {
         this.ALL_INCLUSIVE = ALL_INCLUSIVE;
     }
 
+    @JsonProperty("SOCIAL")
     public int getSOCIAL() {
         return SOCIAL;
     }
 
+    @JsonProperty("SOCIAL")
     public void setSOCIAL(int SOCIAL) {
         this.SOCIAL = SOCIAL;
     }
