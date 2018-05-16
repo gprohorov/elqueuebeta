@@ -45,23 +45,76 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <h4 class="col-auto mr-auto">Призначені процедури</h4>
-                                        <div class="col-auto">
+                                        <h4 class="col-auto">Призначені процедури</h4>
+                                        <div class="col-auto mr-auto">
                                             <button class="btn btn-success fa fa-plus"
                                                 (click)="showAssignProcedurePopup(item)">
                                                 Призначити процедуру</button>
                                         </div>
+                                        <div class="col-auto">
+                                            <button
+                                                title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'
+                                                class="btn btn-success text-white"
+                                                (click)="updateActivityAll(item.id, 'ACTIVE')"> <i
+                                                class="fa fa-play"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити всім процедурам "{{Activity.TEMPORARY_NA.text}}"'
+                                                class="btn btn-primary text-white"
+                                                (click)="updateActivityAll(item.id, 'TEMPORARY_NA')"> <i
+                                                class="fa fa-pause"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити всім процедурам "{{Activity.NON_ACTIVE.text}}"'
+                                                class="btn btn-danger text-white"
+                                                (click)="updateActivityAll(item.id, 'NON_ACTIVE')"> <i
+                                                class="fa fa-stop"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити всім процедурам "{{Activity.CANCELED.text}}"'
+                                                class="btn btn-warning text-white"
+                                                (click)="updateActivityAll(item.id, 'CANCELED')"> <i
+                                                class="fa fa-ban"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p *ngFor="let talon of item.talons"
+                                    <div class="row"  *ngFor="let talon of item.talons">
+                                        <div class="col-auto mr-auto">
+                                            <p
                                                 title="{{Activity[talon.activity].text}}">
                                                 <span
-                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}} {{Activity[talon.activity].cssClass}}">
+                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}} 
+                                                            btn btn-{{Activity[talon.activity].cssClass}}">
                                                     {{talon.procedure.name}} </span>
                                             </p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button
+                                                title='Встановити "{{Activity.ACTIVE.text}}"'
+                                                class="btn btn-sm btn-success text-white"
+                                                (click)="updateActivity(item.id, 'ACTIVE')"> <i
+                                                class="fa fa-play"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити "{{Activity.TEMPORARY_NA.text}}"'
+                                                class="btn btn-sm btn-primary text-white"
+                                                (click)="updateActivity(item.id, 'TEMPORARY_NA')"> <i
+                                                class="fa fa-pause"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити "{{Activity.NON_ACTIVE.text}}"'
+                                                class="btn btn-sm btn-danger text-white"
+                                                (click)="updateActivity(item.id, 'NON_ACTIVE')"> <i
+                                                class="fa fa-stop"></i>
+                                            </button>
+                                            <button
+                                                title='Встановити "{{Activity.CANCELED.text}}"'
+                                                class="btn btn-sm btn-warning text-white"
+                                                (click)="updateActivity(item.id, 'CANCELED')"> <i
+                                                class="fa fa-ban"></i>
+                                            </button>
                                         </div>
                                         <!-- 
                     <div class="col text-right">

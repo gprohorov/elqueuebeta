@@ -37,6 +37,7 @@ export class PatientsQueueListComponent implements OnInit {
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
     }
 
     delete(id: string, name: string) {
@@ -68,6 +69,13 @@ export class PatientsQueueListComponent implements OnInit {
     
     updateActivity(id: string, value: string) {
         this.subTemp = this.service.updateActivity(id, value).subscribe(data => { });
+    }
+    
+    updateActivityAll(id: string, value: string) {
+        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) { 
+            
+        } 
+        this.subTemp = this.service.updateActivityAll(id, value).subscribe(data => { });
     }
 
     updateStatus(id: string, value: string) {
