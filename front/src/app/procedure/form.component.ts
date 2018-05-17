@@ -16,6 +16,7 @@ export class ProcedureFormComponent {
     sub: Subscription;
     loading = false;
     Status = Status;
+    Statuses = Object.keys(Status);
 
     constructor(
         private route: ActivatedRoute,

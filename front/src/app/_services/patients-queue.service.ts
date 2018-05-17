@@ -14,7 +14,7 @@ export class PatientsQueueService {
     private deleteUrl = config.api_path + '/patient/delete/';
     private updateActivityUrl = config.api_path + '/patient/talon/set/activity/';
     private updateActivityAllUrl = config.api_path + '/patient/talon/setall/activity/';
-    private updateStatusUrl = config.api_path + '/patient/update/status/';
+    private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
 
     private doctorPatientUrl = config.api_path + '/tail/first/';

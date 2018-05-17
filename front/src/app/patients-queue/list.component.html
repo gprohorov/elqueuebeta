@@ -15,6 +15,7 @@
                     <tr>
                         <th></th>
                         <th [style.min-width.px]="300">ПІБ</th>
+                        <th>Статус</th>
                         <th>Баланс</th>
                         <th>Прогрес</th>
                         <th>Час очікування</th>
@@ -26,6 +27,7 @@
                         <td><i
                             [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                         <td>{{getFullName(item)}}</td>
+                        <td>{{Status[item.status].text}}</td>
                         <td>{{item.balance}}</td>
                         <td>{{getProgress(item.talons)}}</td>
                         <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span>
@@ -39,18 +41,18 @@
                                     <div class="row">
                                         <h4 class="col-auto">Призначені процедури</h4>
                                         <div class="col-auto">
-                                            <button class="btn btn-success fa fa-plus"
+                                            <button class="btn"
                                                 (click)="showAssignProcedurePopup(item)">
-                                                Призначити процедуру</button>
+                                                Додати</button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="btn btn-light" disabled>Статус:</button>
                                         </div>
                                         <div class="col-auto mr-auto">
-                                            <select [class]="Status[item.status]?.cssClass"
-                                                [(ngModel)]="item.status"
-                                                (change)="updateStatus(item.id, item.status)"
-                                                [style.width.px]="120">
+                                            <select class="form-control" [(ngModel)]="item.status"
+                                                (ngModelChange)="updateStatus(item.id, item.status)">
                                                 <option *ngFor="let status of Statuses"
-                                                    [ngValue]="status"
-                                                    [class]="Status[status]?.cssClass">
+                                                    [ngValue]="status">
                                                     {{Status[status]?.text}}</option>
                                             </select>
                                         </div>
