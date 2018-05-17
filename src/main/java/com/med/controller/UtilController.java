@@ -23,6 +23,7 @@ public class UtilController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String resetPatientsTable() {
         // dataStorage.resetPatientsTable();
+        dataStorage.NoapteBun();
         return "OK";
     }
 

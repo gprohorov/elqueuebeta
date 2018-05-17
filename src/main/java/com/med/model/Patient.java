@@ -24,7 +24,7 @@ public class Patient implements Comparable<Patient> {
     @Transient
     private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity = LocalDateTime.now();
-    private LocalDateTime startActivity = LocalDateTime.now();
+    private LocalDateTime startActivity= LocalDateTime.now();
     private Status status = Status.SOCIAL;
 
 
@@ -32,14 +32,23 @@ public class Patient implements Comparable<Patient> {
     public Patient() {
     }
 
-
-
-    public Patient(Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity) {
+    public Patient(String id, Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
+        this.id = id;
         this.person = person;
         this.therapy = therapy;
         this.talons = talons;
         this.lastActivity = lastActivity;
         this.startActivity = startActivity;
+        this.status = status;
+    }
+
+    public Patient(Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
+        this.person = person;
+        this.therapy = therapy;
+        this.talons = talons;
+        this.lastActivity = lastActivity;
+        this.startActivity = startActivity;
+        this.status = status;
     }
 
     public Patient(Person person) {
@@ -103,11 +112,15 @@ public class Patient implements Comparable<Patient> {
         this.status = status;
     }
 
-    public long getDelta(){
-        long delta = 1000L;
+    public Long getDelta(){
+        Long delta =1000L;
            if (this.getLastActivity() != null) {
                delta = ChronoUnit.MINUTES.between(this.getLastActivity()
+                     , LocalDateTime.now());
+           }else {
+               delta = ChronoUnit.MINUTES.between(this.getStartActivity()
                        , LocalDateTime.now());
+
            }
         return delta;
     }
@@ -138,9 +151,10 @@ public class Patient implements Comparable<Patient> {
             return comparePatient
                     .getStatus().getLevel() - this.getStatus().getLevel();
         } else {
-            //  System.out.println("the case");
-            return this.getLastActivity()
-                    .compareTo(comparePatient.getLastActivity());
+              if(this.getLastActivity()!= null) {
+                  return this.getLastActivity()
+                          .compareTo(comparePatient.getLastActivity());
+              } else return 0;
         }
     }
 

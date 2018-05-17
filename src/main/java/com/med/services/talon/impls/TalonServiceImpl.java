@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,7 @@ public class TalonServiceImpl implements ITalonService {
 
         return repository.save(talon);
     }
+
    @Override
     public Talon createTalon(String patientId, int procedureId, LocalDate date) {
 
@@ -86,10 +88,22 @@ public class TalonServiceImpl implements ITalonService {
                 Arrays.asList(Activity.EXECUTED, Activity.EXPIRED, Activity.CANCELED, Activity.ON_PROCEDURE)
         );
         Talon talon = this.getTalon(talonId);
+        Activity former = talon.getActivity();
         if(talon != null && !activities.contains(talon.getActivity())){
             talon.setActivity(activity);
+            if (former==Activity.NON_ACTIVE
+                && activity==Activity.ACTIVE
+                && talon.getProcedure().getId()==1){
+                Patient patient = patientService.getPatient(talon.getPatientId());
+                patient.setStartActivity(LocalDateTime.now());
+                patient.setLastActivity(LocalDateTime.now());
+                patientService.savePatient(patient);
+
+            }
         }
-       // System.out.println(talon.getActivity());
+
+
+
         return repository.save(talon);
     }
 

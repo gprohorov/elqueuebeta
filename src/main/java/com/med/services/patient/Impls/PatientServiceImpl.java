@@ -97,6 +97,11 @@ public class PatientServiceImpl implements IPatientService {
         return patients;
     }
 
+    @Override
+    public List<Patient> saveAll(List<Patient> patients) {
+        return repository.saveAll(patients);
+    }
+
     public Patient setStatus(String patientId, Status status) {
 
         Patient patient = this.getPatient(patientId);

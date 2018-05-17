@@ -1,9 +1,6 @@
 package com.med.services.tail.Impls;
 
-import com.med.model.Activity;
-import com.med.model.Procedure;
-import com.med.model.Tail;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
@@ -23,6 +20,7 @@ import java.util.stream.Collectors;
 public class TailServiceImpl implements ITailService {
 
    private  List<Tail> tails = new ArrayList<>();
+   private List<Patient> empty = new ArrayList<>();
 
    @Autowired
     ProcedureServiceImpl procedureService;
@@ -36,16 +34,22 @@ public class TailServiceImpl implements ITailService {
 
    @PostConstruct
    void init() {
-      procedureService.getAll()
+     this.initTails();
+
+   }
+
+
+   private void initTails(){
+       procedureService.getAll()
                .stream().forEach(procedure
                -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
-
-     //  this.setPatientsToAllTails();
-
-    //  System.out.println("==================================================");
-      // System.out.println(talonService.getTalonsForToday().size());
-    //  System.out.println(this.getAllPatientsToTailByTalons(2).size());
    }
+
+   private void resetTails(){
+       tails.stream().forEach(tail -> tail.setPatients(empty));
+   }
+
+
 
    public Tail getTail(Procedure procedure){
 
@@ -73,6 +77,7 @@ public class TailServiceImpl implements ITailService {
 
 
    public List<Tail> getTails(){
+       this.resetTails();
       talonService.getTalonsForToday().stream()
               .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
               .collect(Collectors.groupingBy(Talon::getProcedure))

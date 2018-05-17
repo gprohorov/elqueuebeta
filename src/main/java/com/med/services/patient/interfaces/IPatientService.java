@@ -15,5 +15,6 @@ public interface IPatientService {
  Patient deletePatient(String id);
  List<Patient> getAll(String lastName);
  List<Patient> getAllForToday();
+ List<Patient> saveAll(List<Patient> patients);
 
 }
