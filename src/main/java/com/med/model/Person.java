@@ -7,9 +7,8 @@ import java.time.LocalDate;
  */
 public class Person {
 
-    private String firstName;
-    private String patronymic;
-    private String lastName;
+    private String fullName;
+
     private String cellPhone;
     private String town;
     private String address;
@@ -19,19 +18,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String lastName) {
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = true;
-    }
-
-
-    public Person( String firstName, String patronymic, String lastName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
-
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.lastName = lastName;
+    public Person(String fullName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
+        this.fullName = fullName;
         this.cellPhone = cellPhone;
         this.town = town;
         this.address = address;
@@ -39,29 +28,17 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getFirstName() {
-        return firstName;
+
+
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getPatronymic() {
-        return patronymic;
-    }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getCellPhone() {
         return cellPhone;
@@ -101,14 +78,6 @@ public class Person {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                 '}';
     }
 
 }

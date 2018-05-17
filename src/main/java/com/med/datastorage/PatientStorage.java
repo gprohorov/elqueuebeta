@@ -1,17 +1,13 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
-import com.med.model.Person;
 import com.med.repository.patient.PatientRepository;
 import com.med.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,6 +38,7 @@ public class PatientStorage {
   */
 
     }
+/*
 
     List<Person> persons = new LinkedList<>( Arrays.asList(
             new Person("Іван",  "Іванов"),
@@ -94,13 +91,16 @@ public class PatientStorage {
             new Person("Xopxe",  "Tuxepoc")
     ));
 
+*/
 
+/*
 
     private List<Patient> createPatientList(){
         persons.stream().forEach(person -> patients.add(new Patient(person)));
         return this.patients;
     }
 
+*/
 
 
 

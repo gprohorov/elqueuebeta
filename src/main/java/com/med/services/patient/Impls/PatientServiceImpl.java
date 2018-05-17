@@ -58,18 +58,18 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public List<Patient> getAll(String lastName) {
+    public List<Patient> getAll(String fullName) {
 
         List<Patient> patients;
 
-        if (lastName.equals("") || lastName == null) {
+        if (fullName.equals("") || fullName == null) {
             patients = repository.findAll();
         } else {
             // TODO: make human-way query !!!
             // TODO: make sorting, paging, filtering
             patients = repository.findAll().stream()
                     .filter(patient -> patient.getPerson()
-                    .getLastName().toLowerCase().contains(lastName.toLowerCase()))
+                    .getFullName().toLowerCase().contains(fullName.toLowerCase()))
                     .collect(Collectors.toList());
         }
 

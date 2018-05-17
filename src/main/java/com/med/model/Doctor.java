@@ -17,9 +17,8 @@ public class Doctor {
     @Id
     private int id;
 
-    private String firstName;
-    private String patronymic;
-    private String lastName;
+    private String fullName;
+
     private String speciality;
     private String cellPhone;
     private List<Integer> procedureIds = new ArrayList<>();
@@ -39,24 +38,22 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(int id, String firstName, String patronymic, String lastName, String speciality, String cellPhone) {
-        this.id = id;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.lastName = lastName;
+    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, ObjectId userId) {
+        this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
-        this.userId = null;
+        this.procedureIds = procedureIds;
+        this.userId = userId;
     }
 
-    public Doctor(String firstName, String patronymic, String lastName, String speciality, String cellPhone) {
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.lastName = lastName;
-        this.speciality = speciality;
-        this.cellPhone = cellPhone;
-        this.userId = null;
+    public String getFullName() {
+        return fullName;
     }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
 
     public ObjectId getUserId() {
         return userId;
@@ -74,29 +71,7 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getSpeciality() {
         return speciality;
@@ -114,15 +89,5 @@ public class Doctor {
         this.cellPhone = cellPhone;
     }
 
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", speciality='" + speciality + '\'' +
-                ", cellPhone='" + cellPhone + '\'' +
-                '}';
-    }
+
 }
