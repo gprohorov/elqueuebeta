@@ -5,6 +5,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by george on 3/9/18.
  */
@@ -19,6 +22,15 @@ public class Doctor {
     private String lastName;
     private String speciality;
     private String cellPhone;
+    private List<Integer> procedureIds = new ArrayList<>();
+
+    public List<Integer> getProcedureIds() {
+        return procedureIds;
+    }
+
+    public void setProcedureIds(List<Integer> procedureIds) {
+        this.procedureIds = procedureIds;
+    }
 
     @Nullable
     private ObjectId userId;

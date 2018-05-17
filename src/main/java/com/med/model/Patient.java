@@ -23,8 +23,8 @@ public class Patient implements Comparable<Patient> {
     private Therapy therapy;
     @Transient
     private List<Talon> talons = new ArrayList<>();
-    private LocalDateTime lastActivity = LocalDateTime.now();
-    private LocalDateTime startActivity= LocalDateTime.now();
+    private LocalDateTime lastActivity;
+    private LocalDateTime startActivity;
     private Status status = Status.SOCIAL;
 
 
@@ -113,14 +113,10 @@ public class Patient implements Comparable<Patient> {
     }
 
     public Long getDelta(){
-        Long delta =1000L;
+        Long delta =null;
            if (this.getLastActivity() != null) {
                delta = ChronoUnit.MINUTES.between(this.getLastActivity()
                      , LocalDateTime.now());
-           }else {
-               delta = ChronoUnit.MINUTES.between(this.getStartActivity()
-                       , LocalDateTime.now());
-
            }
         return delta;
     }
@@ -151,7 +147,7 @@ public class Patient implements Comparable<Patient> {
             return comparePatient
                     .getStatus().getLevel() - this.getStatus().getLevel();
         } else {
-              if(this.getLastActivity()!= null) {
+              if(this.getLastActivity()!= null && comparePatient.getLastActivity()!=null) {
                   return this.getLastActivity()
                           .compareTo(comparePatient.getLastActivity());
               } else return 0;

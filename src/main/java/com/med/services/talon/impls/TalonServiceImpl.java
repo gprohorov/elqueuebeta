@@ -85,25 +85,27 @@ public class TalonServiceImpl implements ITalonService {
     @Override
     public Talon setActivity(String talonId, Activity activity) {
         List<Activity> activities = new ArrayList<>(
-                Arrays.asList(Activity.EXECUTED, Activity.EXPIRED, Activity.CANCELED, Activity.ON_PROCEDURE)
+            Arrays.asList(
+                Activity.EXECUTED,
+                Activity.EXPIRED,
+                Activity.CANCELED,
+                Activity.ON_PROCEDURE
+            )
         );
         Talon talon = this.getTalon(talonId);
-        Activity former = talon.getActivity();
         if(talon != null && !activities.contains(talon.getActivity())){
+            Activity former = talon.getActivity();
             talon.setActivity(activity);
-            if (former==Activity.NON_ACTIVE
-                && activity==Activity.ACTIVE
-                && talon.getProcedure().getId()==1){
+            if (former==Activity.NON_ACTIVE && activity==Activity.ACTIVE) {
                 Patient patient = patientService.getPatient(talon.getPatientId());
-                patient.setStartActivity(LocalDateTime.now());
-                patient.setLastActivity(LocalDateTime.now());
+                LocalDateTime sa = patient.getStartActivity();
+                if (sa == null || sa.toLocalDate().isBefore(LocalDate.now())) {
+                    patient.setStartActivity(LocalDateTime.now());
+                    patient.setLastActivity(LocalDateTime.now());
+                }
                 patientService.savePatient(patient);
-
             }
         }
-
-
-
         return repository.save(talon);
     }
 
