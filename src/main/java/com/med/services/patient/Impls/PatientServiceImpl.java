@@ -83,6 +83,9 @@ public class PatientServiceImpl implements IPatientService {
         List<Talon> talons =talonService.getTalonsForToday();
 
 
+
+        talons.stream().collect(Collectors.groupingBy(Talon::getProcedure));
+
         talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
                 .entrySet().stream().forEach(entry ->
                {

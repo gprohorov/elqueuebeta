@@ -1,6 +1,9 @@
 package com.med.services.tail.Impls;
 
+import com.med.model.Activity;
+import com.med.model.Procedure;
 import com.med.model.Tail;
+import com.med.model.Talon;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
@@ -8,8 +11,10 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -27,13 +32,13 @@ public class TailServiceImpl implements ITailService {
 
    @Autowired
    TalonServiceImpl talonService;
-/*
+
 
    @PostConstruct
    void init() {
-//       procedureService.getAll()
-//               .stream().forEach(procedure
-//               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
+      procedureService.getAll()
+               .stream().forEach(procedure
+               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
 
      //  this.setPatientsToAllTails();
 
@@ -42,6 +47,50 @@ public class TailServiceImpl implements ITailService {
     //  System.out.println(this.getAllPatientsToTailByTalons(2).size());
    }
 
+   public Tail getTail(Procedure procedure){
+
+      return tails.stream()
+              .filter(tail -> tail.getProcedureId()==procedure.getId())
+              .findFirst().orElse(null);
+   }
+
+
+   public Tail getTail(int procedureId){
+
+      return tails.stream()
+              .filter(tail -> tail.getProcedureId()==procedureId)
+              .findFirst().orElse(null);
+   }
+
+
+   public Tail getTail(String procedureName){
+
+      return tails.stream()
+              .filter(tail -> tail.getProcedureName().equals(patientService))
+              .findFirst().orElse(null);
+   }
+
+
+
+   public List<Tail> getTails(){
+      talonService.getTalonsForToday().stream()
+              .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
+              .collect(Collectors.groupingBy(Talon::getProcedure))
+              .entrySet().stream()
+              .forEach(entry-> {
+                 Tail tail = this.getTail(entry.getKey());
+
+                 tail.setPatients(talonService.toPatientList(entry.getValue()));                ;
+              }
+              );
+     return  this.tails;
+
+           //   .collect(Collectors.groupingBy(Talon::getProcedure));
+   }
+
+
+
+/*
    // collect all patients from general queue to ONE tail( procedure)
     private List<Patient> getPatientsForOneTailFromCrowd(int procedureId) {
               Tail tail = tails.stream()

@@ -1,6 +1,7 @@
 package com.med.services.talon.impls;
 
 import com.med.model.Activity;
+import com.med.model.Patient;
 import com.med.model.Procedure;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
@@ -111,6 +112,15 @@ public class TalonServiceImpl implements ITalonService {
         return null;
     }
 
+    public List<Patient> toPatientList(List<Talon> talons){
+        List<Patient> patients = new ArrayList<>();
+
+        talons.stream().forEach(talon -> patients
+                .add(patientService.getPatient(talon.getPatientId()))
+        );
+
+        return patients.stream().sorted().collect(Collectors.toList());
+    }
 
 
 
