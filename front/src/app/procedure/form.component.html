@@ -12,44 +12,12 @@
         <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
       </div>
       <label>Ціни для статуса:</label>
-      <div class="row form-group">
+      <div class="row form-group" *ngFor="let status of Statuses">
         <div class="col-md-3">
-          <span [class]="Status.FOREIGNER.cssClass">{{Status.FOREIGNER.text}}</span>
+          <span [class]="Status[status].cssClass">{{Status[status].text}}</span>
         </div>
         <div class="col-md-3">
-          <input type="number" class="form-control" name="foreigner" [(ngModel)]="model.foreigner" #foreigner="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Status.VIP.cssClass">{{Status.VIP.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="vip" [(ngModel)]="model.vip" #vip="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Status.BUSINESS.cssClass">{{Status.BUSINESS.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="business" [(ngModel)]="model.business" #business="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Status.ALL_INCLUSIVE.cssClass">{{Status.ALL_INCLUSIVE.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="allInclusive" [(ngModel)]="model.allInclusive" #allInclusive="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Status.SOCIAL.cssClass">{{Status.SOCIAL.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="social" [(ngModel)]="model.social" #social="ngModel" />
+          <input type="number" class="form-control" name="{{status}}" [(ngModel)]="model[status]" #{{status}}="ngModel" />
         </div>
       </div>
       <div class="form-group">
