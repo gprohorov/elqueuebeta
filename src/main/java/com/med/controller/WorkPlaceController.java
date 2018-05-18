@@ -69,6 +69,16 @@ public class WorkPlaceController {
        return workPlaceService.execute(patientId, procedureId, desc);
     }
 
+   @RequestMapping("/cancel/{patientId}/{procedureId}/{desc}")
+   public Talon cancel(
+           @PathVariable(value = "patientId") String patientId,
+           @PathVariable(value = "procedureId") int procedureId,
+           @PathVariable(value = "desc") String desc){
+
+      //  return tailService.getFirstPatient(procedureId);
+       return workPlaceService.cancel(patientId, procedureId, desc);
+    }
+
 
 
 
