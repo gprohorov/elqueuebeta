@@ -45,12 +45,7 @@
   <ul class="navbar-nav">
     <li class="dropdown-item">
       <a class="dropdown-item" routerLink="/login"
-      >Вихід (
-        {{user.info.speciality}} -
-        {{user.info.lastName}}
-        {{user.info.firstName[0]}}.
-        {{user.info.patronymic[0]}}.
-      )</a>
+      title="{{user.info.speciality}} - {{user.info.fullName}}">Вихід</a>
     </li>
   </ul>
 </nav>
