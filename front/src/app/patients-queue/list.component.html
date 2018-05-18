@@ -26,12 +26,12 @@
                     <tr (click)="rows[i]=!rows[i]">
                         <td><i
                             [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-                        <td>{{getFullName(item)}}</td>
+                        <td>{{item.person.fullName}}</td>
                         <td>{{Status[item.status].text}}</td>
                         <td>{{item.balance}}</td>
                         <td>{{getProgress(item.talons)}}</td>
-                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span>
-                            хв.</td>
+                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta
+                                ? item.delta + ' хв.' : ''}}</span></td>
                         <td>{{item.startActivity | date: 'HH:mm'}}</td>
                     </tr>
                     <tr [hidden]="!rows[i]">
@@ -39,7 +39,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <h4 class="col-auto">Призначені процедури</h4>
+                                        <h4 class="col-auto">Процедури</h4>
                                         <div class="col-auto">
                                             <button class="btn"
                                                 (click)="showAssignProcedurePopup(item)">
@@ -89,7 +89,7 @@
                                         <div class="col-auto mr-auto">
                                             <p title="{{Activity[talon.activity].text}}">
                                                 <span
-                                                    class="fa fa-{{talon.activity == 'EXECUTED' ? 'check' : 'minus'}}
+                                                    class="{{talon.activity == 'EXECUTED' ? 'fa fa-check' : ''}}
                                                             btn btn-{{Activity[talon.activity].cssClass}}">
                                                     {{talon.procedure.name}} </span>
                                             </p>

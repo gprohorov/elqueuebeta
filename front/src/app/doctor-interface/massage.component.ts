@@ -1,33 +1,32 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Patient } from '../_models/index';
-import { PatientsQueueService, AlertService } from '../_services/index';
+import { AlertService, PatientsQueueService } from '../_services/index';
 import { Status, Activity } from '../_storage';
 
 @Component({
     templateUrl: './massage.component.html'
 })
-export class DoctorInterfaceMassageComponent implements OnInit {
+export class DoctorInterfaceMassageComponent implements OnInit, OnDestroy {
+    
+    loading = false;
 
     sub: Subscription;
     item: any = {};
-    loading = false;
     procedureStarted = false;
 
-    constructor(private service: PatientsQueueService, private alertService: AlertService) {
-    }
+    constructor(
+        private alertService: AlertService,
+        private service: PatientsQueueService 
+    ) { }
 
     ngOnInit() {
         this.load();
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-
-    getFullName(item: Patient) {
-        return [item.person.lastName, item.person.firstName, item.person.patronymic].join(' ');
+        if (this.sub) this.sub.unsubscribe();
     }
 
     load() {

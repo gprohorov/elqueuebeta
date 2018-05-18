@@ -1,4 +1,4 @@
-﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
@@ -10,7 +10,7 @@ import { PatientAssignProcedureModalComponent } from './assign-procedure.modal.c
 @Component({
     templateUrl: './list.component.html'
 })
-export class PatientListComponent implements OnInit {
+export class PatientListComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     items: Patient[];
@@ -43,22 +43,18 @@ export class PatientListComponent implements OnInit {
     }
 
     showAssignProcedurePopup(patientId: string) {
-        const patient = this.items.find(x => x.id == patientId);
+        const patient = this.items.filter(x => patientId == x.id)[0];
         this.modalService.openDialog(this.viewRef, {
-            title: 'Пацієнт: ' + this.getFullName(patient),
+            title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
-            data: { patientId: patientId, patientName: this.getFullName(patient) }
+            data: { patientId: patientId, patientName: patient.person.fullName }
         });
-    }
-
-    getFullName(item: Patient) {
-        return [item.person.lastName, item.person.firstName, item.person.patronymic].join(' ');
     }
 
     load(search: string = '') {
         this.loading = true;
         this.sub = this.patientService.getAll(search).subscribe(data => {
-            this.items = this.patientService.sortBy({ sortColumn: 'lastName', sortDirection: 'asc' }, data);
+            this.items = this.patientService.sortBy({ sortColumn: 'fullName', sortDirection: 'asc' }, data);
             this.loading = false;
         });
     }

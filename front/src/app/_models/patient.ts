@@ -1,15 +1,3 @@
-export class Person {
-    id: string;
-    firstName: string;
-    patronymic: string;
-    lastName: string;
-    cellPhone: string;
-    town: string;
-    address: string;
-    gender: string;
-    dateOfBirth: string;
-}
-
 export class Patient {
     id: string;
     person: Person;
@@ -17,4 +5,17 @@ export class Patient {
     talons: [{}];
     lastActivity: string;
     startActivity: string;
+    
+    constructor() {
+        this.person = new Person();
+    }
+}
+
+export class Person {
+    fullName: string;
+    cellPhone: string;
+    town: string;
+    address: string;
+    gender: string;
+    dateOfBirth: string;
 }

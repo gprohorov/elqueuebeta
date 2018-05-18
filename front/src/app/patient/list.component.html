@@ -25,7 +25,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th></th>
-                        <th sortable-column="lastName" sort-direction="asc">ПІБ</th>
+                        <th sortable-column="fullName" sort-direction="asc">ПІБ</th>
                         <th>Стать</th>
                         <th>Дата народження</th>
                         <th>Місто / село</th>
@@ -35,7 +35,7 @@
                     <tr [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]">
                         <td><i
                             [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
-                        <td>{{getFullName(item)}}</td>
+                        <td>{{item.person.fullName}}</td>
                         <td><i
                             [ngClass]="{'fa': true, 'fa-mars': item.person.gender, 'fa-venus': !item.person.gender }"
                             aria-hidden="true"></i></td>
@@ -53,7 +53,7 @@
                                                 [routerLink]="['/patient-form', { id: item.id }]">
                                                 Редагувати</button>
                                             <button class="btn btn-danger"
-                                                (click)="delete(item.id, getFullName(item))">
+                                                (click)="delete(item.id, item.person.fullName)">
                                                 Видалити</button>
                                             <button class="btn btn-info"
                                                 (click)="showAssignProcedurePopup(item.id)">

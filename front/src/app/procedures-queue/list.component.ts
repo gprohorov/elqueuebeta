@@ -1,20 +1,21 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
 import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
-import { PatientsQueueService, AlertService } from '../_services/index';
+import { AlertService, PatientsQueueService } from '../_services/index';
 
 @Component({
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
-export class ProceduresQueueListComponent implements OnInit {
+export class ProceduresQueueListComponent implements OnInit, OnDestroy {
+
+    loading = false;
 
     sub: Subscription;
-    items: any[] = [];
-    loading = false;
+    items: Patient[] = [];
     Activity = Activity;
     Status = Status;
     updateMasonryLayout = false;
@@ -40,18 +41,8 @@ export class ProceduresQueueListComponent implements OnInit {
         this.sub.unsubscribe();
     }
 
-    getFullName(item: Patient) {
-        return [item.person.lastName, item.person.firstName, item.person.patronymic].join(' ');
-    }
-
-    getProgress(list: any[]) {
-        let executed = 0;
-        list.forEach(function (item) { if (item.executed) executed++; });
-        return executed + '/' + list.length;
-    }
-
     getTimeDiffClass(v: number) {
-        return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
+        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
     toggleGroup(item: any) {
@@ -61,9 +52,15 @@ export class ProceduresQueueListComponent implements OnInit {
 
     load() {
         this.loading = true;
-        this.sub = this.service.getTails().subscribe(data => {
-            this.items = data; this.loading = false;
-        });
+        this.sub = this.service.getTails().subscribe(
+            data => {
+                this.items = data;
+                this.loading = false;
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 
 }

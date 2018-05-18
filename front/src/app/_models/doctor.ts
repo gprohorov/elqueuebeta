@@ -1,8 +1,7 @@
 export class Doctor {
   id: number;
-  firstName: string;
-  patronymic: string;
-  lastName: string;
+  fullName: string;
   cellPhone: string;
   speciality: string;
+  procedureIds: number[];
 }

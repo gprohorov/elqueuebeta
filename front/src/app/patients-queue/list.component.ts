@@ -1,23 +1,24 @@
-﻿import { Component, ViewContainerRef, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
-import { PatientsQueueService, AlertService } from '../_services/index';
+import { AlertService, PatientsQueueService } from '../_services/index';
 
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
 })
-export class PatientsQueueListComponent implements OnInit {
+export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
+    loading = false;
+    
     sub: Subscription;
     subTemp: Subscription;
-    items: any[] = [];
-    loading = false;
+    items: Patient[] = [];
     rows = [];
     Status = Status;
     Statuses = Object.keys(Status);
@@ -25,10 +26,10 @@ export class PatientsQueueListComponent implements OnInit {
     Activities = Object.keys(Activity);
 
     constructor(
-        private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
-        private service: PatientsQueueService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private modalService: ModalDialogService,
+        private service: PatientsQueueService
     ) { }
 
     ngOnInit() {
@@ -36,7 +37,7 @@ export class PatientsQueueListComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
         if (this.subTemp) this.subTemp.unsubscribe();
     }
 
@@ -44,10 +45,6 @@ export class PatientsQueueListComponent implements OnInit {
         if (confirm('Видалити "' + name + '" ?')) {
             this.service.delete(id).subscribe(() => { this.load(); });
         }
-    }
-
-    getFullName(item: Patient) {
-        return [item.person.lastName, item.person.firstName, item.person.patronymic].join(' ');
     }
 
     getProgress(list: any[]) {
@@ -61,9 +58,9 @@ export class PatientsQueueListComponent implements OnInit {
 
     showAssignProcedurePopup(patient: any) {
         this.modalService.openDialog(this.viewRef, {
-            title: 'Пацієнт: ' + this.getFullName(patient),
+            title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
-            data: { patientId: patient.id, patientName: this.getFullName(patient) }
+            data: { patientId: patient.id, patientName: patient.person.fullName }
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }
@@ -98,7 +95,7 @@ export class PatientsQueueListComponent implements OnInit {
     }
 
     getTimeDiffClass(v: number) {
-        return 'badge badge-pill badge-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
+        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
     load(search: any = null) {

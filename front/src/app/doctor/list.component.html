@@ -12,20 +12,25 @@
       </div>
     </div>
     <div class="content table-responsive table-full-width">
-      <table class="table table-small">
+      <table class="table table-sm">
         <thead class="thead-light">
           <tr>
-            <th>ПІБ</th> <th>Телефон</th> <th>Спеціальність</th> <th></th>
+            <th [style.min-width.px]="300">ПІБ</th>
+            <th>Телефон</th>
+            <th>Спеціальність</th>
+            <th [style.width.px]="300">Процедури</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of items">
-            <td>{{getFullName(item)}}</td>
+            <td>{{item.fullName}}</td>
             <td>{{item.cellPhone}}</td>
             <td>{{item.speciality}}</td>
+            <td>{{getProcedures(item.procedureIds)}}</td>
             <td align="right">
               <button class="btn btn-primary btn-sm" [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
-              <button class="btn btn-danger btn-sm" (click)="delete(item.id, getFullName(item))">Видалити</button>
+              <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.fullName)">Видалити</button>
             </td>
           </tr>
         </tbody>

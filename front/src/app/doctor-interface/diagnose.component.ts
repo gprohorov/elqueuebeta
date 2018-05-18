@@ -1,19 +1,19 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Patient } from '../_models/index';
+import { Patient, Procedure } from '../_models/index';
 import { PatientsQueueService, AlertService, ProcedureService } from '../_services/index';
 import { Status, Activity } from '../_storage';
 
 @Component({
     templateUrl: './diagnose.component.html'
 })
-export class DoctorInterfaceDiagnoseComponent implements OnInit {
+export class DoctorInterfaceDiagnoseComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     subProc: Subscription;
     item: any = {};
-    procedures: any = [];
+    procedures: Procedure[] = [];
     loading = false;
     procedureStarted = false;
 
@@ -28,12 +28,8 @@ export class DoctorInterfaceDiagnoseComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
         if (this.subProc) this.subProc.unsubscribe();
-    }
-
-    getFullName(item: Patient) {
-        return [item.person.lastName, item.person.firstName, item.person.patronymic].join(' ');
     }
 
     load() {

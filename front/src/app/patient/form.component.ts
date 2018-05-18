@@ -1,22 +1,26 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { PatientService, AlertService } from '../_services/index';
+import { Patient } from '../_models/index';
 
 @Component({
     templateUrl: './form.component.html'
 })
-export class PatientFormComponent {
-    model: any = {};
-    sub: Subscription;
+export class PatientFormComponent implements OnInit, OnDestroy {
+    
     loading = false;
+    
+    model: Patient = new Patient();
+    sub: Subscription;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private service: PatientService,
-        private alertService: AlertService) { }
+        private alertService: AlertService
+    ) { }
 
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');
@@ -29,12 +33,10 @@ export class PatientFormComponent {
 
     load(id: string) {
         this.loading = true;
-        this.sub = this.service.get(id)
-            .subscribe(
+        this.sub = this.service.get(id).subscribe(
             data => {
                 data.person.gender = data.person.gender.toString();
-                this.model = data.person;
-                this.model.id = data.id;
+                this.model = data
                 this.loading = false;
             },
             error => {
@@ -45,14 +47,7 @@ export class PatientFormComponent {
 
     submit() {
         this.loading = true;
-
-        let data = this.model;
-        const id = data.id;
-        delete data.id;
-        data = { id: id, person: data };
-
-        this.service.update(data)
-            .subscribe(
+        this.service.update(this.model).subscribe(
             data => {
                 this.alertService.success('Зміни збережено.', true);
                 this.router.navigate(['patients']);
