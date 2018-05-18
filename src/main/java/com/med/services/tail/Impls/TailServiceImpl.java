@@ -92,5 +92,12 @@ public class TailServiceImpl implements ITailService {
 
    }
 
+   public Patient getFirstPatient(int procedureId){
+
+       return this.getTail(procedureId).getPatients().stream()
+               .findFirst().orElse(null);
+   }
+
+
 
 }

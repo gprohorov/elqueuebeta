@@ -14,8 +14,10 @@ public class Workplace {
     private Doctor doctor;
     private Procedure procedure;
     private Tail tail;
-    private Patient patient;
     private Talon talon;
+    private Patient patient;
+
+
 
     @Autowired
     DoctorServiceImpl doctorService;
@@ -58,22 +60,11 @@ public class Workplace {
 
     public void setProcedure(Procedure procedure) {
         this.procedure = procedure;
+        this.tail = tailService.getTail(procedure.getId());
     }
 
     public Tail getTail() {
         return tail;
-    }
-
-    public void setTail(Tail tail) {
-        this.tail = tail;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
     }
 
     public Talon getTalon() {
@@ -81,6 +72,34 @@ public class Workplace {
     }
 
     public void setTalon(Talon talon) {
+
         this.talon = talon;
+        if(talon!=null ){
+        this.patient = patientService.getPatient(talon.getPatientId());
+        }else {
+            this.patient=null;
+        }
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Workplace)) return false;
+
+        Workplace workplace = (Workplace) o;
+
+        if (!getDoctor().equals(workplace.getDoctor())) return false;
+        return getProcedure().equals(workplace.getProcedure());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getDoctor().hashCode();
+        result = 31 * result + getProcedure().hashCode();
+        return result;
     }
 }

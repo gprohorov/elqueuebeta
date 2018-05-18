@@ -1,9 +1,6 @@
 package com.med.services.talon.impls;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Procedure;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -48,6 +45,10 @@ public class TalonServiceImpl implements ITalonService {
         return repository.save(talon);
     }
 
+    public Talon saveTalon(Talon talon){
+        return repository.save(talon);
+    }
+
    @Override
     public Talon createTalon(String patientId, int procedureId, LocalDate date) {
 
@@ -66,6 +67,16 @@ public class TalonServiceImpl implements ITalonService {
     public Talon getTalon(String id) {
 
         return repository.findById(id).orElse(null);
+    }
+
+    public Talon getTalon(String patientId, int procedureId, Activity activity) {
+        Talon talon = this.getTalonsForToday().stream()
+                .filter(tal -> tal.getProcedure().getId()==procedureId)
+                .filter(tal->tal.getPatientId()==patientId)
+                .filter(tal->tal.getActivity().equals(activity))
+                .findFirst().orElse(null);
+
+        return talon;
     }
 
     @Override

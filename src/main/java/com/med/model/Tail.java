@@ -94,4 +94,8 @@ public class Tail {
     }
 
 
+    public Patient getFirst() {
+
+        return this.getPatients().stream().findFirst().orElse(null);
+    }
 }

@@ -38,7 +38,8 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
         this.subProcedures = this.procedureService.getAll().subscribe(
             data => {
                 this.loading = false;
-                this.procedures = data.map(x => { return { name: x.name, value: x.id, checked: false } });
+                this.procedures = data.ma
+              p(x => { return { name: x.name, value: x.id, checked: false } });
                 const id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (id > 0) this.load(id);
             },
@@ -47,7 +48,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
                 this.loading = false;
             });
     }
-    
+
     initProcedures() {
         this.model.procedureIds.forEach(id => {
             let p = this.procedures.find(x => x.value == id);
