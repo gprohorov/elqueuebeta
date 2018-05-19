@@ -12,8 +12,8 @@
     </div>
     <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
         <div *ngFor="let item of group.patients">
-            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta ?
-                item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item"
+            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                ? item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item"
                 title="{{item.person.fullName}}">{{item.person.fullName}}</span>
         </div>
     </div>

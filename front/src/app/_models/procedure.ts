@@ -1,12 +1,13 @@
 export class Procedure {
-  id: number;
-  name: string;
-  cabinet: number;
-  notes: string;
-  area: number;
-  foreigner: number;
-  vip: number;
-  bussiness: number;
-  allInclusive: number;
-  social: number;
+    id: number;
+    name: string;
+    cabinet: number;
+    notes: string;
+    area: number;
+    FOREIGN: number;
+    VIP: number;
+    BUSINESS: number;
+    ALL_INCLUSIVE: number;
+    SOCIAL: number;
+    zoned: boolean;
 }

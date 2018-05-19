@@ -30,7 +30,7 @@
                         <td>{{Status[item.status].text}}</td>
                         <td>{{item.balance}}</td>
                         <td>{{getProgress(item.talons)}}</td>
-                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta
+                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
                                 ? item.delta + ' хв.' : ''}}</span></td>
                         <td>{{item.startActivity | date: 'HH:mm'}}</td>
                     </tr>

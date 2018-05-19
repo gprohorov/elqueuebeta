@@ -12,7 +12,7 @@ import { Status } from '../_storage/index';
 })
 
 export class ProcedureFormComponent {
-    model: any = {};
+    model: Procedure = new Procedure();
     sub: Subscription;
     loading = false;
     Status = Status;
@@ -25,39 +25,37 @@ export class ProcedureFormComponent {
         private alertService: AlertService) { }
 
     ngOnInit() {
-      const id = this.route.snapshot.paramMap.get('id');
-      if (id) this.load(+id);
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) this.load(+id);
     }
 
     ngOnDestroy() {
-      if (this.sub) this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
     }
 
     load(id: number) {
         this.loading = true;
-        this.sub = this.service.get(id)
-            .subscribe(
-                data => {
-                    this.model = data;
-                    this.loading = false;
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
+        this.sub = this.service.get(id).subscribe(
+            data => {
+                this.model = data;
+                this.loading = false;
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 
     submit() {
         this.loading = true;
-          this.service.save(this.model)
-              .subscribe(
-                  data => {
-                      this.alertService.success('Процедуру збережено.', true);
-                      this.router.navigate(['procedures']);
-                  },
-                  error => {
-                      this.alertService.error(error);
-                      this.loading = false;
-                  });
+        this.service.save(this.model).subscribe(
+            data => {
+                this.alertService.success('Процедуру збережено.', true);
+                this.router.navigate(['procedures']);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 }
