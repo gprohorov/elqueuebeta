@@ -11,8 +11,6 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-
-
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")

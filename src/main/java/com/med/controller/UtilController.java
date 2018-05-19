@@ -21,10 +21,9 @@ public class UtilController {
 
     @GetMapping("/util/reset-db")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String resetPatientsTable() {
+    public void resetPatientsTable() {
         // dataStorage.resetPatientsTable();
-        dataStorage.NoapteBun();
-        return "OK";
+        dataStorage.reset();
     }
 
 }

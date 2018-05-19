@@ -1,6 +1,5 @@
 package com.med.datastorage;
 
-import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
@@ -25,9 +24,9 @@ public class DataStorageTest {
     PatientServiceImpl patientService;
 
 
-    public void NoapteBun(){
+    public void reset(){
        List<Talon> talons =  talonRepository.findAll();
-
+/*
        talons.stream().forEach(talon -> {
 
                  if(   talon.getActivity().equals(Activity.ACTIVE)
@@ -36,10 +35,12 @@ public class DataStorageTest {
                      talon.setActivity(Activity.EXPIRED);
                  }
                 });
-        talonRepository.saveAll(talons);
+       */
+
+        talonRepository.deleteAll(talons);
 
 
-        List<Patient> patients = patientService.getAllForToday();
+        List<Patient> patients = patientService.getAll("");
 
         patients.stream().forEach(
 
