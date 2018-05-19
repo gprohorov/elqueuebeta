@@ -3,12 +3,12 @@ package com.med.services.doctor.impls;
 import com.med.model.Doctor;
 import com.med.repository.doctor.DoctorRepository;
 import com.med.services.doctor.interfaces.IDoctorService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -62,7 +62,7 @@ public class DoctorServiceImpl implements IDoctorService {
 
     public Doctor getDoctorByUserId(String id) {
         return repository.findAll().stream().filter(doctor ->
-                doctor.getUserId().equals(new ObjectId(id)))
+                doctor.getUserId().equals(id))
                 .findFirst().orElse(null);
     }
 
@@ -79,7 +79,7 @@ public class DoctorServiceImpl implements IDoctorService {
       //  List<Doctor> doctors =repository.findAll();
        // doctors.stream().forEach(doctor -> doctor.setUser(UserRepository.findById(doctor.getUserId).get());
 
-        return repository.findAll();
+        return repository.findAll().stream().sorted().collect(Collectors.toList());
     }
 /*
 
