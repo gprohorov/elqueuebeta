@@ -162,7 +162,7 @@ public class TalonServiceImpl implements ITalonService {
         List<Patient> patients = new ArrayList<>();
 
         talons.stream().forEach(talon -> patients
-                .add(patientService.getPatient(talon.getPatientId()))
+                .add(patientService.getPatientWithTalons(talon.getPatientId()))
         );
 
         return patients.stream().sorted().collect(Collectors.toList());

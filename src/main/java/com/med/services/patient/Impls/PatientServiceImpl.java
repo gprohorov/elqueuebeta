@@ -50,6 +50,13 @@ public class PatientServiceImpl implements IPatientService {
         return  patient;
     }
 
+    public Patient getPatientWithTalons(String id) {
+        Patient patient = repository.findById(id).orElse(null);
+        talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
+                .equals(id)).forEach(talon -> patient.getTalons().add(talon));
+        return  patient;
+    }
+
     @Override
     public Patient deletePatient(String id) {
         Patient patient = this.getPatient(id);

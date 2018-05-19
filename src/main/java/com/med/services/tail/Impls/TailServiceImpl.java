@@ -85,7 +85,9 @@ public class TailServiceImpl implements ITailService {
               .entrySet().stream()
               .forEach(entry-> {
                  Tail tail = this.getTail(entry.getKey());
-                 tail.setPatients(talonService.toPatientList(entry.getValue()));                ;
+                 tail.setPatients(talonService.toPatientList(entry.getValue()).stream()
+                 .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
+                         .collect(Collectors.toList()));                ;
               }
               );
      return  this.tails;
