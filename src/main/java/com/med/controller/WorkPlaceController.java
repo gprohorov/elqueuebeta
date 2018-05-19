@@ -7,6 +7,7 @@ import com.med.services.generic.impls.GenericServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.user.UserService;
 import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,6 +43,9 @@ public class WorkPlaceController {
     @Autowired
     WorkPlaceServiceImpl workPlaceService;
 
+    @Autowired
+    UserService userService;
+
 
 
    @RequestMapping("/first/{procedureId}")
@@ -50,36 +54,54 @@ public class WorkPlaceController {
         return tailService.getFirstPatient(procedureId);
     }
 
+
+
+   /////////////////////////// START////////////////////////////
+
    @RequestMapping("/start/{patientId}/{procedureId}")
    public Talon start(
            @PathVariable(value = "patientId") String patientId,
            @PathVariable(value = "procedureId") int procedureId){
 
-      //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.start(patientId, procedureId);
+    int doctorId = userService.getCurrentUserInfo().getId();
+   if (this.isAlowed(procedureId,doctorId)){
+       return workPlaceService.start(patientId, procedureId, doctorId);
+   } else {
+       return null;
+   }
     }
 
-   @RequestMapping("/execute/{patientId}/{procedureId}/{desc}")
+
+    //////////////////////////////// EXECUTE ///////////////////
+
+   @RequestMapping("/execute/{patientId}/{desc}")
    public Talon execute(
            @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "procedureId") int procedureId,
            @PathVariable(value = "desc") String desc){
 
       //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.execute(patientId, procedureId, desc);
+       return workPlaceService.execute(patientId, desc);
     }
 
-   @RequestMapping("/cancel/{patientId}/{procedureId}/{desc}")
+
+    //////////////////////////////// CANCEL ////////////////////
+
+   @RequestMapping("/cancel/{patientId}/{desc}")
    public Talon cancel(
            @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "procedureId") int procedureId,
            @PathVariable(value = "desc") String desc){
 
       //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.cancel(patientId, procedureId, desc);
+       return workPlaceService.cancel(patientId, desc);
     }
 
 
+
+    private boolean isAlowed(int procedureId, int doctorId){
+
+         return  userService.getCurrentUserInfo().getProcedureIds()
+                 .contains(Integer.valueOf(procedureId));
+    }
 
 
 

@@ -39,7 +39,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
             data => {
                 this.loading = false;
                 this.procedures = data.ma
-              p(x => { return { name: x.name, value: x.id, checked: false } });
+              (x => { return { name: x.name, value: x.id, checked: false } });
                 const id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (id > 0) this.load(id);
             },

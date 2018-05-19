@@ -69,9 +69,28 @@ public class TalonServiceImpl implements ITalonService {
         return repository.findById(id).orElse(null);
     }
 
-    public Talon getTalon(String patientId, int procedureId, Activity activity) {
+    public Talon getTalonByProcedure(String patientId, int procedureId, Activity activity) {
         Talon talon = this.getTalonsForToday().stream()
                 .filter(tal -> tal.getProcedure().getId()==procedureId)
+                .filter(tal->tal.getPatientId()==patientId)
+                .filter(tal->tal.getActivity().equals(activity))
+                .findFirst().orElse(null);
+
+        return talon;
+    }
+
+    public Talon getTalonByPatient(String patientId,  Activity activity) {
+        Talon talon = this.getTalonsForToday().stream()
+                .filter(tal -> tal.getPatientId().equals(patientId))
+                .filter(tal->tal.getActivity().equals(activity))
+                .findFirst().orElse(null);
+
+        return talon;
+    }
+
+    public Talon getTalonByDoctor(String patientId, int doctorId, Activity activity) {
+        Talon talon = this.getTalonsForToday().stream()
+                .filter(tal -> tal.getDoctor().getId()==doctorId)
                 .filter(tal->tal.getPatientId()==patientId)
                 .filter(tal->tal.getActivity().equals(activity))
                 .findFirst().orElse(null);

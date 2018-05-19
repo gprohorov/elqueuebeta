@@ -1,6 +1,7 @@
 package com.med.services.workplace.impls;
 
 import com.med.model.*;
+import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
@@ -37,19 +38,20 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     @Autowired
     ProcedureServiceImpl procedureService;
 
+    @Autowired
+    DoctorServiceImpl doctorService;
 
-    public Talon start(String patientId, int procedureId) {
 
-        Talon talon = talonService.getTalon(patientId, procedureId, Activity.ACTIVE);
+    public Talon start(String patientId, int procedureId, int doctorId) {
+
+        Talon talon = talonService.getTalonByProcedure(patientId, procedureId, Activity.ACTIVE);
         Tail tail= tailService.getTail(procedureId);
         Patient patient = patientService.getPatient(patientId);
-        Doctor doctor = userService.getCurrentUserInfo();
-
+        Doctor doctor = doctorService.getDoctor(doctorId);
 
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
-
 
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
@@ -62,16 +64,12 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
+    public Talon execute(String patientId, String desc) {
 
-
-
-
-    public Talon execute(String patientId, int procedureId, String desc) {
-
-        Talon talon = talonService.getTalon(patientId, procedureId, Activity.ON_PROCEDURE);
-        Tail tail= tailService.getTail(procedureId);
+        Talon talon = talonService.getTalonByPatient(patientId, Activity.ON_PROCEDURE);
+        Procedure procedure = talon.getProcedure();
+        Tail tail= tailService.getTail(procedure.getId());
         Patient patient = patientService.getPatient(patientId);
-        Procedure procedure= procedureService.getProcedure(procedureId);
 
         talon.setActivity(Activity.EXECUTED);
         talon.setExecutionTime(LocalDateTime.now());
@@ -88,10 +86,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         tail.setVacant(true);
 
         return talonService.saveTalon(talon);
-
-
-
     }
+
+
     int getPrice(Patient patient, Procedure procedure){
         int price ;
         switch (patient.getStatus()){
@@ -112,10 +109,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon cancel(String patientId, int procedureId, String desc) {
+    public Talon cancel(String patientId,  String desc) {
 
-        Talon talon = talonService.getTalon(patientId, procedureId, Activity.ON_PROCEDURE);
-        Tail tail= tailService.getTail(procedureId);
+        Talon talon = talonService.getTalonByPatient(patientId , Activity.ON_PROCEDURE);
+        Tail tail= tailService.getTail(talon.getProcedure().getId());
 
         talon.setActivity(Activity.TEMPORARY_NA);
         talon.setDoctor(null);

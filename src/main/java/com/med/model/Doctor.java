@@ -1,6 +1,5 @@
 package com.med.model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
@@ -32,13 +31,13 @@ public class Doctor {
     }
 
     @Nullable
-    private ObjectId userId;
+    private String userId;
 //    private User user;
 
     public Doctor() {
     }
 
-    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, ObjectId userId) {
+    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, String userId) {
         this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
@@ -55,7 +54,7 @@ public class Doctor {
     }
 
 
-    public ObjectId getUserId() {
+    public String getUserId() {
         return userId;
     }
 
