@@ -44,8 +44,7 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
-import { DoctorInterfaceMassageComponent } from './doctor-interface/massage.component';
-import { DoctorInterfaceDiagnoseComponent } from './doctor-interface/diagnose.component';
+import { DoctorInterfaceMainComponent } from './doctor-interface/main.component';
 
 const appRoutes: Routes = [
     {
@@ -57,7 +56,7 @@ const appRoutes: Routes = [
                 redirectTo: {
                     ROLE_ADMIN: 'patients',
                     ROLE_USER: 'patients',
-                    ROLE_MASSAGE: 'doctor-interface-massage',
+                    ROLE_MASSAGE: 'doctor-interface',
                     default: 'login'
                 }
             }
@@ -111,14 +110,9 @@ const appRoutes: Routes = [
     },
 
     {
-        path: 'doctor-interface-massage', component: DoctorInterfaceMassageComponent,
+        path: 'doctor-interface', component: DoctorInterfaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'], redirectTo: 'login' } }
-    },
-    {
-        path: 'doctor-interface-diagnose', component: DoctorInterfaceDiagnoseComponent,
-        canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_DIAG'], redirectTo: 'login' } }
     },
 
     { path: '**', redirectTo: '' }
@@ -149,8 +143,7 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceMassageComponent,
-        DoctorInterfaceDiagnoseComponent
+        DoctorInterfaceMainComponent
     ],
     providers: [
         AuthGuard,

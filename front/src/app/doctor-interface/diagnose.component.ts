@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { Patient, Procedure } from '../_models/index';
-import { PatientsQueueService, AlertService, ProcedureService } from '../_services/index';
+import { AlertService, DoctorInterfaceService, ProcedureService } from '../_services/index';
 import { Status, Activity } from '../_storage';
 
 @Component({
@@ -18,9 +18,9 @@ export class DoctorInterfaceDiagnoseComponent implements OnInit, OnDestroy {
     procedureStarted = false;
 
     constructor(
-        private service: PatientsQueueService,
+        private alertService: AlertService,
+        private service: DoctorInterfaceService,
         private procedureService: ProcedureService,
-        private alertService: AlertService
     ) { }
 
     ngOnInit() {
@@ -37,13 +37,13 @@ export class DoctorInterfaceDiagnoseComponent implements OnInit, OnDestroy {
         this.subProc = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
         });
-        this.sub = this.service.getDoctorPatient(2).subscribe(data => {
+        this.sub = this.service.getPatient(2).subscribe(data => {
             this.item = data;
             this.loading = false;
             if (this.item && this.item.active === 'ON_PROCEDURE') this.procedureStarted = true;
         });
     }
-
+/*
     startProcedure() {
         this.sub = this.service.startProcedure(this.item.id, 2).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
@@ -67,5 +67,5 @@ export class DoctorInterfaceDiagnoseComponent implements OnInit, OnDestroy {
             this.load();
         });
     }
-
+*/
 }

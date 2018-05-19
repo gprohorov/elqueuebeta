@@ -3,9 +3,10 @@ export class Patient {
     person: Person;
     therapy: {};
     talons: [{}];
+    activity: string;
     lastActivity: string;
     startActivity: string;
-    
+
     constructor() {
         this.person = new Person();
     }

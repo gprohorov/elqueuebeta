@@ -15,6 +15,7 @@
                     <tr>
                         <th></th>
                         <th [style.min-width.px]="300">ПІБ</th>
+                        <th>Активність</th>
                         <th>Статус</th>
                         <th>Баланс</th>
                         <th>Прогрес</th>
@@ -25,13 +26,16 @@
                 <tbody *ngFor="let item of items; let i = index">
                     <tr (click)="rows[i]=!rows[i]">
                         <td><i
-                            [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
+                            [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
+                        </td>
                         <td>{{item.person.fullName}}</td>
+                        <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
+                                {{Activity[item.activity]?.text}}</span></td>
                         <td>{{Status[item.status].text}}</td>
                         <td>{{item.balance}}</td>
                         <td>{{getProgress(item.talons)}}</td>
-                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
-                                ? item.delta + ' хв.' : ''}}</span></td>
+                        <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta
+                                != null ? item.delta + ' хв.' : ''}}</span></td>
                         <td>{{item.startActivity | date: 'HH:mm'}}</td>
                     </tr>
                     <tr [hidden]="!rows[i]">
