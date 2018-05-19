@@ -54,8 +54,8 @@ const appRoutes: Routes = [
             permissions: {
                 except: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'],
                 redirectTo: {
-                    ROLE_ADMIN: 'patients',
-                    ROLE_USER: 'patients',
+                    ROLE_ADMIN: 'patients-queue',
+                    ROLE_USER: 'patients-queue',
                     ROLE_MASSAGE: 'doctor-interface',
                     default: 'login'
                 }
@@ -112,7 +112,13 @@ const appRoutes: Routes = [
     {
         path: 'doctor-interface', component: DoctorInterfaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_MASSAGE'], redirectTo: 'login' } }
+    },
+    
+    {
+        path: 'doctor-interface/:id', component: DoctorInterfaceMainComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_MASSAGE'], redirectTo: 'login' } }
     },
 
     { path: '**', redirectTo: '' }
