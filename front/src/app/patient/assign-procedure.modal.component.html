@@ -1,4 +1,4 @@
-<form name="form" (ngSubmit)="submit(f)" #f="ngForm" novalidate>
+<form name="form" #f="ngForm" novalidate>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !date.valid }">
         <label for="date">Дата</label> <input type="date" class="form-control" name="date"
             [(ngModel)]="data.date" #date="ngModel" required />
