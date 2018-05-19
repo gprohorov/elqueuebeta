@@ -133,6 +133,4 @@ public class Doctor {
         return this.getId() - doctor.getId();
     }*/
 
-
-
 }

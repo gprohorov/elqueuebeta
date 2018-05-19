@@ -60,8 +60,8 @@ public class DoctorServiceImpl implements IDoctorService {
     }
 
     public Doctor getDoctorByUserId(String id) {
-        return repository.findAll().stream().filter(doctor ->
-                doctor.getUserId().equals(id))
+        return repository.findAll().stream().filter(doctor -> doctor.getUserId() != null)
+                .filter(doctor -> doctor.getUserId().equals(id))
                 .findFirst().orElse(null);
     }
 
