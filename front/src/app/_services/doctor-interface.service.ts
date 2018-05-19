@@ -9,33 +9,24 @@ import { Patient } from '../_models/index';
 
 @Injectable()
 export class DoctorInterfaceService {
-  // Define the routes we are going to interact with
-  private getPatientUrl    = config.api_path + '/doctor/get/';
-  private listUrl          = config.api_path + '/doctor/list/';
-  private updateParientUrl = config.api_path + '/doctor/update/';
+    // Define the routes we are going to interact with
+    private getPatientUrl = config.api_path + '/workplace/first/';
+    private updateParientUrl = config.api_path + '/workplace/update/';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  getPatient() {
-    return this.http
-      .get<Patient>(this.getPatientUrl)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+    getPatient(procedureId: number) {
+        return this.http.get(this.getPatientUrl + procedureId).pipe(catchError(this.handleError));
+    }
 
-  updateParient() {
-    return this.http
-      .post(this.updateParientUrl, {})
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+    updateParient() {
+        return this.http.post(this.updateParientUrl, {}).pipe(catchError(this.handleError));
+    }
 
-  // Implement a method to handle errors if any
-  private handleError(err: HttpErrorResponse | any) {
-    console.error('An error occurred', err);
-    return Observable.throw(err.message || err);
-  }
+    // Implement a method to handle errors if any
+    private handleError(err: HttpErrorResponse | any) {
+        console.error('An error occurred', err);
+        return Observable.throw(err.message || err);
+    }
 
 }

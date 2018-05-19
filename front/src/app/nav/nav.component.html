@@ -28,6 +28,20 @@
           >Reset DB</a>
       </div>
     </li>
+    <li class="nav-item">
+      <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active"
+        *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_USER']"
+        >Пацієнти на сьогодні</a>
+    </li>
+    <!-- Doctor interface section START --> 
+    
+    <li class="nav-item" *ngxPermissionsOnly="['ROLE_MASSAGE']">
+      <a class="dropdown-item" routerLink="/doctor-interface/" routerLinkActive="active"></a>
+    </li>
+    
+    <!-- Doctor interface section END --> 
+    
+    <!-- 
     <li class="nav-item dropdown" ngbDropdown
       *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_USER']">
       <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
@@ -35,12 +49,13 @@
         ngbDropdownToggle
         >Інтерфейси</a>
       <div class="dropdown-menu bg-light" ngbDropdownMenu>
-        <a class="dropdown-item" routerLink="/doctor-interface-massage"
+        <a class="dropdown-item" routerLink="/doctor-interface"
         >Масажист</a>
-        <a class="dropdown-item" routerLink="/doctor-interface-diagnose"
+        <a class="dropdown-item" routerLink="/doctor-interface"
         >Діагност</a>
       </div>
     </li>
+     -->
   </ul>
   <ul class="navbar-nav">
     <li class="dropdown-item">

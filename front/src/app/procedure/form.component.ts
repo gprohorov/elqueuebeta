@@ -3,26 +3,28 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
-import { ProcedureService, AlertService } from '../_services/index';
+import { AlertService, ProcedureService } from '../_services/index';
 import { Status } from '../_storage/index';
 
 @Component({
-    moduleId: module.id,
     templateUrl: './form.component.html'
 })
 
 export class ProcedureFormComponent {
+
+    loading = false;
+
     model: Procedure = new Procedure();
     sub: Subscription;
-    loading = false;
     Status = Status;
     Statuses = Object.keys(Status);
 
     constructor(
-        private route: ActivatedRoute,
         private router: Router,
-        private service: ProcedureService,
-        private alertService: AlertService) { }
+        private route: ActivatedRoute,
+        private alertService: AlertService,
+        private service: ProcedureService
+    ) { }
 
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');

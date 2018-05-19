@@ -2,18 +2,19 @@
     <div class="col-6">
         <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} процедури</h2>
         <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
-            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
+            <div class="form-group" [ngClass]="{'has-error': f.submitted && !name.valid}">
                 <label for="name">Назва</label> <input type="text" class="form-control" name="name"
                     [(ngModel)]="model.name" #name="ngModel" required />
                 <div *ngIf="f.submitted && !name.valid" class="help-block text-danger">Назва
                     обов`язково</div>
             </div>
             <div class="form-group">
-                <label for="cabinet">Кабінет</label> <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
+                <label for="cabinet">Кабінет</label> <input type="number" class="form-control"
+                    name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
             </div>
             <div class="col-md-3">
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" [name]="zoned"
+                    <input type="checkbox" class="form-check-input" name="zoned"
                         [(value)]="model.zoned" [(ngModel)]="model.zoned" /> <label
                         class="form-check-label">Зональна</label>
                 </div>

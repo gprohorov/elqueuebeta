@@ -36,12 +36,6 @@ export class PatientsQueueService {
             .pipe(catchError(this.handleError));
     }
 
-    getDoctorPatient(procedureID: number) {
-        return this.http
-            .get<any>(this.doctorPatientUrl + procedureID)
-            .pipe(catchError(this.handleError));
-    }
-
     getAllByProcedure(id: number) {
         return this.http
             .get<any[]>(this.listByProcedureUrl + id)
