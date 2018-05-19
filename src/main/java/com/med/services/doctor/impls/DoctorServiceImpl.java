@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -79,7 +78,8 @@ public class DoctorServiceImpl implements IDoctorService {
       //  List<Doctor> doctors =repository.findAll();
        // doctors.stream().forEach(doctor -> doctor.setUser(UserRepository.findById(doctor.getUserId).get());
 
-        return repository.findAll().stream().sorted().collect(Collectors.toList());
+      //  return repository.findAll().stream().sorted().collect(Collectors.toList());
+        return repository.findAll();
     }
 /*
 
