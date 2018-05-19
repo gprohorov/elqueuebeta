@@ -21,7 +21,7 @@ export class NavComponent {
     }
   }
 
-  resetDB(id: number) {
+  resetDB() {
     if (confirm('Reset DB?')) {
       this.utilService.resetDB().subscribe(() => {
          this.alertService.success('DB has been reseted.', true);
