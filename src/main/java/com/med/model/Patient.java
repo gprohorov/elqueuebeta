@@ -121,6 +121,54 @@ public class Patient implements Comparable<Patient> {
         return delta;
     }
 
+    public Activity getActivity(){
+
+        Activity activity = null;
+
+        if (this.getTalons().isEmpty()) {
+            activity = null;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ON_PROCEDURE))) {
+            activity = Activity.ON_PROCEDURE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ACTIVE))) {
+            activity = Activity.ACTIVE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.NON_ACTIVE))) {
+            activity = Activity.NON_ACTIVE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.TEMPORARY_NA))) {
+            activity = Activity.TEMPORARY_NA;
+            return activity;
+        }
+
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.TEMPORARY_NA))
+                &&
+                this.getTalons().stream()
+                        .map(talon -> talon.getActivity()).noneMatch(ac-> ac.equals(Activity.ACTIVE))
+                ) {
+            activity = Activity.TEMPORARY_NA;
+            return activity;
+        }
+
+        return activity;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
