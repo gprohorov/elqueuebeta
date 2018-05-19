@@ -123,7 +123,7 @@ public class Patient implements Comparable<Patient> {
 
     public Activity getActivity(){
 
-        Activity activity = null;
+        Activity activity = Activity.NULL;
 
         if (this.getTalons().isEmpty()) {
             activity = null;

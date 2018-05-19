@@ -77,6 +77,7 @@ public class TailServiceImpl implements ITailService {
 
 
    public List<Tail> getTails(){
+
        this.resetTails();
       talonService.getTalonsForToday().stream()
               .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
@@ -84,7 +85,6 @@ public class TailServiceImpl implements ITailService {
               .entrySet().stream()
               .forEach(entry-> {
                  Tail tail = this.getTail(entry.getKey());
-
                  tail.setPatients(talonService.toPatientList(entry.getValue()));                ;
               }
               );

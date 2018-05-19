@@ -1,7 +1,6 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
-import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class DataStorageTest {
 
 
     public void reset(){
-       List<Talon> talons =  talonRepository.findAll();
+      // List<Talon> talons =  talonRepository.findAll();
 /*
        talons.stream().forEach(talon -> {
 
@@ -37,7 +36,8 @@ public class DataStorageTest {
                 });
        */
 
-        talonRepository.deleteAll(talons);
+       // talonRepository.deleteAll(talons);
+        talonRepository.deleteAll();
 
 
         List<Patient> patients = patientService.getAll("");

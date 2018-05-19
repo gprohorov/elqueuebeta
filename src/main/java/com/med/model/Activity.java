@@ -4,6 +4,7 @@ package com.med.model;
  * Created by george on 3/22/18.
  */
 public enum Activity {
+    NULL,
     NON_ACTIVE
     , ACTIVE
     ,ON_PROCEDURE
