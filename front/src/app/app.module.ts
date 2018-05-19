@@ -52,11 +52,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: {
             permissions: {
-                except: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MASSAGE'],
+                except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR'],
                 redirectTo: {
+                    ROLE_SUPERADMIN: 'patients-queue',
                     ROLE_ADMIN: 'patients-queue',
-                    ROLE_USER: 'patients-queue',
-                    ROLE_MASSAGE: 'doctor-interface',
+                    ROLE_DOCTOR: 'doctor-interface',
                     default: 'login'
                 }
             }
@@ -67,58 +67,58 @@ const appRoutes: Routes = [
     {
         path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'patient-form', component: PatientFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'doctor-form', component: DoctorFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'procedures', component: ProcedureListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'procedure-form', component: ProcedureFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'patients-queue', component: PatientsQueueListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'procedures-queue', component: ProceduresQueueListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_ADMIN', 'ROLE_USER'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'doctor-interface', component: DoctorInterfaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_MASSAGE'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     
     {
         path: 'doctor-interface/:id', component: DoctorInterfaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_MASSAGE'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
 
     { path: '**', redirectTo: '' }
