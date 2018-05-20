@@ -105,6 +105,14 @@ public class TalonServiceImpl implements ITalonService {
                 .collect(Collectors.toList());
     }
 
+
+
+    public List<Talon> getAllTalonsForPatient(String patientId) {
+        return this.getAll().stream()
+                .filter(talon -> talon.getPatientId().equals(patientId))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<Talon> getTalonsForDate(LocalDate date) {
         return this.getAll().stream()

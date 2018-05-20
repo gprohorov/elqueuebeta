@@ -50,8 +50,12 @@ public class TailServiceImpl implements ITailService {
         this.semafor.put(procedureId, signal);
     }
 
+    public void setSemaforSignal(int doctorId, int procedureId, boolean sign) {
+
+    }
     public boolean getSemaforSignal(int procedureId) {
-        return this.semafor.get(procedureId);
+
+       return this.semafor.get(procedureId);
     }
 
     public Tail getTail(int procedureId){
@@ -95,6 +99,7 @@ public class TailServiceImpl implements ITailService {
        return this.getTail(procedureId).getPatients().stream()
                .findFirst().orElse(null);
     }
+
 /*
 
    void temp() {

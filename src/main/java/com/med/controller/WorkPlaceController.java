@@ -1,5 +1,6 @@
 package com.med.controller;
 
+import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.services.tail.Impls.TailServiceImpl;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -45,6 +47,21 @@ public class WorkPlaceController {
    public Patient getFirstPatientInTail(
            @PathVariable(value = "procedureId") int procedureId) {
         return tailService.getFirstPatient(procedureId);
+    }
+
+
+   @RequestMapping("/setvacant/{procedureId}/{signal}")
+   public boolean switchSemaFor(
+           @PathVariable(value = "procedureId") int procedureId,
+           @PathVariable(value = "signal") boolean signal) {
+       Doctor doctor = userService.getCurrentUserInfo();
+       List<Integer> allowed = doctor.getProcedureIds();
+       if (allowed.contains(procedureId)) {
+
+           workPlaceService.switchSemafor(procedureId,signal);
+           return true;
+       }
+       return false;
     }
 
 

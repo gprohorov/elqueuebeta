@@ -1,9 +1,11 @@
 package com.med.services.patient.Impls;
 
+import com.med.model.Income;
 import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.repository.patient.PatientRepository;
+import com.med.services.income.impls.IncomeServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class PatientServiceImpl implements IPatientService {
 
     @Autowired
     TalonServiceImpl talonService;
+
+    @Autowired
+    IncomeServiceImpl incomeService;
 
 /*
     @Autowired
@@ -51,6 +56,7 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     public Patient getPatientWithTalons(String id) {
+        List<Talon> talons = new ArrayList<>();
         Patient patient = repository.findById(id).orElse(null);
         talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
                 .equals(id)).forEach(talon -> patient.getTalons().add(talon));
@@ -113,5 +119,21 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
+    public Income inserIncome(String patientId, int sum, boolean cash) {
+
+        Income income = new Income(patientId, sum, cash);
+
+        return incomeService.createIncome(income);
+
+    }
+
+    public Integer getBalance(String patientId){
+
+        Integer debet = incomeService.getSumlForPatient(patientId);
+        Integer kredit = talonService.getAllTalonsForPatient(patientId)
+                .stream().mapToInt(Talon::getSum).sum();
+
+        return debet + kredit;
+    }
 
 }

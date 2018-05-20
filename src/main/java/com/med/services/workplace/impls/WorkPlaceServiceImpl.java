@@ -42,6 +42,13 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     DoctorServiceImpl doctorService;
 
 
+
+    public Patient getFirstFromTail(int procedureId){
+
+        return tailService.getTail(procedureId).getPatients().stream()
+                .findFirst().orElse(null);
+    }
+
     public Talon start(String patientId, int procedureId, int doctorId) {
 
         Patient patient = patientService.getPatientWithTalons(patientId);
@@ -81,8 +88,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setExecutionTime(LocalDateTime.now());
         talon.setDesc(talon.getDate() + desc);
         int price = this.getPrice(patient, procedure);
-        int sum=( procedure.isZoned()? price*talon.getZones(): price);
-        talon.setSum(sum*(-1));
+        int sum= -1 * ( procedure.isZoned()? price*talon.getZones(): price);
+        talon.setSum(sum);
 
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
@@ -135,7 +142,11 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         return talonService.saveTalon(talon);
     }
 
+    public boolean switchSemafor(int procedureId, boolean signal){
 
+        tailService.setSemaforSignal(procedureId, signal);
+        return true;
+    }
 
 
 }

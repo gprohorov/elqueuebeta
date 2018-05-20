@@ -1,4 +1,4 @@
-package com.med.repository.doctor;
+package com.med.repository.income;
 
 import com.med.model.Income;
 import org.springframework.data.mongodb.repository.MongoRepository;

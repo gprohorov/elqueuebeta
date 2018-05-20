@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Income {
     @Id
     private String id;
-    private String patient;
+    private String patientId;
     private LocalDateTime dateTime;
     private Integer sum;
     private boolean cash;
@@ -20,9 +20,16 @@ public class Income {
     public Income() {
     }
 
-    public Income(String patient, LocalDateTime dateTime, Integer sum, boolean cash) {
-        this.patient = patient;
+    public Income(String patientId, LocalDateTime dateTime, Integer sum, boolean cash) {
+        this.patientId = patientId;
         this.dateTime = dateTime;
+        this.sum = sum;
+        this.cash = cash;
+    }
+
+    public Income(String patientId, Integer sum, boolean cash) {
+        this.patientId = patientId;
+        this.dateTime = LocalDateTime.now();
         this.sum = sum;
         this.cash = cash;
     }
@@ -36,11 +43,11 @@ public class Income {
     }
 
     public String getPatient() {
-        return patient;
+        return patientId;
     }
 
     public void setPatient(String patient) {
-        this.patient = patient;
+        this.patientId = patient;
     }
 
     public LocalDateTime getDateTime() {
@@ -73,7 +80,7 @@ public class Income {
     public String toString() {
         return "Income{" +
                 "id='" + id + '\'' +
-                ", patient='" + patient + '\'' +
+                ", patient='" + patientId + '\'' +
                 ", dateTime=" + dateTime +
                 ", sum=" + sum +
                 ", cash=" + cash +
