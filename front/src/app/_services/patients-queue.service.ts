@@ -17,11 +17,6 @@ export class PatientsQueueService {
     private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
 
-    private doctorPatientUrl = config.api_path + '/tail/first/';
-    private startProcedureUrl = config.api_path + '/patient/start/procedure/';
-    private cancelProcedureUrl = config.api_path + '/patient/cancel/procedure/';
-    private executeProcedureUrl = config.api_path + '/patient/execute/procedure/';
-
     constructor(private http: HttpClient) { }
 
     getAll(search: string = '') {
@@ -63,24 +58,6 @@ export class PatientsQueueService {
     updateBalance(id: string, value: string) {
         return this.http
             .get(this.updateBalanceUrl + id + '/' + value)
-            .pipe(catchError(this.handleError));
-    }
-
-    startProcedure(patientID: string, procedureID: number) {
-        return this.http
-            .get(this.startProcedureUrl + patientID + '/' + procedureID)
-            .pipe(catchError(this.handleError));
-    }
-
-    cancelProcedure(patientID: string, procedureID: number) {
-        return this.http
-            .get(this.cancelProcedureUrl + patientID + '/' + procedureID)
-            .pipe(catchError(this.handleError));
-    }
-
-    executeProcedure(patientID: string, procedureID: number) {
-        return this.http
-            .get(this.executeProcedureUrl + patientID + '/' + procedureID)
             .pipe(catchError(this.handleError));
     }
 

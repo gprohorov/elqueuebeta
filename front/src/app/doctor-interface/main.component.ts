@@ -14,6 +14,7 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
     loading = false;
     item: any;
     sub: Subscription;
+    procedureId: number;
     procedureStarted = false;
 
     constructor(
@@ -25,7 +26,10 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.route.params.subscribe(params => { 
-            if (+params.id > 0) this.load(+params.id);
+            if (+params.id > 0) {
+                this.procedureId = +params.id; 
+                this.load();
+            }
         });
     }
 
@@ -33,12 +37,37 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
         if (this.sub) this.sub.unsubscribe();
     }
 
-    load(id: number) {
+    load() {
         this.loading = true;
-        this.sub = this.service.getPatient(id).subscribe(data => {
+        this.sub = this.service.getPatient(this.procedureId).subscribe(data => {
             this.item = data;
             this.loading = false;
             if (this.item && this.item.active === 'ON_PROCEDURE') this.procedureStarted = true;
         });
     }
+    
+    startProcedure() {
+        this.sub = this.service.startProcedure(this.item.id, this.procedureId).subscribe(data => {
+            this.alertService.success('Процедуру розпочато.');
+            this.procedureStarted = true;
+            this.load();
+        });
+    }
+
+    cancelProcedure() {
+        this.sub = this.service.cancelProcedure(this.item.id, this.procedureId).subscribe(data => {
+            this.alertService.success('Процедуру скасовано.');
+            this.procedureStarted = false;
+            this.load();
+        });
+    }
+
+    executeProcedure() {
+        this.sub = this.service.executeProcedure(this.item.id, this.procedureId).subscribe(data => {
+            this.alertService.success('Процедуру завершено.');
+            this.procedureStarted = false;
+            this.load();
+        });
+    }
+    
 }
