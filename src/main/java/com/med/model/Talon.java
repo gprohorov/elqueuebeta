@@ -20,12 +20,12 @@ public class Talon {
     private Procedure procedure;
     private int zones;
     private String desc;
-    private  LocalDateTime start;
+    private LocalDateTime start;
     private LocalDateTime executionTime;
     private Doctor doctor;
     private int sum;
     /////////
-    private Activity activity= Activity.NON_ACTIVE;
+    private Activity activity = Activity.NON_ACTIVE;
 
 
     public Activity getActivity() {
@@ -134,6 +134,9 @@ public class Talon {
 
     public Procedure getProcedure() {
         return procedure;
+    }
+    public int getProcedureId() {
+        return procedure.getId();
     }
 
     public void setProcedure(Procedure procedure) {
