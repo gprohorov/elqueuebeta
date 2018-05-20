@@ -13,7 +13,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 @Document(collection = "patient")
-public class Patient implements Comparable<Patient> {
+public class Patient { // implements Comparable<Patient> {
 
     @Id
     private String id;
@@ -108,6 +108,10 @@ public class Patient implements Comparable<Patient> {
         return status;
     }
 
+    public int getStatusLevel() {
+        return this.getStatus().getLevel();
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -121,7 +125,7 @@ public class Patient implements Comparable<Patient> {
         return delta;
     }
 
-    public Activity getActivity(){
+    public Activity getActivity() {
 
         Activity activity = Activity.NULL;
 
@@ -168,6 +172,9 @@ public class Patient implements Comparable<Patient> {
         return activity;
     }
 
+    public int getActivityLevel() {
+        return this.getActivity().getLevel();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -185,7 +192,7 @@ public class Patient implements Comparable<Patient> {
     }
 
 
-
+/*
     @Override
     public int compareTo(Patient comparePatient) {
 
@@ -201,5 +208,6 @@ public class Patient implements Comparable<Patient> {
               } else return 0;
         }
     }
+*/
 
 }

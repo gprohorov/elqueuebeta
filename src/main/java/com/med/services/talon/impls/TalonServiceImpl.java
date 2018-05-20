@@ -165,7 +165,7 @@ public class TalonServiceImpl implements ITalonService {
                 .add(patientService.getPatientWithTalons(talon.getPatientId()))
         );
 
-        return patients.stream().sorted().collect(Collectors.toList());
+        return patients.stream().collect(Collectors.toList());
     }
 
 

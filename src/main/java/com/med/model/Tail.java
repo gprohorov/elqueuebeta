@@ -17,12 +17,12 @@ public class Tail {
     public Tail() {
     }
 
-    public Tail(int procedureId, String procedureName, List<Patient> patients) {
+    public Tail(int procedureId, String procedureName, List<Patient> patients, boolean vacant) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.patients = patients;
         this.vacancies = 1;
-        this.vacant = true;
+        this.vacant = vacant;
     }
 
     public Tail(int procedureId, String procedureName) {

@@ -6,10 +6,9 @@ import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.user.UserService;
 import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Created by george on 3/9/18.
@@ -44,7 +43,7 @@ public class WorkPlaceController {
 
    @RequestMapping("/first/{procedureId}")
    public Patient getFirstPatientInTail(
-           @PathVariable(value = "procedureId") int procedureId){
+           @PathVariable(value = "procedureId") int procedureId) {
         return tailService.getFirstPatient(procedureId);
     }
 
@@ -68,10 +67,10 @@ public class WorkPlaceController {
 
     //////////////////////////////// EXECUTE ///////////////////
 
-   @RequestMapping("/execute/{patientId}/{desc}")
+   @PostMapping("/execute/{patientId}")
    public Talon execute(
            @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "desc") String desc){
+           @Valid @RequestBody String desc) {
 
       //  return tailService.getFirstPatient(procedureId);
        return workPlaceService.execute(patientId, desc);
@@ -80,10 +79,10 @@ public class WorkPlaceController {
 
     //////////////////////////////// CANCEL ////////////////////
 
-   @RequestMapping("/cancel/{patientId}/{desc}")
+   @PostMapping("/cancel/{patientId}")
    public Talon cancel(
            @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "desc") String desc){
+           @Valid @RequestBody String desc) {
 
       //  return tailService.getFirstPatient(procedureId);
        return workPlaceService.cancel(patientId, desc);

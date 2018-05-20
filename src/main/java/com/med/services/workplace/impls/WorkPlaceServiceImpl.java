@@ -65,7 +65,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         tail.setPatientOnProcedure(patient);
         tail.setVacant(false);
 
-
+        tailService.setSemaforSignal(procedureId, false);
         return talonService.saveTalon(talon);
     }
 

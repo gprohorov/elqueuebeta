@@ -11,7 +11,9 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class TailServiceImpl implements ITailService {
 
-
-   private List<Patient> empty = new ArrayList<>();
+   private HashMap<Integer, Boolean> semafor = new HashMap();
 
    @Autowired
     ProcedureServiceImpl procedureService;
@@ -33,34 +34,67 @@ public class TailServiceImpl implements ITailService {
    @Autowired
    TalonServiceImpl talonService;
 
-   public Tail getTail(int procedureId){
+   @PostConstruct
+   void init() {
+       procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false) );
+//       System.out.println("=======================================");
+//       System.out.println(semafor);
+//       System.out.println("=======================================");
+   }
+
+    public HashMap<Integer, Boolean> getSemafor() {
+        return semafor;
+    }
+
+    public void setSemaforSignal(int procedureId, boolean signal) {
+        this.semafor.put(procedureId, signal);
+    }
+
+    public boolean getSemaforSignal(int procedureId) {
+        return this.semafor.get(procedureId);
+    }
+
+    public Tail getTail(int procedureId){
       return this.getTails().stream()
               .filter(tail -> tail.getProcedureId()==procedureId)
               .findFirst().orElse(null);
    }
 
+   /*
+   * Form the procedures queues with patients, who are active and on this procedure
+   */
    public List<Tail> getTails() {
 
-    return talonService.getTalonsForToday().stream()
-      .filter(talon ->
-              talon.getActivity().equals(Activity.ACTIVE)
-              ||
-              talon.getActivity().equals(Activity.ON_PROCEDURE)
-              )
-      .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
-      .map(x -> new Tail(x.getKey().getId(), x.getKey().getName(),
-              talonService.toPatientList(x.getValue()).stream()
-              .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
-               .collect(Collectors.toList())
-              )
-      ).collect(Collectors.toList());
-   }
+    return talonService.getTalonsForToday().stream().filter(talon ->
+            talon.getActivity().equals(Activity.ACTIVE)
+            ||
+            talon.getActivity().equals(Activity.ON_PROCEDURE)
+        )
+        .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
+        .map(tail -> new Tail(
+            tail.getKey().getId(),
+            tail.getKey().getName(),
+            talonService.toPatientList(tail.getValue()).stream().filter(patient ->
+                patient.getActivity().equals(Activity.ACTIVE)
+                ||
+                patient.getTalons().stream().filter(talonTest ->
+                    talonTest.getProcedure().getId() == tail.getKey().getId()
+                    &&
+                    talonTest.getActivity().equals(Activity.ON_PROCEDURE)
+                ).findFirst().isPresent()
+            ).sorted(
+                    ( Comparator.comparing(Patient::getActivityLevel)
+                          .thenComparing(Patient::getStatusLevel)
+                          .thenComparing(Patient::getDelta) ).reversed()
+            ).collect(Collectors.toList()),
+            getSemaforSignal(tail.getKey().getId())
+        ) ).collect(Collectors.toList());
+    }
 
-   public Patient getFirstPatient(int procedureId) {
+    public Patient getFirstPatient(int procedureId) {
        return this.getTail(procedureId).getPatients().stream()
                .findFirst().orElse(null);
-   }
-
+    }
 /*
 
    void temp() {
