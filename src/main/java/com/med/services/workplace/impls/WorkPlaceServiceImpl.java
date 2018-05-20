@@ -76,8 +76,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setDesc(talon.getDate() + desc);
         int price = this.getPrice(patient, procedure);
         int sum=( procedure.isZoned()? price*talon.getZones(): price);
-        talon.setSum(sum);
-
+        talon.setSum(sum*(-1));
 
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
@@ -92,16 +91,22 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     int getPrice(Patient patient, Procedure procedure){
         int price ;
         switch (patient.getStatus()){
-            case VIP: price= procedure.getVIP();
-            break;
+
             case SOCIAL: price= procedure.getSOCIAL();
             break;
+
+            case VIP: price= procedure.getVIP();
+            break;
+
             case ALL_INCLUSIVE: price= procedure.getALL_INCLUSIVE();
             break;
+
             case BUSINESS: price= procedure.getBUSINESS();
             break;
+
             case FOREIGN:    price=procedure.getFOREIGN();
             break;
+
             default:price=procedure.getSOCIAL();
             break;
         }
