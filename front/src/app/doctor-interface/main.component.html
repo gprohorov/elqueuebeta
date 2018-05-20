@@ -1,1 +1,26 @@
-﻿
+﻿<div class="content" *ngIf="item?.person">
+    <h4 class="title">{{item.person.fullName}}</h4>
+    <div [ngSwitch]="procedureStarted">
+        <div *ngSwitchCase="false">
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
+                        (click)="startProcedure()">Почати процедуру</button>
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchCase="true">
+            <div class="col-8">
+                <p>Тут діагноз та примітки до процедури</p>
+                <p>Тут поле для приміток</p>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
+                    (click)="executeProcedure()">Завершити процедуру</button>
+                <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
+                    (click)="cancelProcedure()">Скаcувати процедуру</button>
+            </div>
+        </div>
+    </div>
+</div>

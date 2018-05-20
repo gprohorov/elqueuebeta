@@ -20,7 +20,7 @@ public class UtilController {
      DataStorageTest dataStorage;
 
     @GetMapping("/util/reset-db")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void resetPatientsTable() {
         // dataStorage.resetPatientsTable();
         dataStorage.reset();
