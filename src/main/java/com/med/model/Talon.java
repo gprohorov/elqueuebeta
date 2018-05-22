@@ -23,6 +23,7 @@ public class Talon {
     private LocalDateTime start;
     private LocalDateTime executionTime;
     private Doctor doctor;
+    private Status status = Status.NULL;
     private int sum;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
@@ -98,6 +99,14 @@ public class Talon {
         this.doctor = null;
         this.sum = 0;
 
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public LocalDateTime getStart() {
@@ -182,20 +191,22 @@ public class Talon {
     public void setSum(int sum) {this.sum = sum;}
 
 
-
     @Override
     public String toString() {
         return "Talon{" +
-                "id=" + id +
-                ", patientId=" + patientId +
+                "id='" + id + '\'' +
+                ", patientId='" + patientId + '\'' +
                 ", date=" + date +
                 ", procedure=" + procedure +
                 ", zones=" + zones +
                 ", desc='" + desc + '\'' +
+                ", start=" + start +
                 ", executionTime=" + executionTime +
                 ", doctor=" + doctor +
+                ", status=" + status +
                 ", sum=" + sum +
-
+                ", activity=" + activity +
                 '}';
     }
 }
+

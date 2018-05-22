@@ -8,6 +8,7 @@ import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,24 +24,24 @@ import java.util.stream.Collectors;
 @Service
 public class TailServiceImpl implements ITailService {
 
-   private HashMap<Integer, Boolean> semafor = new HashMap();
+    private HashMap<Integer, Boolean> semafor = new HashMap();
 
-   @Autowired
+    @Autowired
     ProcedureServiceImpl procedureService;
 
-   @Autowired
-   PatientServiceImpl patientService;
+    @Autowired
+    PatientServiceImpl patientService;
 
-   @Autowired
-   TalonServiceImpl talonService;
+    @Autowired
+    TalonServiceImpl talonService;
 
-   @PostConstruct
-   void init() {
-       procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false) );
-//       System.out.println("=======================================");
-//       System.out.println(semafor);
-//       System.out.println("=======================================");
-   }
+    @Autowired
+    UserService userService;
+
+    @PostConstruct
+    void init() {
+        procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false) );
+    }
 
     public HashMap<Integer, Boolean> getSemafor() {
         return semafor;
@@ -53,51 +54,70 @@ public class TailServiceImpl implements ITailService {
     public void setSemaforSignal(int doctorId, int procedureId, boolean sign) {
 
     }
-    public boolean getSemaforSignal(int procedureId) {
 
-       return this.semafor.get(procedureId);
+    public boolean getSemaforSignal(int procedureId) {
+        return this.semafor.get(procedureId);
     }
 
-    public Tail getTail(int procedureId){
-      return this.getTails().stream()
-              .filter(tail -> tail.getProcedureId()==procedureId)
-              .findFirst().orElse(null);
-   }
+    public Tail getTail(int procedureId) {
+        List<Tail> tails = this.getTails();
+        if (tails != null) {
+            return tails.stream().filter(tail -> tail.getProcedureId() == procedureId)
+                  .findFirst().orElse(null);
+        }
+        return null;
+    }
 
-   /*
-   * Form the procedures queues with patients, who are active and on this procedure
-   */
-   public List<Tail> getTails() {
-
-    return talonService.getTalonsForToday().stream().filter(talon ->
-            talon.getActivity().equals(Activity.ACTIVE)
-            ||
-            talon.getActivity().equals(Activity.ON_PROCEDURE)
-        )
-        .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
-        .map(tail -> new Tail(
-            tail.getKey().getId(),
-            tail.getKey().getName(),
-            talonService.toPatientList(tail.getValue()).stream().filter(patient ->
-                patient.getActivity().equals(Activity.ACTIVE)
+    /*
+    * Form the procedures queues with patients, who are active and on this procedure
+    */
+    public List<Tail> getTails() {
+        return talonService.getTalonsForToday().stream().filter(talon ->
+                talon.getActivity().equals(Activity.ACTIVE)
                 ||
-                patient.getTalons().stream().filter(talonTest ->
-                    talonTest.getProcedure().getId() == tail.getKey().getId()
-                    &&
-                    talonTest.getActivity().equals(Activity.ON_PROCEDURE)
-                ).findFirst().isPresent()
-            ).sorted(
-                    ( Comparator.comparing(Patient::getActivityLevel)
-                          .thenComparing(Patient::getStatusLevel)
-                          .thenComparing(Patient::getDelta) ).reversed()
-            ).collect(Collectors.toList()),
-            getSemaforSignal(tail.getKey().getId())
-        ) ).collect(Collectors.toList());
+                talon.getActivity().equals(Activity.ON_PROCEDURE)
+            )
+            .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
+            .map(tail -> new Tail(
+                tail.getKey().getId(),
+                tail.getKey().getName(),
+                talonService.toPatientList(tail.getValue()).stream().filter(patient ->
+                    patient.getActivity().equals(Activity.ACTIVE)
+                    ||
+                    patient.getTalons().stream().filter(talonTest ->
+                        talonTest.getProcedure().getId() == tail.getKey().getId()
+                        &&
+                        talonTest.getActivity().equals(Activity.ON_PROCEDURE)
+                    ).findFirst().isPresent()
+                ).sorted(
+                        ( Comparator.comparing(Patient::getActivityLevel)
+                              .thenComparing(Patient::getStatusLevel)
+                              .thenComparing(Patient::getDelta) ).reversed()
+                ).collect(Collectors.toList()),
+                getSemaforSignal(tail.getKey().getId())
+            ) ).collect(Collectors.toList());
     }
 
     public Patient getFirstPatient(int procedureId) {
-       return this.getTail(procedureId).getPatients().stream()
-               .findFirst().orElse(null);
+        Tail tail = this.getTail(procedureId);
+        if (tail == null) return null;
+
+        Patient patient = tail.getPatients().stream().findFirst().orElse(null);
+        if (patient == null) return null;
+
+        if (patient.getActivity().equals(Activity.ON_PROCEDURE)) {
+            Talon talon = patient.getTalons().stream()
+                .filter(t -> t.getActivity().equals(Activity.ON_PROCEDURE))
+                .findFirst().orElse(null);
+            if (talon == null) return null;
+            if (talon.getDoctor().getId() == userService.getCurrentUserInfo().getId()) {
+                return patient;
+            }
+        }
+        if (tail.isVacant()) {
+            return patient;
+        }
+        return null;
     }
 
 /*

@@ -9,7 +9,6 @@ import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -22,7 +21,6 @@ import java.util.List;
 public class WorkPlaceController {
 
 /*
-
     @Autowired
     DoctorServiceImpl doctorService;
 
@@ -41,68 +39,60 @@ public class WorkPlaceController {
     @Autowired
     UserService userService;
 
-
-
-   @RequestMapping("/first/{procedureId}")
-   public Patient getFirstPatientInTail(
+    @RequestMapping("/first/{procedureId}")
+    public Patient getFirstPatientInTail(
            @PathVariable(value = "procedureId") int procedureId) {
         return tailService.getFirstPatient(procedureId);
     }
 
 
-   @RequestMapping("/setvacant/{procedureId}/{signal}")
-   public boolean switchSemaFor(
-           @PathVariable(value = "procedureId") int procedureId,
-           @PathVariable(value = "signal") boolean signal) {
+    @RequestMapping("/setready/{procedureId}")
+    public Boolean setReady(@PathVariable(value = "procedureId") int procedureId) {
        Doctor doctor = userService.getCurrentUserInfo();
        List<Integer> allowed = doctor.getProcedureIds();
        if (allowed.contains(procedureId)) {
-
-           workPlaceService.switchSemafor(procedureId,signal);
-           return true;
+           workPlaceService.setReady(procedureId);
        }
-       return false;
-    }
-
-
-
-   /////////////////////////// START////////////////////////////
-
-   @RequestMapping("/start/{patientId}/{procedureId}")
-   public Talon start(
-           @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "procedureId") int procedureId){
-
-    int doctorId = userService.getCurrentUserInfo().getId();
-   if (this.isAlowed(procedureId,doctorId)){
-       return workPlaceService.start(patientId, procedureId, doctorId);
-   } else {
        return null;
-   }
     }
 
+    /////////////////////////// START////////////////////////////
+
+    @RequestMapping("/start/{patientId}/{procedureId}")
+    public Talon start(
+           @PathVariable(value = "patientId") String patientId,
+           @PathVariable(value = "procedureId") int procedureId) {
+        int doctorId = userService.getCurrentUserInfo().getId();
+        if (this.isAlowed(procedureId, doctorId)) {
+
+            return workPlaceService.start(patientId, procedureId, doctorId);
+        } else {
+           return null;
+        }
+    }
 
     //////////////////////////////// EXECUTE ///////////////////
 
-   @PostMapping("/execute/{patientId}")
-   public Talon execute(
-           @PathVariable(value = "patientId") String patientId,
-           @Valid @RequestBody String desc) {
+    @PostMapping("/execute/{patientId}")
+    public Talon execute(
+           @PathVariable(value = "patientId") String patientId
+    //           , @RequestBody String desc
+            ) {
 
-      //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.execute(patientId, desc);
+       return workPlaceService.execute(patientId, "");
     }
 
 
     //////////////////////////////// CANCEL ////////////////////
 
-   @PostMapping("/cancel/{patientId}")
-   public Talon cancel(
-           @PathVariable(value = "patientId") String patientId,
-           @Valid @RequestBody String desc) {
+    @PostMapping("/cancel/{patientId}")
+    public Talon cancel(
+           @PathVariable(value = "patientId") String patientId
+        //   ,@Valid @RequestBody String desc
+    ) {
 
       //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.cancel(patientId, desc);
+       return workPlaceService.cancel(patientId, "");
     }
 
 
@@ -112,7 +102,4 @@ public class WorkPlaceController {
          return  userService.getCurrentUserInfo().getProcedureIds()
                  .contains(Integer.valueOf(procedureId));
     }
-
-
-
 }

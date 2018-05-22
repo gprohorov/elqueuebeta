@@ -53,7 +53,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         Patient patient = patientService.getPatientWithTalons(patientId);
 
-       Talon talon = patient.getTalons().stream()
+        Talon talon = patient.getTalons().stream()
                 .filter(tal->tal.getProcedure().getId()==procedureId)
                 .filter(tal->tal.getActivity().equals(Activity.ACTIVE))
                 .findFirst().orElse(null);
@@ -86,16 +86,18 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         talon.setActivity(Activity.EXECUTED);
         talon.setExecutionTime(LocalDateTime.now());
-        talon.setDesc(talon.getDate() + desc);
+        talon.setDesc(desc);
+        talon.setStatus(patient.getStatus());
+
         int price = this.getPrice(patient, procedure);
-        int sum= -1 * ( procedure.isZoned()? price*talon.getZones(): price);
+        int sum = -1 * ( procedure.isZoned()? price*talon.getZones(): price);
         talon.setSum(sum);
 
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
 
         tail.setPatientOnProcedure(null);
-        tail.setVacant(true);
+        this.setBusy(procedure.getId());
 
         return talonService.saveTalon(talon);
     }
@@ -142,10 +144,13 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         return talonService.saveTalon(talon);
     }
 
-    public boolean switchSemafor(int procedureId, boolean signal){
+    public void setReady(int procedureId) {
+        tailService.setSemaforSignal(procedureId, true);
+    }
 
-        tailService.setSemaforSignal(procedureId, signal);
-        return true;
+
+    public void setBusy(int procedureId) {
+        tailService.setSemaforSignal(procedureId, false);
     }
 
 

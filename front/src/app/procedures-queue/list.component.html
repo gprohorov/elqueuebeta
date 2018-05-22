@@ -3,23 +3,26 @@
         [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
     <ngx-masonry [options]="myOptions" [updateLayout]="updateMasonryLayout"
-        (layoutComplete)="updateMasonryLayout = false"> 
-        <ngx-masonry-item class="masonry-item" *ngFor="let group of items; let i = index">
-            <div title="{{group.procedureName}}" [ngClass]="{'masonry-header': true, 
-                'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}"
-                (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}">
-                <span class="badge pull-right">{{group.patients?.length}}</span>
-                <span class="masonry-header-title">{{group.procedureName}}</span>
-            </div>
-            <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
-                <div *ngFor="let item of group.patients">
-                    <span class="pull-right {{getTimeDiffClass(item.delta)}}">
-                        {{item.delta != null ? item.delta + ' хв.' : ''}}</span>
-                    <span class="masonry-list-item badge badge-{{Activity[item.activity].cssClass}}"
-                        title="{{item.person.fullName}} ({{Status[item.status].text}})">
-                        {{item.person.fullName}}</span>
-                </div>
-            </div>
-        </ngx-masonry-item>
-    </ngx-masonry>
+        (layoutComplete)="updateMasonryLayout = false"> <ngx-masonry-item
+        class="masonry-item" *ngFor="let group of items; let i = index">
+    <div
+        [ngClass]="{'masonry-header': true, 'bg-success': group.vacant, 'bg-danger': !group.vacant}"
+        (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
+        title="{{group.procedureName}}">
+        <span class="badge pull-right">{{group.patients?.length}}</span> <span
+            class="masonry-header-title">{{group.procedureName}}</span>
+    </div>
+    <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
+        <div *ngFor="let item of group.patients">
+            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                ? item.delta + ' хв.' : ''}}</span>
+            <span class="masonry-list-item">
+              <span class="badge badge-{{Activity[item.activity].cssClass}}"
+                    title="{{item.person.fullName}} ({{Status[item.status].text}})">
+                {{item.person.fullName}}
+              </span>
+            </span>
+        </div>
+    </div>
+    </ngx-masonry-item></ngx-masonry>
 </div>
