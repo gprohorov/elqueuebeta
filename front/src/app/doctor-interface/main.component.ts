@@ -25,9 +25,9 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.route.params.subscribe(params => { 
+        this.route.params.subscribe(params => {
             if (+params.id > 0) {
-                this.procedureId = +params.id; 
+                this.procedureId = +params.id;
                 this.load();
             }
         });
@@ -42,20 +42,30 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
         this.sub = this.service.getPatient(this.procedureId).subscribe(data => {
             this.item = data;
             this.loading = false;
-            if (this.item && this.item.active === 'ON_PROCEDURE') this.procedureStarted = true;
+            if (this.item && this.item.activity === 'ON_PROCEDURE') {
+                this.procedureStarted = true;
+            } else {
+                this.procedureStarted = false;
+            }
         });
     }
-    
-    startProcedure() {
-        this.sub = this.service.startProcedure(this.item.id, this.procedureId).subscribe(data => {
-            this.alertService.success('Процедуру розпочато.');
-            this.procedureStarted = true;
+
+    setReady() {
+        this.service.setReady(this.procedureId).subscribe(data => {
             this.load();
         });
     }
 
+    startProcedure() {
+        this.sub = this.service.startProcedure(this.item.id, this.procedureId)
+            .subscribe(data => {
+                this.alertService.success('Процедуру розпочато.');
+                this.load();
+            });
+    }
+
     cancelProcedure() {
-        this.sub = this.service.cancelProcedure(this.item.id, this.procedureId).subscribe(data => {
+        this.sub = this.service.cancelProcedure(this.item.id).subscribe(data => {
             this.alertService.success('Процедуру скасовано.');
             this.procedureStarted = false;
             this.load();
@@ -63,11 +73,11 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
-        this.sub = this.service.executeProcedure(this.item.id, this.procedureId).subscribe(data => {
+        this.sub = this.service.executeProcedure(this.item.id).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.procedureStarted = false;
             this.load();
         });
     }
-    
+
 }

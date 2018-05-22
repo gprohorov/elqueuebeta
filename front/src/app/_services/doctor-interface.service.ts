@@ -11,14 +11,21 @@ import { Patient } from '../_models/index';
 export class DoctorInterfaceService {
     // Define the routes we are going to interact with
     private getPatientUrl = config.api_path + '/workplace/first/';
+    private setReadyUrl = config.api_path + '/workplace/setready/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
-    
+
     constructor(private http: HttpClient) { }
 
     getPatient(procedureId: number) {
-        return this.http.get(this.getPatientUrl + procedureId).pipe(catchError(this.handleError));
+        return this.http.get(this.getPatientUrl + procedureId)
+            .pipe(catchError(this.handleError));
+    }
+
+    setReady(procedureId: number) {
+        return this.http.get(this.setReadyUrl + procedureId)
+            .pipe(catchError(this.handleError));
     }
 
     startProcedure(patientID: string, procedureID: number) {
@@ -27,18 +34,18 @@ export class DoctorInterfaceService {
             .pipe(catchError(this.handleError));
     }
 
-    cancelProcedure(patientID: string, procedureID: number) {
+    cancelProcedure(patientID: string) {
         return this.http
-            .get(this.cancelProcedureUrl + patientID + '/' + procedureID)
+            .post(this.cancelProcedureUrl + patientID)
             .pipe(catchError(this.handleError));
     }
 
-    executeProcedure(patientID: string, procedureID: number) {
+    executeProcedure(patientID: string) {
         return this.http
-            .get(this.executeProcedureUrl + patientID + '/' + procedureID)
+            .post(this.executeProcedureUrl + patientID)
             .pipe(catchError(this.handleError));
     }
-    
+
     // Implement a method to handle errors if any
     private handleError(err: HttpErrorResponse | any) {
         console.error('An error occurred', err);

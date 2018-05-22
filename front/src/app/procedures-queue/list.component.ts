@@ -15,7 +15,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     loading = false;
 
     sub: Subscription;
-    items: Patient[] = [];
+    items: any[] = [];
     Activity = Activity;
     Status = Status;
     updateMasonryLayout = false;

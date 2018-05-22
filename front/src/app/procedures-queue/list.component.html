@@ -4,7 +4,7 @@
         (layoutComplete)="updateMasonryLayout = false"> <ngx-masonry-item
         class="masonry-item" *ngFor="let group of items; let i = index">
     <div
-        [ngClass]="{'masonry-header': true, 'bg-success': group.vacancies > 0, 'bg-danger': group.vacancies === 0}"
+        [ngClass]="{'masonry-header': true, 'bg-success': group.vacant, 'bg-danger': !group.vacant}"
         (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
         title="{{group.procedureName}}">
         <span class="badge pull-right">{{group.patients?.length}}</span> <span
