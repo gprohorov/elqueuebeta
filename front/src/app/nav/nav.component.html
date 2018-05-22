@@ -2,27 +2,35 @@
     <a class="navbar-brand" href="">Меднеан</a>
     <!-- Doctor interface section START -->
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
+        <b class="dropdown-item text-nowrap text-white font-weight-bold active"
+            routerLinkActive="active">{{procedureName}}</b>
         <div class="nav-item dropdown" ngbDropdown>
             <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Процедури</a>
             <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                <a class="dropdown-item text-nowrap" routerLink="/doctor-interface/{{procedureId}}"
-                    routerLinkActive="active" *ngFor="let procedureId of user.info.procedureIds">{{getProcedureName(procedureId)}}</a>
+                <a class="dropdown-item text-nowrap"
+                    [routerLink]="['/doctor-interface/' + procedureId]" routerLinkActive="active"
+                    *ngFor="let procedureId of user.info.procedureIds">{{getProcedureName(procedureId)}}</a>
             </div>
         </div>
     </div>
     <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
-        <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга на процедури</a>
-            <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти на сьогодні</a>
-            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">Список пацієнтів</a>
+        <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга
+            на процедури</a>
+        <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти
+            на сьогодні</a>
+        <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">Список
+            пацієнтів</a>
         <div class="nav-item dropdown" ngbDropdown>
             <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Налаштування</a>
             <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Список лікарів</a>
-                <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Список процедур</a>
+                <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Список
+                    лікарів</a>
+                <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Список
+                    процедур</a>
                 <a class="dropdown-item badge-danger" *ngxPermissionsOnly="['ROLE_SUPERADMIN']"
                     routerLink="" (click)="resetDB()">Reset DB</a>
             </div>
