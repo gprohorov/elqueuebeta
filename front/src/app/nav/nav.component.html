@@ -1,34 +1,37 @@
-﻿<nav class="navbar navbar-expand navbar-light bg-light mb-3">
+﻿<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="">Меднеан</a>
     <!-- Doctor interface section START -->
-    <ul class="navbar-nav" *ngxPermissionsOnly="['ROLE_DOCTOR']">
-        <li class="nav-item" *ngFor="let procedureId of user.info.procedureIds"><a
-            class="dropdown-item" routerLink="/doctor-interface/{{procedureId}}"
-            routerLinkActive="active">{{getProcedureName(procedureId)}}</a></li>
-    </ul>
-    <!-- Doctor interface section END -->
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']"><a
-            class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга
-                на процедури</a></li>
-        <li class="nav-item" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']"><a
-            class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти
-                на сьогодні</a></li>
-        <li class="nav-item" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']"><a
-            class="dropdown-item" routerLink="/patients" routerLinkActive="active">База
-                пацієнтів</a></li>
-        <li class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
+        <div class="nav-item dropdown" ngbDropdown>
             <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Довідники</a>
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Процедури</a>
             <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Лікарі</a>
-                <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Процедури</a>
+                <a class="dropdown-item text-nowrap" routerLink="/doctor-interface/{{procedureId}}"
+                    routerLinkActive="active" *ngFor="let procedureId of user.info.procedureIds">{{getProcedureName(procedureId)}}</a>
+            </div>
+        </div>
+    </div>
+    <!-- Doctor interface section END -->
+    <!-- Administrator interface section START -->
+    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+        <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга на процедури</a>
+            <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти на сьогодні</a>
+            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">Список пацієнтів</a>
+        <div class="nav-item dropdown" ngbDropdown>
+            <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Налаштування</a>
+            <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Список лікарів</a>
+                <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Список процедур</a>
                 <a class="dropdown-item badge-danger" *ngxPermissionsOnly="['ROLE_SUPERADMIN']"
                     routerLink="" (click)="resetDB()">Reset DB</a>
             </div>
-        </li>
-    </ul>
-    <ul class="navbar-nav">
-        <li class="dropdown-item"><a class="dropdown-item" routerLink="/login"
-            title="{{user.info?.speciality}} - {{user.info?.fullName}}">Вихід</a></li>
-    </ul>
+        </div>
+    </div>
+    <!-- Administrator interface section END -->
+    <div class="navbar-nav">
+        <a class="dropdown-item" routerLink="/login">
+            Вихід <small>({{user.info?.fullName}})</small>
+        </a>
+    </div>
 </nav>

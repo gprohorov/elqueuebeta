@@ -15,15 +15,15 @@
                     <div class="form-group radio">
                         <label class="mr-3"><input type="radio" name="gender" value="true"
                             [(ngModel)]="model?.person.gender" #gender="ngModel">чол.</label> <label><input
-                            type="radio" name="gender" value="false" [(ngModel)]="model?.person.gender"
-                            #gender="ngModel">жін.</label>
+                            type="radio" name="gender" value="false"
+                            [(ngModel)]="model?.person.gender" #gender="ngModel">жін.</label>
                     </div>
                 </div>
                 <div class="col-sm-8">
                     <div class="form-group">
                         <label for="dateOfBirth">Дата народження</label> <input type="date"
-                            class="form-control" name="dateOfBirth" [(ngModel)]="model?.person.dateOfBirth"
-                            #dateOfBirth="ngModel" />
+                            class="form-control" name="dateOfBirth"
+                            [(ngModel)]="model?.person.dateOfBirth" #dateOfBirth="ngModel" />
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
             </div>
             <div class="form-group">
                 <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
-                <img *ngIf="loading" alt="loading" src="/assets/loading.gif"> <a
-                    [routerLink]="['/patients']" class="btn btn-link">Скасувати</a>
+                <button [routerLink]="['/patients']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
             </div>
         </form>
     </div>

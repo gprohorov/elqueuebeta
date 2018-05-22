@@ -31,8 +31,8 @@
             </div>
             <div class="form-group">
                 <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
-                <img *ngIf="loading" alt="loading" src="/assets/loading.gif"> <a
-                    [routerLink]="['/procedures']" class="btn btn-link">Скасувати</a>
+                <button [routerLink]="['/procedures']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
             </div>
         </form>
     </div>

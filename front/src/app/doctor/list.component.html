@@ -1,40 +1,38 @@
-﻿<div class="row">
-  <div class="col">
-    <div class="form-row mb-4">
-      <div class="col-auto">
+﻿<div class="row mb-3">
+    <div class="col-auto">
         <h3>Список лікарів</h3>
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-success" routerLink="/doctor-form">Створити</button>
-      </div>
-      <div class="col-auto mr-auto">
-        <img *ngIf="loading" alt="loading" src="/assets/loading.gif">
-      </div>
     </div>
-    <div class="content table-responsive table-full-width">
-      <table class="table table-sm">
+    <div class="col-auto mr-auto">
+        <button class="btn btn-success" [routerLink]="['/doctor-form']">Створити</button>
+    </div>
+    <div class="col-auto">
+        <button [disabled]="loading" (click)="load()" title="Обновити"
+            [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
+    </div>
+</div>
+<div class="content table-responsive table-full-width">
+    <table class="table table-sm">
         <thead class="thead-light">
-          <tr>
-            <th [style.min-width.px]="300">ПІБ</th>
-            <th>Телефон</th>
-            <th>Спеціальність</th>
-            <th [style.width.px]="300">Процедури</th>
-            <th></th>
-          </tr>
+            <tr>
+                <th [style.min-width.px]="300">ПІБ</th>
+                <th>Телефон</th>
+                <th>Спеціальність</th>
+                <th [style.width.px]="300">Процедури</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of items">
-            <td>{{item.fullName}}</td>
-            <td>{{item.cellPhone}}</td>
-            <td>{{item.speciality}}</td>
-            <td>{{getProcedures(item.procedureIds)}}</td>
-            <td align="right">
-              <button class="btn btn-primary btn-sm" [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
-              <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.fullName)">Видалити</button>
-            </td>
-          </tr>
+            <tr *ngFor="let item of items">
+                <td>{{item.fullName}}</td>
+                <td>{{item.cellPhone}}</td>
+                <td>{{item.speciality}}</td>
+                <td>{{getProcedures(item.procedureIds)}}</td>
+                <td align="right">
+                    <button class="btn btn-primary btn-sm"
+                        [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
+                    <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.fullName)">Видалити</button>
+                </td>
+            </tr>
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
 </div>

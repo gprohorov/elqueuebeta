@@ -1,54 +1,53 @@
-﻿<div class="row">
-  <div class="col">
-    <div class="form-row mb-4">
-      <div class="col-auto">
+﻿<div class="row mb-3">
+    <div class="col-auto">
         <h3>Список процедур</h3>
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-success" routerLink="/procedure-form">Створити</button>
-      </div>
-      <div class="col-auto mr-auto">
-        <img *ngIf="loading" alt="loading" src="/assets/loading.gif">
-      </div>
-    </div>    
-    <div class="content table-responsive table-full-width">
-      <table class="table table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th></th>
-            <th>Назва</th>
-            <th>Кабінет</th>
-            <th *ngFor="let status of Statuses">{{Status[status].text}}</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let item of items; let i = index" (click)="rows[i]=!rows[i]">
-          <tr>
-            <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-            <td>{{item.name}}</td>
-            <td>{{item.cabinet}}</td>
-            <td *ngFor="let status of Statuses">{{item[status]}}</td>
-            <td align="right">
-              <button class="btn btn-primary btn-sm" [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
-              <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.name)">Видалити</button>
-            </td>
-          </tr>
-          <tr [hidden]="!rows[i]">
-            <td colspan="100">
-              <div class="card">
-                <div class="card-header">
-                  <div class="row">
-                    <h4 class="col-auto mr-auto">Карта процедури</h4>
-                  </div>
-                </div>
-                <div class="card-body">
-                  В розробці
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-  </div>
+    <div class="col-auto mr-auto">
+        <button class="btn btn-success" [routerLink]="['/procedure-form']">Створити</button>
+    </div>
+    <div class="col-auto">
+        <button [disabled]="loading" (click)="load()" title="Обновити"
+            [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
+    </div>
+</div>
+<div class="table-responsive table-full-width">
+    <table class="table table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>Назва</th>
+                <th>Кабінет</th>
+                <th *ngFor="let status of Statuses">{{Status[status].text}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let item of items; let i = index">
+            <tr (click)="rows[i]=!rows[i]">
+                <td><i
+                    [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
+                <td>{{item.name}}</td>
+                <td>{{item.cabinet}}</td>
+                <td *ngFor="let status of Statuses">{{item[status]}}</td>
+                <td align="right">
+                    <button class="btn btn-primary btn-sm"
+                        [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
+                    <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.name)">Видалити</button>
+                </td>
+            </tr>
+            <tr [hidden]="!rows[i]">
+            <!-- 
+                <td colspan="100">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <h4 class="col-auto mr-auto">Карта процедури</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">В розробці</div>
+                    </div>
+                </td>
+             -->    
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -2,7 +2,7 @@
 	<div class="header">
 	  <h1 class="title">
 	    Інтерфейс лікаря
-	    <img *ngIf="loading" alt="loading" src="/assets/loading.gif">
+	    <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
 	  </h1>
 	  <h4 class="title">Діагностика</h4>
 	</div>

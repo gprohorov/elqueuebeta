@@ -50,7 +50,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
             data: { patientId: patientId, patientName: patient.person.fullName }
         });
     }
-
+    
     load(search: string = '') {
         this.loading = true;
         this.sub = this.patientService.getAll(search).subscribe(data => {
