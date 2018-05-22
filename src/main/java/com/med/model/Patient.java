@@ -26,6 +26,7 @@ public class Patient { // implements Comparable<Patient> {
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
     private Status status = Status.SOCIAL;
+    private int balance;
 
 
 
@@ -54,6 +55,14 @@ public class Patient { // implements Comparable<Patient> {
     public Patient(Person person) {
         this.talons = new ArrayList<>();
         this.person = person;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public String getId() {
@@ -209,4 +218,17 @@ public class Patient { // implements Comparable<Patient> {
     }
 */
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id='" + id + '\'' +
+                ", person=" + person +
+                ", therapy=" + therapy +
+                ", talons=" + talons +
+                ", lastActivity=" + lastActivity +
+                ", startActivity=" + startActivity +
+                ", status=" + status +
+                ", balance=" + balance +
+                '}';
+    }
 }

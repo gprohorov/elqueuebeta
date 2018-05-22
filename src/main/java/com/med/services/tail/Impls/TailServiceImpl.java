@@ -40,7 +40,8 @@ public class TailServiceImpl implements ITailService {
 
     @PostConstruct
     void init() {
-        procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false) );
+        procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
+        this.setSemaforSignal(1,true);
     }
 
     public HashMap<Integer, Boolean> getSemafor() {

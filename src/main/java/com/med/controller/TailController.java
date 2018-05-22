@@ -24,6 +24,10 @@ public class TailController {
 
     @RequestMapping("/list")
     public List<Tail> showTails(){
+
+        Tail tail= service.getTails().stream()
+                .filter(tail1 -> tail1.getProcedureId()==1)
+                .findFirst().orElse(null);
         return service.getTails();
     }
 /*
