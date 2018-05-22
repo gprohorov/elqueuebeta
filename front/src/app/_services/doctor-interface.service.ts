@@ -36,13 +36,13 @@ export class DoctorInterfaceService {
 
     cancelProcedure(patientID: string) {
         return this.http
-            .post(this.cancelProcedureUrl + patientID)
+            .post(this.cancelProcedureUrl + patientID, {})
             .pipe(catchError(this.handleError));
     }
 
     executeProcedure(patientID: string) {
         return this.http
-            .post(this.executeProcedureUrl + patientID)
+            .post(this.executeProcedureUrl + patientID, {})
             .pipe(catchError(this.handleError));
     }
 
