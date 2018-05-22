@@ -57,7 +57,7 @@ export class NavComponent implements OnInit, OnDestroy {
 
     getProcedureName(id: number): string {
         let procedure = this.procedures.find(x => x.id == id);
-        return procedure != null ? procedure.name : 'not found';
+        return procedure != null ? procedure.name : 'Процедура не вибрана...';
     }
 
     setProcedureName() {
