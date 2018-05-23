@@ -17,7 +17,9 @@
                 <th></th>
                 <th>Назва</th>
                 <th>Кабінет</th>
-                <th *ngFor="let status of Statuses">{{Status[status].text}}</th>
+                <th class="text-nowrap">К-сть місць</th>
+                <th>Зональна</th>
+                <th *ngFor="let status of Statuses" class="text-nowrap">{{Status[status].text}}</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,11 +29,12 @@
                     [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
                 <td>{{item.name}}</td>
                 <td>{{item.cabinet}}</td>
+                <td>{{item.number}}</td>
+                <td>{{item.zoned == true ? 'Так' : 'Ні'}}</td>
                 <td *ngFor="let status of Statuses">{{item[status]}}</td>
                 <td align="right">
                     <button class="btn btn-primary btn-sm"
                         [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
-                    <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.name)">Видалити</button>
                 </td>
             </tr>
             <tr [hidden]="!rows[i]">

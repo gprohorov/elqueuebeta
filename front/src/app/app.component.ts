@@ -3,11 +3,9 @@ import { AuthService } from './_services/index';
 import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
-    moduleId: module.id,
     selector: 'app-root',
     templateUrl: 'app.component.html'
 })
-
 export class AppComponent implements OnInit {
 
     constructor(private permissionsService: NgxPermissionsService, public authService: AuthService) { }
