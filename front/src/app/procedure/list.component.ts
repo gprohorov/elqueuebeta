@@ -6,7 +6,6 @@ import { ProcedureService, AlertService } from '../_services/index';
 import { Status } from '../_storage/index';
 
 @Component({
-  moduleId: module.id,
   templateUrl: './list.component.html'
 })
 export class ProcedureListComponent implements OnInit {
@@ -27,10 +26,6 @@ export class ProcedureListComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-  }
-
-  delete(id: number, name: string) {
-    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
   }
 
   load(search: string = '') {

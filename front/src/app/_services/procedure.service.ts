@@ -13,7 +13,6 @@ export class ProcedureService {
   private listUrl   = config.api_path + '/procedure/list/';
   private getUrl    = config.api_path + '/procedure/get/';
   private saveUrl = config.api_path + '/procedure/save';
-  private deleteUrl = config.api_path + '/procedure/delete/';
 
   constructor(private http: HttpClient) { }
 
@@ -39,14 +38,6 @@ export class ProcedureService {
       .pipe(
         catchError(this.handleError)
       );
-  }
-
-  delete(id: number) {
-    return this.http
-      .post(this.deleteUrl + id, {})
-      .pipe(
-        catchError(this.handleError)
-     );
   }
 
   // Implement a method to handle errors if any

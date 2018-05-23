@@ -22,7 +22,7 @@
             на сьогодні</a>
         <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">Список
             пацієнтів</a>
-        <div class="nav-item dropdown" ngbDropdown>
+        <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
             <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Налаштування</a>
             <div class="dropdown-menu bg-light" ngbDropdownMenu>
@@ -30,8 +30,7 @@
                     лікарів</a>
                 <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Список
                     процедур</a>
-                <a class="dropdown-item badge-danger" *ngxPermissionsOnly="['ROLE_SUPERADMIN']"
-                    routerLink="" (click)="resetDB()">Reset DB</a>
+                <a class="dropdown-item badge-danger" routerLink="" (click)="resetDB()">Reset DB</a>
             </div>
         </div>
     </div>
