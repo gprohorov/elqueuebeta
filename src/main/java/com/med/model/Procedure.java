@@ -24,6 +24,7 @@ public class Procedure {
     @JsonProperty("SOCIAL")
     private int SOCIAL;
     private boolean zoned;
+    private int number;
     private Card card;
 
     public Procedure() {
@@ -39,6 +40,19 @@ public class Procedure {
         this.ALL_INCLUSIVE = ALL_INCLUSIVE;
         this.SOCIAL = SOCIAL;
         this.zoned = zoned;
+        this.card = card;
+    }
+
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, int number, Card card) {
+        this.name = name;
+        this.cabinet = cabinet;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
+        this.zoned = zoned;
+        this.number = number;
         this.card = card;
     }
 
@@ -159,6 +173,14 @@ public class Procedure {
         this.card = card;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,4 +197,20 @@ public class Procedure {
     }
 
 
+    @Override
+    public String toString() {
+        return "Procedure{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cabinet=" + cabinet +
+                ", FOREIGN=" + FOREIGN +
+                ", VIP=" + VIP +
+                ", BUSINESS=" + BUSINESS +
+                ", ALL_INCLUSIVE=" + ALL_INCLUSIVE +
+                ", SOCIAL=" + SOCIAL +
+                ", zoned=" + zoned +
+                ", number=" + number +
+                ", card=" + card +
+                '}';
+    }
 }

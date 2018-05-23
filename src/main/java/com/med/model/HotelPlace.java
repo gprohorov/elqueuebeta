@@ -8,6 +8,16 @@ public class HotelPlace {
     private  int name;
     private Chamber chamber;
     private int price;
+    private boolean vacant;
+    private Patient patient;
+
+    public boolean isVacant() {
+        return vacant;
+    }
+
+    public void setVacant(boolean vacant) {
+        this.vacant = vacant;
+    }
 
     public HotelPlace() {
     }
