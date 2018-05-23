@@ -13,15 +13,15 @@
             <div class="row">
                 <div class="col-8">
                     <p>Тут діагноз та примітки до процедури</p>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
+                    <textarea class="form-control" id="notes" rows="10"></textarea>
                 </div>
                 <div class="col-4">
                     <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="executeProcedure()">
+                        (click)="executeProcedure('')">
                         <h1 class="font-weight-bold">ЗАВЕРШИТИ<br/>ПРОЦЕДУРУ</h1>
                     </button>
                     <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="cancelProcedure()">
+                        (click)="cancelProcedure('')">
                         <h1 class="font-weight-bold">СКАCУВАТИ<br/>ПРОЦЕДУРУ</h1>
                     </button>
                 </div>

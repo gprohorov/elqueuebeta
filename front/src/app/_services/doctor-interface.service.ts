@@ -34,15 +34,15 @@ export class DoctorInterfaceService {
             .pipe(catchError(this.handleError));
     }
 
-    cancelProcedure(patientID: string) {
+    cancelProcedure(patientID: string, data: any) {
         return this.http
-            .post(this.cancelProcedureUrl + patientID, {})
+            .post(this.cancelProcedureUrl + patientID, data)
             .pipe(catchError(this.handleError));
     }
 
-    executeProcedure(patientID: string) {
+    executeProcedure(patientID: string, data: any) {
         return this.http
-            .post(this.executeProcedureUrl + patientID, {})
+            .post(this.executeProcedureUrl + patientID, data)
             .pipe(catchError(this.handleError));
     }
 

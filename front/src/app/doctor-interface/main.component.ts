@@ -68,9 +68,9 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
         });
     }
 
-    cancelProcedure() {
+    cancelProcedure(data) {
         if (confirm('Скасувати процедуру ?')) {
-            this.subProcedure = this.service.cancelProcedure(this.item.id).subscribe(data => {
+            this.subProcedure = this.service.cancelProcedure(this.item.id, data).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
                 this.procedureStarted = false;
                 this.load();
@@ -78,8 +78,8 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
         }
     }
 
-    executeProcedure() {
-        this.subProcedure = this.service.executeProcedure(this.item.id).subscribe(data => {
+    executeProcedure(data) {
+        this.subProcedure = this.service.executeProcedure(this.item.id, data).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.procedureStarted = false;
             this.load();
