@@ -194,13 +194,15 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     tails.stream().forEach(tail -> {
 
-        Patient first = tail.getFirst();
+        Patient first = tail.getPatients().stream()
+                .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
+                .findFirst().orElse(null);
         List<Patient> patients = tail.getPatients()
                 .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
                 .collect(Collectors.toList());
 
         tail.setPatients(patients);
-        tail.getPatients().add(first);
+        if (patients != null) {tail.getPatients().add(first);}
             }
     );
 
