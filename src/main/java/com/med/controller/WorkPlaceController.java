@@ -113,7 +113,7 @@ public class WorkPlaceController {
 
 
     @GetMapping("/patient/{procedureId}/{patientId}")
-    public HashMap<Talon,Patient> getTalonAndPatient(
+    public Patient getTalonAndPatient(
             @PathVariable(value = "procedureId") int procedureId,
             @PathVariable(value = "patientId") String patientId) {
 
