@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 17.05.18.
@@ -154,6 +155,43 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     public void setBusy(int procedureId) {
         tailService.setSemaforSignal(procedureId, false);
     }
+
+    private List<Talon> hotTalons(int doctorId){
+
+        List<Integer> procedureIds = doctorService.getDoctor(doctorId).getProcedureIds();
+        List<Talon> hotTalons = talonService.getTalonsForToday().stream()
+                .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+                .filter(talon -> procedureIds.contains(talon.getProcedure().getId()))
+                .collect(Collectors.toList());
+
+        return hotTalons;
+    }
+
+    public List<Patient> hotPatients(int doctorId){
+
+        return this.hotTalons(doctorId).stream().map(talon ->
+                    patientService.getPatient(talon.getPatientId()))
+                .collect(Collectors.toList());
+    }
+
+    public Talon assist(int doctorId, String patientId){
+
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
