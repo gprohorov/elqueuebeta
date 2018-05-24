@@ -41,10 +41,30 @@ public class TailServiceImpl implements ITailService {
     @PostConstruct
     void init() {
         procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
-        this.setSemaforSignal(1,true);
+        //this.setSemaforSignal(1,true);
     }
 
     public HashMap<Integer, Boolean> getSemafor() {
+
+       semafor.entrySet().stream().forEach(entry->
+               {
+                   if (
+                          talonService.getTalonsForToday().stream()
+                         .filter(talon -> talon.getProcedure().getId() == entry.getKey())
+                         .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+                           .count() <  procedureService.getProcedure(entry.getKey()).getNumber()
+                           )  {
+
+                                 entry.setValue(true);
+                   } else {
+
+                       entry.setValue(false) ;
+                   }
+               }
+
+
+       );
+
         return semafor;
     }
 
