@@ -1,19 +1,5 @@
 ﻿<nav class="navbar navbar-expand navbar-light bg-light">
     <a class="navbar-brand" href="">Меднеан</a>
-    <!-- Doctor interface section START -->
-    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
-        <div class="nav-item dropdown" ngbDropdown>
-            <a class="dropdown-item dropdown-toggler text-white font-weight-bold active"
-                [ngStyle]="{'cursor': 'pointer'}" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" ngbDropdownToggle>{{procedureName}}</a>
-            <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                <a class="dropdown-item text-nowrap"
-                    [routerLink]="['/doctor-interface/' + procedureId]" routerLinkActive="active"
-                    *ngFor="let procedureId of user.info.procedureIds">{{getProcedureName(procedureId)}}</a>
-            </div>
-        </div>
-    </div>
-    <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
         <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга
@@ -35,7 +21,7 @@
         </div>
     </div>
     <!-- Administrator interface section END -->
-    <div class="navbar-nav">
+    <div class="navbar-nav ml-auto">
         <a class="dropdown-item" routerLink="/login">
             Вихід <small>({{user.info?.fullName}})</small>
         </a>

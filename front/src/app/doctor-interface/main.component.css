@@ -1,0 +1,54 @@
+﻿.masonry-item {
+    width: 300px;
+    box-shadow: 0px 0px 10px #222;
+    -moz-box-shadow: 0px 0px 10px #222;
+    -webkit-box-shadow: 0px 0px 10px #222;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #fff;
+    margin: 10px auto;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+}
+
+.masonry-header {
+    padding: 3px 8px;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.masonry-body {
+    padding: 5px;
+    height: 100px;
+    overflow-y: hidden;
+}
+
+.masonry-body.expanded {
+    height: 100%;
+}
+
+.masonry-list-item {
+    display: inline-block;
+    max-width: 230px;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    vertical-align: baseline;
+}
+
+.masonry-header-title {
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-overflow: ellipsis;
+}
