@@ -1,89 +1,65 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { switchMap } from 'rxjs/operators';
 
+import { NgxMasonryOptions } from '../_helpers/index';
 import { Patient } from '../_models/index';
+import { Status, Activity } from '../_storage/index';
 import { AlertService, DoctorInterfaceService } from '../_services/index';
 
 @Component({
-    templateUrl: './main.component.html'
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.css']
 })
 export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
 
     loading = false;
+    
     sub: Subscription;
-    subProcedure: Subscription;
-    subPatient: Subscription;
+    items: any[] = [];
+    Activity = Activity;
+    Status = Status;
+    updateMasonryLayout = false;
 
-    item: any;
-    procedureId: number;
-    procedureStarted = false;
+    public myOptions: NgxMasonryOptions = {
+        transitionDuration: '0.2s',
+        columnWidth: 300,
+        fitWidth: true,
+        horizontalOrder: true,
+        gutter: 20
+    };
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private alertService: AlertService,
         private service: DoctorInterfaceService
     ) { }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
-            if (+params.id > 0) {
-                this.procedureId = +params.id;
-                this.load();
-            }
-        });
+        this.load();
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
-        if (this.subProcedure) this.subProcedure.unsubscribe();
-        if (this.subPatient) this.subPatient.unsubscribe();
+    }
+
+    getTimeDiffClass(v: number) {
+        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
+    }
+
+    toggleGroup(item: any) {
+        item.expanded = !item.expanded;
+        this.updateMasonryLayout = true;
     }
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.procedureId).subscribe(data => {
-            this.item = data;
-            this.loading = false;
-            if (this.item && this.item.activity === 'ON_PROCEDURE') {
-                this.procedureStarted = true;
-            } else {
-                this.procedureStarted = false;
-            }
-        });
-    }
-
-    setReady() {
-        this.subProcedure = this.service.setReady(this.procedureId).subscribe(data => {
-            this.load();
-        });
-    }
-
-    startProcedure() {
-        this.subProcedure = this.service.startProcedure(this.item.id, this.procedureId).subscribe(data => {
-            this.alertService.success('Процедуру розпочато.');
-            this.load();
-        });
-    }
-
-    cancelProcedure(data) {
-        if (confirm('Скасувати процедуру ?')) {
-            this.subProcedure = this.service.cancelProcedure(this.item.id, data).subscribe(data => {
-                this.alertService.success('Процедуру скасовано.');
-                this.procedureStarted = false;
-                this.load();
+        this.sub = this.service.getTails().subscribe(
+            data => {
+                this.items = data;
+                this.loading = false;
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
             });
-        }
     }
-
-    executeProcedure(data) {
-        this.subProcedure = this.service.executeProcedure(this.item.id, data).subscribe(data => {
-            this.alertService.success('Процедуру завершено.');
-            this.procedureStarted = false;
-            this.load();
-        });
-    }
-
 }

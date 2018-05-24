@@ -10,6 +10,7 @@ import { Patient } from '../_models/index';
 @Injectable()
 export class DoctorInterfaceService {
     // Define the routes we are going to interact with
+    private getTailsUrl = config.api_path + '/workplace/tails/';
     private getPatientUrl = config.api_path + '/workplace/first/';
     private setReadyUrl = config.api_path + '/workplace/setready/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
@@ -17,6 +18,11 @@ export class DoctorInterfaceService {
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
 
     constructor(private http: HttpClient) { }
+
+    getTails() {
+        return this.http.get(this.getTailsUrl)
+            .pipe(catchError(this.handleError));
+    }
 
     getPatient(procedureId: number) {
         return this.http.get(this.getPatientUrl + procedureId)

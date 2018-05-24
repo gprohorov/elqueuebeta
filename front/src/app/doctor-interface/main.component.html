@@ -1,41 +1,28 @@
-﻿<div class="content" *ngIf="item?.person">
-    <h4 class="title">{{item.person.fullName}}</h4>
-    <div [ngSwitch]="procedureStarted">
-        <div *ngSwitchCase="false">
-            <div class="row">
-                <div class="col-12 mt-3">
-                    <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="startProcedure()"><h1 class="display-4 font-weight-bold">ПОЧАТИ ПРОЦЕДУРУ</h1></button>
-                </div>
-            </div>
-        </div>
-        <div *ngSwitchCase="true">
-            <div class="row">
-                <div class="col-8">
-                    <p>Тут діагноз та примітки до процедури</p>
-                    <textarea class="form-control" id="notes" rows="10"></textarea>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="executeProcedure('')">
-                        <h3 class="font-weight-bold">ЗАВЕРШИТИ<br/>ПРОЦЕДУРУ</h3>
-                    </button>
-                    <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="cancelProcedure('')">
-                        <h3 class="font-weight-bold">СКАCУВАТИ<br/>ПРОЦЕДУРУ</h3>
-                    </button>
-                </div>
-            </div>
+﻿<div class="content">
+    <button
+        [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+    <ngx-masonry [options]="myOptions" [updateLayout]="updateMasonryLayout"
+        (layoutComplete)="updateMasonryLayout = false"> <ngx-masonry-item
+        class="masonry-item" *ngFor="let group of items; let i = index">
+    <div
+        [ngClass]="{'masonry-header': true, 'bg-success': group.vacant, 'bg-danger': !group.vacant}"
+        (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
+        title="{{group.procedureName}}">
+        <span class="badge pull-right">{{group.patients?.length}}</span> <span
+            class="masonry-header-title">{{group.procedureName}}</span>
+    </div>
+    <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
+        <div *ngFor="let item of group.patients">
+            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                ? item.delta + ' хв.' : ''}}</span>
+            <span class="masonry-list-item">
+              <span class="badge badge-{{Activity[item.activity].cssClass}}"
+                    title="{{item.person.fullName}} ({{Status[item.status].text}})">
+                {{item.person.fullName}}
+              </span>
+            </span>
         </div>
     </div>
-</div>
-
-<div class="content" *ngIf="!item?.person && procedureId">
-    <div class="row">
-        <div class="col-12">
-            <div class="error">Пацієнтів немає.</div>
-            <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                  (click)="setReady()"><h1 class="display-4 font-weight-bold">ГОТОВИЙ ДО ПРИЙОМУ</h1></button>
-        </div>
-    </div>
+    </ngx-masonry-item></ngx-masonry>
 </div>
