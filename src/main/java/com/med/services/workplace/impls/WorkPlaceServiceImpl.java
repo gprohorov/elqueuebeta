@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -210,6 +211,17 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
+    public HashMap<Talon, Patient> getTalonAndPatient(String patientId, int procedureId) {
 
+        Patient patient = patientService.getPatient(patientId);
+        Talon talon = talonService.getTalonsForToday().stream()
+                .filter(tal-> tal.getPatientId().equals(patientId))
+                .filter(tal->tal.getProcedure().getId()==procedureId)
+                .filter(tal->tal.getActivity().equals(Activity.ON_PROCEDURE))
+                .findFirst().orElse(null);
+        HashMap<Talon, Patient> map = new HashMap<>();
+        map.put(talon,patient);
 
+       return map;
+    }
 }

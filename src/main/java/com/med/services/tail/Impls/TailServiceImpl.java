@@ -46,7 +46,12 @@ public class TailServiceImpl implements ITailService {
 
     public HashMap<Integer, Boolean> getSemafor() {
 
-       semafor.entrySet().stream().forEach(entry->
+
+
+
+/*
+
+     semafor.entrySet().stream().forEach(entry->
                {
                    if (
                           talonService.getTalonsForToday().stream()
@@ -61,9 +66,9 @@ public class TailServiceImpl implements ITailService {
                        entry.setValue(false) ;
                    }
                }
-
-
        );
+*/
+
 
         return semafor;
     }

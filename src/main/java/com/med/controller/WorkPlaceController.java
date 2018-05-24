@@ -1,6 +1,5 @@
 package com.med.controller;
 
-import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Tail;
 import com.med.model.Talon;
@@ -10,12 +9,12 @@ import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
-
 @RestController
 @RequestMapping("/api/workplace")
 @CrossOrigin("*")
@@ -39,13 +38,12 @@ public class WorkPlaceController {
 
     @Autowired
     UserService userService;
-
+/*
     @RequestMapping("/first/{procedureId}")
     public Patient getFirstPatientInTail(
            @PathVariable(value = "procedureId") int procedureId) {
         return tailService.getFirstPatient(procedureId);
     }
-
 
     @RequestMapping("/setready/{procedureId}")
     public Boolean setReady(@PathVariable(value = "procedureId") int procedureId) {
@@ -56,6 +54,7 @@ public class WorkPlaceController {
        }
        return null;
     }
+*/
 
     /////////////////////////// START////////////////////////////
 
@@ -98,17 +97,31 @@ public class WorkPlaceController {
 
 
 
-    private boolean isAlowed(int procedureId, int doctorId){
+    private boolean isAlowed(int procedureId, int doctorId) {
 
          return  userService.getCurrentUserInfo().getProcedureIds()
                  .contains(Integer.valueOf(procedureId));
     }
-    @RequestMapping("/tails")
-    public List<Tail> getHotTails(){
 
-                int doctorId = userService.getCurrentUserInfo().getId();
-                return workPlaceService.getTailsForDoctor( doctorId);
+
+    @RequestMapping("/tails")
+    public List<Tail> getHotTails() {
+
+        int doctorId = userService.getCurrentUserInfo().getId();
+        return workPlaceService.getTailsForDoctor( doctorId);
     }
+
+
+    @GetMapping("/patient/{procedureId}/{patientId}")
+    public HashMap<Talon,Patient> getTalonAndPatient(
+            @PathVariable(value = "procedureId") int procedureId,
+            @PathVariable(value = "patientId") String patientId) {
+
+        int doctorId = userService.getCurrentUserInfo().getId();
+        return workPlaceService.getTalonAndPatient(patientId, procedureId);
+    }
+
+
 
 
 
