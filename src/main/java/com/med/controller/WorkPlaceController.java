@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.Doctor;
 import com.med.model.Patient;
+import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.user.UserService;
@@ -102,4 +103,13 @@ public class WorkPlaceController {
          return  userService.getCurrentUserInfo().getProcedureIds()
                  .contains(Integer.valueOf(procedureId));
     }
+    @RequestMapping("/tails")
+    public List<Tail> getHotTails(){
+
+                int doctorId = userService.getCurrentUserInfo().getId();
+                return workPlaceService.getTailsForDoctor( doctorId);
+    }
+
+
+
 }

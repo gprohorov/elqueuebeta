@@ -182,14 +182,30 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
+    public List<Tail> getTailsForDoctor(int doctorId) {
+
+        List<Tail> tails = new ArrayList<>();
 
 
+        List<Integer> procedureIds = userService.getCurrentUserInfo().getProcedureIds();
+        tails = tailService.getTails().stream()
+                .filter(tail -> procedureIds.contains(tail.getProcedureId()))
+                .collect(Collectors.toList());
 
+    tails.stream().forEach(tail -> {
 
+        Patient first = tail.getFirst();
+        List<Patient> patients = tail.getPatients()
+                .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
+                .collect(Collectors.toList());
 
+        tail.setPatients(patients);
+        tail.getPatients().add(first);
+            }
+    );
 
-
-
+        return tails;
+    }
 
 
 
