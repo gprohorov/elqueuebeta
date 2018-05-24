@@ -16,18 +16,20 @@
     padding: 3px 8px;
     color: #fff;
     font-weight: 500;
+    font-size: 2rem;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    /* white-space: nowrap;
+    text-overflow: ellipsis; */
 }
 
 .masonry-body {
     padding: 5px;
-    height: 100px;
+    max-height: 100px;
     overflow-y: hidden;
+    font-size: 2rem;
 }
 
 .masonry-body.expanded {
@@ -36,19 +38,18 @@
 
 .masonry-list-item {
     display: inline-block;
-    max-width: 230px;
+    max-width: 170px;
     white-space: nowrap;
     overflow: hidden;
-    line-height: 1.5;
     text-overflow: ellipsis;
     vertical-align: baseline;
 }
 
 .masonry-header-title {
     font-weight: 700;
-    line-height: 1.2;
     text-align: center;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     vertical-align: baseline;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
+    font-size: 2rem;
 }

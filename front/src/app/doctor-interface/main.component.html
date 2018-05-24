@@ -9,18 +9,15 @@
         [ngClass]="{'masonry-header': true, 'bg-success': group.vacant, 'bg-danger': !group.vacant}"
         (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
         title="{{group.procedureName}}">
-        <span class="badge pull-right">{{group.patients?.length}}</span> <span
-            class="masonry-header-title">{{group.procedureName}}</span>
+        <span class="masonry-header-title">{{group.procedureName}}</span>
     </div>
     <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
         <div *ngFor="let item of group.patients">
-            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null
-                ? item.delta + ' хв.' : ''}}</span>
-            <span class="masonry-list-item">
-              <span class="badge badge-{{Activity[item.activity].cssClass}}"
-                    title="{{item.person.fullName}} ({{Status[item.status].text}})">
-                {{item.person.fullName}}
-              </span>
+            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null ?
+                item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item"> <span
+                class="badge badge-{{Activity[item.activity].cssClass}}"
+                title="{{item.person.fullName}} ({{Status[item.status].text}})">
+                    {{item.person.fullName}} </span>
             </span>
         </div>
     </div>
