@@ -1,41 +1,24 @@
 ﻿<div class="content" *ngIf="item?.person">
+    <h2 class="title">{{item.talons[0].procedure.name}}</h2>
     <h4 class="title">{{item.person.fullName}}</h4>
-    <div [ngSwitch]="procedureStarted">
-        <div *ngSwitchCase="false">
-            <div class="row">
-                <div class="col-12 mt-3">
-                    <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="startProcedure()"><h1 class="display-4 font-weight-bold">ПОЧАТИ ПРОЦЕДУРУ</h1></button>
-                </div>
-            </div>
-        </div>
-        <div *ngSwitchCase="true">
-            <div class="row">
-                <div class="col-8">
-                    <p>Тут діагноз та примітки до процедури</p>
-                    <textarea class="form-control" id="notes" rows="10"></textarea>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="executeProcedure('')">
-                        <h3 class="font-weight-bold">ЗАВЕРШИТИ<br/>ПРОЦЕДУРУ</h3>
-                    </button>
-                    <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
-                        (click)="cancelProcedure('')">
-                        <h3 class="font-weight-bold">СКАCУВАТИ<br/>ПРОЦЕДУРУ</h3>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="content" *ngIf="!item?.person && procedureId">
     <div class="row">
-        <div class="col-12">
-            <div class="error">Пацієнтів немає.</div>
+        <div class="col-8">
+            <p>Діагноз та примітки до процедури</p>
+            <textarea class="form-control" id="notes" rows="5"></textarea>
+        </div>
+        <div class="col-4">
             <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                  (click)="setReady()"><h1 class="display-4 font-weight-bold">ГОТОВИЙ ДО ПРИЙОМУ</h1></button>
+                (click)="executeProcedure('')">
+                <h3 class="font-weight-bold">
+                    ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
+                </h3>
+            </button>
+            <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
+                (click)="cancelProcedure('')">
+                <h3 class="font-weight-bold">
+                    СКАCУВАТИ<br />ПРОЦЕДУРУ
+                </h3>
+            </button>
         </div>
     </div>
 </div>

@@ -1,5 +1,10 @@
 ﻿<nav class="navbar navbar-expand navbar-light bg-light">
     <a class="navbar-brand" href="">Меднеан</a>
+    <!-- Doctor interface section START -->
+    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
+        <a class="dropdown-item" routerLink="/doctor-interface" routerLinkActive="active">Пацієнти</a>
+    </div>
+    <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
         <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга
@@ -21,7 +26,7 @@
         </div>
     </div>
     <!-- Administrator interface section END -->
-    <div class="navbar-nav ml-auto">
+    <div class="navbar-nav">
         <a class="dropdown-item" routerLink="/login">
             Вихід <small>({{user.info?.fullName}})</small>
         </a>

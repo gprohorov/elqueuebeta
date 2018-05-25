@@ -45,6 +45,7 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
 import { DoctorInterfaceMainComponent } from './doctor-interface/main.component';
+import { DoctorInterfaceProcedureComponent } from './doctor-interface/procedure.component';
 
 const appRoutes: Routes = [
     {
@@ -116,7 +117,7 @@ const appRoutes: Routes = [
     },
     
     {
-        path: 'doctor-interface/:id', component: DoctorInterfaceMainComponent,
+        path: 'doctor-interface/procedure/:procedureId/:patientId', component: DoctorInterfaceProcedureComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
@@ -149,7 +150,8 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceMainComponent
+        DoctorInterfaceMainComponent,
+        DoctorInterfaceProcedureComponent
     ],
     providers: [
         AuthGuard,

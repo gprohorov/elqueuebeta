@@ -27,22 +27,28 @@
 
 .masonry-body {
     padding: 5px;
-    max-height: 100px;
+    max-height: 140px;
     overflow-y: hidden;
     font-size: 2rem;
 }
 
 .masonry-body.expanded {
-    height: 100%;
+    max-height: 100%;
 }
 
 .masonry-list-item {
     display: inline-block;
-    max-width: 170px;
+    max-width: 175px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: baseline;
+}
+
+.masonry-list-item button {
+    max-width: 175px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .masonry-header-title {

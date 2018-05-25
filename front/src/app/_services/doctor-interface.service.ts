@@ -11,7 +11,7 @@ import { Patient } from '../_models/index';
 export class DoctorInterfaceService {
     // Define the routes we are going to interact with
     private getTailsUrl = config.api_path + '/workplace/tails/';
-    private getPatientUrl = config.api_path + '/workplace/first/';
+    private getPatientUrl = config.api_path + '/workplace/patient/';
     private setReadyUrl = config.api_path + '/workplace/setready/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
@@ -24,13 +24,8 @@ export class DoctorInterfaceService {
             .pipe(catchError(this.handleError));
     }
 
-    getPatient(procedureId: number) {
-        return this.http.get(this.getPatientUrl + procedureId)
-            .pipe(catchError(this.handleError));
-    }
-
-    setReady(procedureId: number) {
-        return this.http.get(this.setReadyUrl + procedureId)
+    getPatient(procedureId: number, patientId: string) {
+        return this.http.get(this.getPatientUrl + procedureId + '/' + patientId)
             .pipe(catchError(this.handleError));
     }
 

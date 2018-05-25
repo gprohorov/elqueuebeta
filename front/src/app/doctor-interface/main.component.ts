@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
@@ -13,7 +14,7 @@ import { AlertService, DoctorInterfaceService } from '../_services/index';
 export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
 
     loading = false;
-    
+
     sub: Subscription;
     items: any[] = [];
     Activity = Activity;
@@ -29,6 +30,7 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
     };
 
     constructor(
+        private router: Router,
         private alertService: AlertService,
         private service: DoctorInterfaceService
     ) { }
@@ -61,5 +63,18 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
                 this.alertService.error(error);
                 this.loading = false;
             });
+    }
+
+    openPatient(activity: string, procedureId: number, patientId: string, procedureName: string, patientName: string) {
+        const url = ['/doctor-interface/procedure/' + procedureId + '/' + patientId];
+        if ('ACTIVE' == activity) {
+            if (confirm('Почати процедуру "' + procedureName + '" для "' + patientName + '"?')) {
+                this.service.startProcedure(patientId, procedureId).subscribe(() => {
+                    this.router.navigate(url);
+                });
+            }
+        } else {
+            this.router.navigate(url);
+        }
     }
 }

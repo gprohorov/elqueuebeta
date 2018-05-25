@@ -7,18 +7,18 @@ import { Patient } from '../_models/index';
 import { AlertService, DoctorInterfaceService } from '../_services/index';
 
 @Component({
-    templateUrl: './preocedure.component.html'
+    templateUrl: './procedure.component.html'
 })
 export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
 
     loading = false;
     sub: Subscription;
-    subProcedure: Subscription;
     subPatient: Subscription;
 
     item: any;
     procedureId: number;
-    procedureStarted = false;
+    patientId: string;
+    procedureName: string;
 
     constructor(
         private router: Router,
@@ -28,43 +28,25 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
-            if (+params.id > 0) {
-                this.procedureId = +params.id;
-                this.load();
-            }
-        });
+        const procedureId = this.route.snapshot.paramMap.get('procedureId');
+        const patientId = this.route.snapshot.paramMap.get('patientId');
+        if (+procedureId > 0 && !!patientId) {
+            this.procedureId = procedureId;
+            this.patientId = patientId;
+            this.load();
+        }
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
-        if (this.subProcedure) this.subProcedure.unsubscribe();
         if (this.subPatient) this.subPatient.unsubscribe();
     }
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.procedureId).subscribe(data => {
+        this.subPatient = this.service.getPatient(this.procedureId, this.patientId).subscribe(data => {
             this.item = data;
             this.loading = false;
-            if (this.item && this.item.activity === 'ON_PROCEDURE') {
-                this.procedureStarted = true;
-            } else {
-                this.procedureStarted = false;
-            }
-        });
-    }
-
-    setReady() {
-        this.subProcedure = this.service.setReady(this.procedureId).subscribe(data => {
-            this.load();
-        });
-    }
-
-    startProcedure() {
-        this.subProcedure = this.service.startProcedure(this.item.id, this.procedureId).subscribe(data => {
-            this.alertService.success('Процедуру розпочато.');
-            this.load();
         });
     }
 
@@ -72,8 +54,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
         if (confirm('Скасувати процедуру ?')) {
             this.subProcedure = this.service.cancelProcedure(this.item.id, data).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
-                this.procedureStarted = false;
-                this.load();
+                this.router.navigate(['/doctor-interface']);
             });
         }
     }
@@ -81,8 +62,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     executeProcedure(data) {
         this.subProcedure = this.service.executeProcedure(this.item.id, data).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
-            this.procedureStarted = false;
-            this.load();
+            this.router.navigate(['/doctor-interface']);
         });
     }
 
