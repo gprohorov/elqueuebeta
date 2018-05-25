@@ -1,10 +1,23 @@
-﻿<div class="content" *ngIf="item?.person">
+﻿<button
+    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+    [disabled]="loading" (click)="load()" title="Обновити"></button>
+<div class="content" *ngIf="item?.person">
     <h2 class="title">{{item.talons[0].procedure.name}}</h2>
     <h4 class="title">{{item.person.fullName}}</h4>
     <div class="row">
         <div class="col-8">
-            <p>Діагноз та примітки до процедури</p>
-            <textarea class="form-control" id="notes" rows="5"></textarea>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h4>Діагноз та коментарі</h4>
+                </div>
+                <div class="card-body">{{item.talons[0].desc}}</div>
+            </div>
+            <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+                <label for="comment">Добавити коментар:</label>
+                <textarea rows="5" class="form-control" name="comment" #comment="ngModel"
+                    [(ngModel)]="model.comment"></textarea>
+                <button class="btn btn-primary pull-right" [disabled]="model.comment == ''">Добавити</button>
+            </form>
         </div>
         <div class="col-4">
             <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
