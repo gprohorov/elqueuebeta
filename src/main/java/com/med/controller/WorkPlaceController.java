@@ -4,12 +4,13 @@ import com.med.model.Patient;
 import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.services.tail.Impls.TailServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
 import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,6 +39,11 @@ public class WorkPlaceController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TalonServiceImpl talonService;
+
+
 /*
     @RequestMapping("/first/{procedureId}")
     public Patient getFirstPatientInTail(
@@ -121,7 +127,14 @@ public class WorkPlaceController {
         return workPlaceService.getTalonAndPatient(patientId, procedureId);
     }
 
+    @PostMapping("/comment/{talonId}/{text}")
+    public Talon comment(
+            @PathVariable(value = "talonId") String talonId,
+            @PathVariable(value = "text") String text){
 
+
+        return  workPlaceService.commentTalon(talonId,text);
+    }
 
 
 

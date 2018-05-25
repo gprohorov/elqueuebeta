@@ -227,4 +227,17 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
        return patient;
     }
+
+    public Talon commentTalon(String talonId, String text) {
+
+        Talon talon = talonService.getTalon(talonId);
+
+        String desc = talon.getDesc() + "<br/><br/>"
+                + talon.getDoctor().getFullName() + ", "
+                + LocalDateTime.now().toLocalTime().toString() + " : <br/>"
+                + text;
+        talon.setDesc(desc);
+
+        return talonService.saveTalon(talon);
+    }
 }
