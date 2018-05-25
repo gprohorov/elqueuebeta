@@ -14,6 +14,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     loading = false;
     sub: Subscription;
     subPatient: Subscription;
+    subProcedure: Subscription;
 
     item: any;
     procedureId: number;
@@ -31,7 +32,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
         const procedureId = this.route.snapshot.paramMap.get('procedureId');
         const patientId = this.route.snapshot.paramMap.get('patientId');
         if (+procedureId > 0 && !!patientId) {
-            this.procedureId = procedureId;
+            this.procedureId = +procedureId;
             this.patientId = patientId;
             this.load();
         }
@@ -40,6 +41,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subPatient) this.subPatient.unsubscribe();
+        if (this.subProcedure) this.subProcedure.unsubscribe();
     }
 
     load() {
