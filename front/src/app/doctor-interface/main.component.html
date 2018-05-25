@@ -1,6 +1,11 @@
 ﻿<div class="content">
-    <button [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-        [disabled]="loading" (click)="load()" title="Обновити"></button>
+    <div class="row">
+        <div class="ml-auto">
+            <button
+                [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+                [disabled]="loading" (click)="load()" title="Обновити"></button>
+        </div>
+    </div>
     <ngx-masonry [options]="myOptions" [updateLayout]="updateMasonryLayout"
         (layoutComplete)="updateMasonryLayout = false">
         <ngx-masonry-item class="masonry-item" *ngFor="let group of items; let i = index">

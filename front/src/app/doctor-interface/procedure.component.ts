@@ -20,6 +20,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     procedureId: number;
     patientId: string;
     procedureName: string;
+    model: any = {comment: ''};
 
     constructor(
         private router: Router,
