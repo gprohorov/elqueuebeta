@@ -12,7 +12,7 @@ export class DoctorInterfaceService {
     // Define the routes we are going to interact with
     private getTailsUrl = config.api_path + '/workplace/tails/';
     private getPatientUrl = config.api_path + '/workplace/patient/';
-    private setReadyUrl = config.api_path + '/workplace/setready/';
+    private updateProcedureUrl = config.api_path + '/workplace/comment/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
@@ -29,6 +29,12 @@ export class DoctorInterfaceService {
             .pipe(catchError(this.handleError));
     }
 
+    updateProcedure(talonId: string, comment: string) {
+        return this.http
+        .post(this.updateProcedureUrl + talonId, comment)
+        .pipe(catchError(this.handleError));
+    }
+    
     startProcedure(patientID: string, procedureID: number) {
         return this.http
             .get(this.startProcedureUrl + patientID + '/' + procedureID)

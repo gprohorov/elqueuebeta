@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +68,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
 
+        String desc = doctor.getFullName() + " почав процедуру "
+        		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "<br/><br/>";
+        talon.setDesc(desc);
+       
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
 
@@ -232,10 +237,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         Talon talon = talonService.getTalon(talonId);
 
-        String desc = talon.getDesc() + "<br/><br/>"
-                + talon.getDoctor().getFullName() + ", "
-                + LocalDateTime.now().toLocalTime().toString() + " : <br/>"
-                + text;
+        String desc = talon.getDesc()
+                + userService.getCurrentUserInfo().getFullName() + ", "
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + ": <br/>"
+                + text + "<br/><br/>";
         talon.setDesc(desc);
 
         return talonService.saveTalon(talon);

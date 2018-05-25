@@ -69,4 +69,17 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
         });
     }
 
+    submit() {
+        this.loading = true;
+        this.service.updateProcedure(this.item.talons[0].id, this.model.comment).subscribe(
+            data => {
+                this.alertService.success('Зміни збережено.', true);
+                this.model.comment = '';
+                this.load();
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+    }
 }

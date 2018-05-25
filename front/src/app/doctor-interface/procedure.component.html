@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <h4>Діагноз та коментарі</h4>
                 </div>
-                <div class="card-body">{{item.talons[0].desc}}</div>
+                <div class="card-body" [innerHTML]="item.talons[0].desc"></div>
             </div>
             <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
                 <label for="comment">Добавити коментар:</label>
