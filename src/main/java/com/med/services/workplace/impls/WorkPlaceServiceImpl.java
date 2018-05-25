@@ -206,7 +206,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .collect(Collectors.toList());
 
         tail.setPatients(patients);
-        if (patients != null) {tail.getPatients().add(first);}
+        if (first != null) {tail.getPatients().add(first);}
             }
     );
 
