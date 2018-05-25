@@ -47,6 +47,7 @@ public class DataStorageTest {
                 patient -> {
                     patient.setStartActivity(null);
                     patient.setLastActivity(null);
+                    patient.setBalance(0);
                 }
         );
 
