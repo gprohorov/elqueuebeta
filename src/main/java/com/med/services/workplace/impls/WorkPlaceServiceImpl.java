@@ -81,6 +81,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     public Talon execute(String patientId, String desc) {
 
         Talon talon = talonService.getTalonByPatient(patientId, Activity.ON_PROCEDURE);
+
+      if (talon == null){return null;}
         Procedure procedure = talon.getProcedure();
         Tail tail= tailService.getTail(procedure.getId());
         Patient patient = patientService.getPatient(patientId);
@@ -89,6 +91,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setExecutionTime(LocalDateTime.now());
         talon.setDesc(desc);
         talon.setStatus(patient.getStatus());
+        /////  HARD-CODE: ragulizm 80 lvl
+        if(talon.getZones()==0) talon.setZones(1);
 
         int price = this.getPrice(patient, procedure);
         int sum = -1 * ( procedure.isZoned()? price*talon.getZones(): price);
