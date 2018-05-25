@@ -10,8 +10,10 @@ import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 import java.util.List;
+
+import static java.awt.SystemColor.text;
 
 /**
  * Created by george on 3/9/18.
@@ -127,13 +129,13 @@ public class WorkPlaceController {
         return workPlaceService.getTalonAndPatient(patientId, procedureId);
     }
 
-    @PostMapping("/comment/{talonId}/{text}")
+    @PostMapping("/comment/{talonId}")
     public Talon comment(
             @PathVariable(value = "talonId") String talonId,
-            @PathVariable(value = "text") String text){
+            @Valid @RequestBody String comment){
 
 
-        return  workPlaceService.commentTalon(talonId,text);
+        return  workPlaceService.commentTalon(talonId, comment);
     }
 
 
