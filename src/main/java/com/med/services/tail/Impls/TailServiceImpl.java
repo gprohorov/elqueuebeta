@@ -44,12 +44,7 @@ public class TailServiceImpl implements ITailService {
         //this.setSemaforSignal(1,true);
     }
 
-    public HashMap<Integer, Boolean> getSemafor() {
-
-
-
-
-/*
+    public HashMap<Integer, Boolean> setAllSemafors() {
 
      semafor.entrySet().stream().forEach(entry->
                {
@@ -67,7 +62,7 @@ public class TailServiceImpl implements ITailService {
                    }
                }
        );
-*/
+
 
 
         return semafor;
@@ -98,7 +93,8 @@ public class TailServiceImpl implements ITailService {
     * Form the procedures queues with patients, who are active and on this procedure
     */
     public List<Tail> getTails() {
-        return talonService.getTalonsForToday().stream().filter(talon ->
+
+        List<Tail> tails =  talonService.getTalonsForToday().stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
                 talon.getActivity().equals(Activity.ON_PROCEDURE)
@@ -122,6 +118,10 @@ public class TailServiceImpl implements ITailService {
                 ).collect(Collectors.toList()),
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
+
+        this.setAllSemafors();
+
+        return tails;
     }
 
     public Patient getFirstPatient(int procedureId) {
