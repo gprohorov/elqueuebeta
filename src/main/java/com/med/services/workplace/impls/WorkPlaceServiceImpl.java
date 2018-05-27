@@ -51,16 +51,22 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .findFirst().orElse(null);
     }
 
-    public Talon start(String patientId, int procedureId, int doctorId) {
 
-        Patient patient = patientService.getPatientWithTalons(patientId);
+    //////////////////////////////START ///////////////////////////////
+    public Talon start(String talonId, int doctorId) {
 
+        Talon talon = talonService.getTalon(talonId);
+
+        Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
+
+/*
         Talon talon = patient.getTalons().stream()
                 .filter(tal->tal.getProcedure().getId()==procedureId)
                 .filter(tal->tal.getActivity().equals(Activity.ACTIVE))
                 .findFirst().orElse(null);
+*/
 
-        Tail tail = tailService.getTail(procedureId);
+        Tail tail = tailService.getTail(talon.getProcedure().getId()                         );
 
         Doctor doctor = doctorService.getDoctor(doctorId);
 
@@ -79,7 +85,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         tail.setPatientOnProcedure(patient);
         tail.setVacant(false);
 
-        tailService.setSemaforSignal(procedureId, false);
+        tailService.setSemaforSignal(talon.getProcedure().getId(), false);
         return talonService.saveTalon(talon);
     }
 

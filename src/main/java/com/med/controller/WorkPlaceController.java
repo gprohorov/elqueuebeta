@@ -64,14 +64,20 @@ public class WorkPlaceController {
 
     /////////////////////////// START////////////////////////////
 
-    @RequestMapping("/start/{patientId}/{procedureId}")
+    //@RequestMapping("/start/{patientId}/{procedureId}")
+    @RequestMapping("/start/{talonId}")
     public Talon start(
-           @PathVariable(value = "patientId") String patientId,
-           @PathVariable(value = "procedureId") int procedureId) {
-        int doctorId = userService.getCurrentUserInfo().getId();
-        if (this.isAlowed(procedureId, doctorId)) {
+           @PathVariable(value = "talonId") String talonId)
 
-            return workPlaceService.start(patientId, procedureId, doctorId);
+      //     @PathVariable(value = "patientId") String patientId,
+     //      @PathVariable(value = "procedureId") int procedureId)
+
+    {
+        Talon talon = talonService.getTalon(talonId);
+        int doctorId = userService.getCurrentUserInfo().getId();
+        if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
+
+            return workPlaceService.start(talonId, doctorId);
         } else {
            return null;
         }
