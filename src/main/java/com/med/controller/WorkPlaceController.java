@@ -85,26 +85,23 @@ public class WorkPlaceController {
 
     //////////////////////////////// EXECUTE ///////////////////
 
-    @GetMapping("/execute/{patientId}/{zones}")
+    @GetMapping("/execute/{talonId}/{zones}")
     public Talon execute(
-           @PathVariable(value = "patientId") String patientId,
+           @PathVariable(value = "talonId") String talonId,
            @PathVariable(value = "zones") int zones
             ) {
         int doctorId = userService.getCurrentUserInfo().getId();
-       return workPlaceService.execute(patientId, doctorId, zones);
+       return workPlaceService.execute(talonId, doctorId, zones);
     }
 
 
     //////////////////////////////// CANCEL ////////////////////
 
-    @GetMapping("/cancel/{patientId}")
+    @GetMapping("/cancel/{talonId}")
     public Talon cancel(
-           @PathVariable(value = "patientId") String patientId
-        //   ,@Valid @RequestBody String desc
-    ) {
+           @PathVariable(value = "talonId") String talonId) {
 
-      //  return tailService.getFirstPatient(procedureId);
-       return workPlaceService.cancel(patientId, "");
+       return workPlaceService.cancel(talonId, "");
     }
 
 

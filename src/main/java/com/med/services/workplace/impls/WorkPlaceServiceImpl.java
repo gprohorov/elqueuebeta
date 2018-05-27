@@ -89,15 +89,15 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         return talonService.saveTalon(talon);
     }
 
+//////////////////////////////////  EXECUTE //////////////////////////
+    public Talon execute(String talonId, int doctorId, int zones) {
 
-    public Talon execute(String patientId, int doctorId, int zones) {
-
-        Talon talon = talonService.getTalonByPatient(patientId, Activity.ON_PROCEDURE);
+        Talon talon = talonService.getTalon(talonId);
 
       if (talon == null){return null;}
         Procedure procedure = talon.getProcedure();
         Tail tail= tailService.getTail(procedure.getId());
-        Patient patient = patientService.getPatient(patientId);
+        Patient patient = patientService.getPatient(talon.getPatientId());
 
         talon.setActivity(Activity.EXECUTED);
         talon.setExecutionTime(LocalDateTime.now());
@@ -152,14 +152,16 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon cancel(String patientId,  String desc) {
+    public Talon cancel(String talonId,  String desc) {
 
-        Talon talon = talonService.getTalonByPatient(patientId , Activity.ON_PROCEDURE);
+        Talon talon = talonService.getTalon(talonId);
         Tail tail= tailService.getTail(talon.getProcedure().getId());
 
         talon.setActivity(Activity.TEMPORARY_NA);
         talon.setDoctor(null);
-        talon.setDesc(talon.getDate() + desc);
+        Doctor doctor = userService.getCurrentUserInfo();
+        talon.setDesc( doctor.getFullName() + "cancelled "
+                + LocalDateTime.now().toString()  +" : " + desc);
 
         tail.setPatientOnProcedure(null);
         tail.setVacant(true);
