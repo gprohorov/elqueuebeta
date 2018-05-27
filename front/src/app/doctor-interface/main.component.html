@@ -20,7 +20,7 @@
                         item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item"> 
                         <button class="btn btn-{{Activity[item.activity].cssClass}}"
                             title="{{item.person.fullName}} ({{Status[item.status].text}})"
-                            (click)="openPatient(item.activity, group.procedureId, item.id, group.procedureName, item.person.fullName)"> 
+                            [routerLink]="['/doctor-interface/procedure/' + item.talons[0].id]"> 
                             <strong>{{item.person.fullName}}</strong>
                         </button>
                     </span>

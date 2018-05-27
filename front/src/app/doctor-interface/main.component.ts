@@ -64,17 +64,4 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
                 this.loading = false;
             });
     }
-
-    openPatient(activity: string, procedureId: number, patientId: string, procedureName: string, patientName: string) {
-        const url = ['/doctor-interface/procedure/' + procedureId + '/' + patientId];
-        if ('ACTIVE' == activity) {
-            if (confirm('Почати процедуру "' + procedureName + '" для "' + patientName + '"?')) {
-                this.service.startProcedure(patientId, procedureId).subscribe(() => {
-                    this.router.navigate(url);
-                });
-            }
-        } else {
-            this.router.navigate(url);
-        }
-    }
 }

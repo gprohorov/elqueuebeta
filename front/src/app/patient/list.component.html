@@ -27,6 +27,7 @@
                 <th>Стать</th>
                 <th>Дата народження</th>
                 <th>Місто / село</th>
+                <th>Баланс</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
@@ -39,6 +40,7 @@
                     aria-hidden="true"></i></td>
                 <td>{{item.person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
                 <td>{{item.person.town}}</td>
+                <td>{{item.balance}}</td>
             </tr>
             <tr [hidden]="!rows[i]">
                 <td colspan="100">

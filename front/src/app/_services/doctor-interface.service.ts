@@ -12,7 +12,7 @@ export class DoctorInterfaceService {
     // Define the routes we are going to interact with
     private getTailsUrl = config.api_path + '/workplace/tails/';
     private getPatientUrl = config.api_path + '/workplace/patient/';
-    private updateProcedureUrl = config.api_path + '/workplace/comment/';
+    private commentProcedureUrl = config.api_path + '/workplace/comment/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
@@ -20,36 +20,30 @@ export class DoctorInterfaceService {
     constructor(private http: HttpClient) { }
 
     getTails() {
-        return this.http.get(this.getTailsUrl)
+        return this.http.get(this.getTailsUrl).pipe(catchError(this.handleError));
+    }
+
+    getPatient(talonId: string) {
+        return this.http.get(this.getPatientUrl + talonId).pipe(catchError(this.handleError));
+    }
+
+    commentProcedure(talonId: string, comment: string) {
+        return this.http.post(this.commentProcedureUrl + talonId, comment)
             .pipe(catchError(this.handleError));
     }
 
-    getPatient(procedureId: number, patientId: string) {
-        return this.http.get(this.getPatientUrl + procedureId + '/' + patientId)
+    startProcedure(talonId: string) {
+        return this.http.get(this.startProcedureUrl + talonId)
             .pipe(catchError(this.handleError));
     }
 
-    updateProcedure(talonId: string, comment: string) {
-        return this.http
-        .post(this.updateProcedureUrl + talonId, comment)
-        .pipe(catchError(this.handleError));
-    }
-    
-    startProcedure(patientID: string, procedureID: number) {
-        return this.http
-            .get(this.startProcedureUrl + patientID + '/' + procedureID)
+    cancelProcedure(talonId: string) {
+        return this.http.get(this.cancelProcedureUrl + talonId)
             .pipe(catchError(this.handleError));
     }
 
-    cancelProcedure(patientID: string, data: any) {
-        return this.http
-            .post(this.cancelProcedureUrl + patientID, data)
-            .pipe(catchError(this.handleError));
-    }
-
-    executeProcedure(patientID: string, data: any) {
-        return this.http
-            .post(this.executeProcedureUrl + patientID, data)
+    executeProcedure(talonId: string, zones: number = 1) {
+        return this.http.get(this.executeProcedureUrl + talonId + '/' + zones)
             .pipe(catchError(this.handleError));
     }
 

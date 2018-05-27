@@ -6,7 +6,8 @@ export class Patient {
     activity: string;
     lastActivity: string;
     startActivity: string;
-
+    balance: number;
+    
     constructor() {
         this.person = new Person();
     }

@@ -8,28 +8,55 @@
         <div class="col-8">
             <div class="card mb-5">
                 <div class="card-header">
-                    <h4>Діагноз та коментарі</h4>
+                    <h4>Діагноз</h4>
+                </div>
+                <div class="card-body"></div>
+            </div>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h4>Коментарі</h4>
                 </div>
                 <div class="card-body" [innerHTML]="item.talons[0].desc"></div>
             </div>
-            <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <form name="form" (ngSubmit)="f.form.valid && comment()" #f="ngForm" novalidate>
                 <label for="comment">Добавити коментар:</label>
                 <textarea rows="5" class="form-control" name="comment" #comment="ngModel"
                     [(ngModel)]="model.comment"></textarea>
                 <button class="btn btn-primary pull-right" [disabled]="model.comment == ''">Добавити</button>
             </form>
         </div>
-        <div class="col-4">
-            <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200"
-                (click)="executeProcedure('')">
-                <h3 class="font-weight-bold">
-                    ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
-                </h3>
-            </button>
+        <div class="col-4" [ngSwitch]="procedureStarted">
             <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
-                (click)="cancelProcedure('')">
+                (click)="cancelProcedure()" *ngSwitchCase="true">
                 <h3 class="font-weight-bold">
                     СКАCУВАТИ<br />ПРОЦЕДУРУ
+                </h3>
+            </button>
+            <form name="formExecute" (ngSubmit)="fe.form.valid && executeProcedure()" #fe="ngForm"
+                novalidate *ngSwitchCase="true">
+                <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200">
+                    <h3 class="font-weight-bold">
+                        ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
+                    </h3>
+                </button>
+                <label for="zones">Кількість зон</label>
+                <select name="zones" class="form-control" [(ngModel)]="zones">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+            </form>
+            <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
+                (click)="startProcedure()" *ngSwitchCase="false">
+                <h3 class="font-weight-bold">
+                    РОЗПОЧАТИ<br />ПРОЦЕДУРУ
                 </h3>
             </button>
         </div>

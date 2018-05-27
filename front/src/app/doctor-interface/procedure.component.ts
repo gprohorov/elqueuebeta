@@ -17,9 +17,10 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     subProcedure: Subscription;
 
     item: any;
-    procedureId: number;
+    talonId: string;
+    zones: number = 1;
     patientId: string;
-    procedureName: string;
+    procedureStarted: boolean = false;
     model: any = {comment: ''};
 
     constructor(
@@ -30,13 +31,8 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        const procedureId = this.route.snapshot.paramMap.get('procedureId');
-        const patientId = this.route.snapshot.paramMap.get('patientId');
-        if (+procedureId > 0 && !!patientId) {
-            this.procedureId = +procedureId;
-            this.patientId = patientId;
-            this.load();
-        }
+        this.talonId = this.route.snapshot.paramMap.get('talonId');
+        this.load();
     }
 
     ngOnDestroy() {
@@ -47,31 +43,39 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.procedureId, this.patientId).subscribe(data => {
+        this.subPatient = this.service.getPatient(this.talonId).subscribe(data => {
             this.item = data;
             this.loading = false;
+            this.procedureStarted = ('ON_PROCEDURE' == this.item.talons[0].activity) 
         });
     }
 
-    cancelProcedure(data) {
+    startProcedure() {
+        this.subProcedure = this.service.startProcedure(this.talonId).subscribe(data => {
+            this.alertService.success('Процедуру розпочато.');
+            this.load();
+        });
+    }
+    
+    cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
-            this.subProcedure = this.service.cancelProcedure(this.item.id, data).subscribe(data => {
+            this.subProcedure = this.service.cancelProcedure(this.talonId).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
                 this.router.navigate(['/doctor-interface']);
             });
         }
     }
 
-    executeProcedure(data) {
-        this.subProcedure = this.service.executeProcedure(this.item.id, data).subscribe(data => {
+    executeProcedure() {
+        this.subProcedure = this.service.executeProcedure(this.talonId, this.zones).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['/doctor-interface']);
         });
     }
 
-    submit() {
+    comment() {
         this.loading = true;
-        this.service.updateProcedure(this.item.talons[0].id, this.model.comment).subscribe(
+        this.service.commentProcedure(this.talonId, this.model.comment).subscribe(
             data => {
                 this.alertService.success('Зміни збережено.', true);
                 this.model.comment = '';

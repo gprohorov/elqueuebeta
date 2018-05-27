@@ -117,7 +117,7 @@ const appRoutes: Routes = [
     },
     
     {
-        path: 'doctor-interface/procedure/:procedureId/:patientId', component: DoctorInterfaceProcedureComponent,
+        path: 'doctor-interface/procedure/:talonId', component: DoctorInterfaceProcedureComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
