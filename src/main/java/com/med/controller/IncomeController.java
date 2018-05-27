@@ -29,7 +29,7 @@ public class IncomeController {
 
 
     // CREATE a new Income
-    @PostMapping("/income/create")
+    @PostMapping("/create")
     public Income createIncome(@Valid @RequestBody Income income) {
 
         return service.createIncome(income);
