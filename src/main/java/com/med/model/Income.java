@@ -15,23 +15,23 @@ public class Income {
     private String patientId;
     private LocalDateTime dateTime;
     private Integer sum;
-    private boolean cash;
+    private boolean cashLess;
 
     public Income() {
     }
 
-    public Income(String patientId, LocalDateTime dateTime, Integer sum, boolean cash) {
+    public Income(String patientId, LocalDateTime dateTime, Integer sum, boolean cashLess) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.sum = sum;
-        this.cash = cash;
+        this.cashLess = cashLess;
     }
 
-    public Income(String patientId, Integer sum, boolean cash) {
+    public Income(String patientId, Integer sum, boolean cashLess) {
         this.patientId = patientId;
         this.dateTime = LocalDateTime.now();
         this.sum = sum;
-        this.cash = cash;
+        this.cashLess = cashLess;
     }
 
     public String getId() {
@@ -66,28 +66,31 @@ public class Income {
         this.sum = sum;
     }
 
-    public boolean isCash() {
-        return cash;
+
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setCash(boolean cash) {
-        this.cash = cash;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
+    public boolean isCashLess() {
+        return cashLess;
+    }
 
+    public void setCashLess(boolean cashLess) {
+        this.cashLess = cashLess;
+    }
 
     @Override
     public String toString() {
         return "Income{" +
                 "id='" + id + '\'' +
-                ", patient='" + patientId + '\'' +
+                ", patientId='" + patientId + '\'' +
                 ", dateTime=" + dateTime +
                 ", sum=" + sum +
-                ", cash=" + cash +
+                ", cashLess=" + cashLess +
                 '}';
     }
-
-
-
-
 }
