@@ -224,18 +224,14 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Patient getTalonAndPatient(String patientId, int procedureId) {
+    public Patient getTalonAndPatient(String talonId) {
 
-        Patient patient = patientService.getPatient(patientId);
-        Talon talon = talonService.getTalonsForToday().stream()
-                .filter(tal-> tal.getPatientId().equals(patientId))
-                .filter(tal->tal.getProcedure().getId()==procedureId)
-                .filter(tal->tal.getActivity().equals(Activity.ON_PROCEDURE))
-                .findFirst().orElse(null);
+        Talon talon = talonService.getTalon(talonId);
+        Patient patient = patientService.getPatient(talon.getPatientId());
         patient.getTalons().clear();
         patient.getTalons().add(talon);
 
-       return patient;
+        return patient;
     }
 
     public Talon commentTalon(String talonId, String text) {

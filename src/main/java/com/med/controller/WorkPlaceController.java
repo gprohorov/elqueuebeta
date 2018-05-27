@@ -118,13 +118,11 @@ public class WorkPlaceController {
     }
 
 
-    @GetMapping("/patient/{procedureId}/{patientId}")
+    @GetMapping("/patient/{talonId}")
     public Patient getTalonAndPatient(
-            @PathVariable(value = "procedureId") int procedureId,
-            @PathVariable(value = "patientId") String patientId) {
+            @PathVariable(value = "talonId") String talonId) {
 
-        int doctorId = userService.getCurrentUserInfo().getId();
-        return workPlaceService.getTalonAndPatient(patientId, procedureId);
+        return workPlaceService.getTalonAndPatient(talonId);
     }
 
     @PostMapping("/comment/{talonId}")
