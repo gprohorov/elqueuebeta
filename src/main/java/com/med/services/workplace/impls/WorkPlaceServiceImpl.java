@@ -94,7 +94,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         Talon talon = talonService.getTalon(talonId);
 
-      if (talon == null){return null;}
+      if (talon == null){
+          return null;}
         Procedure procedure = talon.getProcedure();
         Tail tail= tailService.getTail(procedure.getId());
         Patient patient = patientService.getPatient(talon.getPatientId());
