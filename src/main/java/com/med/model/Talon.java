@@ -18,7 +18,7 @@ public class Talon {
     private String patientId;
     private LocalDate date;
     private Procedure procedure;
-    private int zones;
+    private int zones=1;
     private String desc;
     private LocalDateTime start;
     private LocalDateTime executionTime;

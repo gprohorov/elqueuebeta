@@ -68,8 +68,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
 
-        String desc = doctor.getFullName() + " почав процедуру "
-        		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "<br/><br/>";
+        String desc = doctor.getFullName() + ", "
+        		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+                + " - процедуру розпочато.<br/><br/>";
         talon.setDesc(desc);
        
         patient.setLastActivity(LocalDateTime.now());
@@ -83,7 +84,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon execute(String patientId, String desc) {
+    public Talon execute(String patientId, int doctorId, int zones) {
 
         Talon talon = talonService.getTalonByPatient(patientId, Activity.ON_PROCEDURE);
 
@@ -94,10 +95,14 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         talon.setActivity(Activity.EXECUTED);
         talon.setExecutionTime(LocalDateTime.now());
+
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        String desc = doctor.getFullName() + ", "
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+                + " - процедуру завершено.<br/><br/>";
         talon.setDesc(desc);
         talon.setStatus(patient.getStatus());
-        /////  HARD-CODE: ragulizm 80 lvl
-        if(talon.getZones()==0) talon.setZones(1);
+        talon.setZones(zones);
 
         int price = this.getPrice(patient, procedure);
         int sum = -1 * ( procedure.isZoned()? price*talon.getZones(): price);
@@ -245,4 +250,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         return talonService.saveTalon(talon);
     }
+
+
+
+
 }

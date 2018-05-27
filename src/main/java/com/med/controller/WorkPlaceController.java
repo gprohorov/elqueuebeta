@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static java.awt.SystemColor.text;
-
 /**
  * Created by george on 3/9/18.
  */
@@ -81,19 +79,19 @@ public class WorkPlaceController {
 
     //////////////////////////////// EXECUTE ///////////////////
 
-    @PostMapping("/execute/{patientId}")
+    @GetMapping("/execute/{patientId}/{zones}")
     public Talon execute(
-           @PathVariable(value = "patientId") String patientId
-    //           , @RequestBody String desc
+           @PathVariable(value = "patientId") String patientId,
+           @PathVariable(value = "zones") int zones
             ) {
-
-       return workPlaceService.execute(patientId, "");
+        int doctorId = userService.getCurrentUserInfo().getId();
+       return workPlaceService.execute(patientId, doctorId, zones);
     }
 
 
     //////////////////////////////// CANCEL ////////////////////
 
-    @PostMapping("/cancel/{patientId}")
+    @GetMapping("/cancel/{patientId}")
     public Talon cancel(
            @PathVariable(value = "patientId") String patientId
         //   ,@Valid @RequestBody String desc
