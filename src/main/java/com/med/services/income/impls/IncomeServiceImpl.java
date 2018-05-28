@@ -1,8 +1,10 @@
 package com.med.services.income.impls;
 
 import com.med.model.Income;
+import com.med.model.Patient;
 import com.med.repository.income.IncomeRepository;
 import com.med.services.income.interfaces.IIncomeService;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,22 @@ import java.util.stream.Collectors;
 public class IncomeServiceImpl implements IIncomeService {
 
     @Autowired
+    PatientServiceImpl patientService;
+
+    @Autowired
     IncomeRepository repository;
 
 
 
     @Override
     public Income createIncome(Income income) {
-        return repository.save(income);
+
+        repository.save(income);
+        Patient patient = patientService.getPatient(income.getPatientId());
+        patient.setBalance(patient.getBalance() + income.getSum());
+        patientService.savePatient(patient);
+
+        return income ;
     }
 
     @Override
@@ -70,14 +81,14 @@ public class IncomeServiceImpl implements IIncomeService {
 
     public Integer getSumlForPatientFrom(String patientId, LocalDate date){
         return this.getAll().stream()
-                .filter(income -> income.getPatient().equals(patientId))
+                .filter(income -> income.getPatientId().equals(patientId))
                 .filter(income -> income.getDateTime().toLocalDate().isAfter(date))
                 .mapToInt(Income::getSum).sum();
     }
 
     public Integer getSumlForPatient(String patientId){
         return this.getAll().stream()
-                .filter(income -> income.getPatient().equals(patientId))
+                .filter(income -> income.getPatientId().equals(patientId))
                 .mapToInt(Income::getSum).sum();
     }
 

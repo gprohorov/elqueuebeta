@@ -42,13 +42,6 @@ public class Income {
         this.id = id;
     }
 
-    public String getPatient() {
-        return patientId;
-    }
-
-    public void setPatient(String patient) {
-        this.patientId = patient;
-    }
 
     public LocalDateTime getDateTime() {
         return dateTime;
@@ -83,14 +76,4 @@ public class Income {
         this.cashLess = cashLess;
     }
 
-    @Override
-    public String toString() {
-        return "Income{" +
-                "id='" + id + '\'' +
-                ", patientId='" + patientId + '\'' +
-                ", dateTime=" + dateTime +
-                ", sum=" + sum +
-                ", cashLess=" + cashLess +
-                '}';
-    }
 }
