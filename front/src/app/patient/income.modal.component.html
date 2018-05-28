@@ -1,0 +1,10 @@
+<form name="form" #f="ngForm" novalidate>
+    <label for="sum">Сума</label>
+    <input type="number" class="form-control" name="sum" [(ngModel)]="data.sum" #sum="ngModel"
+        required />
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" name="cashLess" [(ngModel)]="data.cashLess"
+            #cashLess="ngModel" />
+        <label for="cashLess" class="form-check-label">Безготівковий розрахунок</label>
+    </div>
+</form>

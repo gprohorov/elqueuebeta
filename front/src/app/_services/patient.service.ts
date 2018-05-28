@@ -15,36 +15,33 @@ export class PatientService {
     private deleteUrl = config.api_path + '/patient/delete/';
     private saveUrl = config.api_path + '/patient/save/';
     private assignProcedureUrl = config.api_path + '/patient/create/talon/';
+    private incomeUrl = config.api_path + '/income/create';
 
     constructor(private http: HttpClient) { }
 
     getAll(search: string = '') {
-        return this.http
-            .get<Patient[]>(this.listUrl + search)
-            .pipe(catchError(this.handleError));
+        return this.http.get<Patient[]>(this.listUrl + search).pipe(catchError(this.handleError));
     }
 
     get(id: string) {
-        return this.http
-            .get<Patient>(this.getUrl + id)
-            .pipe(catchError(this.handleError));
+        return this.http.get<Patient>(this.getUrl + id).pipe(catchError(this.handleError));
     }
 
     delete(id: string) {
-        return this.http
-            .get(this.deleteUrl + id)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
     }
 
     update(model: Patient) {
-        return this.http
-            .post(this.saveUrl, model)
-            .pipe(catchError(this.handleError));
+        return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
     assignProcedure(patientId: string, procedureId: number, date: string) {
-        return this.http
-            .get(this.assignProcedureUrl + [patientId, procedureId, date].join('/'))
+        return this.http.get(this.assignProcedureUrl + [patientId, procedureId, date].join('/'))
+            .pipe(catchError(this.handleError));
+    }
+
+    income(patientId: string, sum: number, cashLess: boolean) {
+        return this.http.post(this.incomeUrl, { patientId: patientId, sum: sum, cashLess: cashLess })
             .pipe(catchError(this.handleError));
     }
 

@@ -30,6 +30,7 @@ import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 
+import { PatientIncomeModalComponent } from './patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from './patient/assign-procedure.modal.component';
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
@@ -144,6 +145,7 @@ const appRoutes: Routes = [
         SortableColumnComponent,
         LoginComponent,
         NavComponent,
+        PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
@@ -169,7 +171,7 @@ const appRoutes: Routes = [
         DoctorInterfaceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
-    entryComponents: [PatientAssignProcedureModalComponent],
+    entryComponents: [PatientIncomeModalComponent, PatientAssignProcedureModalComponent],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
 })

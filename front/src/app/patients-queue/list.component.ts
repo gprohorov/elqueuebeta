@@ -7,6 +7,7 @@ import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
 import { AlertService, PatientsQueueService } from '../_services/index';
 
+import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 
 @Component({
@@ -65,6 +66,15 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.alertService.subject.subscribe(() => { this.load() });
     }
 
+    showIncomePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.person.fullName,
+            childComponent: PatientIncomeModalComponent,
+            data: { patientId: patient.id, patientName: patient.person.fullName, sum: patient.balance * -1 }
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
+    
     updateActivity(id: string, value: string) {
         if (value === 'CANCELED' && !confirm('Встановити процедурі "' + Activity[value].text + '" ?')) return false;
         this.subTemp = this.service.updateActivity(id, value).subscribe(data => {

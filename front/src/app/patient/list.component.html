@@ -31,8 +31,8 @@
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
-            <tr [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]">
-                <td><i
+            <tr (dblclick)="rows[i]=!rows[i]">
+                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
                     [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
                 <td>{{item.person.fullName}}</td>
                 <td><i
@@ -58,6 +58,9 @@
                                     <button class="btn btn-info"
                                         (click)="showAssignProcedurePopup(item.id)">
                                         Призначити процедуру</button>
+                                    <button class="btn btn-warning"
+                                        (click)="showIncomePopup(item.id)">
+                                        Розрахувати</button>
                                 </div>
                             </div>
                         </div>
