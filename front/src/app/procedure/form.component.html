@@ -2,25 +2,38 @@
     <div class="col-6">
         <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} процедури</h2>
         <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <div class="form-group" [ngClass]="{'has-error': f.submitted && !procedureType.valid}">
+                <label for="procedureType">Тип процедури</label>
+                <select class="form-control" [(ngModel)]="model.procedureType" name="procedureType"
+                    #procedureType="ngModel" required>
+                    <option *ngFor="let procedureType of ProcedureTypes" 
+                        [ngValue]="procedureType">{{ProcedureType[procedureType]?.text}}</option>
+                </select>
+                <div *ngIf="f.submitted && !procedureType.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
+            </div>
             <div class="form-group" [ngClass]="{'has-error': f.submitted && !name.valid}">
-                <label for="name">Назва</label> <input type="text" class="form-control" name="name"
-                    [(ngModel)]="model.name" #name="ngModel" required />
-                <div *ngIf="f.submitted && !name.valid" class="help-block text-danger">Назва
-                    обов`язково</div>
+                <label for="name">Назва</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="model.name"
+                    #name="ngModel" required />
+                <div *ngIf="f.submitted && !name.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
             </div>
             <div class="form-group">
-                <label for="cabinet">Кабінет</label> <input type="number" class="form-control"
-                    name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
+                <label for="cabinet">Кабінет</label>
+                <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet"
+                    #cabinet="ngModel" />
             </div>
             <div class="form-group">
-                <label for="number">Кількість місць</label> <input type="number" class="form-control"
-                    name="number" [(ngModel)]="model.number" #number="ngModel" />
+                <label for="number">Кількість місць</label>
+                <input type="number" class="form-control" name="number" [(ngModel)]="model.number"
+                    #number="ngModel" />
             </div>
             <div class="col-md-3">
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" name="zoned"
-                        [(value)]="model.zoned" [(ngModel)]="model.zoned" /> <label
-                        class="form-check-label">Зональна</label>
+                        [(value)]="model.zoned" [(ngModel)]="model.zoned" />
+                    <label class="form-check-label">Зональна</label>
                 </div>
             </div>
             <label>Ціни для статуса:</label>

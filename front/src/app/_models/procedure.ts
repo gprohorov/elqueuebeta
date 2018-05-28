@@ -1,5 +1,6 @@
 export class Procedure {
     id: number;
+    procedureType: string;
     name: string;
     cabinet: number;
     number: number;
