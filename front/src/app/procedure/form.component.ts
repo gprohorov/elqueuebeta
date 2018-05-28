@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
 import { AlertService, ProcedureService } from '../_services/index';
-import { Status } from '../_storage/index';
+import { Status, ProcedureType } from '../_storage/index';
 
 @Component({
     templateUrl: './form.component.html'
@@ -14,10 +14,12 @@ export class ProcedureFormComponent {
 
     loading = false;
 
-    model: Procedure = new Procedure();
     sub: Subscription;
     Status = Status;
     Statuses = Object.keys(Status);
+    ProcedureType = ProcedureType;
+    ProcedureTypes = Object.keys(ProcedureType);
+    model: Procedure = new Procedure();
 
     constructor(
         private router: Router,
