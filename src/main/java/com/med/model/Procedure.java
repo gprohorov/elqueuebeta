@@ -25,6 +25,7 @@ public class Procedure {
     private int SOCIAL;
     private boolean zoned;
     private int number;
+
     private Card card;
 
     public Procedure() {
@@ -77,6 +78,7 @@ public class Procedure {
         this.ALL_INCLUSIVE = ALL_INCLUSIVE;
         this.SOCIAL = SOCIAL;
         this.zoned = zoned;
+
     }
 
     public Procedure(String name) {
