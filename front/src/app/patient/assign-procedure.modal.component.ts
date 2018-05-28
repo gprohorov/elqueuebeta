@@ -27,7 +27,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
             onAction: () => {
                 return this.submit(this.myForm, options);
             }
-        }, { text: 'Відміна', buttonClass: 'btn btn-secondary' }];
+        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
         this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.sub = this.procedureService.getAll().subscribe(data => {

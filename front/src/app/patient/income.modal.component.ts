@@ -24,7 +24,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
             onAction: () => {
                 return this.submit(this.myForm, options);
             }
-        }, { text: 'Відміна', buttonClass: 'btn btn-secondary' }];
+        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
         this.data.cashLess = false;
     }
