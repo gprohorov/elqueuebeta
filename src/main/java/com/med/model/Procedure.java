@@ -27,6 +27,7 @@ public class Procedure {
     private int number;
 
     private Card card;
+    private ProcedureType procedureType;
 
     public Procedure() {
     }
@@ -79,6 +80,28 @@ public class Procedure {
         this.SOCIAL = SOCIAL;
         this.zoned = zoned;
 
+    }
+
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, int number, Card card, ProcedureType procedureType) {
+        this.name = name;
+        this.cabinet = cabinet;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
+        this.zoned = zoned;
+        this.number = number;
+        this.card = card;
+        this.procedureType = procedureType;
+    }
+
+    public ProcedureType getProcedureType() {
+        return procedureType;
+    }
+
+    public void setProcedureType(ProcedureType procedureType) {
+        this.procedureType = procedureType;
     }
 
     public Procedure(String name) {
