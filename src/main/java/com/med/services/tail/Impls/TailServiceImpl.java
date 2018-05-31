@@ -103,6 +103,7 @@ public class TailServiceImpl implements ITailService {
             .map(tail -> new Tail(
                 tail.getKey().getId(),
                 tail.getKey().getName(),
+                tail.getKey().getProcedureType(),
                 talonService.toPatientList(tail.getValue()).stream().filter(patient ->
                     patient.getActivity().equals(Activity.ACTIVE)
                     ||

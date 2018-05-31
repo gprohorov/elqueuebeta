@@ -12,15 +12,17 @@ public class Tail {
     private List<Patient> patients = new ArrayList<>();
     private Patient patientOnProcedure = null;
     private boolean vacant;
+    private ProcedureType procedureType;
 
     public Tail() {
     }
 
-    public Tail(int procedureId, String procedureName, List<Patient> patients, boolean vacant) {
+    public Tail(int procedureId, String procedureName, ProcedureType procedureType, List<Patient> patients, boolean vacant) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.patients = patients;
         this.vacant = vacant;
+        this.procedureType = procedureType;
     }
 
     public Tail(int procedureId, String procedureName) {
@@ -59,6 +61,14 @@ public class Tail {
 
     public void setProcedureName(String procedureName) {
         this.procedureName = procedureName;
+    }
+
+    public ProcedureType getProcedureType() {
+        return procedureType;
+    }
+
+    public void setProcedureType(ProcedureType procedureType) {
+        this.procedureType = procedureType;
     }
 
     public List<Patient> getPatients() {
