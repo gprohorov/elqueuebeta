@@ -1,8 +1,8 @@
 package com.med.controller;
 
-import com.med.model.Patient;
 import com.med.model.Tail;
 import com.med.model.Talon;
+import com.med.model.TalonPatient;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
@@ -120,12 +120,13 @@ public class WorkPlaceController {
         return workPlaceService.getTailsForDoctor( doctorId);
     }
 
+    @GetMapping("/patient/{patientId}/{procedureId}")
+    public TalonPatient getTalonAndPatientNew(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "procedureId") int procedureId
+            ) {
 
-    @GetMapping("/patient/{talonId}")
-    public Patient getTalonAndPatient(
-            @PathVariable(value = "talonId") String talonId) {
-
-        return workPlaceService.getTalonAndPatient(talonId);
+        return workPlaceService.getTalonPatient(patientId, procedureId);
     }
 
     @PostMapping("/comment/{talonId}")

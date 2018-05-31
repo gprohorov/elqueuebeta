@@ -59,13 +59,6 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
 
-/*
-        Talon talon = patient.getTalons().stream()
-                .filter(tal->tal.getProcedure().getId()==procedureId)
-                .filter(tal->tal.getActivity().equals(Activity.ACTIVE))
-                .findFirst().orElse(null);
-*/
-
         Tail tail = tailService.getTail(talon.getProcedure().getId()                         );
 
         Doctor doctor = doctorService.getDoctor(doctorId);
@@ -205,6 +198,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
+
+    //////////////////////////////
     public List<Tail> getTailsForDoctor(int doctorId) {
 
         List<Tail> tails = new ArrayList<>();
@@ -215,23 +210,46 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .filter(tail -> procedureIds.contains(tail.getProcedureId()))
                 .collect(Collectors.toList());
 
+        // inject into the tail thecfirst active patient and all on procedure
     tails.stream().forEach(tail -> {
 
         Patient first = tail.getPatients().stream()
                 .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
                 .findFirst().orElse(null);
-        List<Patient> patients = tail.getPatients()
-                .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
-                .collect(Collectors.toList());
+
+            List<Patient> patients = tail.getPatients()
+                        .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
+                        .collect(Collectors.toList());
+
+            // switch semafor
+            if (patients.size()< procedureService.getProcedure(tail.getProcedureId()).getNumber())
+            {tail.setVacant(true);}
+            else {tail.setVacant(false);}
+
+            // first and on procedure -> together
+        if (first != null) {patients.add(first);}
+
+       // clean patients from extra talons
+/*
+        patients.stream().forEach(patient -> {
+
+           List<Talon>  talons = patient.getTalons()
+                    .stream().filter(tl->tl.getProcedure().getId()==tail.getProcedureId())
+                    .collect(Collectors.toList());
+           patient.setTalons(talons);
+        });
+*/
+
 
         tail.setPatients(patients);
-        if (first != null) {tail.getPatients().add(first);}
+
             }
+
     );
 
         return tails;
     }
-
+////////////////////////////getTailsForDoctor  - the end
 
     public Patient getTalonAndPatient(String talonId) {
 
@@ -241,6 +259,22 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         patient.getTalons().add(talon);
 
         return patient;
+    }
+
+    public TalonPatient getTalonPatient(String patientId, int procedureId) {
+
+        Patient patient = patientService.getPatient(patientId);
+
+        Talon talon = talonService.getTalonsForToday().stream()
+                .filter(tl->tl.getPatientId().equals(patientId))
+                .filter(tl->tl.getProcedure().getId()==procedureId)
+                .filter(tl->(tl.getActivity().equals(Activity.ACTIVE)
+                || tl.getActivity().equals(Activity.ON_PROCEDURE)
+                ))
+                .findFirst().orElse(null);
+
+
+        return new TalonPatient(talon,patient);
     }
 
     public Talon commentTalon(String talonId, String text) {

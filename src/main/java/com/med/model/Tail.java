@@ -86,7 +86,7 @@ public class Tail {
         return patient;
     }
 
-    public Patient getFirst() {
+/*    public Patient getFirst() {
         return this.getPatients().stream().findFirst().orElse(null);
-    }
+    }*/
 }
