@@ -19,38 +19,36 @@ public class Therapy {
     private LocalDateTime start;
     private LocalDateTime finish;
     private String diag;
-    private int codeDiag;
+    private String codeDiag;
     private String notes;
     private String picture;
    // private List<Point> hord;
     private List<Procedure> procedures = new ArrayList<>();
-    private int zones;
+    private int days;
 
-    public Therapy() {
-    }
-
-    public Therapy(int personId, LocalDateTime start, LocalDateTime finish, String diag, int codeDiag, String notes, String picture, List<Procedure> procedures, int zones) {
+    public Therapy(int personId, LocalDateTime finish, String diag, String codeDiag, String notes, String picture, List<Procedure> procedures, int days) {
         this.personId = personId;
-        this.start = start;
+        this.start = LocalDateTime.now();
         this.finish = finish;
         this.diag = diag;
         this.codeDiag = codeDiag;
         this.notes = notes;
         this.picture = picture;
         this.procedures = procedures;
-        this.zones = zones;
+        this.days = days;
     }
 
-    public Therapy(int personId, LocalDateTime start, LocalDateTime finish, String diag, int codeDiag, String notes, String picture, int zones) {
+    public Therapy(int personId, String diag, String notes, List<Procedure> procedures, int days) {
         this.personId = personId;
-        this.start = start;
-        this.finish = finish;
         this.diag = diag;
-        this.codeDiag = codeDiag;
         this.notes = notes;
-        this.picture = picture;
-        this.zones = zones;
+        this.procedures = procedures;
+        this.days = days;
+        this.start = LocalDateTime.now();
     }
+
+    public Therapy() {}
+
 
     public String getId() {
         return id;
@@ -92,11 +90,11 @@ public class Therapy {
         this.diag = diag;
     }
 
-    public int getCodeDiag() {
+    public String getCodeDiag() {
         return codeDiag;
     }
 
-    public void setCodeDiag(int codeDiag) {
+    public void setCodeDiag(String codeDiag) {
         this.codeDiag = codeDiag;
     }
 
@@ -124,27 +122,27 @@ public class Therapy {
         this.procedures = procedures;
     }
 
-    public int getZones() {
-        return zones;
+    public int getDays() {
+        return days;
     }
 
-    public void setZones(int zones) {
-        this.zones = zones;
+    public void setDays(int days) {
+        this.days = days;
     }
 
     @Override
     public String toString() {
         return "Therapy{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", personId=" + personId +
                 ", start=" + start +
                 ", finish=" + finish +
                 ", diag='" + diag + '\'' +
-                ", codeDiag=" + codeDiag +
+                ", codeDiag='" + codeDiag + '\'' +
                 ", notes='" + notes + '\'' +
                 ", picture='" + picture + '\'' +
                 ", procedures=" + procedures +
-                ", zones=" + zones +
+                ", days=" + days +
                 '}';
     }
 }

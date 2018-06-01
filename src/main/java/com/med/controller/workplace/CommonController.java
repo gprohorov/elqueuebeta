@@ -1,4 +1,4 @@
-package com.med.controller;
+package com.med.controller.workplace;
 
 import com.med.model.Tail;
 import com.med.model.Talon;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/workplace")
 @CrossOrigin("*")
-public class WorkPlaceController {
+public class CommonController {
 
 /*
     @Autowired

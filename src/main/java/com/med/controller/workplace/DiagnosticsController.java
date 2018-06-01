@@ -1,0 +1,66 @@
+package com.med.controller.workplace;
+
+import com.med.model.Procedure;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Created by george on 3/9/18.
+ */
+@RestController
+@RequestMapping("/api")
+@CrossOrigin("*")
+public class DiagnosticsController {
+
+
+
+    @Autowired
+    ProcedureServiceImpl service;
+
+    @RequestMapping("/procedure/list/")
+    public List<Procedure> showProcedures() {
+        return service.getAll();
+    }
+
+    // READ the Procedure by id
+    @GetMapping("/procedure/get/{id}")
+    public Procedure showOneProcedure(@PathVariable(value = "id")  int procedureId) {
+
+        return service.getProcedure(procedureId);
+    }
+
+    // CREATE the Procedure
+    @PostMapping("/procedure/save")
+    public Procedure saveProcedure(@RequestBody Procedure procedure) {
+
+//
+        return service.saveProcedure(procedure);
+    }
+
+    // DELETE the procedure by id
+    @PostMapping("/procedure/delete/{id}")
+    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
+
+        return null;
+                //service.deleteProcedure(procedureId);
+
+    }
+
+/*
+    // UPDATE the procedure by id
+    @PostMapping("/procedure/update/")
+    public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
+      //  updates.setId(procedureId);
+//
+        return service.updateProcedure(updates);
+
+    }
+
+
+*/
+
+}
+
