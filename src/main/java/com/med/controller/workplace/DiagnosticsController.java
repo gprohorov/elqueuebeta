@@ -1,5 +1,6 @@
 package com.med.controller.workplace;
 
+import com.med.model.Talon;
 import com.med.model.Therapy;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,19 @@ public class DiagnosticsController {
     }
 
     // finish the Therapy by id
-    @GetMapping("/therapy/get/{id}")
+    @GetMapping("/therapy/finish/{id}")
     public Therapy finishTherapy(@PathVariable(value = "id")  String therapyId) {
 
         return service.finishTherapy(therapyId);
     }
+
+    // assign talons acc. to therapy
+    @GetMapping("/therapy/assign/{id}")
+    public List<Talon> assignTherapy(@PathVariable(value = "id")  String therapyId) {
+
+        return service.assignTherapy(therapyId);
+    }
+
 
 }
 

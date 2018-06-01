@@ -15,7 +15,7 @@ public class Therapy {
 
     @Id
     private String id;
-    private int personId;
+    private String patientId;
     private LocalDateTime start;
     private LocalDateTime finish;
     private String diag;
@@ -26,9 +26,9 @@ public class Therapy {
     private List<Procedure> procedures = new ArrayList<>();
     private int days;
 
-    public Therapy(int personId, LocalDateTime finish, String diag, String codeDiag, String notes, String picture, List<Procedure> procedures, int days) {
-        this.personId = personId;
-        this.start = LocalDateTime.now();
+    public Therapy(String patientId, LocalDateTime start, LocalDateTime finish, String diag, String codeDiag, String notes, String picture, List<Procedure> procedures, int days) {
+        this.patientId = patientId;
+        this.start = start;
         this.finish = finish;
         this.diag = diag;
         this.codeDiag = codeDiag;
@@ -38,17 +38,14 @@ public class Therapy {
         this.days = days;
     }
 
-    public Therapy(int personId, String diag, String notes, List<Procedure> procedures, int days) {
-        this.personId = personId;
+    public Therapy(String patientId, String diag, List<Procedure> procedures, int days) {
+
+        this.start = LocalDateTime.now();
+        this.patientId = patientId;
         this.diag = diag;
-        this.notes = notes;
         this.procedures = procedures;
         this.days = days;
-        this.start = LocalDateTime.now();
     }
-
-    public Therapy() {}
-
 
     public String getId() {
         return id;
@@ -58,12 +55,12 @@ public class Therapy {
         this.id = id;
     }
 
-    public int getPersonId() {
-        return personId;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     public LocalDateTime getStart() {
@@ -134,7 +131,7 @@ public class Therapy {
     public String toString() {
         return "Therapy{" +
                 "id='" + id + '\'' +
-                ", personId=" + personId +
+                ", patientId='" + patientId + '\'' +
                 ", start=" + start +
                 ", finish=" + finish +
                 ", diag='" + diag + '\'' +
