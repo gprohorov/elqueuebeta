@@ -6,6 +6,7 @@ import com.med.services.therapy.interfaces.ITherapyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class TherapyServiceImpl implements ITherapyService {
         return repository.save(therapy);
     }
 
+    public Therapy saveTherapy(Therapy therapy) {return repository.save(therapy);
+    }
+
     public Therapy updateTherapy(Therapy therapy) {
         return repository.save(therapy);
     }
@@ -38,5 +42,13 @@ public class TherapyServiceImpl implements ITherapyService {
 
     public List<Therapy> getAll() {
         return repository.findAll();
+    }
+
+
+    public Therapy finishTherapy(String therapyId) {
+       Therapy therapy = this.getTherapy(therapyId);
+       therapy.setFinish(LocalDateTime.now());
+
+       return this.saveTherapy(therapy);
     }
 }

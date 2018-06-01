@@ -1,7 +1,7 @@
 package com.med.controller.workplace;
 
-import com.med.model.Procedure;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
+import com.med.model.Therapy;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,49 +18,43 @@ public class DiagnosticsController {
 
 
     @Autowired
-    ProcedureServiceImpl service;
+    TherapyServiceImpl service;
 
-    @RequestMapping("/procedure/list/")
-    public List<Procedure> showProcedures() {
+    @RequestMapping("/therapy/list/")
+    public List<Therapy> showTherapys() {
         return service.getAll();
     }
 
-    // READ the Procedure by id
-    @GetMapping("/procedure/get/{id}")
-    public Procedure showOneProcedure(@PathVariable(value = "id")  int procedureId) {
+    // READ the Therapy by id
+    @GetMapping("/therapy/get/{id}")
+    public Therapy showOneTherapy(@PathVariable(value = "id")  String therapyId) {
 
-        return service.getProcedure(procedureId);
+        return service.getTherapy(therapyId);
     }
 
-    // CREATE the Procedure
-    @PostMapping("/procedure/save")
-    public Procedure saveProcedure(@RequestBody Procedure procedure) {
+    // CREATE the Therapy
+    @PostMapping("/therapy/save")
+    public Therapy saveTherapy(@RequestBody Therapy therapy) {
 
 //
-        return service.saveProcedure(procedure);
+        return service.saveTherapy(therapy);
     }
 
-    // DELETE the procedure by id
-    @PostMapping("/procedure/delete/{id}")
-    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
+    // DELETE the therapy by id
+    @PostMapping("/therapy/delete/{id}")
+    public Therapy delTherapy(@PathVariable(value = "id")  int therapyId)  {
 
         return null;
-                //service.deleteProcedure(procedureId);
+                //service.deleteTherapy(therapyId);
 
     }
 
-/*
-    // UPDATE the procedure by id
-    @PostMapping("/procedure/update/")
-    public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
-      //  updates.setId(procedureId);
-//
-        return service.updateProcedure(updates);
+    // finish the Therapy by id
+    @GetMapping("/therapy/get/{id}")
+    public Therapy finishTherapy(@PathVariable(value = "id")  String therapyId) {
 
+        return service.finishTherapy(therapyId);
     }
-
-
-*/
 
 }
 
