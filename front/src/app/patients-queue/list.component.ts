@@ -21,6 +21,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     subTemp: Subscription;
     items: Patient[] = [];
     rows = [];
+    filters: any = {
+       all: true,
+       hotel: false,
+       active: false 
+    };
     Status = Status;
     Statuses = Object.keys(Status);
     Activity = Activity;

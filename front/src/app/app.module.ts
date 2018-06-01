@@ -32,6 +32,8 @@ import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 
+import { HotelMainComponent } from './hotel/main.component';
+
 import { PatientIncomeModalComponent } from './patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from './patient/assign-procedure.modal.component';
 import { PatientListComponent } from './patient/list.component';
@@ -71,6 +73,12 @@ const appRoutes: Routes = [
     },
     { path: 'login', component: LoginComponent },
 
+    {
+        path: 'hotel', component: HotelMainComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+    },
+    
     {
         path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -154,6 +162,7 @@ const appRoutes: Routes = [
         SortableColumnComponent,
         LoginComponent,
         NavComponent,
+        HotelMainComponent,
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
         PatientListComponent, PatientFormComponent,

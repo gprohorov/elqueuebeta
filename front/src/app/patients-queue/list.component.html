@@ -1,6 +1,18 @@
 ﻿<button
     [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
+    <div>Фільтри:</div>
+<div class="btn-group mb-3" role="group">
+    <button type="button"
+        [ngClass]="{'btn': true, 'btn-primary': filters.all, 'btn-secondary': !filters.all}"
+        (click)="filters.all = !filters.all">усі</button>
+    <button type="button" class="btn btn-secondary"
+        [ngClass]="{'btn': true, 'btn-primary': filters.hotel, 'btn-secondary': !filters.hotel}"
+        (click)="filters.hotel = !filters.hotel">готельні</button>
+    <button type="button" class="btn btn-secondary"
+        [ngClass]="{'btn': true, 'btn-primary': filters.active, 'btn-secondary': !filters.active}"
+        (click)="filters.active = !filters.active">активні</button>
+</div>
 <div class="content table-responsive table-full-width">
     <table class="table table-sm">
         <thead class="thead-light">
@@ -17,7 +29,7 @@
         </thead>
         <tbody *ngFor="let item of items; let i = index">
             <tr (dblclick)="rows[i]=!rows[i]">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i 
+                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
                     [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
                 </td>
                 <td>{{item.person.fullName}}</td>
@@ -38,7 +50,8 @@
                                 <h4 class="col-auto">Процедури</h4>
                                 <div class="col-auto">
                                     <button class="btn btn-info"
-                                        (click)="showAssignProcedurePopup(item)">Додати процедуру</button>
+                                        (click)="showAssignProcedurePopup(item)">Додати
+                                        процедуру</button>
                                 </div>
                                 <div class="col input-group">
                                     <div class="input-group-prepend">
@@ -51,8 +64,7 @@
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-warning"
-                                        (click)="showIncomePopup(item)">Розрахувати</button>
+                                    <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
                                 </div>
                                 <div class="col-auto">
                                     <button
