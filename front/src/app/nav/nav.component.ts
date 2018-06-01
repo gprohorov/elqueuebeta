@@ -34,7 +34,7 @@ export class NavComponent implements OnInit, OnDestroy {
         if (confirm('Reset DB?')) {
             this.utilService.resetDB().subscribe(() => {
                 this.alertService.success('DB has been reseted.', true);
-                this.router.navigate(['/']);
+                this.router.navigate(['']);
             });
         }
     }

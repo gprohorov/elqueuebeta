@@ -1,0 +1,87 @@
+﻿<button
+    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+    [disabled]="loading" (click)="load()" title="Обновити"></button>
+<div class="content" *ngIf="item?.patient">
+    <h2 class="title">{{item.talon.procedure.name}}</h2>
+    <h4 class="title mb-5">{{item.patient.person.fullName}}</h4>
+    <form name="form" #f="ngForm" novalidate (ngSubmit)="f.form.valid">
+        <div class="row">
+            <div class="col-8">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Діагноз</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Код</div>
+                            </div>
+                            <input type="text" class="form-control" name="codeDiag"
+                                #codeDiag="ngModel" [(ngModel)]="model.codeDiag"
+                                [readonly]="!procedureStarted" />
+                        </div>
+                        <textarea rows="3" class="form-control" name="diag" #diag="ngModel"
+                            [(ngModel)]="model.diag" [readonly]="!procedureStarted"></textarea>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Нотатки</h4>
+                    </div>
+                    <div class="card-body">
+                        <textarea rows="5" class="form-control" name="notes" #notes="ngModel"
+                            [(ngModel)]="model.notes" [readonly]="!procedureStarted"></textarea>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Історія хвороби</h4>
+                    </div>
+                    <div class="card-body"></div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Курс лікування</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Тривалість (днів)</div>
+                            </div>
+                            <input type="number" class="form-control" name="days" #days="ngModel"
+                                [(ngModel)]="model.days" [readonly]="!procedureStarted" />
+                        </div>
+                        <div class="mb-2">
+                            <button *ngFor="let procedure of procedures"
+                                [disabled]="!procedureStarted"
+                                [ngClass]="{'m-1': true, 'btn': true, 
+                                'btn-primary': procedure?.selected, 'btn-secondary': !procedure?.selected}"
+                                (click)="procedure.selected = !procedure?.selected">{{procedure.name}}</button>
+                        </div>
+                    </div>
+                </div>
+                <img src="/assets/skeleton.jpg" />
+            </div>
+            <div class="col-4">
+                <button *ngIf="procedureStarted" class="btn btn-success btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="executeProcedure()">
+                    <h3 class="font-weight-bold">
+                        ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
+                    </h3>
+                </button>
+                <button *ngIf="procedureStarted" class="btn btn-danger btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="cancelProcedure()">
+                    <h3 class="font-weight-bold">
+                        СКАCУВАТИ<br />ПРОЦЕДУРУ
+                    </h3>
+                </button>
+                <button *ngIf="!procedureStarted" class="btn btn-primary btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="startProcedure()">
+                    <h3 class="font-weight-bold">
+                        РОЗПОЧАТИ<br />ПРОЦЕДУРУ
+                    </h3>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -4,12 +4,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { switchMap } from 'rxjs/operators';
 
 import { Patient } from '../_models/index';
-import { AlertService, DoctorInterfaceService } from '../_services/index';
+import { AlertService, WorkplaceCommonService } from '../_services/index';
 
 @Component({
-    templateUrl: './procedure.component.html'
+    templateUrl: './common.component.html'
 })
-export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
+export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     loading = false;
     sub: Subscription;
@@ -20,6 +20,7 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     talonId: string;
     zones: number = 1;
     patientId: string;
+    procedureId: number;
     procedureStarted: boolean = false;
     model: any = {comment: ''};
 
@@ -27,11 +28,12 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private alertService: AlertService,
-        private service: DoctorInterfaceService
+        private service: WorkplaceCommonService
     ) { }
 
     ngOnInit() {
-        this.talonId = this.route.snapshot.paramMap.get('talonId');
+        this.patientId = this.route.snapshot.paramMap.get('patientId');
+        this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
         this.load();
     }
 
@@ -43,15 +45,15 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.talonId).subscribe(data => {
+        this.subPatient = this.service.getPatient(this.patientId, this.procedureId).subscribe(data => {
             this.item = data;
             this.loading = false;
-            this.procedureStarted = ('ON_PROCEDURE' == this.item.talons[0].activity) 
+            this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity) 
         });
     }
 
     startProcedure() {
-        this.subProcedure = this.service.startProcedure(this.talonId).subscribe(data => {
+        this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
             this.load();
         });
@@ -59,23 +61,23 @@ export class DoctorInterfaceProcedureComponent implements OnInit, OnDestroy {
     
     cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
-            this.subProcedure = this.service.cancelProcedure(this.talonId).subscribe(data => {
+            this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
-                this.router.navigate(['/doctor-interface']);
+                this.router.navigate(['workplace']);
             });
         }
     }
 
     executeProcedure() {
-        this.subProcedure = this.service.executeProcedure(this.talonId, this.zones).subscribe(data => {
+        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.zones).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
-            this.router.navigate(['/doctor-interface']);
+            this.router.navigate(['workplace']);
         });
     }
 
     comment() {
         this.loading = true;
-        this.service.commentProcedure(this.talonId, this.model.comment).subscribe(
+        this.service.commentProcedure(this.item.talon.id, this.model.comment).subscribe(
             data => {
                 this.alertService.success('Зміни збережено.', true);
                 this.model.comment = '';

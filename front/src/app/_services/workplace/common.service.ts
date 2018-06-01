@@ -3,14 +3,13 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
-import { config } from '../../config';
+import { config } from '../../../config';
 
-import { Patient } from '../_models/index';
+import { Patient } from '../../_models/index';
 
 @Injectable()
-export class DoctorInterfaceService {
+export class WorkplaceCommonService {
     // Define the routes we are going to interact with
-    private getTailsUrl = config.api_path + '/workplace/tails/';
     private getPatientUrl = config.api_path + '/workplace/patient/';
     private commentProcedureUrl = config.api_path + '/workplace/comment/';
     private startProcedureUrl = config.api_path + '/workplace/start/';
@@ -19,12 +18,8 @@ export class DoctorInterfaceService {
 
     constructor(private http: HttpClient) { }
 
-    getTails() {
-        return this.http.get(this.getTailsUrl).pipe(catchError(this.handleError));
-    }
-
-    getPatient(talonId: string) {
-        return this.http.get(this.getPatientUrl + talonId).pipe(catchError(this.handleError));
+    getPatient(patientId: string, procedureId: number) {
+        return this.http.get(this.getPatientUrl + patientId + '/' + procedureId).pipe(catchError(this.handleError));
     }
 
     commentProcedure(talonId: string, comment: string) {

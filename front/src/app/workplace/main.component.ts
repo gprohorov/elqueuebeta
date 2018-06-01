@@ -5,13 +5,13 @@ import { Subscription } from 'rxjs/Subscription';
 import { NgxMasonryOptions } from '../_helpers/index';
 import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
-import { AlertService, DoctorInterfaceService } from '../_services/index';
+import { AlertService, WorkplaceMainService } from '../_services/index';
 
 @Component({
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.css']
 })
-export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
+export class WorkplaceMainComponent implements OnInit, OnDestroy {
 
     loading = false;
 
@@ -32,7 +32,7 @@ export class DoctorInterfaceMainComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private alertService: AlertService,
-        private service: DoctorInterfaceService
+        private service: WorkplaceMainService
     ) { }
 
     ngOnInit() {

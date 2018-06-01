@@ -23,7 +23,9 @@ import {
     DoctorService,
     ProcedureService,
     PatientsQueueService,
-    DoctorInterfaceService
+    WorkplaceMainService,
+    WorkplaceCommonService,
+    WorkplaceDiagnosticService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -45,8 +47,11 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
-import { DoctorInterfaceMainComponent } from './doctor-interface/main.component';
-import { DoctorInterfaceProcedureComponent } from './doctor-interface/procedure.component';
+import { 
+    WorkplaceMainComponent,
+    WorkplaceCommonComponent,
+    WorkplaceDiagnosticComponent
+} from './workplace/index';
 
 const appRoutes: Routes = [
     {
@@ -58,7 +63,7 @@ const appRoutes: Routes = [
                 redirectTo: {
                     ROLE_SUPERADMIN: 'patients-queue',
                     ROLE_ADMIN: 'patients-queue',
-                    ROLE_DOCTOR: 'doctor-interface',
+                    ROLE_DOCTOR: 'workplace',
                     default: 'login'
                 }
             }
@@ -112,13 +117,17 @@ const appRoutes: Routes = [
     },
 
     {
-        path: 'doctor-interface', component: DoctorInterfaceMainComponent,
+        path: 'workplace', component: WorkplaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
-    
     {
-        path: 'doctor-interface/procedure/:talonId', component: DoctorInterfaceProcedureComponent,
+        path: 'workplace/common/:patientId/:procedureId', component: WorkplaceCommonComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+    },
+    {
+        path: 'workplace/diagnostic/:patientId/:procedureId', component: WorkplaceDiagnosticComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
@@ -152,8 +161,9 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        DoctorInterfaceMainComponent,
-        DoctorInterfaceProcedureComponent
+        WorkplaceMainComponent,
+        WorkplaceCommonComponent,
+        WorkplaceDiagnosticComponent
     ],
     providers: [
         AuthGuard,
@@ -168,7 +178,9 @@ const appRoutes: Routes = [
         DoctorService,
         ProcedureService,
         PatientsQueueService,
-        DoctorInterfaceService,
+        WorkplaceMainService,
+        WorkplaceCommonService,
+        WorkplaceDiagnosticService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [PatientIncomeModalComponent, PatientAssignProcedureModalComponent],

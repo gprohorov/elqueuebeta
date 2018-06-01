@@ -1,5 +1,5 @@
 ﻿<div class="row justify-content-md-center">
-	<div class="col-md-4">
+	<div class="col-auto">
     <h2>Вхід</h2>
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">

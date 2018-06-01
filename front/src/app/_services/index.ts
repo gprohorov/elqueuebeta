@@ -7,4 +7,7 @@ export * from './patient.service';
 export * from './doctor.service';
 export * from './procedure.service';
 export * from './patients-queue.service';
-export * from './doctor-interface.service';
+
+export * from './workplace/main.service';
+export * from './workplace/common.service';
+export * from './workplace/diagnostic.service';
