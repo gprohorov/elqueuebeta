@@ -1,9 +1,6 @@
 package com.med.services.patient.Impls;
 
-import com.med.model.Income;
-import com.med.model.Patient;
-import com.med.model.Status;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.income.impls.IncomeServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
@@ -11,6 +8,7 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,9 +117,9 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
-    public Income inserIncome(String patientId, int sum, boolean cash) {
+    public Income insertIncome(String patientId, int sum, Payment payment) {
 
-        Income income = new Income(patientId, sum, cash);
+        Income income = new Income(patientId, LocalDateTime.now(), sum, payment);
 
         return incomeService.createIncome(income);
 
