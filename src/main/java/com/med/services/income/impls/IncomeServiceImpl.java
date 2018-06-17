@@ -1,6 +1,6 @@
 package com.med.services.income.impls;
 
-import com.med.model.Income;
+import com.med.model.balance.Income;
 import com.med.model.Patient;
 import com.med.repository.income.IncomeRepository;
 import com.med.services.income.interfaces.IIncomeService;
@@ -28,7 +28,6 @@ public class IncomeServiceImpl implements IIncomeService {
 
     @Override
     public Income createIncome(Income income) {
-
         repository.save(income);
         Patient patient = patientService.getPatient(income.getPatientId());
         patient.setBalance(patient.getBalance() + income.getSum());
@@ -47,7 +46,30 @@ public class IncomeServiceImpl implements IIncomeService {
         return repository.findAll();
     }
 
-      public Integer getASum() {
+
+
+    // TODO: Human query
+    @Override
+    public List<Income> getAllIncomesForPatienetFromTo(
+              String patientId
+            , LocalDate start
+            , LocalDate finish) {
+
+        List<Income> incomes = this.getAll().stream()
+                .filter(income -> income.getPatientId().equals(patientId))
+               .filter(income -> income.getDateTime().toLocalDate().isAfter(start.minusDays(0)))
+               .filter(income -> income.getDateTime().toLocalDate().isBefore(finish.plusDays(0)))
+                .collect(Collectors.toList());
+
+        return incomes;
+
+    }
+
+
+
+
+
+    public Integer getASum() {
         return repository.findAll().stream().mapToInt(Income::getSum).sum();
     }
 

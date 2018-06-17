@@ -1,4 +1,4 @@
-package com.med.model;
+package com.med.model.balance;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

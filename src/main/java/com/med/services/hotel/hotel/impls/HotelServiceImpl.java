@@ -6,7 +6,9 @@ import com.med.services.hotel.hotel.interfaces.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 01.06.18.
@@ -32,6 +34,17 @@ public class HotelServiceImpl implements IHotelService{
     @Override
     public List<Hotel> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Hotel> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish) {
+
+        return this.getAll().stream()
+                .filter(hotel -> hotel.getPatientId().equals(patientId))
+                .filter(hotel->hotel.getFinish() != null)
+                .filter(hotel->hotel.getStart().toLocalDate().isAfter(start.minusDays(1)))
+                .filter(hotel->hotel.getFinish().toLocalDate().isBefore(finish.plusDays(1)))
+                .collect(Collectors.toList());
     }
 
     @Override

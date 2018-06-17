@@ -1,6 +1,6 @@
 package com.med.repository.income;
 
-import com.med.model.Income;
+import com.med.model.balance.Income;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

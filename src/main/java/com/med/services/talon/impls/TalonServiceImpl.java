@@ -181,4 +181,21 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
+    public List<Talon> getAllExecutedTalonsForPatientFromTo(
+            String patientId
+            , LocalDate start
+            , LocalDate finish){
+
+        return getAll().stream()
+                .filter(talon -> talon.getPatientId().equals(patientId))
+                .filter(talon -> talon.getDate().isAfter(start.minusDays(0)))
+                .filter(talon -> talon.getDate().isBefore(finish.plusDays(1)))
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
 }

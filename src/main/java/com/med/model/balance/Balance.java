@@ -1,7 +1,8 @@
-package com.med.model;
+package com.med.model.balance;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by george on 14.06.18.
@@ -11,11 +12,12 @@ public class Balance {
     private String patientId;
     private LocalDate start;
     private LocalDate finish;
-    private HashMap<Procedure, Integer> procedures;
+    private List<Course> courses = new ArrayList<>();
     private int hotelSum;
-    private int avance;
+    private int payment;
     private int discont;
     private int summary;
+    private int sumForProcedures;
 
     public Balance() {
     }
@@ -26,12 +28,12 @@ public class Balance {
         this.finish = finish;
     }
 
-    public int getAvance() {
-        return avance;
+    public int getSumForProcedures() {
+        return sumForProcedures;
     }
 
-    public void setAvance(int avance) {
-        this.avance = avance;
+    public void setSumForProcedures(int sumForProcedures) {
+        this.sumForProcedures = sumForProcedures;
     }
 
     public String getPatientId() {
@@ -58,12 +60,12 @@ public class Balance {
         this.finish = finish;
     }
 
-    public HashMap<Procedure, Integer> getProcedures() {
-        return procedures;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public void setProcedures(HashMap<Procedure, Integer> procedures) {
-        this.procedures = procedures;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     public int getHotelSum() {
@@ -72,6 +74,14 @@ public class Balance {
 
     public void setHotelSum(int hotelSum) {
         this.hotelSum = hotelSum;
+    }
+
+    public int getPayment() {
+        return payment;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
     }
 
     public int getDiscont() {
@@ -83,7 +93,9 @@ public class Balance {
     }
 
     public int getSummary() {
-        return summary;
+
+        return  this.getDiscont() + this.getHotelSum() + this.getSumForProcedures()
+                +this.getPayment();
     }
 
     public void setSummary(int summary) {

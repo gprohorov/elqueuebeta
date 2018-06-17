@@ -1,13 +1,10 @@
 package com.med.controller;
 
-import com.med.model.Doctor;
-import com.med.model.Income;
 import com.med.model.Tail;
 import com.med.services.tail.Impls.TailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
