@@ -10,4 +10,5 @@ export class Procedure {
     BUSINESS: number;
     ALL_INCLUSIVE: number;
     SOCIAL: number;
+    header: string;
 }

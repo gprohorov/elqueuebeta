@@ -43,7 +43,7 @@ public class DataStorageTest {
 
     @PostConstruct
     void init(){
-
+/*
        List<Hotel> hotels = new ArrayList<>(
                Arrays.asList(
 
@@ -82,7 +82,6 @@ public class DataStorageTest {
 
      //   hotelService.saveAll(hotels);
 
-/*
 
         List<Koika> koikas = new ArrayList<>(
                 Arrays.asList(

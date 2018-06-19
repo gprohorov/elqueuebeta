@@ -33,34 +33,6 @@
                             [(ngModel)]="model.notes" [readonly]="!procedureStarted"></textarea>
                     </div>
                 </div>
-                <div class="card mb-2">
-                    <div class="card-header">
-                        <h4>Історія хвороби</h4>
-                    </div>
-                    <div class="card-body"></div>
-                </div>
-                <div class="card mb-2">
-                    <div class="card-header">
-                        <h4>Курс лікування</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Тривалість (днів)</div>
-                            </div>
-                            <input type="number" class="form-control" name="days" #days="ngModel"
-                                [(ngModel)]="model.days" [readonly]="!procedureStarted" />
-                        </div>
-                        <div class="mb-2">
-                            <button *ngFor="let procedure of procedures"
-                                [disabled]="!procedureStarted"
-                                [ngClass]="{'m-1': true, 'btn': true, 
-                                'btn-primary': procedure?.selected, 'btn-secondary': !procedure?.selected}"
-                                (click)="procedure.selected = !procedure?.selected">{{procedure.name}}</button>
-                        </div>
-                    </div>
-                </div>
-                <img src="/assets/skeleton.jpg" />
             </div>
             <div class="col-4">
                 <button *ngIf="procedureStarted" class="btn btn-success btn-lg btn-block"
@@ -81,6 +53,54 @@
                         РОЗПОЧАТИ<br />ПРОЦЕДУРУ
                     </h3>
                 </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Історія хвороби</h4>
+                    </div>
+                    <div class="card-body"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <div class="content">
+                    <button class="btn btn-secondary btn-small" (click)="clearCanvas()">Очистити</button>
+                    <button class="btn btn-success btn-small" (click)="saveCanvas()">Зберегти</button>
+                    <button class="btn btn-primary btn-small" (click)="restoreCanvas()">Відновити</button>
+                </div>
+                <canvas #canvasDiag width="500" height="500"></canvas>
+            </div>
+            <div class="col">
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <h4>Курс лікування</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Тривалість (днів)</div>
+                            </div>
+                            <input type="number" class="form-control" name="days" #days="ngModel"
+                                [(ngModel)]="model.days" [readonly]="!procedureStarted" />
+                        </div>
+                        <div class="mb-2" *ngIf="procedures?.length">
+                            <div *ngFor="let procedure of procedures">
+                                <div *ngIf="procedure.header">{{procedure.header}}</div>
+                                <button 
+                                    [disabled]="!procedureStarted" [style.width.px]="350"
+                                    [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
+                                                'btn-primary': procedure?.selected,
+                                                'btn-secondary': !procedure?.selected}"
+                                    (click)="procedure.selected = !procedure?.selected"
+                                >{{procedure.name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
