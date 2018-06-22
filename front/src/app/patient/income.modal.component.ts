@@ -27,6 +27,12 @@ export class PatientIncomeModalComponent implements IModalDialog {
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
         this.data.cashLess = false;
+        this.patientService.getBalance(this.data.patientId).subscribe( (data) => {
+            console.log(data);
+            this.data = data;
+        }, error => {
+            this.alertService.error(error);
+        });
     }
 
     submit(f, options) {

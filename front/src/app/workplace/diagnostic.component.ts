@@ -84,6 +84,10 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         this.canvasMemory.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
     }
     
+    public setColor(color) {
+        this.cx.strokeStyle = color;
+    }
+    
     private canvasInit() {
         if (this.canvasDiag) {
             const canvasEl: HTMLCanvasElement = this.canvasDiag.nativeElement;
@@ -91,7 +95,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
             this.cx.lineWidth = 6;
             this.cx.lineCap = 'round';
-            this.cx.strokeStyle = 'red';
+            this.cx.strokeStyle = 'blue';
 
             const img = new Image;
             img.onload = () => {
@@ -127,12 +131,14 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             // previous and current position with the offset
             const prevPos = {
                 x: res[0].clientX - rect.left,
-                y: res[0].clientY - rect.top
+                y: res[0].clientY - rect.top,
+                c: this.cx.strokeStyle
             };
 
             const currentPos = {
                 x: res[1].clientX - rect.left,
-                y: res[1].clientY - rect.top
+                y: res[1].clientY - rect.top,
+                c: this.cx.strokeStyle
             };
 
             this.storePoints(prevPos, currentPos);
@@ -158,12 +164,14 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             // previous and current position with the offset
             const prevPos = {
                 x: res[0].touches[0].clientX - rect.left,
-                y: res[0].touches[0].clientY - rect.top
+                y: res[0].touches[0].clientY - rect.top,
+                c: this.cx.strokeStyle
             };
 
             const currentPos = {
                 x: res[1].touches[0].clientX - rect.left,
-                y: res[1].touches[0].clientY - rect.top
+                y: res[1].touches[0].clientY - rect.top,
+                c: this.cx.strokeStyle
             };
 
             this.storePoints(prevPos, currentPos);
@@ -177,8 +185,8 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     private drawOnCanvas(
-        prevPos: { x: number, y: number },
-        currentPos: { x: number, y: number }
+        prevPos: { x: number, y: number, c: string },
+        currentPos: { x: number, y: number, c: string }
     ) {
         // incase the context is not set
         if (!this.cx) { return; }
@@ -188,6 +196,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
         // we're drawing lines so we need a previous position
         if (prevPos) {
+            this.cx.strokeStyle = prevPos.c;
             // sets the start point
             this.cx.moveTo(prevPos.x, prevPos.y); // from
             // draws a line from the start pos until the current position

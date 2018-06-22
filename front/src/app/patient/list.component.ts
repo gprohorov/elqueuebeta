@@ -52,12 +52,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
         });
     }
 
-    showIncomePopup(patientId: string) {
-        const patient = this.items.filter(x => patientId == x.id)[0];
+    showIncomePopup(patient: any) {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientIncomeModalComponent,
-            data: { patientId: patientId, patientName: patient.person.fullName, sum: patient.balance * -1 }
+            data: { patientId: patient.id, patientName: patient.person.fullName }
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }

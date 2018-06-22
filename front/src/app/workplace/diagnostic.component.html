@@ -70,7 +70,12 @@
                 <div class="content">
                     <button class="btn btn-secondary btn-small" (click)="clearCanvas()">Очистити</button>
                     <button class="btn btn-success btn-small" (click)="saveCanvas()">Зберегти</button>
-                    <button class="btn btn-primary btn-small" (click)="restoreCanvas()">Відновити</button>
+                    <button class="btn btn-warning btn-small" (click)="restoreCanvas()">Відновити</button>
+
+                    <button class="btn btn-danger btn-small pull-right" [style.width.px]="50"
+                        (click)="setColor('red')">&nbsp;</button>
+                    <button class="btn btn-primary btn-small pull-right mr-2" [style.width.px]="50"
+                        (click)="setColor('blue')">&nbsp;</button>
                 </div>
                 <canvas #canvasDiag width="500" height="500"></canvas>
             </div>

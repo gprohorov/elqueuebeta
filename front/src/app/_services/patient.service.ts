@@ -16,6 +16,7 @@ export class PatientService {
     private saveUrl = config.api_path + '/patient/save/';
     private assignProcedureUrl = config.api_path + '/patient/create/talon/';
     private incomeUrl = config.api_path + '/income/create';
+    private getBalanceUrl = config.api_path + '/patient/balance/today/';
 
     constructor(private http: HttpClient) { }
 
@@ -45,6 +46,10 @@ export class PatientService {
             .pipe(catchError(this.handleError));
     }
 
+    getBalance(patientId: string) {
+        return this.http.get(this.getBalanceUrl + patientId).pipe(catchError(this.handleError));
+    }
+    
     sortBy(criteria: PatientSearchCriteria, list) {
         return list.sort((a, b) => {
             let x = a.person[criteria.sortColumn], y = b.person[criteria.sortColumn];

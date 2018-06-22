@@ -1,10 +1,59 @@
+<div class="row">
+    <div class="col">Початок лікування:</div>
+    <div class="col">{{data.start | date: 'dd.MM.yyyy'}}</div>
+</div>
+<div class="row">
+    <div class="col">Кінець лікування:</div>
+    <div class="col">{{data.finish | date: 'dd.MM.yyyy'}}</div>
+</div>
+<div class="row">
+    <div class="col">Сумма за готель:</div>
+    <div class="col">{{data.hotelSum}} грн.</div>
+</div>
+<div class="row">
+    <div class="col">Сумма на балансі:</div>
+    <div class="col">{{data.payment}} грн.</div>
+</div>
+<div class="row">
+    <div class="col">Сумма за процедури:</div>
+    <div class="col">{{data.sumForProcedures}} грн.</div>
+</div>
+<div class="row m-2">
+    <div class="col mt-2">
+        <h4>Пройдені процедури</h4>
+    </div>
+    <table class="table table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th>Назва</th>
+                <th>К-ть раз</th>
+                <th>К-ть зон</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of data.courses">
+                <td>{{p.procedure.name}}</td>
+                <td>{{p.times}}</td>
+                <td>{{p.zones}}</td>
+                <td>{{p.summa}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <form name="form" #f="ngForm" novalidate>
-    <label for="sum">Сума</label>
-    <input type="number" class="form-control" name="sum" [(ngModel)]="data.sum" #sum="ngModel"
-        required />
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" name="cashLess" [(ngModel)]="data.cashLess"
-            #cashLess="ngModel" />
-        <label for="cashLess" class="form-check-label">Безготівковий розрахунок</label>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Знижка</div>
+        </div>
+        <input type="number" class="form-control" name="discount" [(ngModel)]="data.discount"
+            #discount="ngModel" />
+    </div>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Сума до сплати</div>
+        </div>
+        <input type="number" class="form-control" name="summary" [(ngModel)]="data.summary"
+            #summary="ngModel" />
     </div>
 </form>
