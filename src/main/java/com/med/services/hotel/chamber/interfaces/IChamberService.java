@@ -12,4 +12,5 @@ public interface IChamberService {
     Chamber createChamber(Chamber chamber);
     List<Chamber> getAll();
     Chamber getChamber(int chamberId);
+    //void delete(int id);
 }
