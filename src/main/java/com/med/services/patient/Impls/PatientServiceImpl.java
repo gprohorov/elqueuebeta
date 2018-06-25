@@ -130,9 +130,9 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
-    public Income insertIncome(String patientId, int sum, PaymentType payment) {
+    public Income insertIncome(String patientId, int sum, int discount, PaymentType payment) {
 
-        Income income = new Income(patientId, LocalDateTime.now(), sum, PaymentType.CASH);
+        Income income = new Income(patientId, LocalDateTime.now(), sum, discount, PaymentType.CASH);
         return incomeService.createIncome(income);
 
     }

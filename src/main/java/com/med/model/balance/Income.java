@@ -21,6 +21,14 @@ public class Income {
     public Income() {
     }
 
+    public Income(String patientId, LocalDateTime dateTime, Integer sum, Integer discount, PaymentType payment) {
+        this.patientId = patientId;
+        this.dateTime = dateTime;
+        this.sum = sum;
+        this.discount = discount;
+        this.payment = payment;
+    }
+
     public Income(String patientId, Integer sum, Integer discount, PaymentType payment) {
         this.patientId = patientId;
         this.sum = sum;
