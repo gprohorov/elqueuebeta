@@ -26,10 +26,9 @@ export class PatientIncomeModalComponent implements IModalDialog {
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
-        this.data.cashLess = false;
         this.patientService.getBalance(this.data.patientId).subscribe( (data) => {
-            console.log(data);
             this.data = data;
+            this.data.paymentType = 'CASH';
         }, error => {
             this.alertService.error(error);
         });
@@ -38,7 +37,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
-        this.patientService.income(this.data.patientId, this.data.sum, this.data.cashLess)
+        this.patientService.income(this.data.patientId, this.data.paymentType, this.data.sum, this.data.discount)
             .subscribe(() => {
                 this.alertService.success('На рахунок пацієнта ' + this.data.patientName
                     + ' внесено ' + this.data.sum + 'грн.');
