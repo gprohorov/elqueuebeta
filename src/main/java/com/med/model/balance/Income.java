@@ -14,13 +14,13 @@ public class Income {
     private String id;
     private String patientId;
     private LocalDateTime dateTime;
-    private Integer sum;
-    private Payment payment;
+    private Integer sum =0;
+    private PaymentTYpe payment;
 
     public Income() {
     }
 
-    public Income(String patientId, LocalDateTime dateTime, Integer sum, Payment payment) {
+    public Income(String patientId, LocalDateTime dateTime, Integer sum, PaymentTYpe payment) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.sum = sum;
@@ -59,11 +59,11 @@ public class Income {
         this.sum = sum;
     }
 
-    public Payment getPayment() {
+    public PaymentTYpe getPayment() {
         return payment;
     }
 
-    public void setPayment(Payment payment) {
+    public void setPayment(PaymentTYpe payment) {
         this.payment = payment;
     }
 

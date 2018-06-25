@@ -15,7 +15,7 @@ public class Balance {
     private List<Course> courses = new ArrayList<>();
     private int hotelSum;
     private int payment;
-    private int discont;
+    private int discount;
     private int summary;
     private int sumForProcedures;
 
@@ -84,17 +84,17 @@ public class Balance {
         this.payment = payment;
     }
 
-    public int getDiscont() {
-        return discont;
+    public int getDiscount() {
+        return discount;
     }
 
-    public void setDiscont(int discont) {
-        this.discont = discont;
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public int getSummary() {
 
-        return  this.getDiscont() + this.getHotelSum() + this.getSumForProcedures()
+        return  this.getDiscount() + this.getHotelSum() + this.getSumForProcedures()
                 +this.getPayment();
     }
 

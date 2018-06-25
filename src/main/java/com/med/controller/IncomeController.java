@@ -1,7 +1,7 @@
 package com.med.controller;
 
 import com.med.model.balance.Income;
-import com.med.model.balance.Payment;
+import com.med.model.balance.PaymentTYpe;
 import com.med.services.income.impls.IncomeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class IncomeController {
     public Income createIncome(@Valid @RequestBody Income income) {
         income.setDateTime(LocalDateTime.now());
         //////////////// HARDCODE ///////////////
-        income.setPayment(Payment.CASH);
+        income.setPayment(PaymentTYpe.CASH);
         ///////////////////////////////////////////
         return service.createIncome(income);
     }
