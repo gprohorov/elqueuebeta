@@ -6,7 +6,7 @@ import com.med.model.Talon;
 import com.med.model.balance.Balance;
 import com.med.model.balance.Course;
 import com.med.model.balance.Income;
-import com.med.model.balance.PaymentTYpe;
+import com.med.model.balance.PaymentType;
 import com.med.model.hotel.Hotel;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.hotel.hotel.impls.HotelServiceImpl;
@@ -130,9 +130,9 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
-    public Income insertIncome(String patientId, int sum, PaymentTYpe payment) {
+    public Income insertIncome(String patientId, int sum, PaymentType payment) {
 
-        Income income = new Income(patientId, LocalDateTime.now(), sum, PaymentTYpe.CASH);
+        Income income = new Income(patientId, LocalDateTime.now(), sum, PaymentType.CASH);
         return incomeService.createIncome(income);
 
     }
@@ -187,12 +187,12 @@ public class PatientServiceImpl implements IPatientService {
 
 
         long payment = incomes.stream()
-                .filter(income -> !income.getPayment().equals(PaymentTYpe.DISCOUNT))
+                .filter(income -> !income.getPayment().equals(PaymentType.DISCOUNT))
                 .mapToLong(Income::getSum).sum();
         balance.setPayment( (int) payment);
 
         long discont = incomes.stream()
-                .filter(income -> income.getPayment().equals(PaymentTYpe.DISCOUNT))
+                .filter(income -> income.getPayment().equals(PaymentType.DISCOUNT))
                 .mapToLong(Income::getSum).sum();
         balance.setDiscount((int) discont);
 

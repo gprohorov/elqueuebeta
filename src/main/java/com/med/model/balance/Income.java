@@ -15,16 +15,25 @@ public class Income {
     private String patientId;
     private LocalDateTime dateTime;
     private Integer sum =0;
-    private PaymentTYpe payment;
+    private  Integer discount=0;
+    private PaymentType payment;
 
     public Income() {
     }
 
-    public Income(String patientId, LocalDateTime dateTime, Integer sum, PaymentTYpe payment) {
+    public Income(String patientId, Integer sum, Integer discount, PaymentType payment) {
         this.patientId = patientId;
-        this.dateTime = dateTime;
         this.sum = sum;
+        this.discount = discount;
         this.payment = payment;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     public String getId() {
@@ -59,11 +68,11 @@ public class Income {
         this.sum = sum;
     }
 
-    public PaymentTYpe getPayment() {
+    public PaymentType getPayment() {
         return payment;
     }
 
-    public void setPayment(PaymentTYpe payment) {
+    public void setPayment(PaymentType payment) {
         this.payment = payment;
     }
 
