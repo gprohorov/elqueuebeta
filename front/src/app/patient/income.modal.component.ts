@@ -17,6 +17,8 @@ export class PatientIncomeModalComponent implements IModalDialog {
         desc: ''
     };
     sub: Subscription;
+    loading: boolean = false;
+    showDetails: boolean = false;
 
     @ViewChild('f') myForm;
     constructor(
@@ -36,14 +38,22 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
     }
 
+    details() {
+        this.showDetails = true;
+        this.loading = true;
+        this.sub = this.patientService.getBalance(this.data.id).subscribe((data) => {
+            this.loading = false;
+            this.details = data;
+        });
+    }
+
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
-        this.patientService.income(this.model)
-            .subscribe(() => {
-                this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
-                    + ' внесено ' + this.model.sum + ' грн.');
-                options.closeDialogSubject.next();
-            });
+        this.sub = this.patientService.income(this.model).subscribe(() => {
+            this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
+                + ' внесено ' + this.model.sum + ' грн.');
+            options.closeDialogSubject.next();
+        });
     }
 }
