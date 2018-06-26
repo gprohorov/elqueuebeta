@@ -12,36 +12,38 @@ import java.time.LocalDateTime;
 public class Income {
     @Id
     private String id;
+    private Integer doctorId;
     private String patientId;
     private LocalDateTime dateTime;
-    private Integer sum =0;
-    private  Integer discount=0;
+    private Integer sum = 0;
     private PaymentType payment;
+    private String desc = "";
 
     public Income() {
     }
 
-    public Income(String patientId, LocalDateTime dateTime, Integer sum, Integer discount, PaymentType payment) {
+    public Income( String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.sum = sum;
-        this.discount = discount;
         this.payment = payment;
+        this.desc = desc;
     }
 
-    public Income(String patientId, Integer sum, Integer discount, PaymentType payment) {
-        this.patientId = patientId;
-        this.sum = sum;
-        this.discount = discount;
-        this.payment = payment;
+    public Integer getDoctorId() {
+        return doctorId;
     }
 
-    public Integer getDiscount() {
-        return discount;
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getId() {
@@ -84,14 +86,5 @@ public class Income {
         this.payment = payment;
     }
 
-    @Override
-    public String toString() {
-        return "Income{" +
-                "id='" + id + '\'' +
-                ", patientId='" + patientId + '\'' +
-                ", dateTime=" + dateTime +
-                ", sum=" + sum +
-                ", payment=" + payment +
-                '}';
-    }
+
 }

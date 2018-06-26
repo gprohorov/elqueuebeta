@@ -16,8 +16,16 @@ public class Balance {
     private int hotelSum;
     private int payment;
     private int discount;
-    private int summary;
+    private int sum;
     private int sumForProcedures;
+
+    public int getSum() {
+        return this.getPayment() + this.getDiscount() - this.getHotelSum() - this.getSumForProcedures();
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
+    }
 
     public Balance() {
     }
@@ -98,9 +106,7 @@ public class Balance {
                 +this.getPayment();
     }
 
-    public void setSummary(int summary) {
-        this.summary = summary;
-    }
+
 }
 
 

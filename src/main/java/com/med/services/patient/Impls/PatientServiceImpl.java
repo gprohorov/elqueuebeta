@@ -130,9 +130,9 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
-    public Income insertIncome(String patientId, int sum, int discount, PaymentType payment) {
+    public Income insertIncome(String patientId, int sum, String desc, PaymentType payment) {
 
-        Income income = new Income(patientId, LocalDateTime.now(), sum, discount, PaymentType.CASH);
+        Income income = new Income(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
         return incomeService.createIncome(income);
 
     }
@@ -166,7 +166,7 @@ public class PatientServiceImpl implements IPatientService {
             long times  = entry.getValue().size();
             long zones  = entry.getValue().stream().mapToInt(Talon::getZones).sum();
             long sums = entry.getValue().stream().mapToInt(Talon::getSum).sum();
-            Course course = new Course(entry.getKey(), times,  zones,   sums);
+            Course course = new Course(entry.getKey(), times, zones, sums);
             balance.getCourses().add(course);
         });
 
@@ -183,7 +183,7 @@ public class PatientServiceImpl implements IPatientService {
             hotelBill[0] += bill;
         });
 
-        balance.setHotelSum( (int) (hotelBill[0]) * (-1));
+        balance.setHotelSum( (int) (hotelBill[0]) );
 
 
         long payment = incomes.stream()

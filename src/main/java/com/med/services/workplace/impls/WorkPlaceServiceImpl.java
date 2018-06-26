@@ -105,12 +105,12 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setZones(zones);
 
         int price = this.getPrice(patient, procedure);
-        int sum = -1 * ( procedure.isZoned()? price*talon.getZones(): price);
+        int sum = procedure.isZoned()? price*talon.getZones(): price;
         talon.setSum(sum);
 
 
         patient.setLastActivity(LocalDateTime.now());
-        patient.setBalance(patient.getBalance()+sum);
+        patient.setBalance(patient.getBalance()-sum);
         patientService.savePatient(patient);
 
         tail.setPatientOnProcedure(null);
