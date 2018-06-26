@@ -1,4 +1,19 @@
-<div class="row"><div class="col">Баланс: <strong>{{data.balance}}</strong> грн.</div></div>
+<div class="card mb-2 mt-2" [hidden]="!showDetails">
+    <div class="card-header">
+        <h5>Історія розрахунків</h5>
+    </div>
+    <div class="card-body">
+        <span class="fa fa-refresh fa-spin text-secondary" [hidden]="!loading"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        Баланс: <strong>{{data.balance}}</strong> грн.
+    </div>
+    <div class="col">
+        <button class="btn btn-sm btn-success pull-right" (click)="details()">Детальніше</button>
+    </div>
+</div>
 <form name="form" #f="ngForm" novalidate>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
@@ -32,7 +47,6 @@
         <div class="input-group-prepend">
             <div class="input-group-text" [style.width.px]="110">Коментар</div>
         </div>
-        <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc"
-            #desc="ngModel" />
+        <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc" #desc="ngModel" />
     </div>
 </form>
