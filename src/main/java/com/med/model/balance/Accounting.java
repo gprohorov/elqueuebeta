@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Created by george on 12.05.18.
  */
 @Document
-public class Income {
+public class Accounting {
     @Id
     private String id;
     private Integer doctorId;
@@ -19,10 +19,10 @@ public class Income {
     private PaymentType payment;
     private String desc = "";
 
-    public Income() {
+    public Accounting() {
     }
 
-    public Income( String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
+    public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.sum = sum;

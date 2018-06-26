@@ -5,12 +5,12 @@ import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.model.balance.Balance;
 import com.med.model.balance.Course;
-import com.med.model.balance.Income;
+import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.hotel.Hotel;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.hotel.hotel.impls.HotelServiceImpl;
-import com.med.services.income.impls.IncomeServiceImpl;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class PatientServiceImpl implements IPatientService {
     TalonServiceImpl talonService;
 
     @Autowired
-    IncomeServiceImpl incomeService;
+    AccountingServiceImpl incomeService;
 
     @Autowired
     HotelServiceImpl hotelService;
@@ -130,10 +130,10 @@ public class PatientServiceImpl implements IPatientService {
 
     }
 
-    public Income insertIncome(String patientId, int sum, String desc, PaymentType payment) {
+    public Accounting insertIncome(String patientId, int sum, String desc, PaymentType payment) {
 
-        Income income = new Income(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
-        return incomeService.createIncome(income);
+        Accounting accounting = new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
+        return incomeService.createAccounting(accounting);
 
     }
 
@@ -152,7 +152,7 @@ public class PatientServiceImpl implements IPatientService {
 
         Balance balance = new Balance(patientId, start, finish);
 
-        List<Income> incomes= incomeService
+        List<Accounting> incomes= incomeService
                 .getAllIncomesForPatienetFromTo(patientId, start, finish);
 
         List<Talon> talons = talonService
@@ -188,12 +188,12 @@ public class PatientServiceImpl implements IPatientService {
 
         long payment = incomes.stream()
                 .filter(income -> !income.getPayment().equals(PaymentType.DISCOUNT))
-                .mapToLong(Income::getSum).sum();
+                .mapToLong(Accounting::getSum).sum();
         balance.setPayment( (int) payment);
 
         long discont = incomes.stream()
                 .filter(income -> income.getPayment().equals(PaymentType.DISCOUNT))
-                .mapToLong(Income::getSum).sum();
+                .mapToLong(Accounting::getSum).sum();
         balance.setDiscount((int) discont);
 
 

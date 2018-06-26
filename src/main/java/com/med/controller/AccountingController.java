@@ -1,8 +1,8 @@
 package com.med.controller;
 
-import com.med.model.balance.Income;
+import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.services.income.impls.IncomeServiceImpl;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +17,23 @@ import java.util.List;
 @RequestMapping("/api/income")
 @RestController
 @CrossOrigin("*")
-public class IncomeController {
+public class AccountingController {
 
 
     @Autowired
-    IncomeServiceImpl service ;
+    AccountingServiceImpl service ;
 
 
     @RequestMapping("/list")
-    public List<Income> showIncomess(){
+    public List<Accounting> showAll(){
 
         return service.getAll();
     }
 
 
-    // CREATE a new Income
+    // CREATE a new Accounting
     @PostMapping("/create")
-    public String createIncome(@Valid @RequestBody String data) {
+    public String create(@Valid @RequestBody String data) {
 
         JSONObject jsonObj = new JSONObject(data);
 
@@ -43,9 +43,9 @@ public class IncomeController {
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
 
-        service.createIncome(new Income(patientId, LocalDateTime.now(), sum, paymentType, desc));
+        service.createAccounting(new Accounting(patientId, LocalDateTime.now(), sum, paymentType, desc));
         if (discount != 0) {
-            service.createIncome(new Income(patientId, LocalDateTime.now(), discount, paymentType, desc));
+            service.createAccounting(new Accounting(patientId, LocalDateTime.now(), discount, paymentType, desc));
         }
 
         return JSONObject.quote("OK");
