@@ -41,9 +41,9 @@ export class PatientService {
             .pipe(catchError(this.handleError));
     }
 
-    income(patientId: string, sum: number, cashLess: boolean) {
-        return this.http.post(this.incomeUrl, { patientId: patientId, sum: sum, cashLess: cashLess })
-            .pipe(catchError(this.handleError));
+    income(patientId: string, paymentType: string, sum: number, discount: number) {
+        return this.http.post(this.incomeUrl, { patientId: patientId, paymentType: paymentType,
+            sum: sum, discount: discount }).pipe(catchError(this.handleError));
     }
 
     getBalance(patientId: string) {
