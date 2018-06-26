@@ -48,7 +48,7 @@ public class IncomeController {
             service.createIncome(new Income(patientId, LocalDateTime.now(), discount, paymentType, desc));
         }
 
-        return "OK";
+        return JSONObject.quote("OK");
     }
 /*
 

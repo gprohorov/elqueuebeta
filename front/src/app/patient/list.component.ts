@@ -56,9 +56,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientIncomeModalComponent,
-            data: { patientId: patient.id, patientName: patient.person.fullName }
+            data: patient
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        this.alertService.subject.subscribe(() => { this.load();  });
     }
     
     load(search: string = '') {

@@ -1,52 +1,10 @@
-<div class="row">
-    <div class="col">Початок лікування:</div>
-    <div class="col">{{data.start | date: 'dd.MM.yyyy'}}</div>
-</div>
-<div class="row">
-    <div class="col">Кінець лікування:</div>
-    <div class="col">{{data.finish | date: 'dd.MM.yyyy'}}</div>
-</div>
-<div class="row">
-    <div class="col">Сумма за готель:</div>
-    <div class="col">{{data.hotelSum}} грн.</div>
-</div>
-<div class="row">
-    <div class="col">Сумма на балансі:</div>
-    <div class="col">{{data.payment}} грн.</div>
-</div>
-<div class="row">
-    <div class="col">Сумма за процедури:</div>
-    <div class="col">{{data.sumForProcedures}} грн.</div>
-</div>
-<div class="row m-2">
-    <div class="col mt-2">
-        <h4>Пройдені процедури</h4>
-    </div>
-    <table class="table table-sm">
-        <thead class="thead-light">
-            <tr>
-                <th>Назва</th>
-                <th>К-ть раз</th>
-                <th>К-ть зон</th>
-                <th>Сума</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let p of data.courses">
-                <td>{{p.procedure.name}}</td>
-                <td>{{p.times}}</td>
-                <td>{{p.zones}}</td>
-                <td>{{p.summa}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<div class="row"><div class="col">Баланс: <strong>{{data.balance}}</strong> грн.</div></div>
 <form name="form" #f="ngForm" novalidate>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text">Тип оплати</div>
+            <div class="input-group-text" [style.width.px]="110">Тип оплати</div>
         </div>
-        <select class="form-control" name="paymentType" [(ngModel)]="data.paymentType"
+        <select class="form-control" name="paymentType" [(ngModel)]="model.paymentType"
             #paymentType="ngModel" required>
             <option value="CASH" selected>Готівкою</option>
             <option value="CARD">Картою</option>
@@ -57,17 +15,24 @@
         обов`язкове</div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text">Сума до сплати</div>
+            <div class="input-group-text" [style.width.px]="110">Сума</div>
         </div>
-        <input type="number" class="form-control" name="sum" [(ngModel)]="data.sum" #sum="ngModel"
+        <input type="number" class="form-control" name="sum" [(ngModel)]="model.sum" #sum="ngModel"
             required />
     </div>
     <div *ngIf="f.submitted && !sum.valid" class="help-block text-danger">Поле обов`язкове</div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text">Знижка</div>
+            <div class="input-group-text" [style.width.px]="110">Знижка</div>
         </div>
-        <input type="number" class="form-control" name="discount" [(ngModel)]="data.discount"
+        <input type="number" class="form-control" name="discount" [(ngModel)]="model.discount"
             #discount="ngModel" />
+    </div>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text" [style.width.px]="110">Коментар</div>
+        </div>
+        <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc"
+            #desc="ngModel" />
     </div>
 </form>

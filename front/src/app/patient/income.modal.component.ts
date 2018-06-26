@@ -9,7 +9,13 @@ import { AlertService, PatientService } from '../_services/index';
 })
 export class PatientIncomeModalComponent implements IModalDialog {
 
-    data: any
+    data: any;
+    model: any = {
+        paymentType: 'CASH',
+        sum: 0,
+        discount: 0,
+        desc: ''
+    };
     sub: Subscription;
 
     @ViewChild('f') myForm;
@@ -26,21 +32,17 @@ export class PatientIncomeModalComponent implements IModalDialog {
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
-        this.patientService.getBalance(this.data.patientId).subscribe( (data) => {
-            this.data = data;
-            this.data.paymentType = 'CASH';
-        }, error => {
-            this.alertService.error(error);
-        });
+        this.model.patientId = this.data.id;
+        this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
     }
 
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
-        this.patientService.income(this.data.patientId, this.data.paymentType, this.data.sum, this.data.discount)
+        this.patientService.income(this.model)
             .subscribe(() => {
-                this.alertService.success('На рахунок пацієнта ' + this.data.patientName
-                    + ' внесено ' + this.data.sum + 'грн.');
+                this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
+                    + ' внесено ' + this.model.sum + ' грн.');
                 options.closeDialogSubject.next();
             });
     }
