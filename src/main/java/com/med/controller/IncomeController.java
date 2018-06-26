@@ -3,9 +3,11 @@ package com.med.controller;
 import com.med.model.balance.Income;
 import com.med.model.balance.PaymentType;
 import com.med.services.income.impls.IncomeServiceImpl;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,21 +33,22 @@ public class IncomeController {
 
     // CREATE a new Income
     @PostMapping("/create")
- //   public Income createIncome(@Valid @RequestBody Income income) {
-    public Income createIncome(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "sum")       int sum,
-            @PathVariable(value = "discount")  int discount,
-            @PathVariable(value = "type")      PaymentType type,
-            @PathVariable(value = "desc")      String desc
-    ) {
-        Income income = new Income(patientId, LocalDateTime.now(), sum, type, desc);
-        if (discount!=0){
-            Income dscnt = new Income(patientId, LocalDateTime.now(), discount, PaymentType.DISCOUNT, "");
-            service.createIncome(dscnt);
+    public String createIncome(@Valid @RequestBody String data) {
+
+        JSONObject jsonObj = new JSONObject(data);
+
+        String patientId = jsonObj.getString("patientId");
+        PaymentType paymentType = PaymentType.valueOf(jsonObj.getString("paymentType"));
+        String desc = jsonObj.getString("desc");
+        int sum = jsonObj.getInt("sum");
+        int discount = jsonObj.getInt("discount");
+
+        service.createIncome(new Income(patientId, LocalDateTime.now(), sum, paymentType, desc));
+        if (discount != 0) {
+            service.createIncome(new Income(patientId, LocalDateTime.now(), discount, paymentType, desc));
         }
 
-        return service.createIncome(income);
+        return "OK";
     }
 /*
 
