@@ -29,8 +29,7 @@ public class IncomeServiceImpl implements IIncomeService {
     @Override
     public Income createIncome(Income income) {
         repository.save(income);
-        System.out.println("--------------------------------------------------");
-        System.out.println(income);
+
         Patient patient = patientService.getPatient(income.getPatientId());
 
         patient.setBalance(patient.getBalance() + income.getSum());
