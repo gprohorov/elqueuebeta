@@ -15,9 +15,7 @@
             <tbody>
                 <tr *ngFor="let item of details">
                     <td>{{item.dateTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
-                    <td>{{(item.payment == 'DISCOUNT') ? 'Знижка' : (item.payment == 'CASH') ?
-                        'Внесення готівки' : (item.payment == 'CARD') ? 'Внесення з картки' :
-                        (item.payment == 'WIRED') ? 'Внесення по перерахунку' : item.desc}}</td>
+                    <td>{{getDesc(item)}}</td>
                     <td>{{item.payment == 'PROC' ? item.sum * -1 : item.sum}} грн.</td>
                 </tr>
                 <tr>

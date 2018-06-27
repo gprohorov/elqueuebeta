@@ -55,6 +55,15 @@ export class PatientIncomeModalComponent implements IModalDialog {
         });
         return sum * -1;
     }
+    
+    getDesc(item) {
+        console.log(item);
+        if (item.payment == 'DISCOUNT') return 'Знижка' + (item.desc == '' ? '' : ' (' + item.desc + ')');
+        if (item.payment == 'CASH') return 'Внесення готівки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
+        if (item.payment == 'CARD') return 'Внесення з картки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
+        if (item.payment == 'WIRED') return 'Внесення по перерахунку' + (item.desc == '' ? '' : ' (' + item.desc + ')');
+        return item.desc;
+    }
 
     submit(f, options) {
         f.submitted = true;
