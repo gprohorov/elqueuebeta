@@ -122,7 +122,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         tail.setPatientOnProcedure(null);
         this.setBusy(procedure.getId());
 
-        String descr = procedure.getName() + " " + talon.getZones() + " зон   " + talon.getSum();
+        String descr = procedure.getName() + " x" + talon.getZones();
         Accounting accounting = new Accounting(doctor.getId()
                 , patient.getId()
                 , LocalDateTime.now()
