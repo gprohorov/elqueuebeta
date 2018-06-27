@@ -1,7 +1,7 @@
 package com.med.services.accounting.impls;
 
-import com.med.model.balance.Accounting;
 import com.med.model.Patient;
+import com.med.model.balance.Accounting;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -31,8 +31,9 @@ public class AccountingServiceImpl implements IAccountingService {
         repository.save(accounting);
 
         Patient patient = patientService.getPatient(accounting.getPatientId());
-
         patient.setBalance(patient.getBalance() + accounting.getSum());
+       // patient.setBalance(repository.calcBalance(accounting.getPatientId()));
+        //System.out.println(repository.calcBalance(accounting.getPatientId()).size());
         patientService.savePatient(patient);
 
         return accounting ;

@@ -3,14 +3,12 @@ package com.med.services.patient.Impls;
 import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
-import com.med.model.balance.Balance;
-import com.med.model.balance.Course;
 import com.med.model.balance.Accounting;
+import com.med.model.balance.Balance;
 import com.med.model.balance.PaymentType;
-import com.med.model.hotel.Hotel;
 import com.med.repository.patient.PatientRepository;
-import com.med.services.hotel.hotel.impls.HotelServiceImpl;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.hotel.hotel.impls.HotelServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +33,7 @@ public class PatientServiceImpl implements IPatientService {
     TalonServiceImpl talonService;
 
     @Autowired
-    AccountingServiceImpl incomeService;
+    AccountingServiceImpl accountingService;
 
     @Autowired
     HotelServiceImpl hotelService;
@@ -133,13 +130,13 @@ public class PatientServiceImpl implements IPatientService {
     public Accounting insertIncome(String patientId, int sum, String desc, PaymentType payment) {
 
         Accounting accounting = new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
-        return incomeService.createAccounting(accounting);
+        return accountingService.createAccounting(accounting);
 
     }
 
     public Integer getBalance(String patientId){
 
-        Integer debet = incomeService.getSumlForPatient(patientId);
+        Integer debet = accountingService.getSumlForPatient(patientId);
         Integer kredit = talonService.getAllTalonsForPatient(patientId)
                 .stream().mapToInt(Talon::getSum).sum();
 
@@ -152,50 +149,35 @@ public class PatientServiceImpl implements IPatientService {
 
         Balance balance = new Balance(patientId, start, finish);
 
-        List<Accounting> incomes= incomeService
+        List<Accounting> accountings= accountingService
                 .getAllIncomesForPatienetFromTo(patientId, start, finish);
 
-        List<Talon> talons = talonService
-                .getAllExecutedTalonsForPatientFromTo(patientId, start, finish);
+        List<Accounting> payments = accountings.stream()
+                .filter(ac-> (ac.getTalonId()!=null && !ac.getPayment().equals(PaymentType.DISCOUNT)))
+                .collect(Collectors.toList());
 
-        List<Hotel> hotels = hotelService
-                .getAllForPatientFromTo(patientId, start, finish);
+        List<Accounting> discounts = accountings.stream()
+                .filter(ac-> ac.getPayment().equals(PaymentType.DISCOUNT))
+                .collect(Collectors.toList());
 
-        talons.stream().collect(Collectors.groupingBy(Talon::getProcedure)).
-        entrySet().stream().forEach(entry -> {
-            long times  = entry.getValue().size();
-            long zones  = entry.getValue().stream().mapToInt(Talon::getZones).sum();
-            long sums = entry.getValue().stream().mapToInt(Talon::getSum).sum();
-            Course course = new Course(entry.getKey(), times, zones, sums);
-            balance.getCourses().add(course);
-        });
+        List<Accounting> bills = accountings.stream()
+                .filter(ac-> ac.getPayment().equals(PaymentType.PROC))
+                .collect(Collectors.toList());
 
-        long sumForProcedures = balance.getCourses().stream().mapToLong(Course::getSumma).sum();
-        balance.setSumForProcedures((int) sumForProcedures);
+        int payment = payments.stream().mapToInt(Accounting::getSum).sum();
+        int discount = discounts.stream().mapToInt(Accounting::getSum).sum();
+        int bill = bills.stream().mapToInt(Accounting::getSum).sum();
+        int ultSum = accountings.stream().mapToInt(Accounting::getSum).sum();
 
+      balance.setPayments(payments);
+      balance.setDiscounts(discounts);
+      balance.setBills(bills);
 
-        long[] hotelBill = {0};
-        hotels.stream().forEach(hotel -> {
+      balance.setPayment(payment);
+      balance.setDiscount(discount);
+      balance.setSumForProcedures(bill);
 
-            LocalDateTime tempDateTime = LocalDateTime.from( start );
-            long hours = tempDateTime.until( finish, ChronoUnit.HOURS);
-            int bill = (int) hours * hotel.getKoika().getPrice();
-            hotelBill[0] += bill;
-        });
-
-        balance.setHotelSum( (int) (hotelBill[0]) );
-
-
-        long payment = incomes.stream()
-                .filter(income -> !income.getPayment().equals(PaymentType.DISCOUNT))
-                .mapToLong(Accounting::getSum).sum();
-        balance.setPayment( (int) payment);
-
-        long discont = incomes.stream()
-                .filter(income -> income.getPayment().equals(PaymentType.DISCOUNT))
-                .mapToLong(Accounting::getSum).sum();
-        balance.setDiscount((int) discont);
-
+      balance.setSum(ultSum);
 
         return balance;
     }

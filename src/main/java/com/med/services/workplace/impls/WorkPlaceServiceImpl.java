@@ -1,6 +1,9 @@
 package com.med.services.workplace.impls;
 
 import com.med.model.*;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
@@ -42,6 +45,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     @Autowired
     DoctorServiceImpl doctorService;
+
+    @Autowired
+    AccountingServiceImpl accountingService;
 
 
 
@@ -110,11 +116,24 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
         patient.setLastActivity(LocalDateTime.now());
-        patient.setBalance(patient.getBalance()-sum);
+       // patient.setBalance(patient.getBalance()-sum);
         patientService.savePatient(patient);
 
         tail.setPatientOnProcedure(null);
         this.setBusy(procedure.getId());
+
+        String descr = procedure.getName() + " " + talon.getZones() + " зон   " + talon.getSum();
+        Accounting accounting = new Accounting(doctor.getId()
+                , patient.getId()
+                , LocalDateTime.now()
+                , talon.getId()
+                , (-1* sum)
+                , PaymentType.PROC, descr);
+        accountingService.createAccounting(accounting);
+
+
+
+
 
         return talonService.saveTalon(talon);
     }

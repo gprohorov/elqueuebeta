@@ -12,7 +12,10 @@ public class Balance {
     private String patientId;
     private LocalDate start;
     private LocalDate finish;
-    private List<Course> courses = new ArrayList<>();
+  //  private List<Course> courses = new ArrayList<>();
+    private List<Accounting> payments = new ArrayList<>();
+    private List<Accounting> discounts = new ArrayList<>();
+    private List<Accounting> bills = new ArrayList<>();
     private int hotelSum;
     private int payment;
     private int discount;
@@ -34,6 +37,30 @@ public class Balance {
         this.patientId = patientId;
         this.start = start;
         this.finish = finish;
+    }
+
+    public List<Accounting> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Accounting> payments) {
+        this.payments = payments;
+    }
+
+    public List<Accounting> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<Accounting> discounts) {
+        this.discounts = discounts;
+    }
+
+    public List<Accounting> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Accounting> bills) {
+        this.bills = bills;
     }
 
     public int getSumForProcedures() {
@@ -67,6 +94,7 @@ public class Balance {
     public void setFinish(LocalDate finish) {
         this.finish = finish;
     }
+/*
 
     public List<Course> getCourses() {
         return courses;
@@ -75,6 +103,7 @@ public class Balance {
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
+*/
 
     public int getHotelSum() {
         return hotelSum;

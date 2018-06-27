@@ -3,6 +3,7 @@ package com.med.controller;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.user.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class AccountingController {
     @Autowired
     AccountingServiceImpl service ;
 
+    @Autowired
+    UserService userService;
+
 
     @RequestMapping("/list")
     public List<Accounting> showAll(){
@@ -37,15 +41,17 @@ public class AccountingController {
 
         JSONObject jsonObj = new JSONObject(data);
 
+
         String patientId = jsonObj.getString("patientId");
         PaymentType paymentType = PaymentType.valueOf(jsonObj.getString("paymentType"));
         String desc = jsonObj.getString("desc");
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
+        int doctorId = userService.getCurrentUserInfo().getId();
 
-        service.createAccounting(new Accounting(patientId, LocalDateTime.now(), sum, paymentType, desc));
+        service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
         if (discount != 0) {
-            service.createAccounting(new Accounting(patientId, LocalDateTime.now(), discount, paymentType, desc));
+            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, paymentType, desc));
         }
 
         return JSONObject.quote("OK");

@@ -15,6 +15,7 @@ public class Accounting {
     private Integer doctorId;
     private String patientId;
     private LocalDateTime dateTime;
+    private String talonId;
     private Integer sum = 0;
     private PaymentType payment;
     private String desc = "";
@@ -29,6 +30,20 @@ public class Accounting {
         this.payment = payment;
         this.desc = desc;
     }
+
+    public Accounting(Integer doctorId, String patientId, LocalDateTime dateTime, String talonId, Integer sum, PaymentType payment, String desc) {
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+        this.dateTime = dateTime;
+        this.talonId = talonId;
+        this.sum = sum;
+        this.payment = payment;
+        this.desc = desc;
+    }
+
+    public String getTalonId() {return talonId;}
+
+    public void setTalonId(String talonId) {this.talonId = talonId;}
 
     public Integer getDoctorId() {
         return doctorId;
