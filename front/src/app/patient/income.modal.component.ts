@@ -19,6 +19,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
     sub: Subscription;
     loading: boolean = false;
     showDetails: boolean = false;
+    details: any[];
 
     @ViewChild('f') myForm;
     constructor(
@@ -38,13 +39,21 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
     }
 
-    details() {
+    getDetails() {
         this.showDetails = true;
         this.loading = true;
         this.sub = this.patientService.getBalance(this.data.id).subscribe((data) => {
             this.loading = false;
             this.details = data;
         });
+    }
+    
+    getSumProcedures() {
+        let sum = 0;
+        this.details.forEach( (item) => {
+            if (item.payment == 'PROC') sum += item.sum;
+        });
+        return sum * -1;
     }
 
     submit(f, options) {

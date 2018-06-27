@@ -1,10 +1,10 @@
-<div class="card mb-2 mt-2" [hidden]="!showDetails">
+<div class="card mb-2 mt-2" *ngIf="showDetails">
     <div class="card-header">
         <h5>Історія розрахунків</h5>
     </div>
     <div class="card-body">
         <span class="fa fa-refresh fa-spin text-secondary" [hidden]="!loading"></span>
-        <table class="table table-sm" [hidden]="loading">
+        <table class="table table-sm" *ngIf="!loading">
             <thead class="thead-light">
                 <tr>
                     <th>Дата</th>
@@ -15,8 +15,13 @@
             <tbody>
                 <tr *ngFor="let item of details">
                     <td>{{item.dateTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
-                    <td>{{item.desc}}</td>
-                    <td>{{item.sum * -1}}</td>
+                    <td>{{(item.payment == 'DISCOUNT') ? 'Знижка' : (item.payment == 'CASH') ?
+                        'Внесення готівки' : (item.payment == 'CARD') ? 'Внесення з картки' :
+                        (item.payment == 'WIRED') ? 'Внесення по перерахунку' : item.desc}}</td>
+                    <td>{{item.payment == 'PROC' ? item.sum * -1 : item.sum}} грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="100">Всього за процедури: <strong>{{getSumProcedures()}}</strong> грн.</td>
                 </tr>
             </tbody>
         </table>
@@ -27,7 +32,7 @@
         Баланс: <strong>{{data.balance}}</strong> грн.
     </div>
     <div class="col">
-        <button class="btn btn-sm btn-success pull-right" (click)="details()">Детальніше</button>
+        <button class="btn btn-sm btn-success pull-right" (click)="getDetails()">Детальніше</button>
     </div>
 </div>
 <form name="form" #f="ngForm" novalidate>
