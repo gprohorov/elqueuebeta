@@ -57,7 +57,6 @@ export class PatientIncomeModalComponent implements IModalDialog {
     }
     
     getDesc(item) {
-        console.log(item);
         if (item.payment == 'DISCOUNT') return 'Знижка' + (item.desc == '' ? '' : ' (' + item.desc + ')');
         if (item.payment == 'CASH') return 'Внесення готівки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
         if (item.payment == 'CARD') return 'Внесення з картки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
