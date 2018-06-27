@@ -179,6 +179,10 @@ public class PatientServiceImpl implements IPatientService {
 
       balance.setSum(ultSum);
 
+      Patient patient = repository.findById(patientId).orElse(null);
+      if (patient!=null) patient.setBalance(ultSum);
+      repository.save(patient);
+
         return balance;
     }
 
