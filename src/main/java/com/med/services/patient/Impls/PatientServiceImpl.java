@@ -149,8 +149,8 @@ public class PatientServiceImpl implements IPatientService {
 
         Balance balance = new Balance(patientId, start, finish);
 
-        List<Accounting> accountings= accountingService
-                .getAllIncomesForPatienetFromTo(patientId, start, finish);
+        List<Accounting> accountings= accountingService.getAll().stream()
+                .filter(ac->ac.getPatientId().equals(patientId)).collect(Collectors.toList());
 
         //balance.setAccountings(accountings);
 
