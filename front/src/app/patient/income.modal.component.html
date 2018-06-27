@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of details.bills">
+                <tr *ngFor="let item of details">
                     <td>{{item.dateTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
                     <td>{{item.desc}}</td>
                     <td>{{item.sum * -1}}</td>

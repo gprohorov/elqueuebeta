@@ -145,48 +145,21 @@ public class PatientServiceImpl implements IPatientService {
 
 
     //////////// ULTIMATE BALANCE  ///////////////
-    public Balance getUltimateBalance(String patientId, LocalDate start, LocalDate finish){
+    public List<Accounting> getUltimateBalance(String patientId, LocalDate start, LocalDate finish){
 
         Balance balance = new Balance(patientId, start, finish);
 
         List<Accounting> accountings= accountingService
                 .getAllIncomesForPatienetFromTo(patientId, start, finish);
 
-        List<Accounting> payments = accountings.stream()
-                .filter(ac-> (ac.getTalonId()!=null && !ac.getPayment().equals(PaymentType.DISCOUNT)))
-                .collect(Collectors.toList());
+        //balance.setAccountings(accountings);
 
-        List<Accounting> discounts = accountings.stream()
-                .filter(ac-> ac.getPayment().equals(PaymentType.DISCOUNT))
-                .collect(Collectors.toList());
-
-        List<Accounting> bills = accountings.stream()
-                .filter(ac-> ac.getPayment().equals(PaymentType.PROC))
-                .collect(Collectors.toList());
-
-        int payment = payments.stream().mapToInt(Accounting::getSum).sum();
-        int discount = discounts.stream().mapToInt(Accounting::getSum).sum();
-        int bill = bills.stream().mapToInt(Accounting::getSum).sum();
-        int ultSum = accountings.stream().mapToInt(Accounting::getSum).sum();
-
-      balance.setPayments(payments);
-      balance.setDiscounts(discounts);
-      balance.setBills(bills);
-
-      balance.setPayment(payment);
-      balance.setDiscount(discount);
-      balance.setSumForProcedures(bill);
-
-      balance.setSum(ultSum);
-
-      Patient patient = repository.findById(patientId).orElse(null);
-      if (patient!=null) patient.setBalance(ultSum);
-      repository.save(patient);
-
-        return balance;
+        return accountings;
     }
 
-    public Balance getUltimateBalanceShort(String patientId, int days){
+
+
+    public List<Accounting> getUltimateBalanceShort(String patientId, int days){
 
         return
                 this.getUltimateBalance(patientId
@@ -194,7 +167,7 @@ public class PatientServiceImpl implements IPatientService {
                         ,LocalDate.now().plusDays(1));
     }
 
-    public Balance getUltimateBalanceToday(String patientId){
+    public List<Accounting> getUltimateBalanceToday(String patientId){
 
         return this.getUltimateBalance(patientId
                         ,LocalDate.now().minusDays(1)

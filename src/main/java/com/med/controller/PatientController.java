@@ -4,7 +4,7 @@ import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
-import com.med.model.balance.Balance;
+import com.med.model.balance.Accounting;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +136,7 @@ public class PatientController {
     }
 
     @GetMapping("/balance/days/{patientId}/{days}")
-    public Balance getBalance(
+    public List<Accounting> getBalance(
             @PathVariable(value = "patientId") String patientId,
             @PathVariable(value = "days") int days){
 
@@ -144,7 +144,7 @@ public class PatientController {
     }
 
     @GetMapping("/balance/today/{patientId}")
-    public Balance getBalanceToday(
+    public List<Accounting> getBalanceToday(
             @PathVariable(value = "patientId") String patientId){
 
         return  service.getUltimateBalanceToday(patientId);
