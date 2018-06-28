@@ -21,30 +21,28 @@ public class Therapy {
     private String diag;
     private String codeDiag;
     private String notes;
-    private String picture;
-   // private List<Point> hord;
-    private List<Procedure> procedures = new ArrayList<>();
+    private List<Assignment> assignments = new ArrayList<>();
     private int days;
 
-    public Therapy(String patientId, LocalDateTime start, LocalDateTime finish, String diag, String codeDiag, String notes, String picture, List<Procedure> procedures, int days) {
+
+    public Therapy(String patientId, String diag, String codeDiag, String notes, List<Assignment> assignments, int days) {
         this.patientId = patientId;
-        this.start = start;
-        this.finish = finish;
+        this.start = LocalDateTime.now();
         this.diag = diag;
         this.codeDiag = codeDiag;
         this.notes = notes;
-        this.picture = picture;
-        this.procedures = procedures;
+        this.assignments = assignments;
         this.days = days;
     }
 
-    public Therapy(String patientId, String diag, List<Procedure> procedures, int days) {
-
-        this.start = LocalDateTime.now();
+    public Therapy(String patientId, List<Assignment> assignments, int days) {
         this.patientId = patientId;
-        this.diag = diag;
-        this.procedures = procedures;
+        this.start = LocalDateTime.now();
+        this.assignments = assignments;
         this.days = days;
+    }
+
+    public Therapy() {
     }
 
     public String getId() {
@@ -103,20 +101,12 @@ public class Therapy {
         this.notes = notes;
     }
 
-    public String getPicture() {
-        return picture;
+    public List<Assignment> getAssignments() {
+        return assignments;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public List<Procedure> getProcedures() {
-        return procedures;
-    }
-
-    public void setProcedures(List<Procedure> procedures) {
-        this.procedures = procedures;
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
     }
 
     public int getDays() {
@@ -137,8 +127,7 @@ public class Therapy {
                 ", diag='" + diag + '\'' +
                 ", codeDiag='" + codeDiag + '\'' +
                 ", notes='" + notes + '\'' +
-                ", picture='" + picture + '\'' +
-                ", procedures=" + procedures +
+                ", assignments=" + assignments +
                 ", days=" + days +
                 '}';
     }
