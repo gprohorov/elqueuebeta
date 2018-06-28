@@ -20,7 +20,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
     sub: Subscription;
     loading: boolean = false;
     showDetails: boolean = false;
-    details: any[];
+    details: any = [];
 
     @ViewChild('f') myForm;
     constructor(
@@ -41,7 +41,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
     }
 
     getDetails() {
-        this.showDetails = true;
+        this.showDetails = !this.showDetails;
         this.loading = true;
         this.sub = this.patientService.getBalance(this.data.id).subscribe((data) => {
             this.loading = false;
@@ -55,6 +55,25 @@ export class PatientIncomeModalComponent implements IModalDialog {
             if (item.payment == 'PROC') sum += item.sum;
         });
         return sum * -1;
+    }
+    
+    getSumIncome() {
+        let sum = 0;
+        this.details.forEach( (item) => {
+            if (item.payment == 'CASH' 
+                || item.payment == 'CARD'
+                || item.payment == 'WIRED'
+            ) sum += item.sum;
+        });
+        return sum;
+    }
+    
+    getSumDiscount() {
+        let sum = 0;
+        this.details.forEach( (item) => {
+            if (item.payment == 'DISCOUNT') sum += item.sum;
+        });
+        return sum;
     }
     
     getDesc(item) {

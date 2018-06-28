@@ -15,10 +15,21 @@
                     <td>{{getDesc(item)}}</td>
                     <td>{{item.payment == 'PROC' ? item.sum * -1 : item.sum}} грн.</td>
                 </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього внесено коштів:</strong></td>
+                    <td><strong>{{getSumIncome()}}</strong> грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього надано знижок:</strong></td>
+                    <td><strong>{{getSumDiscount()}}</strong> грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього нараховано за процедури:</strong></td>
+                    <td><strong>{{getSumProcedures()}}</strong> грн.</td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <div>Всього за процедури: <strong>{{getSumProcedures()}}</strong> грн.</div>
 </div>
 <div class="row">
     <div class="col-auto">
