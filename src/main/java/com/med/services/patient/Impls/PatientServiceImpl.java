@@ -11,6 +11,7 @@ import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.hotel.impls.HotelServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,9 @@ public class PatientServiceImpl implements IPatientService {
 
     @Autowired
     HotelServiceImpl hotelService;
+
+    @Autowired
+    TherapyServiceImpl therapyService;
 
 /*
     @Autowired
@@ -168,11 +172,18 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     public List<Accounting> getUltimateBalanceToday(String patientId){
-
         return this.getUltimateBalance(patientId
-                        ,LocalDate.now().minusDays(1)
+                        ,LocalDate.now().minusDays(0)
                         ,LocalDate.now().plusDays(1));
     }
+
+     public List<Accounting> getBalanceForCurrentTherapy(String patientId){
+        LocalDate start = therapyService.findTheActualTherapy(patientId).getStart().toLocalDate();
+
+        return  this.getUltimateBalance(patientId,start,LocalDate.now());
+    }
+
+
 
 
 

@@ -1,8 +1,5 @@
 package com.med.services.therapy.impls;
 
-import com.med.model.Activity;
-import com.med.model.Procedure;
-import com.med.model.Talon;
 import com.med.model.Therapy;
 import com.med.repository.therapy.TherapyRepository;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -10,9 +7,9 @@ import com.med.services.therapy.interfaces.ITherapyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -60,12 +57,20 @@ public class TherapyServiceImpl implements ITherapyService {
        return this.saveTherapy(therapy);
     }
 
+    // TODO:  Human way
+    public Therapy findTheActualTherapy(String patientId){
 
+        return this.getAll().stream().filter(th->th.getPatientId().equals(patientId))
+                .sorted(Comparator.comparing(Therapy::getStart).reversed())
+                .findFirst().orElse(null);
+    }
+
+/*
     // TODO:   more logic
     public List<Talon> assignTherapy(String therapyId) {
 
         Therapy therapy = this.getTherapy(therapyId);
-        List<Procedure> procedures = therapy.getProcedures();
+      //  List<Procedure> procedures = therapy.getProcedures();
         List<Talon> talons = new ArrayList<>();
         int days = therapy.getDays();
 
@@ -83,4 +88,5 @@ public class TherapyServiceImpl implements ITherapyService {
         }
         return talonService.saveTalons(talons);
     }
+    */
 }

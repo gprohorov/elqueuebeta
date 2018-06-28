@@ -1,6 +1,5 @@
 package com.med.controller.workplace;
 
-import com.med.model.Talon;
 import com.med.model.Therapy;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +55,7 @@ public class DiagnosticsController {
 
         return service.finishTherapy(therapyId);
     }
+/*
 
     // assign talons acc. to therapy
     @GetMapping("/therapy/assign/{id}")
@@ -63,6 +63,7 @@ public class DiagnosticsController {
 
         return service.assignTherapy(therapyId);
     }
+*/
 
 
 }

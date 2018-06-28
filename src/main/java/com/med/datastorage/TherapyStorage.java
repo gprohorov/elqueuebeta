@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class TherapyStorage {
 /*
     private List<Therapy> therapies;
+    private List<Assignment> assignments;
 
     private Procedure registration;
     private Procedure diagnostics ;
@@ -17,6 +18,8 @@ public class TherapyStorage {
     private Procedure mechmassasge;
     private Procedure massage ;
     private Procedure ultrasound ;
+    private Procedure magnet ;
+    private Procedure laser ;
 
     List<Procedure> procedures;
 
@@ -28,38 +31,43 @@ public class TherapyStorage {
 
     @PostConstruct
      void init() {
-       registration = procedureService.getProcedure(1);
+        registration = procedureService.getProcedure(1);
         diagnostics = procedureService.getProcedure(2);
         manual = procedureService.getProcedure(3);
-     pulling = procedureService.getProcedure(4);
-
+        pulling = procedureService.getProcedure(4);
+        mechmassasge = procedureService.getProcedure(5);
         massage = procedureService.getProcedure(6);
         ultrasound= procedureService.getProcedure(7);
+        magnet = procedureService.getProcedure(8);
+        laser = procedureService.getProcedure(13);
 
-        mechmassasge = procedureService.getProcedure(5);
 
+      Assignment usd = new Assignment(ultrasound, "","");
+      Assignment mgn = new Assignment(magnet, "","");
+      Assignment lsr = new Assignment(laser, "","");
+      assignments = new ArrayList<>();
+      assignments.add(usd);
+      assignments.add(mgn);
+      assignments.add(lsr);
+      String dsc ="";
+      String pic = "";
 
-        procedures = new ArrayList<>(
-               Arrays.asList(mechmassasge)
-        );
+      therapies = new ArrayList<>(
 
-        therapies = new ArrayList<>(
-            // 27 -
-            Arrays.asList(
-                    new Therapy(22, LocalDateTime.now().minusDays(1)
-                            , null, "Diag", 23, "notes "
-                            ,"pic", procedures, 3) ,
+              Arrays.asList(
 
-                    new Therapy(23, LocalDateTime.now().minusDays(1)
-                            , null, "Diag", 23, "notes "
-                            ,"pic", procedures, 3)
-            )
-    );
+                     new Therapy("5af88504f36336116701205c", assignments,5) ,
+                     new Therapy("5af88504f36336116701205c", assignments,5) ,
+                     new Therapy("5af88504f36336116701205c", assignments,5)
+              )
+      );
 
-        therapyRepository.deleteAll();
+      therapyRepository.deleteAll();
         therapyRepository.saveAll(therapies);
 
 }
+
+
 private Talon resetTestTalon(Talon talon){
 
     talon.setDate(LocalDate.now());
