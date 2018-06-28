@@ -64,18 +64,16 @@ public class PatientController {
     }
 
 
-
     //////////////////////END OF CRUD ////////////////////////////////////
 
 
     // create talon to date for patient on procedure
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
-                                 @PathVariable(value = "procedureId") int procedureId,
-                                 @PathVariable(value = "days") int days) {
-
-
-        return talonService.createTalon(patientId,procedureId,days);}
+                             @PathVariable(value = "procedureId") int procedureId,
+                             @PathVariable(value = "days") int days) {
+        return talonService.createTalon(patientId, procedureId, days);
+    }
 
      // final
     // create talon to date for patient on procedure
@@ -83,79 +81,59 @@ public class PatientController {
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
                              @PathVariable(value = "procedureId") int procedureId,
                              @PathVariable(value = "date") String date) {
-
-
-        return talonService.createTalon(patientId,procedureId, LocalDate.parse(date));}
+        return talonService.createTalon(patientId, procedureId, LocalDate.parse(date));
+    }
 
 
     // create talon to today for patient on registration
     @GetMapping("/create/talon/today/{patientId}")
-    public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId)
-                                  {
+    public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
         // registration - id==1
         // today  plus 0
 
-        return talonService.createTalon(patientId,1,0);}
+        return talonService.createTalon(patientId, 1, 0);
+    }
 
 
 /////////////////////////////////////////////////////////////////////////
 
-    // getAll patientss for today together with their's talons
+    // getAll patients for today together with their's talons
     @GetMapping("/list/today")
     public List<Patient> showPatientsForToday() {
-
         return service.getAllForToday();
     }
 
-
-
     @GetMapping("/talon/set/activity/{talonId}/{activity}")
     public Talon talonSetActivity(
-            @PathVariable(value = "talonId") String talonId,
-            @PathVariable(value = "activity") Activity activity)
-    {
-
+        @PathVariable(value = "talonId") String talonId,
+        @PathVariable(value = "activity") Activity activity) {
         return  talonService.setActivity(talonId, activity);
     }
 
-
     @GetMapping("/set/status/{patientId}/{status}")
     public Patient patientSetStatus(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "status") Status status)
-    {
-
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "status") Status status) {
         return  service.setStatus(patientId, status);
     }
 
-
-
-
     @GetMapping("/talon/setall/activity/{patientId}/{activity}")
     public List<Talon> setAllActivity(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "activity") Activity activity){
-
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "activity") Activity activity) {
         return  talonService.setAllActivity(patientId, activity);
     }
 
     @GetMapping("/balance/days/{patientId}/{days}")
     public List<Accounting> getBalance(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "days") int days){
-
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "days") int days) {
         return  service.getUltimateBalanceShort(patientId,days);
     }
-
+    
     @GetMapping("/balance/today/{patientId}")
     public List<Accounting> getBalanceToday(@PathVariable(value = "patientId") String patientId) {
-//    	Object balance = accountingRepository.calcBalance(patientId);
-//    	System.out.println(balance);
-    	
-        return service.getUltimateBalanceToday(patientId);
+    	return service.getUltimateBalanceToday(patientId);
     }
-
-
-
-
+   
 }

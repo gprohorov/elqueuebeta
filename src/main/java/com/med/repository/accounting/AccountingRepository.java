@@ -17,4 +17,6 @@ public interface AccountingRepository extends MongoRepository<Accounting, String
 //    @Query("{ $group : { _id : { patientId: ?0 }, balance: {$sum: '$sum'} } }")
 //    public Object calcBalance(String patientId);
 
+	List<Accounting> findByPatientId(String patientId);
+	
 }

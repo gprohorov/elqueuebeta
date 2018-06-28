@@ -6,6 +6,7 @@ import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Balance;
 import com.med.model.balance.PaymentType;
+import com.med.repository.accounting.AccountingRepository;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.hotel.impls.HotelServiceImpl;
@@ -35,6 +36,9 @@ public class PatientServiceImpl implements IPatientService {
 
     @Autowired
     AccountingServiceImpl accountingService;
+    
+    @Autowired
+    AccountingRepository accountingRepository;
 
     @Autowired
     HotelServiceImpl hotelService;
@@ -151,40 +155,31 @@ public class PatientServiceImpl implements IPatientService {
     //////////// ULTIMATE BALANCE  ///////////////
     public List<Accounting> getUltimateBalance(String patientId, LocalDate start, LocalDate finish){
 
-        Balance balance = new Balance(patientId, start, finish);
+//        Balance balance = new Balance(patientId, start, finish);
 
-        List<Accounting> accountings= accountingService.getAll().stream()
-                .filter(ac->ac.getPatientId().equals(patientId)).collect(Collectors.toList());
+//        List<Accounting> accountings = accountingService.getAll();
+//        		.stream()
+//                .filter(ac->ac.getPatientId().equals(patientId))
+//                .collect(Collectors.toList());
 
         //balance.setAccountings(accountings);
 
-        return accountings;
+        return accountingRepository.findByPatientId(patientId);
     }
 
 
 
-    public List<Accounting> getUltimateBalanceShort(String patientId, int days){
-
-        return
-                this.getUltimateBalance(patientId
-                        ,LocalDate.now().minusDays(days+1)
-                        ,LocalDate.now().plusDays(1));
+    public List<Accounting> getUltimateBalanceShort(String patientId, int days) {
+        return this.getUltimateBalance(patientId, LocalDate.now().minusDays(days+1), LocalDate.now().plusDays(1));
     }
 
-    public List<Accounting> getUltimateBalanceToday(String patientId){
-        return this.getUltimateBalance(patientId
-                        ,LocalDate.now().minusDays(0)
-                        ,LocalDate.now().plusDays(1));
+    public List<Accounting> getUltimateBalanceToday(String patientId) {
+        return this.getUltimateBalance(patientId, LocalDate.now().minusDays(0), LocalDate.now().plusDays(1));
     }
 
      public List<Accounting> getBalanceForCurrentTherapy(String patientId){
         LocalDate start = therapyService.findTheActualTherapy(patientId).getStart().toLocalDate();
-
         return  this.getUltimateBalance(patientId,start,LocalDate.now());
     }
-
-
-
-
 
 }
