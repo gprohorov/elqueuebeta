@@ -6,6 +6,7 @@ import { AlertService, PatientService } from '../_services/index';
 
 @Component({
     templateUrl: './income.modal.component.html',
+    styleUrls: ['./income.modal.component.css']
 })
 export class PatientIncomeModalComponent implements IModalDialog {
 

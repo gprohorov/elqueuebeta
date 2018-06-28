@@ -75,7 +75,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientIncomeModalComponent,
-            data: { patientId: patient.id, patientName: patient.person.fullName, sum: patient.balance * -1 }
+            data: patient
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }

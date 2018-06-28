@@ -5,6 +5,7 @@ import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.model.balance.Accounting;
+import com.med.repository.accounting.AccountingRepository;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class PatientController {
 
     @Autowired
     TalonServiceImpl talonService;
+
+    @Autowired
+    AccountingRepository accountingRepository;
 
     ////////////////////////// CRUD//////////////////////////
 
@@ -144,10 +148,11 @@ public class PatientController {
     }
 
     @GetMapping("/balance/today/{patientId}")
-    public List<Accounting> getBalanceToday(
-            @PathVariable(value = "patientId") String patientId){
-
-        return  service.getUltimateBalanceToday(patientId);
+    public List<Accounting> getBalanceToday(@PathVariable(value = "patientId") String patientId) {
+//    	Object balance = accountingRepository.calcBalance(patientId);
+//    	System.out.println(balance);
+    	
+        return service.getUltimateBalanceToday(patientId);
     }
 
 

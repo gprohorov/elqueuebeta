@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface AccountingRepository extends MongoRepository<Accounting, String>{
 
-    // db.getCollection('accounting').find({'patientd' : : {$eq : ?0}});
-    @Query("{'patientId' : {$eq : ?0}}")
-    public List<Accounting> calcBalance(String patientId);
+    // db.getCollection('accounting').aggregate([ { $group : { _id : { patientId: ?0 }, balance: {$sum: "$sum"} } } ])
+//    @Query("{ $group : { _id : { patientId: ?0 }, balance: {$sum: '$sum'} } }")
+//    public Object calcBalance(String patientId);
 
 }

@@ -1,9 +1,6 @@
-<div class="card mb-2 mt-2" *ngIf="showDetails">
-    <div class="card-header">
-        <h5>Історія розрахунків</h5>
-    </div>
-    <div class="card-body">
-        <span class="fa fa-refresh fa-spin text-secondary" [hidden]="!loading"></span>
+<div class="mb-3" *ngIf="showDetails" id="history">
+    <h5>Історія розрахунків</h5>
+    <div id="history-body">
         <table class="table table-sm" *ngIf="!loading">
             <thead class="thead-light">
                 <tr>
@@ -18,16 +15,17 @@
                     <td>{{getDesc(item)}}</td>
                     <td>{{item.payment == 'PROC' ? item.sum * -1 : item.sum}} грн.</td>
                 </tr>
-                <tr>
-                    <td colspan="100">Всього за процедури: <strong>{{getSumProcedures()}}</strong> грн.</td>
-                </tr>
             </tbody>
         </table>
     </div>
+    <div>Всього за процедури: <strong>{{getSumProcedures()}}</strong> грн.</div>
 </div>
 <div class="row">
-    <div class="col">
+    <div class="col-auto">
         Баланс: <strong>{{data.balance}}</strong> грн.
+    </div>
+    <div class="col">
+        <span class="fa fa-refresh fa-spin text-secondary" [hidden]="!loading"></span>
     </div>
     <div class="col">
         <button class="btn btn-sm btn-success pull-right" (click)="getDetails()">Детальніше</button>
