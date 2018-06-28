@@ -1,0 +1,8 @@
+#history {
+    border: none;
+}
+
+#history-body {
+    max-height: 200px;
+    overflow-y: scroll;
+}
