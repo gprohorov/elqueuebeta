@@ -38,19 +38,19 @@
                 <button *ngIf="procedureStarted" class="btn btn-success btn-lg btn-block"
                     [style.min-height.px]="200" (click)="executeProcedure()">
                     <h3 class="font-weight-bold">
-                        ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
+                        ЗАВЕРШИТИ<br />ДІАГНОСТИКУ
                     </h3>
                 </button>
                 <button *ngIf="procedureStarted" class="btn btn-danger btn-lg btn-block"
                     [style.min-height.px]="200" (click)="cancelProcedure()">
                     <h3 class="font-weight-bold">
-                        СКАCУВАТИ<br />ПРОЦЕДУРУ
+                        СКАCУВАТИ<br />ДІАГНОСТИКУ
                     </h3>
                 </button>
                 <button *ngIf="!procedureStarted" class="btn btn-primary btn-lg btn-block"
                     [style.min-height.px]="200" (click)="startProcedure()">
                     <h3 class="font-weight-bold">
-                        РОЗПОЧАТИ<br />ПРОЦЕДУРУ
+                        РОЗПОЧАТИ<br />ДІАГНОСТИКУ
                     </h3>
                 </button>
             </div>
