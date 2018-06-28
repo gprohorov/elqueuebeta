@@ -47,11 +47,15 @@ public class AccountingController {
         String desc = jsonObj.getString("desc");
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
-        int doctorId = userService.getCurrentUserInfo().getId();
+      //  int doctorId = userService.getCurrentUserInfo().getId();
+        int doctorId = 1;
 
-        service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
+        if (sum != 0) {
+            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
+        }
+
         if (discount != 0) {
-            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, paymentType, desc));
+            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
         }
 
         return JSONObject.quote("OK");
