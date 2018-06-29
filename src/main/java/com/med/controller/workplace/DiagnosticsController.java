@@ -1,5 +1,7 @@
 package com.med.controller.workplace;
 
+import com.med.model.PatientTalonTherapy;
+import com.med.model.Talon;
 import com.med.model.Therapy;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +28,28 @@ public class DiagnosticsController {
     }
 
     // READ the Therapy by id
-    @GetMapping("/get/{id}")
-    public Therapy showOneTherapy(@PathVariable(value = "id")  String therapyId) {
-
-        return service.getTherapy(therapyId);
+    @GetMapping("/get/{patientId}")
+    public PatientTalonTherapy showOneTherapy(@PathVariable(value = "patientId")  String patientId) {
+        return service.getPatientTalonTherapy(patientId);
     }
 
-    // CREATE the Therapy
-    @PostMapping("/execute")
-    public Therapy executeTherapy(@RequestBody Therapy therapy) {
+    // start the Therapy
+    @GetMapping("/start/{talonId}")
+    public void startProcedure(@PathVariable String talonId) {
+        service.startProcedure(talonId);
+    }
 
-//
-        return service.executeTherapy(therapy);
+    // cancel the Therapy
+    @GetMapping("/cancel/{talonId}")
+    public void cancelProcedure(@PathVariable String talonId) {
+        service.cancelProcedure(talonId);
+    }
+
+    // EXECUTE the Therapy
+    @PostMapping("/execute/{talonId }")
+    public void executeProcedure(@PathVariable String talonId,
+                                 @RequestBody Therapy therapy) {
+        service.executeProcedure(talonId, therapy);
     }
 
     // DELETE the therapy by id

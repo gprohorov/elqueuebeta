@@ -1,5 +1,6 @@
 package com.med.services.therapy.impls;
 
+import com.med.model.PatientTalonTherapy;
 import com.med.model.Therapy;
 import com.med.repository.therapy.TherapyRepository;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -65,10 +66,23 @@ public class TherapyServiceImpl implements ITherapyService {
                 .findFirst().orElse(null);
     }
 
-    public Therapy executeTherapy(Therapy therapy) {
-
+    public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
         return null;
     }
+
+    public void startProcedure(String talonId) {
+    }
+
+    public void cancelProcedure(String talonId) {
+    }
+
+    public void executeProcedure(String talonId, Therapy therapy) {
+    }
+
+
+
+
+
 
 /*
     // TODO:   more logic
