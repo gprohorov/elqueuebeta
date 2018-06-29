@@ -132,7 +132,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         accountingService.createAccounting(accounting);
 
 
-
+ /////////////////  0000000000000000000000000
 
 
         return talonService.saveTalon(talon);

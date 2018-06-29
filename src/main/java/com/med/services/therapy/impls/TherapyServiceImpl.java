@@ -65,6 +65,11 @@ public class TherapyServiceImpl implements ITherapyService {
                 .findFirst().orElse(null);
     }
 
+    public Therapy executeTherapy(Therapy therapy) {
+
+        return null;
+    }
+
 /*
     // TODO:   more logic
     public List<Talon> assignTherapy(String therapyId) {

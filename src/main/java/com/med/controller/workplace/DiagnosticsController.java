@@ -11,7 +11,7 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/workplace/diagnostic")
 @CrossOrigin("*")
 public class DiagnosticsController {
 
@@ -20,24 +20,24 @@ public class DiagnosticsController {
     @Autowired
     TherapyServiceImpl service;
 
-    @RequestMapping("/therapy/list/")
+    @RequestMapping("/list/")
     public List<Therapy> showTherapys() {
         return service.getAll();
     }
 
     // READ the Therapy by id
-    @GetMapping("/therapy/get/{id}")
+    @GetMapping("/get/{id}")
     public Therapy showOneTherapy(@PathVariable(value = "id")  String therapyId) {
 
         return service.getTherapy(therapyId);
     }
 
     // CREATE the Therapy
-    @PostMapping("/therapy/save")
-    public Therapy saveTherapy(@RequestBody Therapy therapy) {
+    @PostMapping("/execute")
+    public Therapy executeTherapy(@RequestBody Therapy therapy) {
 
 //
-        return service.saveTherapy(therapy);
+        return service.executeTherapy(therapy);
     }
 
     // DELETE the therapy by id
