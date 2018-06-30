@@ -1,7 +1,6 @@
 package com.med.controller.workplace;
 
 import com.med.model.PatientTalonTherapy;
-import com.med.model.Talon;
 import com.med.model.Therapy;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,15 @@ public class DiagnosticsController {
     @Autowired
     TherapyServiceImpl service;
 
+
     @RequestMapping("/list/")
     public List<Therapy> showTherapys() {
         return service.getAll();
     }
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////
 
     // READ the Therapy by id
     @GetMapping("/get/{patientId}")

@@ -79,6 +79,10 @@ public class TalonServiceImpl implements ITalonService {
         return talon;
     }
 
+    public List<Talon>  findByActivity(Activity activity){
+        return repository.findByActivity(activity);
+    }
+
     public Talon getTalonByPatient(String patientId,  Activity activity) {
         Talon talon = this.getTalonsForToday().stream()
                 .filter(tal -> tal.getPatientId().equals(patientId))

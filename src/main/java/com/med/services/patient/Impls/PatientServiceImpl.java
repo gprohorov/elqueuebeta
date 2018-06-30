@@ -4,7 +4,6 @@ import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.model.balance.Accounting;
-import com.med.model.balance.Balance;
 import com.med.model.balance.PaymentType;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.repository.patient.PatientRepository;
@@ -178,7 +177,7 @@ public class PatientServiceImpl implements IPatientService {
     }
 
      public List<Accounting> getBalanceForCurrentTherapy(String patientId){
-        LocalDate start = therapyService.findTheActualTherapy(patientId).getStart().toLocalDate();
+        LocalDate start = therapyService.findTheLastTherapy(patientId).getStart().toLocalDate();
         return  this.getUltimateBalance(patientId,start,LocalDate.now());
     }
 
