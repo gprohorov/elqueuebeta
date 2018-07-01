@@ -25,7 +25,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     subPatient: Subscription;
     subProcedure: Subscription;
     subProcedures: Subscription;
-    procedures: Procedure[];
+    procedures: any;
 
     item: any;
     patientId: string;
