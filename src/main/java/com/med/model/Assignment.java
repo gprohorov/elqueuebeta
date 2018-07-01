@@ -4,25 +4,25 @@ package com.med.model;
  * Created by george on 28.06.18.
  */
 public class Assignment {
-    private Procedure procedure;
+    private int procedureId;
     private String desc;
     private String picture;
-
-    public Assignment(Procedure procedure, String desc, String picture) {
-        this.procedure = procedure;
-        this.desc = desc;
-        this.picture = picture;
-    }
 
     public Assignment() {
     }
 
-    public Procedure getProcedure() {
-        return procedure;
+    public Assignment(int procedureId, String desc, String picture) {
+        this.procedureId = procedureId;
+        this.desc = desc;
+        this.picture = picture;
     }
 
-    public void setProcedure(Procedure procedure) {
-        this.procedure = procedure;
+    public int getProcedureId() {
+        return procedureId;
+    }
+
+    public void setProcedureId(int procedureId) {
+        this.procedureId = procedureId;
     }
 
     public String getDesc() {
@@ -44,7 +44,7 @@ public class Assignment {
     @Override
     public String toString() {
         return "Assignment{" +
-                "procedure=" + procedure.getName() +
+                "procedureId=" + procedureId +
                 ", desc='" + desc + '\'' +
                 ", picture='" + picture + '\'' +
                 '}';

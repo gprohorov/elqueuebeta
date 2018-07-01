@@ -165,9 +165,13 @@ public class TherapyServiceImpl implements ITherapyService {
         tail.setPatientOnProcedure(null);
         tail.setVacant(true);
 
+        therapy.setPatientId(patient.getId());
+        therapy.setStart(LocalDateTime.now());
 
         System.out.println(therapy.toString());
-        
+
+
+
        repository.save(therapy);
 
 
