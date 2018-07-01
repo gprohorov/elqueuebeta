@@ -50,7 +50,7 @@ public class DiagnosticsController {
     }
 
     // EXECUTE the Therapy
-    @PostMapping("/execute/{talonId }")
+    @PostMapping("/execute/{talonId}")
     public void executeProcedure(@PathVariable String talonId,
                                  @RequestBody Therapy therapy) {
         service.executeProcedure(talonId, therapy);

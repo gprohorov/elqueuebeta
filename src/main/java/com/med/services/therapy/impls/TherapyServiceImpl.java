@@ -10,13 +10,11 @@ import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -72,22 +70,18 @@ public class TherapyServiceImpl implements ITherapyService {
        return this.saveTherapy(therapy);
     }
 
-
-    ///////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
     // TODO:  Human way
     // DONE!
     public Therapy findTheLastTherapy(String patientId){
+
+    // return this.getAll().stream().filter(th->th.getPatientId().equals(patientId))
      return repository.findByPatientId(patientId).stream()
                 .sorted(Comparator.comparing(Therapy::getStart).reversed())
                 .findFirst().orElse(null);
     }
-    /////////////////////   Get Patient Talon Therapy for Diagnostics procedure
+
     public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-        Talon talon = talonService.findByActivity(Activity.ACTIVE)
+        Talon talon = talonService.findAll()
                 .stream().filter(tal->tal.getPatientId().equals(patientId))
                 .filter(tal->tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
                 .findFirst().orElse(null);
@@ -149,9 +143,6 @@ public class TherapyServiceImpl implements ITherapyService {
 
 
     public void executeProcedure(String talonId, Therapy therapy) {
-
-        repository.save(therapy);
-
         Talon talon = talonService.getTalon(talonId);
 
         if (talon == null){return; }
@@ -173,42 +164,45 @@ public class TherapyServiceImpl implements ITherapyService {
 
         tail.setPatientOnProcedure(null);
         tail.setVacant(true);
+
+
+        System.out.println(therapy.toString());
         
+       repository.save(therapy);
+
+
        talonService.saveTalon(talon);
 
 
     }
 
-    public List<Talon> createTalonsForAllDays(Therapy therapy){
 
+
+
+
+
+/*
+    // TODO:   more logic
+    public List<Talon> assignTherapy(String therapyId) {
+
+        Therapy therapy = this.getTherapy(therapyId);
+      //  List<Procedure> procedures = therapy.getProcedures();
+        List<Talon> talons = new ArrayList<>();
         int days = therapy.getDays();
-        List<Talon> talons = new ArrayList<>();
-        List<Procedure> procedures= therapy.getAssignments().stream()
-                .map(Assignment::getProcedure).collect(Collectors.toList());
 
-        for(int i =0; i<days; i++){
-            for (Procedure procedure:procedures) {
+        for (int i =0; i<days; i++){
 
-                talons.add(new Talon(therapy.getPatientId()
-                        , procedure, LocalDate.now().plusDays(i)));
-            }
+           for (Procedure procedure:procedures) {
+
+               Talon talon = new Talon(therapy.getPatientId()
+                       , procedure
+                       , LocalDate.now().plusDays(i));
+               talon.setActivity(Activity.NON_ACTIVE);
+               talons.add(talon);
+           }
+
         }
-
         return talonService.saveTalons(talons);
     }
-
-    public List<Talon> createTalonsForToday(Therapy therapy){
-        List<Procedure> procedures= therapy.getAssignments().stream()
-                .map(Assignment::getProcedure).collect(Collectors.toList());
-        List<Talon> talons = new ArrayList<>();
-        procedures.stream().forEach(procedure -> {
-            talons.add(new Talon(therapy.getPatientId()
-                    , procedure, LocalDate.now()));
-        });
-        return talonService.saveTalons(talons);
-    }
-
-
-
-
-    }
+    */
+}

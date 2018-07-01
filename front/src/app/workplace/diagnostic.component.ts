@@ -33,9 +33,9 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     lastCabinet: number = 0;
     procedureStarted: boolean = false;
     model: any = {
-        codeDiag: 'AF 358',
-        diag: 'Діагноз пацієнта...',
-        notes: 'Нотатки про пацієнта...'
+//        codeDiag: 'AF 358',
+//        diag: 'Діагноз пацієнта...',
+//        notes: 'Нотатки про пацієнта...'
     };
 
     constructor(
@@ -209,8 +209,9 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.patientId, this.procedureId).subscribe(data => {
+        this.subPatient = this.service.getPatient(this.patientId).subscribe(data => {
             this.item = data;
+            this.model = data.therapy ? data.therapy : {};
             this.loading = false;
             this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
             setTimeout(() => { this.canvasInit() }, 0);
@@ -234,7 +235,8 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
-        this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
+        this.model.picture = this.canvasBuffer;
+        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.model).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
         });
