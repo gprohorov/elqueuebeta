@@ -23,7 +23,7 @@ public class Talon {
     private LocalDateTime start;
     private LocalDateTime executionTime;
     private Doctor doctor;
-    private Status status = Status.NULL;
+    private Status status = Status.SOCIAL;
     private int sum;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
@@ -82,7 +82,7 @@ public class Talon {
         this.patientId = patientId;
         this.date = date;
         this.procedure = procedure;
-        this.zones = 0;
+        this.zones = 1;
         this.desc = "";
         this.executionTime = null;
         this.doctor = null;
