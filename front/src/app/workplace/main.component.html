@@ -22,7 +22,7 @@
                 <button class="btn btn-{{Activity[item.activity].cssClass}}"
                     title="{{item.person.fullName}} ({{Status[item.status].text}})"
                     [routerLink]="['/workplace/' + (group.procedureType == 'DIAGNOSTIC' ? 'diagnostic' : 'common')
-                    + '/' + item.id + '/' + group.procedureId]">
+                    + '/' + item.id]">
                     <strong>{{item.person.fullName}}</strong>
                 </button>
             </span>

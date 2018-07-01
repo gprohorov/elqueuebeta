@@ -19,7 +19,8 @@ export class WorkplaceCommonService {
     constructor(private http: HttpClient) { }
 
     getPatient(patientId: string, procedureId: number) {
-        return this.http.get(this.getPatientUrl + patientId + '/' + procedureId).pipe(catchError(this.handleError));
+        return this.http.get(this.getPatientUrl + patientId + '/' + procedureId)
+            .pipe(catchError(this.handleError));
     }
 
     commentProcedure(talonId: string, comment: string) {

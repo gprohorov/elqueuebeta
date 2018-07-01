@@ -81,7 +81,7 @@ public class TherapyServiceImpl implements ITherapyService {
     }
 
     public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-        Talon talon = talonService.findByActivity(Activity.ACTIVE)
+        Talon talon = talonService.findAll()
                 .stream().filter(tal->tal.getPatientId().equals(patientId))
                 .filter(tal->tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
                 .findFirst().orElse(null);
@@ -166,6 +166,8 @@ public class TherapyServiceImpl implements ITherapyService {
         tail.setVacant(true);
 
 
+        System.out.println(therapy.toString());
+        
        repository.save(therapy);
 
 

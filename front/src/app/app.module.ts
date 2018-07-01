@@ -135,7 +135,7 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     {
-        path: 'workplace/diagnostic/:patientId/:procedureId', component: WorkplaceDiagnosticComponent,
+        path: 'workplace/diagnostic/:patientId', component: WorkplaceDiagnosticComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },

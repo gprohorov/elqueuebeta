@@ -79,8 +79,8 @@ public class TalonServiceImpl implements ITalonService {
         return talon;
     }
 
-    public List<Talon>  findByActivity(Activity activity){
-        return repository.findByActivity(activity);
+    public List<Talon> findAll() {
+        return repository.findAll();
     }
 
     public Talon getTalonByPatient(String patientId,  Activity activity) {
