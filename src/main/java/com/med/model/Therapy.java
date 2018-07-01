@@ -21,7 +21,7 @@ public class Therapy {
     private String diag;
     private String codeDiag;
     private String notes;
-    private List<Assignment> assignments = new ArrayList<>();
+    private List<Assignment> assignments;
     private int days;
 
 

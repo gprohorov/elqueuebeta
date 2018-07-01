@@ -235,7 +235,12 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
-        this.model.picture = this.canvasBuffer;
+        // form assignment
+        this.model.assignments = [];
+        this.procedures.forEach((p) => {
+            if (p.selected) this.model.assignments.push({procedureId: p.id, desc: '', picture: this.canvasBuffer }) 
+        });
+        
         this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.model).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);

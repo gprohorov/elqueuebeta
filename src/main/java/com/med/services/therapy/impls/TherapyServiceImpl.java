@@ -168,22 +168,10 @@ public class TherapyServiceImpl implements ITherapyService {
         therapy.setPatientId(patient.getId());
         therapy.setStart(LocalDateTime.now());
 
-        System.out.println(therapy.toString());
-
-
-
-       repository.save(therapy);
-
-
-       talonService.saveTalon(talon);
-
-
+        repository.save(therapy);
+        
+    	talonService.saveTalon(talon);
     }
-
-
-
-
-
 
 /*
     // TODO:   more logic

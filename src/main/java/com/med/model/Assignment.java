@@ -1,17 +1,19 @@
 package com.med.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by george on 28.06.18.
  */
 public class Assignment {
     private int procedureId;
     private String desc;
-    private String picture;
+    private ArrayList<ArrayList<Object>> picture;
 
     public Assignment() {
     }
 
-    public Assignment(int procedureId, String desc, String picture) {
+    public Assignment(int procedureId, String desc, ArrayList<ArrayList<Object>> picture) {
         this.procedureId = procedureId;
         this.desc = desc;
         this.picture = picture;
@@ -33,11 +35,11 @@ public class Assignment {
         this.desc = desc;
     }
 
-    public String getPicture() {
+    public ArrayList<ArrayList<Object>> getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(ArrayList<ArrayList<Object>> picture) {
         this.picture = picture;
     }
 
