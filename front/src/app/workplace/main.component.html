@@ -21,8 +21,8 @@
                 item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item">
                 <button class="btn btn-{{Activity[item.activity].cssClass}}"
                     title="{{item.person.fullName}} ({{Status[item.status].text}})"
-                    [routerLink]="['/workplace/' + (group.procedureType == 'DIAGNOSTIC' ? 'diagnostic' : 'common')
-                    + '/' + item.id]">
+                    [routerLink]="['/workplace/' + (group.procedureType == 'DIAGNOSTIC'
+                      ? 'diagnostic/' + item.id : 'common/' + item.id + '/' + group.procedureId)]">
                     <strong>{{item.person.fullName}}</strong>
                 </button>
             </span>

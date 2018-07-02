@@ -69,10 +69,8 @@ public class CommonController {
     public Talon start(
            @PathVariable(value = "talonId") String talonId)
 
-      //     @PathVariable(value = "patientId") String patientId,
-     //      @PathVariable(value = "procedureId") int procedureId)
-
     {
+        System.out.println("-------   Started-------------");
         Talon talon = talonService.getTalon(talonId);
         int doctorId = userService.getCurrentUserInfo().getId();
         if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
