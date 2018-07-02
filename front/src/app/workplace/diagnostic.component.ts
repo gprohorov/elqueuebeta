@@ -17,7 +17,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     @ViewChild('canvasDiag', { read: ElementRef })
     public canvasDiag: ElementRef;
     private cx: CanvasRenderingContext2D;
-    private canvasImage: Image = new Image;
+    private canvasImage = new Image;
     private canvasBuffer = [];
 
     loading = false;
@@ -26,6 +26,8 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     subProcedure: Subscription;
     subProcedures: Subscription;
     procedures: any;
+    currentProcedureId: number = null;
+    currentProcedureName: string = '';
 
     item: any;
     patientId: string;
@@ -81,14 +83,19 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     public isCorrectable(procedure) {
-        return procedure.selected && Array.isArray(procedure.picture) && procedure.picture.length > 0;
+        return (procedure.selected && Array.isArray(procedure.picture) && procedure.picture.length > 0);
+    }
+    
+    public correctProcedure(procedure) {
+        this.restoreCanvas(procedure.picture);
+        this.currentProcedureId = procedure.id;
+        this.currentProcedureName = procedure.name;
     }
 
     public restoreCanvas(picture) {
         this.canvasInit();
         this.canvasBuffer = picture;
         this.canvasBuffer.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
-        console.log('Canvas restored', this.canvasBuffer);
     }
 
     public setColor(color) {
@@ -98,7 +105,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     private canvasInit() {
         if (this.canvasDiag) {
             this.canvasBuffer = [];
-            
+
             const canvasEl: HTMLCanvasElement = this.canvasDiag.nativeElement;
             this.cx = canvasEl.getContext('2d');
 
@@ -224,17 +231,26 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.canvasInit();
-                this.procedures.forEach((p) => {
-                    this.model.assignments.forEach((sp) => {
-                        if (sp.procedureId == p.id) {
-                            p.picture = sp.picture;
-                            this.toggleProcedure(p, true);
-                            if (this.canvasBuffer.length == 0 && Array.isArray(p.picture) && p.picture.length > 0) {
-                                this.restoreCanvas(p.picture);
+                if (this.model.assignments) {
+                    this.procedures.forEach((p) => {
+                        this.model.assignments.forEach((sp) => {
+                            if (sp.procedureId == p.id) {
+                                p.picture = sp.picture;
+                                this.toggleProcedure(p, true);
+                            }
+                        });
+                    });
+                    if (this.canvasBuffer.length == 0) {
+                        for (let i=0; i <= this.procedures.length; i++) {
+                            if (this.procedures[i].picture && this.procedures[i].picture.length > 0) {
+                                this.restoreCanvas(this.procedures[i].picture);
+                                this.currentProcedureId = this.procedures[i].id;
+                                this.currentProcedureName = this.procedures[i].name;
+                                break;
                             }
                         }
-                    });
-                });
+                    }
+                }
             }, 0);
         });
 
