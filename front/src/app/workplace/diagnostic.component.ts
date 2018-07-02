@@ -17,8 +17,8 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     @ViewChild('canvasDiag', { read: ElementRef })
     public canvasDiag: ElementRef;
     private cx: CanvasRenderingContext2D;
+    private canvasImage: Image = new Image;
     private canvasBuffer = [];
-    private canvasMemory = [];
 
     loading = false;
     sub: Subscription;
@@ -32,11 +32,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     procedureId: number;
     lastCabinet: number = 0;
     procedureStarted: boolean = false;
-    model: any = {
-//        codeDiag: 'AF 358',
-//        diag: 'Діагноз пацієнта...',
-//        notes: 'Нотатки про пацієнта...'
-    };
+    model: any = {};
 
     constructor(
         private router: Router,
@@ -47,20 +43,23 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        this.canvasImage.src = '/assets/skeleton.jpg';
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
         this.sub = this.procedureService.getAll().subscribe(data => {
-            this.procedures = data.sort(function(a, b) {
+            this.procedures = data.sort(function (a, b) {
                 var x = a.cabinet; var y = b.cabinet;
                 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
             });
+
             let cab = 0;
             this.procedures.forEach((p) => {
                 p.header = (p.cabinet > cab) ? 'Кабінет № ' + p.cabinet : '';
                 cab = p.cabinet;
             });
+
+            this.load();
         });
-        this.load();
     }
 
     ngOnDestroy() {
@@ -69,27 +68,37 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         if (this.subProcedure) this.subProcedure.unsubscribe();
         if (this.subProcedures) this.subProcedures.unsubscribe();
     }
-    
-    public clearCanvas() {
-        this.canvasBuffer = [];
+
+    public toggleProcedure(procedure, val: boolean = null) {
+        if (!procedure.selected || val === true) {
+            if (this.canvasBuffer.length > 0 && (!procedure.picture || procedure.picture.length == 0)) {
+                procedure.picture = this.canvasBuffer;
+            }
+            procedure.selected = true;
+        } else {
+            procedure.selected = false;
+        }
+    }
+
+    public isCorrectable(procedure) {
+        return procedure.selected && Array.isArray(procedure.picture) && procedure.picture.length > 0;
+    }
+
+    public restoreCanvas(picture) {
         this.canvasInit();
+        this.canvasBuffer = picture;
+        this.canvasBuffer.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+        console.log('Canvas restored', this.canvasBuffer);
     }
-    
-    public saveCanvas() {
-        this.canvasMemory = this.canvasBuffer;
-        console.log(this.canvasMemory);
-    }
-    
-    public restoreCanvas() {
-        this.canvasMemory.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
-    }
-    
+
     public setColor(color) {
         this.cx.strokeStyle = color;
     }
-    
+
     private canvasInit() {
         if (this.canvasDiag) {
+            this.canvasBuffer = [];
+            
             const canvasEl: HTMLCanvasElement = this.canvasDiag.nativeElement;
             this.cx = canvasEl.getContext('2d');
 
@@ -97,18 +106,14 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             this.cx.lineCap = 'round';
             this.cx.strokeStyle = 'blue';
 
-            const img = new Image;
-            img.onload = () => {
-                this.cx.drawImage(img, 0, 0);
-            };
-            img.src = '/assets/skeleton.jpg';
+            this.cx.drawImage(this.canvasImage, 0, 0);
 
             this.captureEvents(canvasEl);
         }
     }
 
     private captureEvents(canvasEl: HTMLCanvasElement) {
-        
+
         // this will capture all mousedown events from the canvas element
         fromEvent(canvasEl, 'mousedown').pipe(
             switchMap((e: MouseEvent) => {
@@ -143,7 +148,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
             this.storePoints(prevPos, currentPos);
         });
-        
+
         // this will capture all touch events from the canvas element
         fromEvent(canvasEl, 'touchstart').pipe(
             switchMap((e: TouchEvent) => {
@@ -160,7 +165,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             })
         ).subscribe((res: [TouchEvent, TouchEvent]) => {
             const rect = canvasEl.getBoundingClientRect();
-            
+
             // previous and current position with the offset
             const prevPos = {
                 x: res[0].touches[0].clientX - rect.left,
@@ -177,7 +182,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             this.storePoints(prevPos, currentPos);
         });
     }
-    
+
     private storePoints(prevPos, currentPos) {
         if (!this.procedureStarted) return;
         this.canvasBuffer.push([prevPos, currentPos]);
@@ -210,12 +215,29 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     load() {
         this.loading = true;
         this.subPatient = this.service.getPatient(this.patientId).subscribe(data => {
+            this.loading = false;
+
             this.item = data;
             this.model = data.therapy ? data.therapy : {};
-            this.loading = false;
+
             this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
-            setTimeout(() => { this.canvasInit() }, 0);
+
+            setTimeout(() => {
+                this.canvasInit();
+                this.procedures.forEach((p) => {
+                    this.model.assignments.forEach((sp) => {
+                        if (sp.procedureId == p.id) {
+                            p.picture = sp.picture;
+                            this.toggleProcedure(p, true);
+                            if (this.canvasBuffer.length == 0 && Array.isArray(p.picture) && p.picture.length > 0) {
+                                this.restoreCanvas(p.picture);
+                            }
+                        }
+                    });
+                });
+            }, 0);
         });
+
     }
 
     startProcedure() {
@@ -238,9 +260,9 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         // form assignment
         this.model.assignments = [];
         this.procedures.forEach((p) => {
-            if (p.selected) this.model.assignments.push({procedureId: p.id, desc: '', picture: this.canvasBuffer }) 
+            if (p.selected) this.model.assignments.push({ procedureId: p.id, desc: '', picture: p.picture })
         });
-        
+
         this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.model).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
