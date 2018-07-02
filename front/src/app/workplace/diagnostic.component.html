@@ -69,9 +69,6 @@
             <div class="col-auto">
                 <div class="content">
                     <button class="btn btn-secondary btn-small" (click)="clearCanvas()">Очистити</button>
-                    <button class="btn btn-success btn-small" (click)="saveCanvas()">Зберегти</button>
-                    <button class="btn btn-warning btn-small" (click)="restoreCanvas()">Відновити</button>
-
                     <button class="btn btn-danger btn-small pull-right" [style.width.px]="50"
                         (click)="setColor('red')">&nbsp;</button>
                     <button class="btn btn-primary btn-small pull-right mr-2" [style.width.px]="50"
@@ -95,13 +92,12 @@
                         <div class="mb-2" *ngIf="procedures?.length">
                             <div *ngFor="let procedure of procedures">
                                 <div *ngIf="procedure.header">{{procedure.header}}</div>
-                                <button 
-                                    [disabled]="!procedureStarted" [style.width.px]="350"
+                                <button [disabled]="!procedureStarted" [style.width.px]="350"
                                     [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
                                                 'btn-primary': procedure?.selected,
                                                 'btn-secondary': !procedure?.selected}"
-                                    (click)="procedure.selected = !procedure?.selected"
-                                >{{procedure.name}}</button>
+                                    (click)="toggleProcedure(procedure)">{{procedure.name}}</button>
+                                <button [hidden]="!isCorrectable(procedure)" class="ml-1 btn btn-warning">Корегувати</button>
                             </div>
                         </div>
                     </div>
