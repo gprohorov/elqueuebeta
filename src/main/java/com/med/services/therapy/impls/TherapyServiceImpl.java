@@ -3,6 +3,7 @@ package com.med.services.therapy.impls;
 import com.med.model.*;
 import com.med.repository.therapy.TherapyRepository;
 import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.interfaces.ITherapyService;
@@ -10,6 +11,7 @@ import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,6 +40,10 @@ public class TherapyServiceImpl implements ITherapyService {
 
     @Autowired
     UserService userService;
+
+
+    @Autowired
+    ProcedureServiceImpl procedureService;
 
     public Therapy createTherapy(Therapy therapy) {
         return repository.save(therapy);
@@ -170,8 +176,37 @@ public class TherapyServiceImpl implements ITherapyService {
         therapy.setStart(LocalDateTime.now());
 
         repository.save(therapy);
-        
     	talonService.saveTalon(talon);
+    	talonService.saveTalons(this.generateTalonsByTherapy(therapy));
+
+    }
+
+
+    ////////////  02.07.18 ///////////////////////////
+    public List<Talon> generateTalonsByTherapy(Therapy therapy){
+
+        int days = therapy.getDays();
+        List<Procedure> procedures = new ArrayList<>();
+        List<Talon> talons = new ArrayList<>();
+
+        therapy.getAssignments().stream().forEach(ass ->
+
+                {
+                    Procedure procedure = procedureService.getProcedure(ass.getProcedureId());
+                    procedures.add(procedure);
+                }
+        );
+
+        for(Procedure procedure:procedures){
+            for (int i =0; i<days; i++){
+
+                talons.add(new Talon(therapy.getPatientId()
+                        , procedure
+                        , LocalDate.now().plusDays(i)));
+            }
+        }
+
+        return  talons;
     }
 
 /*

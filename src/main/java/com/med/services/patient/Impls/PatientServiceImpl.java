@@ -3,6 +3,7 @@ package com.med.services.patient.Impls;
 import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
+import com.med.model.Therapy;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.accounting.AccountingRepository;
@@ -65,8 +66,10 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public Patient getPatient(String id) {
-        Patient patient = repository.findById(id).orElse(null);
+    public Patient getPatient(String patientId) {
+        Patient patient = repository.findById(patientId).orElse(null);
+        Therapy therapy = therapyService.findTheLastTherapy(patientId);
+        patient.setTherapy(therapy);
         return  patient;
     }
 
@@ -173,6 +176,8 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     public List<Accounting> getUltimateBalanceToday(String patientId) {
+       // int days = therapyService.g
+
         return this.getUltimateBalance(patientId, LocalDate.now().minusDays(0), LocalDate.now().plusDays(1));
     }
 

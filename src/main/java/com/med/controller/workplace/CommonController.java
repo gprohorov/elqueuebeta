@@ -70,7 +70,6 @@ public class CommonController {
            @PathVariable(value = "talonId") String talonId)
 
     {
-        System.out.println("-------   Started-------------");
         Talon talon = talonService.getTalon(talonId);
         int doctorId = userService.getCurrentUserInfo().getId();
         if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
