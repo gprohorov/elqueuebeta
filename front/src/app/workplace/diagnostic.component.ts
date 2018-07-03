@@ -82,6 +82,22 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         }
     }
 
+    public saveProcedure() {
+        let p = this.procedures.find( x => { return (x.id == this.currentProcedureId) ? x : false; } );
+        p.picture = this.canvasBuffer;
+        this.currentProcedureId = null;
+        this.currentProcedureName = '';
+        this.clearCanvas();
+    }
+    
+    public clearCanvas() {
+        this.restoreCanvas([]);
+        if (this.currentProcedureId != null) {
+            let p = this.procedures.find( x => { return (x.id == this.currentProcedureId) ? x : false; } );
+            p.picture = this.canvasBuffer;
+        }
+    }
+    
     public isCorrectable(procedure) {
         return (procedure.selected && Array.isArray(procedure.picture) && procedure.picture.length > 0);
     }
