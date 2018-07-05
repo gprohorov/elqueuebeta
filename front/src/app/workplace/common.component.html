@@ -6,11 +6,32 @@
     <h4 class="title">{{item.patient.person.fullName}}</h4>
     <div class="row">
         <div class="col-8">
-            <div class="card mb-5">
+            <div class="card mb-2">
                 <div class="card-header">
                     <h4>Діагноз</h4>
                 </div>
-                <div class="card-body"></div>
+                <div class="card-body">
+                    <p>
+                        <span>Код:</span> <strong>{{item.patient.therapy.codeDiag}}</strong>
+                    </p>
+                    <p>{{item.patient.therapy.diag}}</p>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <h4>Зони</h4>
+                </div>
+                <div class="card-body">
+                    <canvas #canvas width="500" height="500"></canvas>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <h4>Нотатки</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{item.patient.therapy.notes}}</p>
+                </div>
             </div>
             <div class="card mb-5">
                 <div class="card-header">
@@ -18,7 +39,8 @@
                 </div>
                 <div class="card-body" [innerHTML]="item.talon.desc"></div>
             </div>
-            <form *ngIf="procedureStarted" name="form" (ngSubmit)="f.form.valid && comment()" #f="ngForm" novalidate>
+            <form *ngIf="procedureStarted" name="form" (ngSubmit)="f.form.valid && comment()"
+                #f="ngForm" novalidate>
                 <label for="comment">Добавити коментар:</label>
                 <textarea rows="5" class="form-control" name="comment" #comment="ngModel"
                     [(ngModel)]="model.comment"></textarea>
