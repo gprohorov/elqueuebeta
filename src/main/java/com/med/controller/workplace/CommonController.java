@@ -134,7 +134,7 @@ public class CommonController {
 
         return  workPlaceService.commentTalon(talonId, comment);
     }
-
+//////////////////// zones
     @GetMapping("/zone/{talonId}")
     public Talon zone(
             @PathVariable(value = "talonId") String talonId){
