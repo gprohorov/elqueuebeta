@@ -72,6 +72,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
+        talon.setZones(1);
 
         String desc = doctor.getFullName() + ", "
         		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
@@ -89,7 +90,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 //////////////////////////////////  EXECUTE //////////////////////////
-    public Talon execute(String talonId, int doctorId, int zones) {
+    public Talon execute(String talonId, int doctorId) {
 
         Talon talon = talonService.getTalon(talonId);
 
@@ -108,8 +109,6 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 + " - процедуру завершено.<br/><br/>";
         talon.setDesc(talon.getDesc() + desc);
         talon.setStatus(patient.getStatus());
-
-        talon.setZones(zones);
 
         int price = this.getPrice(patient, procedure);
         int sum = procedure.isZoned()? price*talon.getZones(): price;
@@ -312,6 +311,13 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-
-
+    public Talon addZoneTalon(String talonId) {
+        Talon talon = talonService.getTalon(talonId);
+        talon.setZones(talon.getZones()+1);
+        Doctor doctor = userService.getCurrentUserInfo();
+        talon.setDesc(talon.getDesc()+ "<br/><br/>" +doctor.getFullName()
+                + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+        + "добавлен зону ");
+        return talonService.saveTalon(talon);
+    }
 }

@@ -26,6 +26,11 @@ public class HotelServiceImpl implements IHotelService{
         return repository.save(hotel);
     }
 
+    @Override
+    public Hotel updateHotel(Hotel hotel) {
+       return repository.save(hotel);
+    }
+
 
     public List<Hotel> saveAll(List<Hotel> hotels) {
 
@@ -39,8 +44,7 @@ public class HotelServiceImpl implements IHotelService{
     @Override
     public List<Hotel> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish) {
 
-        return this.getAll().stream()
-                .filter(hotel -> hotel.getPatientId().equals(patientId))
+        return repository.findByPatientId(patientId).stream()
                 .filter(hotel->hotel.getFinish() != null)
                 .filter(hotel->hotel.getStart().toLocalDate().isAfter(start.minusDays(1)))
                 .filter(hotel->hotel.getFinish().toLocalDate().isBefore(finish.plusDays(1)))

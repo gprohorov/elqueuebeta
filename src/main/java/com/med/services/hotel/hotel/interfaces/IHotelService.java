@@ -11,6 +11,8 @@ import java.util.List;
 public interface IHotelService {
 
     Hotel createHotel(Hotel hotel);
+    Hotel updateHotel(Hotel hotel);
+
     List<Hotel> getAll();
     List<Hotel> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish);
     Hotel getHotel(String hotelId);

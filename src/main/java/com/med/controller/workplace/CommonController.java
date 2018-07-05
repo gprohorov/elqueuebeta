@@ -84,11 +84,11 @@ public class CommonController {
 
     @GetMapping("/execute/{talonId}/{zones}")
     public Talon execute(
-           @PathVariable(value = "talonId") String talonId,
-           @PathVariable(value = "zones") int zones
+           @PathVariable(value = "talonId") String talonId
+
             ) {
         int doctorId = userService.getCurrentUserInfo().getId();
-       return workPlaceService.execute(talonId, doctorId, zones);
+       return workPlaceService.execute(talonId, doctorId);
     }
 
 
@@ -133,6 +133,14 @@ public class CommonController {
 
 
         return  workPlaceService.commentTalon(talonId, comment);
+    }
+
+    @GetMapping("/zone/{talonId}")
+    public Talon zone(
+            @PathVariable(value = "talonId") String talonId){
+
+
+        return  workPlaceService.addZoneTalon(talonId);
     }
 
 

@@ -16,6 +16,7 @@ public class Hotel {
     private String patientId;
     private String desc;
     private Koika koika;
+    private int price;
     private LocalDateTime start;
     private LocalDateTime finish;
     private State state;
@@ -23,7 +24,17 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel( String patientId, String desc, Koika koika, LocalDateTime start, LocalDateTime finish, State state) {
+    public Hotel(String patientId, String desc, Koika koika, int price, LocalDateTime start, LocalDateTime finish, State state) {
+        this.patientId = patientId;
+        this.desc = desc;
+        this.koika = koika;
+        this.price = price;
+        this.start = start;
+        this.finish = finish;
+        this.state = state;
+    }
+
+    public Hotel(String patientId, String desc, Koika koika, LocalDateTime start, LocalDateTime finish, State state) {
         this.patientId = patientId;
         this.desc = desc;
         this.koika = koika;
@@ -32,7 +43,13 @@ public class Hotel {
         this.state = state;
     }
 
-
+    public Hotel(String patientId, Koika koika, int days) {
+        this.patientId = patientId;
+        this.koika = koika;
+        this.start = LocalDateTime.now();
+        this.finish = LocalDateTime.now().plusDays(days);
+        this.state = State.OCCUP;
+    }
 
 
     public String getId() {
@@ -65,6 +82,14 @@ public class Hotel {
 
     public void setKoika(Koika koika) {
         this.koika = koika;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public LocalDateTime getStart() {
