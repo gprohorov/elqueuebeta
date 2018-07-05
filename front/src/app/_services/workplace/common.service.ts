@@ -15,6 +15,7 @@ export class WorkplaceCommonService {
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
+    private zoneUrl = config.api_path + '/workplace/zone/';
 
     constructor(private http: HttpClient) { }
 
@@ -28,19 +29,20 @@ export class WorkplaceCommonService {
             .pipe(catchError(this.handleError));
     }
 
+    zoneAdd(talonId: string) {
+        return this.http.get(this.zoneUrl + talonId).pipe(catchError(this.handleError));
+    }
+    
     startProcedure(talonId: string) {
-        return this.http.get(this.startProcedureUrl + talonId)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.startProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
 
     cancelProcedure(talonId: string) {
-        return this.http.get(this.cancelProcedureUrl + talonId)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.cancelProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
 
-    executeProcedure(talonId: string, zones: number = 1) {
-        return this.http.get(this.executeProcedureUrl + talonId + '/' + zones)
-            .pipe(catchError(this.handleError));
+    executeProcedure(talonId: string) {
+        return this.http.get(this.executeProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

@@ -61,19 +61,9 @@
                         ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
                     </h3>
                 </button>
-                <label for="zones">Кількість зон</label>
-                <select name="zones" class="form-control" [(ngModel)]="zones">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                </select>
+                <button class="btn btn-info btn-lg btn-block" (click)="addZone()">
+                    Зон: {{item.talon.zones}}<h4>Добавити зону</h4>
+                </button>
             </form>
             <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
                 (click)="startProcedure()" *ngSwitchCase="false">
