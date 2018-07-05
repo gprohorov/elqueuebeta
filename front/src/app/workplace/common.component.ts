@@ -120,12 +120,25 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
-        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.zones).subscribe(data => {
+        this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
         });
     }
 
+    addZone() {
+        this.loading = true;
+        this.service.addZone(this.item.talon.id).subscribe(
+            data => {
+                this.alertService.success('Зміни збережено.', true);
+                this.load();
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+    }
+    
     comment() {
         this.loading = true;
         this.service.commentProcedure(this.item.talon.id, this.model.comment).subscribe(
