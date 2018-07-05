@@ -1,9 +1,8 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
-import com.med.model.hotel.Hotel;
-import com.med.model.hotel.State;
 import com.med.repository.talon.TalonRepository;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
 import com.med.services.hotel.hotel.impls.HotelServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
@@ -12,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +35,9 @@ public class DataStorageTest {
 
     @Autowired
     HotelServiceImpl hotelService;
+
+    @Autowired
+    AccountingServiceImpl accountingService;
 
 
     @PostConstruct
@@ -134,6 +133,8 @@ public class DataStorageTest {
     public void reset(){
 ;
         talonRepository.deleteAll();
+        accountingService.deleteAll();
+
 
 
         List<Patient> patients = patientService.getAll("");

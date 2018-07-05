@@ -106,8 +106,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         String desc = doctor.getFullName() + ", "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
                 + " - процедуру завершено.<br/><br/>";
-        talon.setDesc(desc);
+        talon.setDesc(talon.getDesc() + desc);
         talon.setStatus(patient.getStatus());
+
         talon.setZones(zones);
 
         int price = this.getPrice(patient, procedure);
@@ -128,7 +129,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 , LocalDateTime.now()
                 , talon.getId()
                 , (-1* sum)
-                , PaymentType.PROC, descr);
+                , PaymentType.PROC
+                , descr);
         accountingService.createAccounting(accounting);
 
 

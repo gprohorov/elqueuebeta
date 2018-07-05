@@ -48,6 +48,10 @@ public class AccountingServiceImpl implements IAccountingService {
         return repository.findAll();
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
 
 
     // TODO: Human query

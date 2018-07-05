@@ -1,7 +1,10 @@
 package com.med.services.therapy.impls;
 
 import com.med.model.*;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
 import com.med.repository.therapy.TherapyRepository;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
@@ -44,6 +47,9 @@ public class TherapyServiceImpl implements ITherapyService {
 
     @Autowired
     ProcedureServiceImpl procedureService;
+
+    @Autowired
+    AccountingServiceImpl accountingService;
 
     public Therapy createTherapy(Therapy therapy) {
         return repository.save(therapy);
@@ -175,9 +181,46 @@ public class TherapyServiceImpl implements ITherapyService {
         therapy.setPatientId(patient.getId());
         therapy.setStart(LocalDateTime.now());
 
+
+//////////////////////   manual Therapy Talon
+        Talon manualTherapyTalon = new Talon();
+        manualTherapyTalon.setActivity(Activity.EXECUTED);
+        manualTherapyTalon.setStart(talon.getStart());
+        manualTherapyTalon.setExecutionTime(LocalDateTime.now());
+        Procedure manual = procedureService.getProcedure(3);
+        manualTherapyTalon.setProcedure(manual);
+        manualTherapyTalon.setPatientId(patient.getId());
+        manualTherapyTalon.setSum(manual.getSOCIAL());
+        manualTherapyTalon.setDate(LocalDate.now());
+        manualTherapyTalon.setZones(1);
+        manualTherapyTalon.setDoctor(talon.getDoctor());
+        manualTherapyTalon.setStatus(patient.getStatus());
+        talonService.saveTalon(manualTherapyTalon);
+
+        //////////////////  accounting manual
+
+        String descr = procedure.getName() ;
+        Accounting accounting = new Accounting(manualTherapyTalon.getDoctor().getId()
+                , patient.getId()
+                , LocalDateTime.now()
+                , talon.getId()
+                , (-1* manualTherapyTalon.getSum())
+                , PaymentType.PROC
+                , descr);
+        accountingService.createAccounting(accounting);
+
+
+
+
+
+
+
         repository.save(therapy);
-    	talonService.saveTalon(talon);
+        talonService.saveTalon(talon);
+
     	talonService.saveTalons(this.generateTalonsByTherapy(therapy));
+
+
 
     }
 
@@ -186,6 +229,7 @@ public class TherapyServiceImpl implements ITherapyService {
     public List<Talon> generateTalonsByTherapy(Therapy therapy){
 
         int days = therapy.getDays();
+        
         List<Procedure> procedures = new ArrayList<>();
         List<Talon> talons = new ArrayList<>();
 
@@ -199,7 +243,6 @@ public class TherapyServiceImpl implements ITherapyService {
 
         for(Procedure procedure:procedures){
             for (int i =0; i<days; i++){
-
                 talons.add(new Talon(therapy.getPatientId()
                         , procedure
                         , LocalDate.now().plusDays(i)));
@@ -208,6 +251,8 @@ public class TherapyServiceImpl implements ITherapyService {
 
         return  talons;
     }
+
+
 
 /*
     // TODO:   more logic
