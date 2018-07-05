@@ -48,7 +48,7 @@
             </form>
         </div>
         <div class="col-4" [ngSwitch]="procedureStarted">
-            <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="200"
+            <button class="btn btn-danger btn-lg btn-block mb-2" [style.min-height.px]="200"
                 (click)="cancelProcedure()" *ngSwitchCase="true">
                 <h3 class="font-weight-bold">
                     СКАCУВАТИ<br />ПРОЦЕДУРУ
@@ -56,16 +56,16 @@
             </button>
             <form name="formExecute" (ngSubmit)="fe.form.valid && executeProcedure()" #fe="ngForm"
                 novalidate *ngSwitchCase="true">
-                <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="200">
+                <button class="btn btn-success btn-lg btn-block mb-2" [style.min-height.px]="200">
                     <h3 class="font-weight-bold">
                         ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
                     </h3>
                 </button>
-                <button class="btn btn-info btn-lg btn-block" (click)="addZone()">
-                    Зон: {{item.talon.zones}}<h4>Добавити зону</h4>
-                </button>
             </form>
-            <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="200"
+            <button class="btn btn-info btn-lg btn-block mb-2" (click)="addZone()" *ngSwitchCase="true">
+                Зон: {{item.talon.zones}}<h4>Добавити зону</h4>
+            </button>
+            <button class="btn btn-primary btn-lg btn-block mb-2" [style.min-height.px]="200"
                 (click)="startProcedure()" *ngSwitchCase="false">
                 <h3 class="font-weight-bold">
                     РОЗПОЧАТИ<br />ПРОЦЕДУРУ

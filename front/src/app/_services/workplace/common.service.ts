@@ -29,7 +29,7 @@ export class WorkplaceCommonService {
             .pipe(catchError(this.handleError));
     }
 
-    zoneAdd(talonId: string) {
+    addZone(talonId: string) {
         return this.http.get(this.zoneUrl + talonId).pipe(catchError(this.handleError));
     }
     

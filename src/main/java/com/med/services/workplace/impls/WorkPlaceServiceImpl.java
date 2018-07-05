@@ -315,9 +315,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         Talon talon = talonService.getTalon(talonId);
         talon.setZones(talon.getZones()+1);
         Doctor doctor = userService.getCurrentUserInfo();
-        talon.setDesc(talon.getDesc()+ "<br/><br/>" +doctor.getFullName()
+        talon.setDesc(talon.getDesc() +  doctor.getFullName()
                 + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-        + "добавлен зону ");
+        + " - добавлено зону.<br/><br/>");
         return talonService.saveTalon(talon);
     }
 }
