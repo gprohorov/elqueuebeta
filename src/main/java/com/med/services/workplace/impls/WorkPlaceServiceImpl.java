@@ -311,7 +311,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon addZoneTalon(String talonId) {
+    public Talon addZone(String talonId) {
         Talon talon = talonService.getTalon(talonId);
         talon.setZones(talon.getZones()+1);
         Doctor doctor = userService.getCurrentUserInfo();

@@ -140,7 +140,7 @@ public class CommonController {
             @PathVariable(value = "talonId") String talonId){
 
 
-        return  workPlaceService.addZoneTalon(talonId);
+        return  workPlaceService.addZone(talonId);
     }
 
 
