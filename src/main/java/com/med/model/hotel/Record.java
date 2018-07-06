@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Created by george on 30.05.18.
  */
 @Document
-public class Hotel {
+public class Record {
     @Id
     private String id;
 
@@ -21,10 +21,10 @@ public class Hotel {
     private LocalDateTime finish;
     private State state;
 
-    public Hotel() {
+    public Record() {
     }
 
-    public Hotel(String patientId, String desc, Koika koika, int price, LocalDateTime start, LocalDateTime finish, State state) {
+    public Record(String patientId, String desc, Koika koika, int price, LocalDateTime start, LocalDateTime finish, State state) {
         this.patientId = patientId;
         this.desc = desc;
         this.koika = koika;
@@ -34,7 +34,7 @@ public class Hotel {
         this.state = state;
     }
 
-    public Hotel(String patientId, String desc, Koika koika, LocalDateTime start, LocalDateTime finish, State state) {
+    public Record(String patientId, String desc, Koika koika, LocalDateTime start, LocalDateTime finish, State state) {
         this.patientId = patientId;
         this.desc = desc;
         this.koika = koika;
@@ -43,7 +43,7 @@ public class Hotel {
         this.state = state;
     }
 
-    public Hotel(String patientId, Koika koika, int days) {
+    public Record(String patientId, Koika koika, int days) {
         this.patientId = patientId;
         this.koika = koika;
         this.start = LocalDateTime.now();

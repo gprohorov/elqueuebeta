@@ -4,7 +4,7 @@ import com.med.model.Patient;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
-import com.med.services.hotel.hotel.impls.HotelServiceImpl;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class DataStorageTest {
     KoikaServiceImpl koikaService;
 
     @Autowired
-    HotelServiceImpl hotelService;
+    RecordServiceImpl hotelService;
 
     @Autowired
     AccountingServiceImpl accountingService;

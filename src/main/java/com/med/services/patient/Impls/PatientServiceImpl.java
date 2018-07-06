@@ -9,7 +9,7 @@ import com.med.model.balance.PaymentType;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.repository.patient.PatientRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.hotel.hotel.impls.HotelServiceImpl;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
@@ -41,7 +41,7 @@ public class PatientServiceImpl implements IPatientService {
     AccountingRepository accountingRepository;
 
     @Autowired
-    HotelServiceImpl hotelService;
+    RecordServiceImpl hotelService;
 
     @Autowired
     TherapyServiceImpl therapyService;

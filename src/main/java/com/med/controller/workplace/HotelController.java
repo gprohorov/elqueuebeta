@@ -1,7 +1,7 @@
 package com.med.controller.workplace;
 
-import com.med.model.hotel.Hotel;
-import com.med.services.hotel.hotel.impls.HotelServiceImpl;
+import com.med.model.hotel.Record;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,11 +17,11 @@ import java.util.List;
 public class HotelController {
 
     @Autowired
-    HotelServiceImpl service;
+    RecordServiceImpl service;
 
 
     @RequestMapping("/hotel")
-   public List<Hotel> showAll(){
+   public List<Record> showAll(){
         return service.getAll();
     }
 }

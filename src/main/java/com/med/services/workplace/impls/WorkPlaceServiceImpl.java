@@ -72,7 +72,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
-        talon.setZones(1);
+        talon.setZones(0);
 
         String desc = doctor.getFullName() + ", "
         		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
@@ -109,6 +109,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 + " - процедуру завершено.<br/><br/>";
         talon.setDesc(talon.getDesc() + desc);
         talon.setStatus(patient.getStatus());
+        if(talon.getZones()==0) talon.setZones(1);
 
         int price = this.getPrice(patient, procedure);
         int sum = procedure.isZoned()? price*talon.getZones(): price;
