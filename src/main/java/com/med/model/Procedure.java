@@ -2,6 +2,7 @@ package com.med.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -25,9 +26,10 @@ public class Procedure {
     private int SOCIAL;
     private boolean zoned;
     private int number;
-
     private Card card;
     private ProcedureType procedureType;
+    @Transient
+    int today;
 
     public Procedure() {
     }
@@ -102,6 +104,14 @@ public class Procedure {
 
     public void setProcedureType(ProcedureType procedureType) {
         this.procedureType = procedureType;
+    }
+
+    public int getToday() {
+        return today;
+    }
+
+    public void setToday(int today) {
+        this.today = today;
     }
 
     public Procedure(String name) {

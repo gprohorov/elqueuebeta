@@ -4,6 +4,7 @@ import com.med.model.Procedure;
 import com.med.repository.procedure.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
 import com.med.services.tail.Impls.TailServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,25 @@ public class ProcedureServiceImpl implements IProcedureService {
     @Autowired
     TailServiceImpl tailService;
 
+    @Autowired
+    TalonServiceImpl talonService;
+
     @Override
     public List<Procedure> getAll() {
-        return repository.findAll();
+
+        List<Procedure> procedures = repository.findAll();
+
+        procedures.stream().forEach(procedure -> {
+
+            int today = (int) talonService.getTalonsForToday().stream()
+                    .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                    .count();
+            procedure.setToday(today);
+        });
+
+
+
+        return procedures;
     }
 
     @Override

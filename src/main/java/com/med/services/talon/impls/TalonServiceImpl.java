@@ -199,7 +199,9 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-
+    public void deleteAll(List<Talon> talons){
+        repository.deleteAll(talons);
+    }
 
 
 }

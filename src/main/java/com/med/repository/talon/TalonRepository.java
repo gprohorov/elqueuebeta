@@ -14,5 +14,6 @@ import java.util.List;
 public interface TalonRepository extends MongoRepository<Talon, String>{
 
     List<Talon> findByActivity(Activity activity);
+    List<Talon> findByPatientId(String patientId);
 
 }

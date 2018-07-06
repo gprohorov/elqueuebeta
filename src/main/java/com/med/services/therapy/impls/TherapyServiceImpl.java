@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -204,6 +205,12 @@ public class TherapyServiceImpl implements ITherapyService {
 
 		repository.save(therapy);
 		talonService.saveTalon(talon);
+		List<Talon> toDelete = talonService.getAllTalonsForPatient(patient.getId())
+                .stream()
+                .filter(tal->(tal.getActivity().equals(Activity.NON_ACTIVE)
+                            ||tal.getActivity().equals(Activity.ACTIVE)))
+                        .collect(Collectors.toList());
+		talonService.deleteAll(toDelete);
 
 		talonService.saveTalons(this.generateTalonsByTherapy(therapy));
 
