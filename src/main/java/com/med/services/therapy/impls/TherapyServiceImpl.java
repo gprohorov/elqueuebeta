@@ -27,255 +27,227 @@ import java.util.List;
 @Component
 public class TherapyServiceImpl implements ITherapyService {
 
-    private List<Therapy> therapys = new ArrayList<>();
+	private List<Therapy> therapys = new ArrayList<>();
 
-    @Autowired
-    TherapyRepository repository;
+	@Autowired
+	TherapyRepository repository;
 
-    @Autowired
-    TalonServiceImpl talonService;
+	@Autowired
+	TalonServiceImpl talonService;
 
-    @Autowired
-    PatientServiceImpl patientService;
+	@Autowired
+	PatientServiceImpl patientService;
 
-    @Autowired
-    TailServiceImpl tailService;
+	@Autowired
+	TailServiceImpl tailService;
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
+	@Autowired
+	ProcedureServiceImpl procedureService;
 
-    @Autowired
-    ProcedureServiceImpl procedureService;
+	@Autowired
+	AccountingServiceImpl accountingService;
 
-    @Autowired
-    AccountingServiceImpl accountingService;
+	public Therapy createTherapy(Therapy therapy) {
+		return repository.save(therapy);
+	}
 
-    public Therapy createTherapy(Therapy therapy) {
-        return repository.save(therapy);
-    }
+	public Therapy saveTherapy(Therapy therapy) {
+		return repository.save(therapy);
+	}
 
-    public Therapy saveTherapy(Therapy therapy) {return repository.save(therapy);
-    }
+	public Therapy updateTherapy(Therapy therapy) {
+		return repository.save(therapy);
+	}
 
-    public Therapy updateTherapy(Therapy therapy) {
-        return repository.save(therapy);
-    }
+	public Therapy getTherapy(String id) {
+		return repository.findById(id).orElse(null);
+	}
 
-    public Therapy getTherapy(String id) {
-        return repository.findById(id).orElse(null);
-    }
+	public Therapy deleteTherapy(String id) {
+		return null;
+	}
 
-    public Therapy deleteTherapy(String id) {
-        return null;
-    }
+	public List<Therapy> getAll() {
+		return repository.findAll();
+	}
 
-    public List<Therapy> getAll() {
-        return repository.findAll();
-    }
+	public Therapy finishTherapy(String therapyId) {
+		Therapy therapy = this.getTherapy(therapyId);
+		therapy.setFinish(LocalDateTime.now());
 
+		return this.saveTherapy(therapy);
+	}
 
-    public Therapy finishTherapy(String therapyId) {
-       Therapy therapy = this.getTherapy(therapyId);
-       therapy.setFinish(LocalDateTime.now());
+	// TODO: Human way
+	// DONE!
+	public Therapy findTheLastTherapy(String patientId) {
 
-       return this.saveTherapy(therapy);
-    }
+		// return
+		// this.getAll().stream().filter(th->th.getPatientId().equals(patientId))
+		return repository.findByPatientId(patientId).stream().sorted(Comparator.comparing(Therapy::getStart).reversed())
+				.findFirst().orElse(null);
+	}
 
-    // TODO:  Human way
-    // DONE!
-    public Therapy findTheLastTherapy(String patientId){
+	public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
+		Talon talon = talonService.findAll().stream().filter(tal -> tal.getPatientId().equals(patientId))
+				.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
+				.filter(tal -> (tal.getActivity().equals(Activity.ACTIVE)
+						|| tal.getActivity().equals(Activity.ON_PROCEDURE)))
+				.findFirst().orElse(null);
+		Patient patient = patientService.getPatient(patientId);
+		Therapy therapy = this.findTheLastTherapy(patientId);
 
-    // return this.getAll().stream().filter(th->th.getPatientId().equals(patientId))
-     return repository.findByPatientId(patientId).stream()
-                .sorted(Comparator.comparing(Therapy::getStart).reversed())
-                .findFirst().orElse(null);
-    }
+		return new PatientTalonTherapy(patient, talon, therapy);
+	}
 
-    public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-        Talon talon = talonService.findAll()
-                .stream().filter(tal->tal.getPatientId().equals(patientId))
-                .filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
-                .filter(tal -> ( tal.getActivity().equals(Activity.ACTIVE) || tal.getActivity().equals(Activity.ON_PROCEDURE) ) )
-                .findFirst().orElse(null);
-        Patient patient = patientService.getPatient(patientId);
-        Therapy therapy = this.findTheLastTherapy(patientId);
+	public void startProcedure(String talonId) {
 
-        return new PatientTalonTherapy(patient, talon, therapy);
-    }
+		Talon talon = talonService.getTalon(talonId);
+		Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
 
+		Tail tail = tailService.getTail(talon.getProcedure().getId());
 
+		Doctor doctor = userService.getCurrentUserInfo();
 
-    public void startProcedure(String talonId) {
+		talon.setActivity(Activity.ON_PROCEDURE);
+		talon.setStart(LocalDateTime.now());
+		talon.setDoctor(doctor);
 
-        Talon talon = talonService.getTalon(talonId);
-        Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
+		String desc = doctor.getFullName() + ", "
+				+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+				+ " - дiaгностику  розпочато.<br/><br/>";
+		talon.setDesc(desc);
 
-        Tail tail = tailService.getTail(talon.getProcedure().getId()                         );
+		patient.setLastActivity(LocalDateTime.now());
+		patientService.savePatient(patient);
 
-        Doctor doctor = userService.getCurrentUserInfo();
+		tail.setPatientOnProcedure(patient);
+		tail.setVacant(false);
 
-        talon.setActivity(Activity.ON_PROCEDURE);
-        talon.setStart(LocalDateTime.now());
-        talon.setDoctor(doctor);
+		tailService.setSemaforSignal(talon.getProcedure().getId(), false);
+		talonService.saveTalon(talon);
 
-        String desc = doctor.getFullName() + ", "
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-                + " - дiaгностику  розпочато.<br/><br/>";
-        talon.setDesc(desc);
+	}
 
-        patient.setLastActivity(LocalDateTime.now());
-        patientService.savePatient(patient);
+	public void cancelProcedure(String talonId) {
 
-        tail.setPatientOnProcedure(patient);
-        tail.setVacant(false);
+		Talon talon = talonService.getTalon(talonId);
+		Tail tail = tailService.getTail(talon.getProcedure().getId());
+		talon.setActivity(Activity.TEMPORARY_NA);
+		Doctor doctor = userService.getCurrentUserInfo();
+		talon.setDesc(talon.getDesc() + "/n" + doctor.getFullName() + "cancelled " + LocalDateTime.now().toString());
 
-        tailService.setSemaforSignal(talon.getProcedure().getId(), false);
-        talonService.saveTalon(talon);
-
-
-
-    }
-
-    public void cancelProcedure(String talonId) {
-
-        Talon talon = talonService.getTalon(talonId);
-        Tail tail= tailService.getTail(talon.getProcedure().getId());
-        talon.setActivity(Activity.TEMPORARY_NA);
-        Doctor doctor = userService.getCurrentUserInfo();
-        talon.setDesc( talon.getDesc() + "/n" + doctor.getFullName() + "cancelled "
-                + LocalDateTime.now().toString()  );
-
-        tail.setPatientOnProcedure(null);
-        tail.setVacant(true);
-
-        talonService.saveTalon(talon);
-    }
-
-
-
-
-    public void executeProcedure(String talonId, Therapy therapy) {
-        Talon talon = talonService.getTalon(talonId);
-
-        if (talon == null){return; }
-        Procedure procedure = talon.getProcedure();
-        Tail tail= tailService.getTail(procedure.getId());
-        Patient patient = patientService.getPatient(talon.getPatientId());
-
-        talon.setActivity(Activity.EXECUTED);
-        talon.setExecutionTime(LocalDateTime.now());
-
-        String desc =  LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-                + " - процедуру завершено.<br/><br/>";
-        talon.setDesc(desc);
-        talon.setStatus(patient.getStatus());
-        talon.setZones(0);
-
-        patient.setLastActivity(LocalDateTime.now());
-        patientService.savePatient(patient);
-
-        tail.setPatientOnProcedure(null);
-        tail.setVacant(true);
-
-        therapy.setPatientId(patient.getId());
-        therapy.setStart(LocalDateTime.now());
-
-
-//////////////////////   manual Therapy Talon
-        Talon manualTherapyTalon = new Talon();
-        manualTherapyTalon.setActivity(Activity.EXECUTED);
-        manualTherapyTalon.setStart(talon.getStart());
-        manualTherapyTalon.setExecutionTime(LocalDateTime.now());
-        Procedure manual = procedureService.getProcedure(3);
-        manualTherapyTalon.setProcedure(manual);
-        manualTherapyTalon.setPatientId(patient.getId());
-        manualTherapyTalon.setSum(manual.getSOCIAL());
-        manualTherapyTalon.setDate(LocalDate.now());
-        manualTherapyTalon.setZones(1);
-        manualTherapyTalon.setDoctor(talon.getDoctor());
-        manualTherapyTalon.setStatus(patient.getStatus());
-        talonService.saveTalon(manualTherapyTalon);
-
-        //////////////////  accounting manual
-
-        String descr = procedure.getName() ;
-        Accounting accounting = new Accounting(manualTherapyTalon.getDoctor().getId()
-                , patient.getId()
-                , LocalDateTime.now()
-                , talon.getId()
-                , (-1* manualTherapyTalon.getSum())
-                , PaymentType.PROC
-                , descr);
-        accountingService.createAccounting(accounting);
-
-
-
-
-
-
-
-        repository.save(therapy);
-        talonService.saveTalon(talon);
-
-    	talonService.saveTalons(this.generateTalonsByTherapy(therapy));
-
-
-
-    }
-
-
-    ////////////  02.07.18 ///////////////////////////
-    public List<Talon> generateTalonsByTherapy(Therapy therapy){
-
-        int days = therapy.getDays();
-        
-        List<Procedure> procedures = new ArrayList<>();
-        List<Talon> talons = new ArrayList<>();
-
-        therapy.getAssignments().stream().forEach(ass ->
-
-                {
-                    Procedure procedure = procedureService.getProcedure(ass.getProcedureId());
-                    procedures.add(procedure);
-                }
-        );
-
-        for(Procedure procedure:procedures){
-            for (int i =0; i<days; i++){
-                talons.add(new Talon(therapy.getPatientId()
-                        , procedure
-                        , LocalDate.now().plusDays(i)));
-            }
-        }
-
-        return  talons;
-    }
-
-
-
-/*
-    // TODO:   more logic
-    public List<Talon> assignTherapy(String therapyId) {
-
-        Therapy therapy = this.getTherapy(therapyId);
-      //  List<Procedure> procedures = therapy.getProcedures();
-        List<Talon> talons = new ArrayList<>();
-        int days = therapy.getDays();
-
-        for (int i =0; i<days; i++){
-
-           for (Procedure procedure:procedures) {
-
-               Talon talon = new Talon(therapy.getPatientId()
-                       , procedure
-                       , LocalDate.now().plusDays(i));
-               talon.setActivity(Activity.NON_ACTIVE);
-               talons.add(talon);
-           }
-
-        }
-        return talonService.saveTalons(talons);
-    }
-    */
+		tail.setPatientOnProcedure(null);
+		tail.setVacant(true);
+
+		talonService.saveTalon(talon);
+	}
+
+	public void executeProcedure(String talonId, Therapy therapy) {
+		Talon talon = talonService.getTalon(talonId);
+
+		if (talon == null) {
+			return;
+		}
+		Procedure procedure = talon.getProcedure();
+		Tail tail = tailService.getTail(procedure.getId());
+		Patient patient = patientService.getPatient(talon.getPatientId());
+
+		talon.setActivity(Activity.EXECUTED);
+		talon.setExecutionTime(LocalDateTime.now());
+
+		String desc = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+				+ " - процедуру завершено.<br/><br/>";
+		talon.setDesc(desc);
+		talon.setStatus(patient.getStatus());
+		talon.setZones(0);
+
+		patient.setLastActivity(LocalDateTime.now());
+		patientService.savePatient(patient);
+
+		tail.setPatientOnProcedure(null);
+		tail.setVacant(true);
+
+		therapy.setPatientId(patient.getId());
+		therapy.setStart(LocalDateTime.now());
+
+		if (therapy.getManualTherapy()) {
+
+			////////////////////// manual Therapy Talon
+			Talon manualTherapyTalon = new Talon();
+			manualTherapyTalon.setActivity(Activity.EXECUTED);
+			manualTherapyTalon.setStart(talon.getStart());
+			manualTherapyTalon.setExecutionTime(LocalDateTime.now());
+
+			// TODO: Remove hardcoded value!!!
+			Procedure manual = procedureService.getProcedure(3);
+			
+			manualTherapyTalon.setProcedure(manual);
+			manualTherapyTalon.setPatientId(patient.getId());
+			manualTherapyTalon.setSum(manual.getSOCIAL());
+			manualTherapyTalon.setDate(LocalDate.now());
+			manualTherapyTalon.setZones(1);
+			manualTherapyTalon.setDoctor(talon.getDoctor());
+			manualTherapyTalon.setStatus(patient.getStatus());
+			talonService.saveTalon(manualTherapyTalon);
+
+			////////////////// accounting manual
+
+			String descr = procedure.getName();
+			Accounting accounting = new Accounting(manualTherapyTalon.getDoctor().getId(), patient.getId(),
+					LocalDateTime.now(), talon.getId(), (-1 * manualTherapyTalon.getSum()), PaymentType.PROC, descr);
+			accountingService.createAccounting(accounting);
+		}
+
+		repository.save(therapy);
+		talonService.saveTalon(talon);
+
+		talonService.saveTalons(this.generateTalonsByTherapy(therapy));
+
+	}
+
+	//////////// 02.07.18 ///////////////////////////
+	public List<Talon> generateTalonsByTherapy(Therapy therapy) {
+
+		int days = therapy.getDays();
+
+		List<Procedure> procedures = new ArrayList<>();
+		List<Talon> talons = new ArrayList<>();
+
+		therapy.getAssignments().stream().forEach(ass ->
+
+		{
+			Procedure procedure = procedureService.getProcedure(ass.getProcedureId());
+			procedures.add(procedure);
+		});
+
+		for (Procedure procedure : procedures) {
+			for (int i = 0; i < days; i++) {
+				talons.add(new Talon(therapy.getPatientId(), procedure, LocalDate.now().plusDays(i)));
+			}
+		}
+
+		return talons;
+	}
+
+	/*
+	 * // TODO: more logic public List<Talon> assignTherapy(String therapyId) {
+	 * 
+	 * Therapy therapy = this.getTherapy(therapyId); // List<Procedure>
+	 * procedures = therapy.getProcedures(); List<Talon> talons = new
+	 * ArrayList<>(); int days = therapy.getDays();
+	 * 
+	 * for (int i =0; i<days; i++){
+	 * 
+	 * for (Procedure procedure:procedures) {
+	 * 
+	 * Talon talon = new Talon(therapy.getPatientId() , procedure ,
+	 * LocalDate.now().plusDays(i)); talon.setActivity(Activity.NON_ACTIVE);
+	 * talons.add(talon); }
+	 * 
+	 * } return talonService.saveTalons(talons); }
+	 */
 }

@@ -2,9 +2,8 @@ package com.med.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.data.annotation.Transient;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +22,9 @@ public class Therapy {
     private String notes;
     private List<Assignment> assignments;
     private int days;
+    
+    @Transient
+    private Boolean manualTherapy;
 
 
     public Therapy(String patientId, String diag, String codeDiag, String notes, List<Assignment> assignments, int days) {
@@ -117,7 +119,15 @@ public class Therapy {
         this.days = days;
     }
 
-    @Override
+    public Boolean getManualTherapy() {
+		return manualTherapy;
+	}
+
+	public void setManualTherapy(Boolean manualTherapy) {
+		this.manualTherapy = manualTherapy;
+	}
+
+	@Override
     public String toString() {
         return "Therapy{" +
                 "id='" + id + '\'' +

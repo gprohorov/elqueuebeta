@@ -93,6 +93,14 @@
                             <input type="number" class="form-control" name="days" #days="ngModel"
                                 [(ngModel)]="model.days" [readonly]="!procedureStarted" />
                         </div>
+                        <div class="mb-2">
+                            <button [disabled]="!procedureStarted" [style.width.px]="350"
+                                [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
+                                                'btn-primary': model.manualTherapy,
+                                                'btn-secondary': !model.manualTherapy}"
+                                (click)="model.manualTherapy = !model.manualTherapy">Провести
+                                автоматично мануальну терапію</button>
+                        </div>
                         <div class="mb-2" *ngIf="procedures?.length">
                             <div *ngFor="let procedure of procedures">
                                 <div *ngIf="procedure.header">{{procedure.header}}</div>
