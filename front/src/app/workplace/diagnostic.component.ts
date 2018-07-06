@@ -242,6 +242,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
             this.item = data;
             this.model = data.therapy ? data.therapy : { days: 10 };
+            this.model.manualTherapy = true;
 
             this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
 
