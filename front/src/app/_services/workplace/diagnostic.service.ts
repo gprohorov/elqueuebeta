@@ -10,6 +10,7 @@ import { Patient } from '../../_models/index';
 @Injectable()
 export class WorkplaceDiagnosticService {
     // Define the routes we are going to interact with
+    private getProceduresUrl = config.api_path + '/workplace/diagnostic/procedures/';
     private getPatientUrl = config.api_path + '/workplace/diagnostic/get/';
     private startProcedureUrl = config.api_path + '/workplace/diagnostic/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/diagnostic/cancel/';
@@ -17,6 +18,10 @@ export class WorkplaceDiagnosticService {
 
     constructor(private http: HttpClient) { }
 
+    getProcedures() {
+        return this.http.get(this.getProceduresUrl).pipe(catchError(this.handleError));
+    }
+    
     getPatient(patientId: string) {
         return this.http.get(this.getPatientUrl + patientId).pipe(catchError(this.handleError));
     }
@@ -33,7 +38,7 @@ export class WorkplaceDiagnosticService {
         return this.http.post(this.executeProcedureUrl + talonId, therapy)
             .pipe(catchError(this.handleError));
     }
-
+    
     // Implement a method to handle errors if any
     private handleError(err: HttpErrorResponse | any) {
         console.error('An error occurred', err);

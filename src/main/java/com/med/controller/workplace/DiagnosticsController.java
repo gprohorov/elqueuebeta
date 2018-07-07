@@ -1,7 +1,9 @@
 package com.med.controller.workplace;
 
 import com.med.model.PatientTalonTherapy;
+import com.med.model.Procedure;
 import com.med.model.Therapy;
+import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,9 @@ public class DiagnosticsController {
 
     @Autowired
     TherapyServiceImpl service;
+    
+    @Autowired
+    TalonServiceImpl talonService;
 
 
     @RequestMapping("/list/")
@@ -81,6 +86,10 @@ public class DiagnosticsController {
     }
 */
 
+    @GetMapping("/procedures")
+    public List<Procedure> getProcedures() {
+    	return talonService.getFilledProcedures(); 
+    }
 
 }
 
