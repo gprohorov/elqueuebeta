@@ -9,6 +9,7 @@ import com.med.services.talon.interfaces.ITalonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +35,15 @@ public class TalonServiceImpl implements ITalonService {
 
     @Autowired
     DoctorServiceImpl doctorService;
+
+
+    @PostConstruct
+    void init(){
+
+        System.out.println("--------------------------------");
+        System.out.println(this.getFilledProcedures().get(12));
+    }
+
 
 
     @Override
@@ -202,6 +212,22 @@ public class TalonServiceImpl implements ITalonService {
     public void deleteAll(List<Talon> talons){
         repository.deleteAll(talons);
     }
+
+    public List<Procedure> getFilledProcedures() {
+
+        List<Procedure> procedures =procedureService.getAll();
+        procedures.stream().forEach(procedure -> {
+
+            int nmbr = (int) this.getTalonsForToday().stream()
+                    .filter(talon -> talon.getProcedure().equals(procedure)).count();
+            procedure.setToday(nmbr);
+        });
+
+        return procedures;
+    }
+
+
+
 
 
 }

@@ -29,7 +29,7 @@ public class Procedure {
     private Card card;
     private ProcedureType procedureType;
     @Transient
-    int today;
+    private int today;
 
     public Procedure() {
     }
@@ -231,7 +231,6 @@ public class Procedure {
         return getId();
     }
 
-
     @Override
     public String toString() {
         return "Procedure{" +
@@ -246,6 +245,8 @@ public class Procedure {
                 ", zoned=" + zoned +
                 ", number=" + number +
                 ", card=" + card +
+                ", procedureType=" + procedureType +
+                ", today=" + today +
                 '}';
     }
 }
