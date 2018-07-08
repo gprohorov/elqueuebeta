@@ -1,0 +1,13 @@
+cd front
+ng build -prod
+
+cd ..
+mvn clean package
+
+echo 'Enter password for remotely STOP Backend on server'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;exit'
+
+scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:/home/bvh/elqueue
+
+echo 'Enter password for remotely START Backend on server'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl start elqueue.service;exit'

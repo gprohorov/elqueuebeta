@@ -1,7 +1,0 @@
-cd front
-
-ng build -prod
-
-cd ..
-
-mvn clean package
