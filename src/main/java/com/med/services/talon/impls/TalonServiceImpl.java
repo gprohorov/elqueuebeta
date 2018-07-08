@@ -2,6 +2,7 @@ package com.med.services.talon.impls;
 
 import com.med.model.*;
 import com.med.repository.talon.TalonRepository;
+import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
@@ -36,12 +37,13 @@ public class TalonServiceImpl implements ITalonService {
     @Autowired
     DoctorServiceImpl doctorService;
 
+    @Autowired
+    CardServiceImpl cardService;
+
 
     @PostConstruct
     void init(){
 
-        System.out.println("--------------------------------");
-        System.out.println(this.getFilledProcedures().get(12));
     }
 
 
@@ -163,22 +165,36 @@ public class TalonServiceImpl implements ITalonService {
 
 
     public List<Talon> setAllActivity(String patientId, Activity activity) {
-/*
-
-        List<Activity> activities = new ArrayList<>(
-                Arrays.asList(Activity.E, Activity.NON_ACTIVE, Activity.TEMPORARY_NA)
-        );
-*/
 
         List<Talon> talons = this.getTalonsForToday().stream()
                 .filter(talon -> talon.getPatientId().equals(patientId))
-             //   .filter(talon -> !activities.contains(talon.getActivity()))
                 .collect(Collectors.toList());
 
-        talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
+      if (activity.equals(Activity.ACTIVE)){
+          List<Integer> free = cardService.getFreeProcedures();
+
+          talons.stream().forEach(talon ->{
+
+              if (free.contains(Integer.valueOf(talon.getProcedureId())))
+              this.setActivity(talon.getId(), activity);
+          }
+          );
+
+          return null;
+      }else talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
         return null;
     }
+
+
+
+
+
+
+
+
+
+
 
     public List<Patient> toPatientList(List<Talon> talons){
         List<Patient> patients = new ArrayList<>();
@@ -212,6 +228,10 @@ public class TalonServiceImpl implements ITalonService {
     public void deleteAll(List<Talon> talons){
         repository.deleteAll(talons);
     }
+
+
+
+
 
     public List<Procedure> getFilledProcedures() {
 

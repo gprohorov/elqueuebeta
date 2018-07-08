@@ -144,8 +144,9 @@ public class Talon {
     public Procedure getProcedure() {
         return procedure;
     }
+
     public int getProcedureId() {
-        return procedure.getId();
+        return this.procedure.getId();
     }
 
     public void setProcedure(Procedure procedure) {

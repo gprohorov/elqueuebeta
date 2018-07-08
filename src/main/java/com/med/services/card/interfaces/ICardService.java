@@ -7,6 +7,9 @@ import com.med.model.Card;
  */
 public interface ICardService  {
     Card saveCard(Card card);
+    Card getCard(int id);
+    Card getCardByProcedureId(int procedureId);
+
     Card saveCard(int procedureId, Card card);
 
 

@@ -5,6 +5,7 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.therapy.TherapyRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
@@ -50,6 +51,9 @@ public class TherapyServiceImpl implements ITherapyService {
 
 	@Autowired
 	AccountingServiceImpl accountingService;
+
+	@Autowired
+    CardServiceImpl cardService;
 
 	public Therapy createTherapy(Therapy therapy) {
 		return repository.save(therapy);
@@ -232,29 +236,16 @@ public class TherapyServiceImpl implements ITherapyService {
 		});
 
 		for (Procedure procedure : procedures) {
+            int jump = cardService.getCardByProcedureId(procedure.getId()).getDays();
 			for (int i = 0; i < days; i++) {
-				talons.add(new Talon(therapy.getPatientId(), procedure, LocalDate.now().plusDays(i)));
+				if (i % jump==0) {
+                    talons.add(new Talon(therapy.getPatientId(), procedure, LocalDate.now().plusDays(i)));
+                }
 			}
 		}
 
 		return talons;
 	}
 
-	/*
-	 * // TODO: more logic public List<Talon> assignTherapy(String therapyId) {
-	 * 
-	 * Therapy therapy = this.getTherapy(therapyId); // List<Procedure>
-	 * procedures = therapy.getProcedures(); List<Talon> talons = new
-	 * ArrayList<>(); int days = therapy.getDays();
-	 * 
-	 * for (int i =0; i<days; i++){
-	 * 
-	 * for (Procedure procedure:procedures) {
-	 * 
-	 * Talon talon = new Talon(therapy.getPatientId() , procedure ,
-	 * LocalDate.now().plusDays(i)); talon.setActivity(Activity.NON_ACTIVE);
-	 * talons.add(talon); }
-	 * 
-	 * } return talonService.saveTalons(talons); }
-	 */
+
 }

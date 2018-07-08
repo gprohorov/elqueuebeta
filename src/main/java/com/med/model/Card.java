@@ -3,7 +3,6 @@ package com.med.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,24 +12,44 @@ import java.util.List;
 public class Card {
     @Id
     private int id;
+    private int procedureId;
     private String name;
     private int days;
-    private List<Procedure> deniedByDay = new ArrayList<>();
-    private List<Procedure> deniedAfter = new ArrayList<>();
-    private List<Procedure> needAfter = new ArrayList<>();
-
+    private boolean anytime;
+    private List<Integer> closeAfter;      // these procedures must be cancelled AFTER this procedure
+                                                // i.e. ultrasound after laser must be removed
+    private List<Integer> activateAfter;  // these procedures must be activated AFTER this procedure
+                                          // i.e massage after water-pulling. Because of gell.
+    private List<Integer> mustBeDoneBefore; //  // these procedures must be done BEFORE this procedure
 
     public Card() {
     }
 
-    public Card(int id, String name, int days) {
-        this.id = id;
-        this.name = name;
-        this.days = days;
+    public List<Integer> getMustBeDoneBefore() {
+        return mustBeDoneBefore;
     }
 
-    public Card(String name) {
+    public void setMustBeDoneBefore(List<Integer> mustBeDoneBefore) {
+        this.mustBeDoneBefore = mustBeDoneBefore;
+    }
+
+    public Card(int id, int procedureId, String name, int days, boolean anytime, List<Integer> closeAfter, List<Integer> activateAfter, List<Integer> mustBeDoneBefore) {
+        this.id = id;
+        this.procedureId = procedureId;
         this.name = name;
+        this.days = days;
+        this.anytime = anytime;
+        this.closeAfter = closeAfter;
+        this.activateAfter = activateAfter;
+        this.mustBeDoneBefore = mustBeDoneBefore;
+    }
+
+    public List<Integer> getCloseAfter() {
+        return closeAfter;
+    }
+
+    public void setCloseAfter(List<Integer> closeAfter) {
+        this.closeAfter = closeAfter;
     }
 
     public int getId() {
@@ -55,5 +74,30 @@ public class Card {
 
     public void setDays(int days) {
         this.days = days;
+    }
+
+    public int getProcedureId() {
+        return procedureId;
+    }
+
+    public void setProcedureId(int procedureId) {
+        this.procedureId = procedureId;
+    }
+
+    public boolean isAnytime() {
+        return anytime;
+    }
+
+    public void setAnytime(boolean anytime) {
+        this.anytime = anytime;
+    }
+
+
+    public List<Integer> getActivateAfter() {
+        return activateAfter;
+    }
+
+    public void setActivateAfter(List<Integer> openAfter) {
+        this.activateAfter = openAfter;
     }
 }

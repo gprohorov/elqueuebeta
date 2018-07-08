@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CardRepository extends MongoRepository<Card, Integer>{
+    Card findByProcedureId(int procedureId);
 
 }

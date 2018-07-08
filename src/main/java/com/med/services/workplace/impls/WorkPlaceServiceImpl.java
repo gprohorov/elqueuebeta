@@ -4,6 +4,7 @@ import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
@@ -48,6 +49,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     @Autowired
     AccountingServiceImpl accountingService;
+
+    @Autowired
+    CardServiceImpl cardService;
 
 
 
@@ -114,7 +118,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         int price = this.getPrice(patient, procedure);
         int sum = procedure.isZoned()? price*talon.getZones(): price;
         talon.setSum(sum);
-
+        talonService.saveTalon(talon);
 
         patient.setLastActivity(LocalDateTime.now());
        // patient.setBalance(patient.getBalance()-sum);
@@ -135,9 +139,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
  /////////////////  0000000000000000000000000
+        this.cancelTalonsByCard(procedure,patient.getId());
+        this.activateTalonsByCard(procedure,patient.getId());
 
-
-        return talonService.saveTalon(talon);
+        return null;
     }
 
 
@@ -321,4 +326,63 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         + " - добавлено зону.<br/><br/>");
         return talonService.saveTalon(talon);
     }
+
+
+
+
+///////////////////////////////////////// Logic ////////////////////////////////////////
+
+    //   cancelation after execution : some talons may be canceled when the procedure is done
+    // i.e ultrasound must be canceled if laser has been done
+    private void cancelTalonsByCard(Procedure procedure, String patientId){
+        List<Integer> proceduresToClose = cardService
+                .getCardByProcedureId(procedure.getId()).getCloseAfter();
+
+        patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
+            if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
+                talon.setActivity(Activity.CANCELED);
+                talonService.saveTalon(talon);
+            }
+        });
+    }
+    //   activation after execution : some talons may be activated ONLY when the procedure is done
+    // i.e. i.e massage after water-pulling. Because of gell.
+    private void activateTalonsByCard(Procedure procedure, String patientId){
+        List<Integer> proceduresToActivate = cardService
+                .getCardByProcedureId(procedure.getId()).getActivateAfter();
+
+      //
+        List<Integer> proceduresMustBeDoneByCard = cardService
+                .getCardByProcedureId(procedure.getId()).getMustBeDoneBefore();
+
+        List<Talon> talons = patientService
+                .getPatientWithTalons(patientId).getTalons();
+
+        List<Talon> talonsToBeDone = talons.stream()
+                .filter(talon-> proceduresMustBeDoneByCard.contains(talon.getProcedure().getId()))
+                .collect(Collectors.toList());
+
+        List<Talon> talonsHasBeenDone = talons.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
+
+        boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
+      //
+
+
+
+        patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
+            if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))
+              //     &&permission
+                    ){
+                talon.setActivity(Activity.ACTIVE);
+                talonService.saveTalon(talon);
+            }
+        });
+    }
+
+
+
+
+
 }
