@@ -40,7 +40,6 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private alertService: AlertService,
-        private procedureService: ProcedureService,
         private service: WorkplaceDiagnosticService
     ) { }
 
@@ -48,20 +47,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         this.canvasImage.src = '/assets/skeleton.jpg';
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
-        this.sub = this.procedureService.getAll().subscribe(data => {
-            this.procedures = data.sort(function (a, b) {
-                var x = a.cabinet; var y = b.cabinet;
-                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-            });
-
-            let cab = 0;
-            this.procedures.forEach((p) => {
-                p.header = (p.cabinet > cab) ? 'Кабінет № ' + p.cabinet : '';
-                cab = p.cabinet;
-            });
-
-            this.load();
-        });
+        this.load();
     }
 
     ngOnDestroy() {
@@ -83,25 +69,25 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     public saveProcedure() {
-        let p = this.procedures.find( x => { return (x.id == this.currentProcedureId) ? x : false; } );
+        let p = this.procedures.find(x => { return (x.id == this.currentProcedureId) ? x : false; });
         p.picture = this.canvasBuffer;
         this.currentProcedureId = null;
         this.currentProcedureName = '';
         this.clearCanvas();
     }
-    
+
     public clearCanvas() {
         this.restoreCanvas([]);
         if (this.currentProcedureId != null) {
-            let p = this.procedures.find( x => { return (x.id == this.currentProcedureId) ? x : false; } );
+            let p = this.procedures.find(x => { return (x.id == this.currentProcedureId) ? x : false; });
             p.picture = this.canvasBuffer;
         }
     }
-    
+
     public isCorrectable(procedure) {
         return (procedure.selected && Array.isArray(procedure.picture) && procedure.picture.length > 0);
     }
-    
+
     public correctProcedure(procedure) {
         this.restoreCanvas(procedure.picture);
         this.currentProcedureId = procedure.id;
@@ -237,40 +223,52 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.subPatient = this.service.getPatient(this.patientId).subscribe(data => {
-            this.loading = false;
+        this.sub = this.service.getProcedures().subscribe(data => {
+            this.procedures = data.sort(function (a, b) {
+                var x = a.cabinet; var y = b.cabinet;
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
 
-            this.item = data;
-            this.model = data.therapy ? data.therapy : { days: 10 };
-            this.model.manualTherapy = true;
+            let cab = 0;
+            this.procedures.forEach((p) => {
+                p.header = (p.cabinet > cab) ? 'Кабінет № ' + p.cabinet : '';
+                cab = p.cabinet;
+            });
 
-            this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
+            this.subPatient = this.service.getPatient(this.patientId).subscribe(data => {
+                this.loading = false;
 
-            setTimeout(() => {
-                this.canvasInit();
-                if (this.model.assignments) {
-                    this.procedures.forEach((p) => {
-                        this.model.assignments.forEach((sp) => {
-                            if (sp.procedureId == p.id) {
-                                p.picture = sp.picture;
-                                this.toggleProcedure(p, true);
-                            }
+                this.item = data;
+                this.model = data.therapy ? data.therapy : { days: 10 };
+                this.model.manualTherapy = true;
+
+                this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
+
+                setTimeout(() => {
+                    this.canvasInit();
+                    if (this.model.assignments) {
+                        this.procedures.forEach((p) => {
+                            this.model.assignments.forEach((sp) => {
+                                if (sp.procedureId == p.id) {
+                                    p.picture = sp.picture;
+                                    this.toggleProcedure(p, true);
+                                }
+                            });
                         });
-                    });
-                    if (this.canvasBuffer.length == 0) {
-                        for (let i=0; i <= this.procedures.length; i++) {
-                            if (this.procedures[i].picture && this.procedures[i].picture.length > 0) {
-                                this.restoreCanvas(this.procedures[i].picture);
-                                this.currentProcedureId = this.procedures[i].id;
-                                this.currentProcedureName = this.procedures[i].name;
-                                break;
+                        if (this.canvasBuffer.length == 0) {
+                            for (let i = 0; i <= this.procedures.length; i++) {
+                                if (this.procedures[i].picture && this.procedures[i].picture.length > 0) {
+                                    this.restoreCanvas(this.procedures[i].picture);
+                                    this.currentProcedureId = this.procedures[i].id;
+                                    this.currentProcedureName = this.procedures[i].name;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-            }, 0);
+                }, 0);
+            });
         });
-
     }
 
     startProcedure() {

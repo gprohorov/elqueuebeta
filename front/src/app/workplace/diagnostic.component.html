@@ -80,7 +80,9 @@
                 </div>
                 <canvas #canvasDiag width="500" height="500"></canvas>
             </div>
-            <div class="col">
+        </div>
+        <div class="row">
+            <div class="col-auto">
                 <div class="card mb-2">
                     <div class="card-header">
                         <h4>Курс лікування</h4>
@@ -94,7 +96,7 @@
                                 [(ngModel)]="model.days" [readonly]="!procedureStarted" />
                         </div>
                         <div class="mb-2">
-                            <button [disabled]="!procedureStarted" [style.width.px]="350"
+                            <button [disabled]="!procedureStarted" [style.width.px]="400"
                                 [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
                                                 'btn-primary': model.manualTherapy,
                                                 'btn-secondary': !model.manualTherapy}"
@@ -104,11 +106,14 @@
                         <div class="mb-2" *ngIf="procedures?.length">
                             <div *ngFor="let procedure of procedures">
                                 <div *ngIf="procedure.header">{{procedure.header}}</div>
-                                <button [disabled]="!procedureStarted" [style.width.px]="350"
+                                <button [disabled]="!procedureStarted" [style.width.px]="400"
                                     [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
                                                 'btn-primary': procedure?.selected,
                                                 'btn-secondary': !procedure?.selected}"
-                                    (click)="toggleProcedure(procedure)">{{procedure.name}}</button>
+                                    (click)="toggleProcedure(procedure)" title="{{procedure.name}}">
+                                    <span class="badge badge-light mr-1">{{procedure.today}}</span>
+                                    {{procedure.name}}
+                                </button>
                                 <button [hidden]="!isCorrectable(procedure)"
                                     (click)="correctProcedure(procedure)"
                                     class="ml-1 btn btn-warning">Корегувати</button>
