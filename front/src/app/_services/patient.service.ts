@@ -14,7 +14,7 @@ export class PatientService {
     private getUrl = config.api_path + '/patient/get/';
     private deleteUrl = config.api_path + '/patient/delete/';
     private saveUrl = config.api_path + '/patient/save/';
-    private assignProcedureUrl = config.api_path + '/patient/create/talon/';
+    private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private incomeUrl = config.api_path + '/income/create';
     private getBalanceUrl = config.api_path + '/patient/balance/today/';
 
@@ -36,9 +36,9 @@ export class PatientService {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string) {
-        return this.http.get(this.assignProcedureUrl + [patientId, procedureId, date].join('/'))
-            .pipe(catchError(this.handleError));
+    assignProcedure(patientId: string, procedureId: number, date: string, activate: boolean) {
+        return this.http.get(this.assignProcedureUrl
+            + [patientId, procedureId, date, activate || false].join('/')).pipe(catchError(this.handleError));
     }
 
     income(data: any) {
@@ -48,7 +48,7 @@ export class PatientService {
     getBalance(patientId: string) {
         return this.http.get(this.getBalanceUrl + patientId).pipe(catchError(this.handleError));
     }
-    
+
     sortBy(criteria: PatientSearchCriteria, list) {
         return list.sort((a, b) => {
             let x = a.person[criteria.sortColumn], y = b.person[criteria.sortColumn];
