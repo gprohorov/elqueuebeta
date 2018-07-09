@@ -59,6 +59,36 @@
             <div class="col">
                 <div class="card mb-2">
                     <div class="card-header">
+                        <h4>Фінансова інформація</h4>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-auto input-group" [style.max-width.px]="300">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text"> Баланс:
+                                    {{item.patient.balance}} грн. </label>
+                            </div>
+                            <button class="btn btn-warning" (click)="showIncomePopup(item)"
+                                [hidden]="!procedureStarted">Розрахувати</button>
+                        </div>
+                        <div class="col-auto input-group" [style.max-width.px]="300">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">Статус:</label>
+                            </div>
+                            <select class="custom-select" [(ngModel)]="item.patient.status"
+                                [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
+                                (ngModelChange)="updateStatus(item.patient.id, item.patient.status)">
+                                <option *ngFor="let status of Statuses" [ngValue]="status">
+                                    {{Status[status]?.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card mb-2">
+                    <div class="card-header">
                         <h4>Історія хвороби</h4>
                     </div>
                     <div class="card-body"></div>
