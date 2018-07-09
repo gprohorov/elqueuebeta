@@ -101,84 +101,104 @@ public class CardStorage {
 
                 , new Card(13,13,"Вигрівання",          1, true
                         , new ArrayList<Integer>(Arrays.asList(18))
-                                , new ArrayList<Integer>(Arrays.asList(4,5,6,27,9,5,6))
+                                , new ArrayList<Integer>(Arrays.asList())
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(14,14,"Лазер",               1, true
                         , new ArrayList<Integer>(Arrays.asList(7))
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(15,15,"HiTop-терапіяя",      1, false
                         , new ArrayList<Integer>(Arrays.asList())
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(16,16,"Hilt-терапія",        1, true
                         , new ArrayList<Integer>(Arrays.asList(7))
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(17,17,"Підводна витяжка",    1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList(5,6,22))
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(18,18,"Локальна кріо-терапія", 1, true
                         , new ArrayList<Integer>(Arrays.asList())
-                                , new ArrayList<Integer>(Arrays.asList(27,9,5,6,13,24,4,17,20,25,26,28))
+                                , new ArrayList<Integer>(Arrays.asList())
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(19,19,"Електро-терапія",       1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(20,20,"Гідро-масаж",           1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList(5,6,22))
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(21,21,"MLS",                   1, true
                         , new ArrayList<Integer>(Arrays.asList(7))
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(22,22,"УЗ діагностика", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(23,23,"ЕКГ", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(24,24,"Тритон", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(25,25,"Озономатік", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList(5,6,22))
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(26,26,"Пасивна кінезотерапія", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(27,27,"Прицільна уд.-хв. терапія", 3, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(28,28,"Редкорд",                   1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList(24,4,17))
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(29,29,"Механотерапія плечового суглобу", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(30,30,"Механотерапія ліктьового суглобу", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(31,31,"Механотерапія кульшового суглобу", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(32,32,"Механотерапія колінного суглобу", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
+
                 , new Card(33,33,"Пропріорецептивна нейром'язова фасилітація", 1, false
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
