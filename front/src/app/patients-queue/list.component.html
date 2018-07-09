@@ -1,7 +1,7 @@
 ﻿<button
     [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
-    <div>Фільтри:</div>
+<div>Фільтри:</div>
 <div class="btn-group mb-3" role="group">
     <button type="button"
         [ngClass]="{'btn': true, 'btn-primary': filters.all, 'btn-secondary': !filters.all}"
@@ -100,8 +100,8 @@
                                     <p title="{{Activity[talon.activity].text}}">
                                         <span
                                             class="{{talon.activity == 'EXECUTED' ? 'fa fa-check' : ''}}
-                                                            btn btn-{{Activity[talon.activity].cssClass}}">
-                                            {{talon.procedure.name}} </span>
+                                                     btn btn-{{Activity[talon.activity].cssClass}}">
+                                            {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
                                     </p>
                                 </div>
                                 <div class="col-auto"

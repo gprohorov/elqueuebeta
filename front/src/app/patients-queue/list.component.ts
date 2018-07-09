@@ -1,7 +1,9 @@
 ﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { ModalDialogService } from 'ngx-modal-dialog';
+import * as moment from 'moment';
 
 import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
@@ -113,6 +115,28 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
+    getTalonInfo(talon: any) {
+        let out = '', start, end, diff;
+        if (talon.start) {
+            start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
+            out += start.hours() + ':' + start.minutes();
+        }
+        if (talon.start && talon.executionTime) {
+            end = moment(talon.executionTime, 'YYYY-MM-DDTHH:mm:ss.SSS');
+            diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
+            out += ' - ' + end.hours() + ':' + end.minutes() + ' (' + diff + ' хв.)';
+        } else if (talon.start) {
+            end = moment({});
+            diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
+            out += ' (' + diff + ' хв.)';
+        }
+        if (talon.doctor) {
+            out += ', ' + talon.doctor.fullName + ' (зон: ' + talon.zones + ')';
+        }
+        
+        return out;
+    }
+    
     load(search: any = null) {
         this.loading = true;
         this.sub = this.service.getAll().subscribe(data => {
