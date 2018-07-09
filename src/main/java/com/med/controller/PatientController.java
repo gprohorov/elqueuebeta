@@ -83,6 +83,15 @@ public class PatientController {
                              @PathVariable(value = "date") String date) {
         return talonService.createTalon(patientId, procedureId, LocalDate.parse(date));
     }
+    
+    // create active talon to date for patient on procedure
+    @GetMapping("/create/activetalon/{patientId}/{procedureId}/{date}/{activate}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+    		@PathVariable(value = "procedureId") int procedureId,
+    		@PathVariable(value = "date") String date,
+    		@PathVariable(value = "activate") Boolean activate) {
+    	return talonService.createActiveTalon(patientId, procedureId, LocalDate.parse(date), activate);
+    }
 
 
     // create talon to today for patient on registration

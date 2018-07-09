@@ -40,12 +40,13 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         f.submitted = true;
         if (!f.form.valid) return false;
 
-        this.patientService.assignProcedure(this.data.patientId, this.data.procedureId, this.data.date)
-            .subscribe(() => {
-                this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
-                    + this.procedures.find(x => x.id == this.data.procedureId).name);
-                options.closeDialogSubject.next();
-            });
+        this.patientService.assignProcedure(
+            this.data.patientId, this.data.procedureId, this.data.date, this.data.activate
+        ).subscribe(() => {
+            this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
+                + this.procedures.find(x => x.id == this.data.procedureId).name);
+            options.closeDialogSubject.next();
+        });
     }
 
     ngOnDestroy() {

@@ -1,12 +1,15 @@
-﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable, pipe } from 'rxjs';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
+import { Status } from '../_storage/index';
 import { Patient, Procedure } from '../_models/index';
-import { AlertService, ProcedureService, WorkplaceDiagnosticService } from '../_services/index';
+import { AlertService, ProcedureService, WorkplaceDiagnosticService, PatientsQueueService } from '../_services/index';
+import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
 @Component({
     templateUrl: './diagnostic.component.html',
@@ -25,6 +28,9 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     subPatient: Subscription;
     subProcedure: Subscription;
     subProcedures: Subscription;
+    subTemp: Subscription;
+    Status = Status;
+    Statuses = Object.keys(Status);
     procedures: any;
     currentProcedureId: number = null;
     currentProcedureName: string = '';
@@ -37,10 +43,13 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     model: any = {};
 
     constructor(
+        private viewRef: ViewContainerRef,
         private router: Router,
         private route: ActivatedRoute,
         private alertService: AlertService,
-        private service: WorkplaceDiagnosticService
+        private service: WorkplaceDiagnosticService,
+        private patientsQueueService: PatientsQueueService,
+        private modalService: ModalDialogService
     ) { }
 
     ngOnInit() {
@@ -55,6 +64,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         if (this.subPatient) this.subPatient.unsubscribe();
         if (this.subProcedure) this.subProcedure.unsubscribe();
         if (this.subProcedures) this.subProcedures.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
     }
 
     public toggleProcedure(procedure, val: boolean = null) {
@@ -271,6 +281,25 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         });
     }
 
+    updateStatus(id: string, value: string, event: any) {
+        if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
+            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
+                this.load();
+            });
+        } else {
+            this.load();
+        }
+    }
+
+    showIncomePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.patient.person.fullName,
+            childComponent: PatientIncomeModalComponent,
+            data: patient.patient
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
+    
     startProcedure() {
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
