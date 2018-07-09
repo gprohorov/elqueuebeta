@@ -119,12 +119,12 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         let out = '', start, end, diff;
         if (talon.start) {
             start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
-            out += start.hours() + ':' + start.minutes();
+            out += start.format('HH:MM');
         }
         if (talon.start && talon.executionTime) {
             end = moment(talon.executionTime, 'YYYY-MM-DDTHH:mm:ss.SSS');
             diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
-            out += ' - ' + end.hours() + ':' + end.minutes() + ' (' + diff + ' хв.)';
+            out += ' - ' + end.format('HH:MM') + ' (' + diff + ' хв.)';
         } else if (talon.start) {
             end = moment({});
             diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
