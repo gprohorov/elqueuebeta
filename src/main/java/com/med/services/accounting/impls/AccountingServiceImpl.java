@@ -24,8 +24,6 @@ public class AccountingServiceImpl implements IAccountingService {
     @Autowired
     AccountingRepository repository;
 
-
-
     @Override
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
@@ -51,8 +49,6 @@ public class AccountingServiceImpl implements IAccountingService {
     public void deleteAll() {
         repository.deleteAll();
     }
-
-
 
     // TODO: Human query
     @Override

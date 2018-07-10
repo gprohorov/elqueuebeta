@@ -1,5 +1,6 @@
 package com.med.repository.hotel;
 
+import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,5 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends MongoRepository<Record, String>{
     List<Record> findByPatientId(String patientId);
-
+    List<Record> findByKoika(Koika koika);
 }

@@ -1,6 +1,8 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
+import com.med.model.hotel.Record;
+import com.med.model.hotel.State;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
@@ -11,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,8 +23,6 @@ import java.util.List;
  */
 @Configuration
 public class DataStorageTest {
-
-
 
     @Autowired
     TalonRepository talonRepository;
@@ -34,98 +37,91 @@ public class DataStorageTest {
     KoikaServiceImpl koikaService;
 
     @Autowired
-    RecordServiceImpl hotelService;
+    RecordServiceImpl recordService;
 
     @Autowired
     AccountingServiceImpl accountingService;
 
-
     @PostConstruct
     void init(){
-/*
-       List<Hotel> hotels = new ArrayList<>(
-               Arrays.asList(
 
-                       new Hotel(patientService.getAll("").get(0).getId(),
+       List<Record> records = new ArrayList<>(
+               Arrays.asList(
+                       new Record(patientService.getAll("").get(0).getId(),
                                "",
                                koikaService.getAll().get(0),
+                               100,
                                LocalDateTime.now(),
                                LocalDateTime.now().plusDays(5),
                                State.OCCUP)
                                                ,
-                       new Hotel(patientService.getAll("").get(1).getId(),
+                       new Record(patientService.getAll("").get(1).getId(),
                                "",
                                koikaService.getAll().get(0),
+                               90,
                                LocalDateTime.now().plusDays(6),
                                LocalDateTime.now().plusDays(9),
                                State.BOOK)
-
                                               ,
-                       new Hotel(patientService.getAll("").get(2).getId(),
+                       new Record(patientService.getAll("").get(2).getId(),
                                "",
                                koikaService.getAll().get(1),
+                               150,
                                LocalDateTime.now().plusDays(3),
                                LocalDateTime.now().plusDays(8),
                                State.BOOK)
-
-
                                               ,
-                       new Hotel(patientService.getAll("").get(3).getId(),
+                       new Record(patientService.getAll("").get(3).getId(),
                                "",
                                koikaService.getAll().get(3),
+                               85,
                                LocalDateTime.now(),
                                LocalDateTime.now().plusDays(4),
                                State.OCCUP)
                )
        );
 
-     //   hotelService.saveAll(hotels);
+        recordService.saveAll(records);
 
 
-        List<Koika> koikas = new ArrayList<>(
-                Arrays.asList(
+//        List<Koika> koikas = new ArrayList<>(
+//                Arrays.asList(
+//
+//                        new Koika(1,"1/2", chamberService.getChamber(1),15)
+//                        ,
+//                        new Koika(1,"1/1", chamberService.getChamber(1),18)
+//                        ,
+//                        new Koika(2,"1/9", chamberService.getChamber(9),18)
+//                        ,
+//                        new Koika(3,"1/3", chamberService.getChamber(3),15)
+//                        ,
+//                        new Koika(4,"2/3", chamberService.getChamber(3),15)
+//                        ,
+//                        new Koika(5,"1/7", chamberService.getChamber(7),15)
+//                        ,
+//                        new Koika(6,"2/7", chamberService.getChamber(7),15)
+//                        ,
+//                        new Koika(7,"1/2", chamberService.getChamber(2),13)
+//                        ,
+//                        new Koika(8,"2/2", chamberService.getChamber(2),13)
+//                        ,
+//                        new Koika(9,"1/4", chamberService.getChamber(4),13)
+//                        ,
+//                        new Koika(10,"2/4", chamberService.getChamber(4),13)
+//                        ,
+//                        new Koika(11,"1/5", chamberService.getChamber(5),13)
+//                        ,
+//                        new Koika(12,"2/5", chamberService.getChamber(5),13)
+//                        ,
+//                        new Koika(13,"1/6", chamberService.getChamber(6),13)
+//                        ,
+//                        new Koika(14,"2/6", chamberService.getChamber(6),13)
+//                )
+//        );
+//
+//        koikaService.saveAll(koikas);
 
-                        new Koika(1,"1/2", chamberService.getChamber(1),15)
-                        ,
-                        new Koika(1,"1/1", chamberService.getChamber(1),18)
-                        ,
-                        new Koika(2,"1/9", chamberService.getChamber(9),18)
-                        ,
-                        new Koika(3,"1/3", chamberService.getChamber(3),15)
-                        ,
-                        new Koika(4,"2/3", chamberService.getChamber(3),15)
-                        ,
-                        new Koika(5,"1/7", chamberService.getChamber(7),15)
-                        ,
-                        new Koika(6,"2/7", chamberService.getChamber(7),15)
-                        ,
-                        new Koika(7,"1/2", chamberService.getChamber(2),13)
-                        ,
-                        new Koika(8,"2/2", chamberService.getChamber(2),13)
-                        ,
-                        new Koika(9,"1/4", chamberService.getChamber(4),13)
-                        ,
-                        new Koika(10,"2/4", chamberService.getChamber(4),13)
-                        ,
-                        new Koika(11,"1/5", chamberService.getChamber(5),13)
-                        ,
-                        new Koika(12,"2/5", chamberService.getChamber(5),13)
-                        ,
-                        new Koika(13,"1/6", chamberService.getChamber(6),13)
-                        ,
-                        new Koika(14,"2/6", chamberService.getChamber(6),13)
-                )
-        );
-
-        koikaService.saveAll(koikas);
-
-        System.out.println("----------------- koiki updated------------------------------");
-
-
-
-*/
-
-
+//        System.out.println("----------------- koiki updated------------------------------");
 
     }
 
@@ -149,20 +145,10 @@ public class DataStorageTest {
         );
 
         patientService.saveAll(patients);
-
-
-
-
     }
 
 
     public void resetPatientsTable() {
-
-
-
-
-
-
         System.out.println(" talon table updated");
     }
 

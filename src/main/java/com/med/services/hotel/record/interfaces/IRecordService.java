@@ -1,5 +1,6 @@
 package com.med.services.hotel.record.interfaces;
 
+import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 
 import java.time.LocalDate;
@@ -12,9 +13,10 @@ public interface IRecordService {
 
     Record createRecord(Record record);
     Record updateRecord(Record record);
+    Record getRecord(String recordId);
 
     List<Record> getAll();
     List<Record> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish);
-    Record getRecord(String recordId);
+    List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish);
 
 }

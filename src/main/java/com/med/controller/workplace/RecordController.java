@@ -15,13 +15,13 @@ import java.util.List;
 
 @RequestMapping("/api/workplace/hotel/")
 @RestController
-public class HotelController {
+public class RecordController {
 
     @Autowired
     RecordServiceImpl service;
 
 
-@RequestMapping("/table")
+    @RequestMapping("/hotel")
    public List<Record> showAll(){
         return service.getAll();
     }

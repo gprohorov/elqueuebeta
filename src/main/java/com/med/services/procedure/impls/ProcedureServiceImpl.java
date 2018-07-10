@@ -8,6 +8,7 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -22,13 +23,13 @@ public class ProcedureServiceImpl implements IProcedureService {
     @Autowired
     TailServiceImpl tailService;
 
-    @Autowired
-    TalonServiceImpl talonService;
+    @PostConstruct
+    public void init(){
+        System.out.println(getAll());
+    }
 
     @Override
     public List<Procedure> getAll() {
-
-
         return repository.findAll();
     }
 
@@ -63,5 +64,97 @@ public class ProcedureServiceImpl implements IProcedureService {
 
 
 
+
+
+/*
+
+  //  private List<Procedure> procedures = new ArrayList<>();
+
+    @Autowired
+    ProcedureRepository repository;
+
+    @Autowired
+    TailServiceImpl tailService;
+
+    @Autowired
+    DataStorage dataStorage;
+
+    @PostConstruct
+    void init(){
+        procedures = dataStorage.getProcedures();
+        repository.saveAll(procedures);
+    }
+
+
+*//*
+
+
+
+    @Override
+    public Procedure createProcedure(Procedure procedure) {
+
+        if (procedure.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
+            procedure.setId(id);
+        }
+        tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),0));
+
+        return repository.insert(procedure);
+    }
+
+    @Override
+    public Procedure updateProcedure(Procedure procedure) {
+      if (procedure.getId()==0) {
+            int id = this.getAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1;
+            procedure.setId(id);
+          tailService.getAll().add(new Tail(procedure.getId(), procedure.getName(),1));
+        }else {
+          Tail tail = tailService.getAll()
+                  .stream().filter(tail1 -> tail1.getProcedureId() == procedure.getId()).findFirst().get();
+
+          int indx = tailService.getAll().indexOf(tail);
+          tail.setProcedureName(procedure.getName());
+          tailService.getAll().set(indx,tail);
+      }
+
+        return repository.save(procedure);
+    }
+
+
+
+    @Override
+    public Procedure getProcedure(int id) {
+        return
+                repository.findById(id).get();
+    }
+
+    @Override
+    public Procedure deleteProcedure(int id) {
+        Procedure procedure = this.getProcedure(id);
+        repository.deleteById(id);
+        Tail tail = tailService.getAll().stream()
+                .filter(t->t.getProcedureId()==procedure.getId()).findFirst().get();
+        tailService.getAll().remove(tail);
+        return procedure;
+    }
+
+    @Override
+    public List<Procedure> getAll() {
+        return repository.findAll();
+    }
+*/
+/*
+
+    @Override
+    public Procedure getProcedureListByName(String lastName) {
+
+        return repository.findAll().stream()
+                .filter(procedure -> procedure.getLastName().equals(lastName))
+                .findFirst().get();
+    }
+*//*
+
+
+*/
 
 }
