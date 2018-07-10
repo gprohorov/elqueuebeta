@@ -12,7 +12,8 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 
-@SuppressWarnings("ALL")
+
+@RequestMapping("/api/workplace/hotel/")
 @RestController
 public class HotelController {
 
@@ -20,7 +21,7 @@ public class HotelController {
     RecordServiceImpl service;
 
 
-    @RequestMapping("/hotel")
+@RequestMapping("/table")
    public List<Record> showAll(){
         return service.getAll();
     }

@@ -350,6 +350,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     private void activateTalonsByCard(Procedure procedure, String patientId){
         List<Integer> proceduresToActivate = cardService
                 .getCardByProcedureId(procedure.getId()).getActivateAfter();
+/*
 
       //
         List<Integer> proceduresMustBeDoneByCard = cardService
@@ -368,6 +369,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
       //
+*/
 
 
 
