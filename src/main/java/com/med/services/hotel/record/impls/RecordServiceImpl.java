@@ -1,6 +1,7 @@
 package com.med.services.hotel.record.impls;
 
 import com.med.model.hotel.Record;
+import com.med.model.hotel.dto.KoikaLine;
 import com.med.repository.hotel.RecordRepository;
 import com.med.services.hotel.record.interfaces.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +56,13 @@ public class RecordServiceImpl implements IRecordService {
     public Record getRecord(String recordId) {
         return repository.findById(recordId).orElse(null);
     }
+
+    public List<KoikaLine> getTable(){
+        return null;
+    }
+
+
+
+
+
 }
