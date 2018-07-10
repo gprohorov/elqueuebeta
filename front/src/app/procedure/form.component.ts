@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -10,11 +10,12 @@ import { Status, ProcedureType } from '../_storage/index';
     templateUrl: './form.component.html'
 })
 
-export class ProcedureFormComponent {
+export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     loading = false;
 
     sub: Subscription;
+    subProcedures: Subscription;
     Status = Status;
     Statuses = Object.keys(Status);
     ProcedureType = ProcedureType;
@@ -29,12 +30,35 @@ export class ProcedureFormComponent {
     ) { }
 
     ngOnInit() {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id) this.load(+id);
+        this.loadProcedures();
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+        if (this.subProcedures) this.subProcedures.unsubscribe();
+    }
+
+    loadProcedures() {
+        this.subProcedures = this.service.getAll().subscribe(
+            data => {
+                this.loading = false;
+                this.procedures = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
+                const id = parseInt(this.route.snapshot.paramMap.get('id'));
+                if (id > 0) this.load(+id);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+    }
+
+    initProcedures() {
+        /*
+        this.model.procedureIds.forEach(id => {
+            let p = this.procedures.find(x => x.value == id);
+            if (p) p.checked = true;
+        });
+        */
     }
 
     load(id: number) {
@@ -42,6 +66,7 @@ export class ProcedureFormComponent {
         this.sub = this.service.get(id).subscribe(
             data => {
                 this.model = data;
+                this.initProcedures();
                 this.loading = false;
             },
             error => {
