@@ -1,70 +1,118 @@
 ﻿<div class="row justify-content-md-center">
-  <div class="col-6">
-    <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} процедури</h2>
-    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
-      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
-        <label for="name">Назва</label>
-        <input type="text" class="form-control" name="name" [(ngModel)]="model.name" #name="ngModel" required />
-        <div *ngIf="f.submitted && !name.valid" class="help-block">Назва обов`язково</div>
-      </div>
-      <div class="form-group">
-        <label for="cabinet">Кабінет</label>
-        <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet" #cabinet="ngModel" />
-      </div>
-      <label>Ціни</label>
-      <div class="row form-group">
-        <div class="col-md-3">
-          Базова
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="price" [(ngModel)]="model.price" #foreigner="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.FOREIGNER.cssClass">{{Statuses.FOREIGNER.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="foreigner" [(ngModel)]="model.foreigner" #foreigner="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.VIP.cssClass">{{Statuses.VIP.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="vip" [(ngModel)]="model.vip" #vip="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.BUSINESS.cssClass">{{Statuses.BUSINESS.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="business" [(ngModel)]="model.business" #business="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.ALL_INCLUSIVE.cssClass">{{Statuses.ALL_INCLUSIVE.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="allInclusive" [(ngModel)]="model.allInclusive" #allInclusive="ngModel" />
-        </div>
-      </div>
-      <div class="row form-group">
-        <div class="col-md-3">
-          <span [class]="Statuses.SOCIAL.cssClass">{{Statuses.SOCIAL.text}}</span>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="social" [(ngModel)]="model.social" #social="ngModel" />
-        </div>
-      </div>
-      <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
-        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        <a [routerLink]="['/procedures']" class="btn btn-link">Скасувати</a>
-      </div>
-    </form>
-  </div>
+    <div class="col-6">
+        <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} процедури</h2>
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <div class="form-group" [ngClass]="{'has-error': f.submitted && !procedureType.valid}">
+                <label for="procedureType">Тип процедури</label>
+                <select class="form-control" [(ngModel)]="model.procedureType" name="procedureType"
+                    #procedureType="ngModel" required>
+                    <option *ngFor="let procedureType of ProcedureTypes" [ngValue]="procedureType">{{ProcedureType[procedureType]?.text}}</option>
+                </select>
+                <div *ngIf="f.submitted && !procedureType.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': f.submitted && !name.valid}">
+                <label for="name">Назва</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="model.name"
+                    #name="ngModel" required />
+                <div *ngIf="f.submitted && !name.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
+            </div>
+            <div class="form-group">
+                <label for="cabinet">Кабінет</label>
+                <input type="number" class="form-control" name="cabinet" [(ngModel)]="model.cabinet"
+                    #cabinet="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="number">Кількість місць</label>
+                <input type="number" class="form-control" name="number" [(ngModel)]="model.number"
+                    #number="ngModel" />
+            </div>
+            <div class="col-md-3">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" name="zoned"
+                        [(value)]="model.zoned" [(ngModel)]="model.zoned" />
+                    <label class="form-check-label">Зональна</label>
+                </div>
+            </div>
+            <label>Ціни для статуса:</label>
+            <div class="row form-group" *ngFor="let status of Statuses">
+                <div class="col-md-3">
+                    <span [class]="Status[status].cssClass">{{Status[status].text}}</span>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control" name="{{status}}"
+                        [(ngModel)]="model[status]" #{{status}}="ngModel" />
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <h4>Карта процедури</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="number">Інтервал виконання процедури (днів)</label>
+                        <input type="number" class="form-control" name="days"
+                            [(ngModel)]="model.card.days" #days="ngModel" />
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" name="anytime"
+                            [(value)]="model.card.anytime" [(ngModel)]="model.card.anytime" />
+                        <label class="form-check-label">Процедура робиться в будь-якому
+                            порядку</label>
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h4>Процедури, що підлягають скасуванню після цієї процедури</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group" [hidden]="model.card.anytime">
+                                <div class="form-check" *ngFor="let procedure of procedures">
+                                    <input type="checkbox" class="form-check-input"
+                                        [name]="procedure.value" [(value)]="procedure.checked"
+                                        [(ngModel)]="procedure.checked" />
+                                    <label class="form-check-label">{{procedure.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h4>Процедури, що підлягають активації після цієї процедури</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group" [hidden]="model.card.anytime">
+                                <div class="form-check" *ngFor="let procedure of procedures">
+                                    <input type="checkbox" class="form-check-input"
+                                        [name]="procedure.value" [(value)]="procedure.checked"
+                                        [(ngModel)]="procedure.checked" />
+                                    <label class="form-check-label">{{procedure.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h4>Процедури, що мають проводитися до цієї процедури</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group" [hidden]="model.card.anytime">
+                                <div class="form-check" *ngFor="let procedure of procedures">
+                                    <input type="checkbox" class="form-check-input"
+                                        [name]="procedure.value" [(value)]="procedure.checked"
+                                        [(ngModel)]="procedure.checked" />
+                                    <label class="form-check-label">{{procedure.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+                <button [routerLink]="['/procedures']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
+            </div>
+        </form>
+    </div>
 </div>

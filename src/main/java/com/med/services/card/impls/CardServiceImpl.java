@@ -1,56 +1,57 @@
 package com.med.services.card.impls;
 
-import com.med.dao.card.impls.CardDAOImpl;
 import com.med.model.Card;
+import com.med.repository.card.CardRepository;
 import com.med.services.card.interfaces.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
  */
-@SuppressWarnings("ALL")
 @Component
-public class CardServiceImpl  implements ICardService{
-
-
-    private List<Card> cards = new ArrayList<>();
+public class CardServiceImpl  implements ICardService {
 
 
     @Autowired
-    CardDAOImpl cardDAO;
-
-    @PostConstruct
-    void init() {
-        // generics = dataStorage.getCards();
-    }
+    CardRepository repository;
 
     @Override
-    public Card createCard(Card card) {
-        return null;
-    }
-
-    @Override
-    public Card updateCard(Card card) {
-        return null;
+    public Card saveCard(Card card) {
+        if (card.getId()==0){
+         int id=   this.getAll().stream().mapToInt(Card::getId).max().getAsInt();
+            card.setId(id);
+        }
+        return repository.save(card);
     }
 
     @Override
     public Card getCard(int id) {
-        return cardDAO.getCard(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public Card deleteCard(int id) {
-        return null;
+    public Card getCardByProcedureId(int procedureId) {
+        return repository.findByProcedureId(procedureId);
     }
 
     @Override
-    public List<Card> getAll() {
-        return cardDAO.getAll();
+    public Card saveCard(int procedureId, Card card) {
+        card.setId(procedureId);
+        return repository.save(card);
     }
+
+    public List<Card> getAll(){return repository.findAll();}
+
+    public void saveAll(List<Card> cards){repository.saveAll(cards);}
+
+    public List<Integer> getFreeProcedures(){
+        return repository.findAll().stream().filter(card -> card.isAnytime()==true)
+                .mapToInt(Card::getProcedureId).boxed().collect(Collectors.toList());
+    }
+
+
 }

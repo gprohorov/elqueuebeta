@@ -1,85 +1,137 @@
-﻿<div class="row">
-  <div class="col">
-    <div class="form-row mb-4">
-      <div class="col-auto">
-        <h3>Список пацієнтів, записаних на сьогодні</h3>
-      </div>
-      <div class="col-auto mr-auto">
-        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-      </div>
-    </div>
-    <div class="content table-responsive table-full-width">
-      <table class="table table-sm">
+﻿<button
+    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+    [disabled]="loading" (click)="load()" title="Обновити"></button>
+<div>Фільтри:</div>
+<div class="btn-group mb-3" role="group">
+    <button type="button"
+        [ngClass]="{'btn': true, 'btn-primary': filters.all, 'btn-secondary': !filters.all}"
+        (click)="filters.all = !filters.all">усі</button>
+    <button type="button" class="btn btn-secondary"
+        [ngClass]="{'btn': true, 'btn-primary': filters.hotel, 'btn-secondary': !filters.hotel}"
+        (click)="filters.hotel = !filters.hotel">готельні</button>
+    <button type="button" class="btn btn-secondary"
+        [ngClass]="{'btn': true, 'btn-primary': filters.active, 'btn-secondary': !filters.active}"
+        (click)="filters.active = !filters.active">активні</button>
+</div>
+<div class="content table-responsive table-full-width">
+    <table class="table table-sm">
         <thead class="thead-light">
-          <tr>
-            <th></th>
-            <th [style.min-width.px]="300">ПІБ</th>
-            <th>Статус</th>
-            <th>Баланс</th>
-            <th>Активність</th>
-            <th>Прогрес</th>
-            <th>Час очікування</th>
-            <th>Початок</th>
-          </tr>
+            <tr>
+                <th></th>
+                <th [style.min-width.px]="300">ПІБ</th>
+                <th>Активність</th>
+                <th>Статус</th>
+                <th>Баланс</th>
+                <th>Прогрес</th>
+                <th>Час очікування</th>
+                <th>Початок</th>
+            </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
-          <tr (click)="rows[i]=!rows[i]">
-            <td><i [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
-            <td>{{getFullName(item.person)}}</td>
-            <td><span [class]="Statuses[item.status].cssClass">{{Statuses[item.status].text}}</span></td>
-            <td>{{item.balance}}</td>
-            <td><span [class]="Activity[item.active].cssClass">{{Activity[item.active].text}}</span></td>
-            <td>{{getProgress(item.proceduresForToday)}}</td>
-            <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta}}</span> хв.</td>
-            <td>{{item.startActivity | date: 'HH:mm'}}</td>
-          </tr>
-          <tr [hidden]="!rows[i]">
-            <td colspan="100">
-              <div class="card">
-                <div class="card-header">
-                  <div class="row">
-                    <h4 class="col-auto mr-auto">Призначені процедури</h4>
-                    <div class="col-auto">
-                      <button class="btn btn-danger" (click)="delete(item.id, getFullName(item.person))">Видалити з черги</button>
+            <tr (dblclick)="rows[i]=!rows[i]">
+                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
+                    [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
+                </td>
+                <td>{{item.person.fullName}}</td>
+                <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
+                        {{Activity[item.activity]?.text}}</span></td>
+                <td>{{Status[item.status].text}}</td>
+                <td>{{item.balance}}</td>
+                <td>{{getProgress(item.talons)}}</td>
+                <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                        ? item.delta + ' хв.' : ''}}</span></td>
+                <td>{{item.startActivity | date: 'HH:mm'}}</td>
+            </tr>
+            <tr [hidden]="!rows[i]">
+                <td colspan="100">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <h4 class="col-auto">Процедури</h4>
+                                <div class="col-auto">
+                                    <button class="btn btn-info"
+                                        (click)="showAssignProcedurePopup(item)">Додати
+                                        процедуру</button>
+                                </div>
+                                <div class="col input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Статус:</label>
+                                    </div>
+                                    <select class="custom-select" [(ngModel)]="item.status"
+                                        (ngModelChange)="updateStatus(item.id, item.status)">
+                                        <option *ngFor="let status of Statuses" [ngValue]="status">
+                                            {{Status[status]?.text}}</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button
+                                        title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'
+                                        class="btn btn-success text-white"
+                                        (click)="updateActivityAll(item.id, 'ACTIVE')">
+                                        <i class="fa fa-play"></i>
+                                    </button>
+                                    <button
+                                        title='Встановити всім процедурам "{{Activity.TEMPORARY_NA.text}}"'
+                                        class="btn btn-primary text-white"
+                                        (click)="updateActivityAll(item.id, 'TEMPORARY_NA')">
+                                        <i class="fa fa-pause"></i>
+                                    </button>
+                                    <button
+                                        title='Встановити всім процедурам "{{Activity.NON_ACTIVE.text}}"'
+                                        class="btn btn-danger text-white"
+                                        (click)="updateActivityAll(item.id, 'NON_ACTIVE')">
+                                        <i class="fa fa-stop"></i>
+                                    </button>
+                                    <button
+                                        title='Встановити всім процедурам "{{Activity.CANCELED.text}}"'
+                                        class="btn btn-secondary text-white"
+                                        (click)="updateActivityAll(item.id, 'CANCELED')">
+                                        <i class="fa fa-ban"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngFor="let talon of item.talons">
+                                <div class="col-auto mr-auto">
+                                    <p title="{{Activity[talon.activity].text}}">
+                                        <span
+                                            class="{{talon.activity == 'EXECUTED' ? 'fa fa-check' : ''}}
+                                                     btn btn-{{Activity[talon.activity].cssClass}}">
+                                            {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
+                                    </p>
+                                </div>
+                                <div class="col-auto"
+                                    *ngIf="['EXECUTED', 'CANCELED', 'ON_PROCEDURE'].indexOf(talon.activity) < 0">
+                                    <button title='Встановити "{{Activity.ACTIVE.text}}"'
+                                        class="btn btn-sm btn-success text-white"
+                                        (click)="updateActivity(talon.id, 'ACTIVE')">
+                                        <i class="fa fa-play"></i>
+                                    </button>
+                                    <button title='Встановити "{{Activity.TEMPORARY_NA.text}}"'
+                                        class="btn btn-sm btn-primary text-white"
+                                        (click)="updateActivity(talon.id, 'TEMPORARY_NA')">
+                                        <i class="fa fa-pause"></i>
+                                    </button>
+                                    <button title='Встановити "{{Activity.NON_ACTIVE.text}}"'
+                                        class="btn btn-sm btn-danger text-white"
+                                        (click)="updateActivity(talon.id, 'NON_ACTIVE')">
+                                        <i class="fa fa-stop"></i>
+                                    </button>
+                                    <button title='Встановити "{{Activity.CANCELED.text}}"'
+                                        class="btn btn-sm btn-secondary text-white"
+                                        (click)="updateActivity(talon.id, 'CANCELED')">
+                                        <i class="fa fa-ban"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <p *ngFor="let proc of item.proceduresForToday" title="{{!proc.executed ? 'не пройдено' : 'пройдено'}}">
-                        <span class="fa fa-{{!proc.executed ? 'minus text-danger' : 'check text-success'}}"></span> {{proc.name}}
-                      </p>
-                    </div>
-                    <div class="col text-right">
-                      <p>
-                        <b class="col-md-5">Встановити статус:</b>
-                        <select [class]="Statuses[item.status].cssClass" [(ngModel)]="item.status" (change)="updateStatus(item.id, item.status)" [style.width.px]="120">
-                          <option *ngFor="let status of StatusesArr" [ngValue]="status" [class]="Statuses[status].cssClass">
-                            {{Statuses[status].text}}
-                          </option>
-                        </select>
-                      </p>
-                      <p>
-                        <b class="col-md-5">Встановити активність:</b>
-                        <select [class]="Activity[item.active].cssClass" [(ngModel)]="item.active" (change)="updateActivity(item.id, item.active)" [style.width.px]="120">
-                          <option *ngFor="let act of ActivityArr" [ngValue]="act" [class]="Activity[act].cssClass">
-                            {{Activity[act].text}}
-                          </option>
-                        </select>
-                      </p>
-                      <p>
-                        <b class="col-md-5">Встановити баланс:</b>
-                        <input type="number" [(ngModel)]="item.balance" (change)="updateBalance(item.id, item.balance)" [style.width.px]="120"/>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
+                </td>
+            </tr>
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
 </div>

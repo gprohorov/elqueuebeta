@@ -1,88 +1,54 @@
 package com.med.model;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
- * Created by george on 3/20/18.
+ * Created by george on 28.06.18.
  */
 public class Assignment {
-    private int id;
-    private LocalDateTime assignTime;
-    private Patient patient;
-    private Procedure procedure;
-    private Doctor executor;
-    private LocalDateTime executeTime;
-
-
-    public Assignment(int id, LocalDateTime assignTime, Patient patient, Procedure procedure, Doctor executor, LocalDateTime executeTime) {
-        this.id = id;
-        this.assignTime = assignTime;
-        this.patient = patient;
-        this.procedure = procedure;
-        this.executor = executor;
-        this.executeTime = executeTime;
-    }
+    private int procedureId;
+    private String desc;
+    private ArrayList<ArrayList<Object>> picture;
 
     public Assignment() {
     }
 
-    public int getId() {
-        return id;
+    public Assignment(int procedureId, String desc, ArrayList<ArrayList<Object>> picture) {
+        this.procedureId = procedureId;
+        this.desc = desc;
+        this.picture = picture;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getProcedureId() {
+        return procedureId;
     }
 
-    public LocalDateTime getAssignTime() {
-        return assignTime;
+    public void setProcedureId(int procedureId) {
+        this.procedureId = procedureId;
     }
 
-    public void setAssignTime(LocalDateTime assignTime) {
-        this.assignTime = assignTime;
+    public String getDesc() {
+        return desc;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public ArrayList<ArrayList<Object>> getPicture() {
+        return picture;
     }
 
-    public Procedure getProcedure() {
-        return procedure;
-    }
-
-    public void setProcedure(Procedure procedure) {
-        this.procedure = procedure;
-    }
-
-    public Doctor getExecutor() {
-        return executor;
-    }
-
-    public void setExecutor(Doctor executor) {
-        this.executor = executor;
-    }
-
-    public LocalDateTime getExecuteTime() {
-        return executeTime;
-    }
-
-    public void setExecuteTime(LocalDateTime executeTime) {
-        this.executeTime = executeTime;
+    public void setPicture(ArrayList<ArrayList<Object>> picture) {
+        this.picture = picture;
     }
 
     @Override
     public String toString() {
         return "Assignment{" +
-                "id=" + id +
-                ", assignTime=" + assignTime +
-                ", patient=" + patient +
-                ", procedure=" + procedure +
-                ", executor=" + executor +
-                ", executeTime=" + executeTime +
+                "procedureId=" + procedureId +
+                ", desc='" + desc + '\'' +
+                ", picture='" + picture + '\'' +
                 '}';
     }
 }

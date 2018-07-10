@@ -1,15 +1,19 @@
 package com.med.controller;
 
-import com.med.model.*;
-import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.patient.Impls.PatientServiceMongoImpl;
+import com.med.model.Activity;
+import com.med.model.Patient;
+import com.med.model.Status;
+import com.med.model.Talon;
+import com.med.model.balance.Accounting;
+import com.med.repository.accounting.AccountingRepository;
+import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -20,221 +24,125 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     @Autowired
-    PatientServiceMongoImpl service;
+    PatientServiceImpl service;
 
     @Autowired
-    AppointmentServiceImpl appointmentService;
+    TalonServiceImpl talonService;
 
+    @Autowired
+    AccountingRepository accountingRepository;
 
     ////////////////////////// CRUD//////////////////////////
 
     // getAll
-    @GetMapping("/list")
+    @GetMapping("/list/")
     public List<Patient> showPatients() {
-        return service.getAll();
+        return service.getAll("");
     }
 
-
-    // CREATE a new Patient
-    @PostMapping("/create")
-    public Patient createPatient(@Valid @RequestBody Person person) {
-
-        return service.createPatient(person);
+    @GetMapping("/list/{search}")
+    public List<Patient> showPatients(@PathVariable(value = "search") String search) {
+        return service.getAll(search);
     }
-
 
     // READ the Patient by id
     @GetMapping("/get/{id}")
-    public Patient showOnePatient(@PathVariable(value = "id") int patientId) {
-
+    public Patient showOnePatient(@PathVariable(value = "id") String patientId) {
         return service.getPatient(patientId);
     }
 
-    // UPDATE the patient by id
-    @PostMapping("/update/{id}")
-    public Patient updatePatient(@PathVariable(value = "id") int patientId,
-                                 @Valid @RequestBody Patient updates) {
-        updates.setId(patientId);
-
-        return service.updatePatient(updates);
-
+    // Save the patient
+    @PostMapping("/save/")
+    public Patient savePatient(@Valid @RequestBody Patient patient) {
+        return service.savePatient(patient);
     }
 
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
-    public Patient delPatient(@PathVariable(value = "id") int patientId) {
-
+    public Patient delPatient(@PathVariable(value = "id") String patientId) {
         return service.deletePatient(patientId);
     }
-
 
 
     //////////////////////END OF CRUD ////////////////////////////////////
 
 
-    @GetMapping("/list/appointed/today")
-    public List<Patient> getPatientsAppointedForToday() {
-        return appointmentService
-                .getAppointmentsByDate(LocalDate.now())
-                .stream().map(appointment -> appointment.getPatient())
-                .collect(Collectors.toList());
+    // create talon to date for patient on procedure
+    @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+                             @PathVariable(value = "procedureId") int procedureId,
+                             @PathVariable(value = "days") int days) {
+        return talonService.createTalon(patientId, procedureId, days);
+    }
+
+     // final
+    // create talon to date for patient on procedure
+    @GetMapping("/create/talon/{patientId}/{procedureId}/{date}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+                             @PathVariable(value = "procedureId") int procedureId,
+                             @PathVariable(value = "date") String date) {
+        return talonService.createTalon(patientId, procedureId, LocalDate.parse(date));
+    }
+    
+    // create active talon to date for patient on procedure
+    @GetMapping("/create/activetalon/{patientId}/{procedureId}/{date}/{activate}")
+    public Talon createTalon(@PathVariable(value = "patientId") String patientId,
+    		@PathVariable(value = "procedureId") int procedureId,
+    		@PathVariable(value = "date") String date,
+    		@PathVariable(value = "activate") Boolean activate) {
+    	return talonService.createActiveTalon(patientId, procedureId, LocalDate.parse(date), activate);
     }
 
 
-    // insert into patients list all appointed for today
-    @PostMapping("/list/today/insert")
-    public List<Patient> insertPatientsToday() {
-        return service.insertAppointedForToday();
+    // create talon to today for patient on registration
+    @GetMapping("/create/talon/today/{patientId}")
+    public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
+        // registration - id==1
+        // today  plus 0
+
+        return talonService.createTalon(patientId, 1, 0);
     }
 
 
-    // UPDATE the patient's status
-    @GetMapping("/update/status/{id}/{status}")
-    public Patient updatePatientStatus(@PathVariable(value = "id") int patientId,
-                                       @PathVariable(value = "status") Status status) {
+/////////////////////////////////////////////////////////////////////////
 
-        return service.updateStatus(patientId, status);
+    // getAll patients for today together with their's talons
+    @GetMapping("/list/today")
+    public List<Patient> showPatientsForToday() {
+        return service.getAllForToday();
     }
 
-    // UPDATE the patient's activity
-    // example http://localhost:8088/api/patient/update/activity/5/ACTIVE
-    @GetMapping("/update/activity/{id}/{activity}")
-    public Patient updatePatientActivity(@PathVariable(value = "id") int patientId,
-                                       @PathVariable(value = "activity") Activity activity) {
-/*        if (activity.equals(Activity.ON_PROCEDURE)) {
-        Tail tail = this.getTails().stream()
-                .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
-        tail.setVacancies(tail.getVacancies()-1);
-        tail.setVacant(false);
-        }
-
-        if (activity.equals(Activity.ACTIVE)) {
-        Tail tail = this.getTails().stream()
-                .filter(tail1 -> tail1.getProcedureId()==6).findAny().get();
-        tail.setVacancies(tail.getVacancies()+1);
-        tail.setVacant(true);
-        }
-        */
-
-        return service.updateActivity(patientId, activity);
+    @GetMapping("/talon/set/activity/{talonId}/{activity}")
+    public Talon talonSetActivity(
+        @PathVariable(value = "talonId") String talonId,
+        @PathVariable(value = "activity") Activity activity) {
+        return  talonService.setActivity(talonId, activity);
     }
 
-  // UPDATE the patient's balance
-    // example  http://localhost:8088/api/patient/update/balance/5/100
-    @GetMapping("/update/balance/{id}/{balance}")
-    public Patient updatePatientBalance(@PathVariable(value = "id") int patientId,
-                                       @PathVariable(value = "balance") int balance) {
-
-        return service.updateBalance(patientId, balance);
+    @GetMapping("/set/status/{patientId}/{status}")
+    public Patient patientSetStatus(
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "status") Status status) {
+        return  service.setStatus(patientId, status);
     }
 
-    // UPDATE the patient's reckoning
-    // example  http://localhost:8088/api/patient/update/balance/5/100
-    @GetMapping("/update/reckoning/{id}/{reckoning}")
-    public Patient updatePatientReckoning(@PathVariable(value = "id") int patientId,
-                                          @PathVariable(value = "reckoning") Reckoning reckoning) {
-
-        return service.updateReckoning(patientId, reckoning);
+    @GetMapping("/talon/setall/activity/{patientId}/{activity}")
+    public List<Talon> setAllActivity(
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "activity") Activity activity) {
+        return  talonService.setAllActivity(patientId, activity);
     }
 
-
-  // get progress in crowd :  ratio of executed procedures to assigned ones
-    @PostMapping("/progress/{id}")
-    public Double getProgress(@PathVariable(value = "id") int patientId) {
-
-        return service.getProgress(patientId);
+    @GetMapping("/balance/days/{patientId}/{days}")
+    public List<Accounting> getBalance(
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "days") int days) {
+        return  service.getUltimateBalanceShort(patientId,days);
     }
-/*
-    // get a list of patients to procedure orderd by time and status
-    // example   http://localhost:8088/api/patient/list/procedure/7
-      @GetMapping("/list/procedure/{id}")
-    public List<Patient> queueToProcedure(@PathVariable(value = "id") int procedureId){
-
-        return service.getQueueToProcedure(procedureId);
+    
+    @GetMapping("/balance/today/{patientId}")
+    public List<Accounting> getBalanceToday(@PathVariable(value = "patientId") String patientId) {
+    	return service.getUltimateBalanceToday(patientId);
     }
-
-
-    // put THE procedure (ONLY ONE)  into map of assigned for today
-    @PostMapping("/add/procedure/{id}")
-    public Patient addProcedure(@PathVariable(value = "id") int patientId,
-                                @Valid @RequestBody int procedureId) {
-
-        return service.addProcedure(patientId, procedureId);
-    }
-
-    // remove the procedure from the map of assigned for today
-    @PostMapping("/remove/procedure/{id}")
-    public Patient removeProcedure(@PathVariable(value = "id") int patientId,
-                                @Valid @RequestBody int procedureId) {
-
-        return service.removeProcedure(patientId, procedureId);
-    }
-*/
-
-
-
-     // start procedure i.e. set patient's status as ON_PROCEDURE
-    // and decrement the number of vacant doctors responsible for this procedure
-     @GetMapping("/start/procedure/{patid}/{procid}")
-     public Patient startProcedure(@PathVariable(value = "patid") int patientId,
-                                     @PathVariable(value = "procid") int procedureId) {
-
-         return service.startProcedure(patientId, procedureId);
-     }
-
-
-    // procedure executed successfully => patient gets status ACTIVE
-    //      the procedure in his schema marked as DONE
-    //    the number of vacant doctors responsible for this procedure => + 1
-    @GetMapping("/execute/procedure/{patid}/{procid}")
-    public Patient executeProcedure(@PathVariable(value = "patid") int patientId,
-                                @PathVariable(value = "procid") int procedureId) {
-
-        return service.executeProcedure(patientId, procedureId);
-    }
-
-
-    // procedure canceled => patient gets status ACTIVE
-    //    the number of vacant doctors responsible for this procedure => + 1
-    @GetMapping("/cancel/procedure/{patid}/{procid}")
-    public Patient cancelProcedure(@PathVariable(value = "patid") int patientId,
-                                @PathVariable(value = "procid") int procedureId) {
-
-        return service.cancelProcedure(patientId, procedureId);
-    }
-
-
-
-
-
-    // set therapy for patient
-/*
-    @GetMapping("/set/therapy/{patient_id}/{therapy_id}")
-    public Patient setTherapy(@PathVariable(value = "patient_id") int patientId,
-                                @PathVariable(value = "therapy_id") int therapyId) {
-
-        return service.setTherapy(patientId, therapyId);
-    }
-*/
-
-/*
-
-    // get tails for each procedure
-    @GetMapping("/get/tails")
-    public List<Tail> getTails(){
-
-        return service.getTails();
-    }
-*/
-
-//  get the first patient for the procedure from tail
-    @GetMapping("/tail/get/first/{procid}")
-    public Patient getFirstFromTail(@PathVariable(value = "procid") int procedureId) {
-
-
-        return service.getFirstFromTail(procedureId);
-    }
-
-
-
+   
 }

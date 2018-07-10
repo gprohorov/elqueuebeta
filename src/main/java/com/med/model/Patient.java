@@ -1,6 +1,7 @@
 package com.med.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -12,113 +13,63 @@ import java.util.List;
  * Created by george on 3/9/18.
  */
 @Document(collection = "patient")
-public class Patient implements Comparable<Patient> {
+public class Patient { // implements Comparable<Patient> {
+
     @Id
-    private int id;
+    private String id;
 
     private Person person;
+    @Transient
     private Therapy therapy;
-    private List<Procedure> proceduresForToday = new ArrayList<>();
-    private Status status;
+    @Transient
+    private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
-    private long delta = 0;
+    private Status status = Status.SOCIAL;
     private int balance;
-    private Activity active;
-    private Reckoning reckoning;
+
 
 
     public Patient() {
     }
 
-    public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, long delta, int balance, Activity active, Reckoning reckoning) {
+    public Patient(String id, Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
         this.id = id;
         this.person = person;
         this.therapy = therapy;
-        this.proceduresForToday = proceduresForToday;
-        this.status = status;
+        this.talons = talons;
         this.lastActivity = lastActivity;
         this.startActivity = startActivity;
-        this.delta = delta;
-        this.balance = balance;
-        this.active = active;
-        this.reckoning = reckoning;
+        this.status = status;
     }
 
-    public Patient(int id, Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
-        this.id = person.getId();
+    public Patient(Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
         this.person = person;
         this.therapy = therapy;
-        this.proceduresForToday = proceduresForToday;
-        this.status = status;
-        this.lastActivity = lastActivity;
-        this.balance = balance;
-        this.active = active;
-        this.reckoning = reckoning;
-    }
-
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, LocalDateTime startActivity, int balance, Activity active) {
-        this.id = person.getId();
-        this.person = person;
-        this.therapy = therapy;
-        this.proceduresForToday = proceduresForToday;
-        this.status = status;
+        this.talons = talons;
         this.lastActivity = lastActivity;
         this.startActivity = startActivity;
-        this.balance = balance;
-        this.active = active;
-    }
-
-
-
-
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active, Reckoning reckoning) {
-        this.id = person.getId();
-        this.person = person;
-        this.therapy = therapy;
-        this.proceduresForToday = proceduresForToday;
         this.status = status;
-        this.lastActivity = lastActivity;
-        this.balance = balance;
-        this.active = active;
-        this.reckoning = reckoning;
-    }
-
-    public Patient(Person person, Therapy therapy, List<Procedure> proceduresForToday, Status status, LocalDateTime lastActivity, int balance, Activity active) {
-        this.id = person.getId();
-        this.person = person;
-        this.therapy = therapy;
-        this.proceduresForToday = proceduresForToday;
-        this.status = status;
-        this.lastActivity = lastActivity;
-        this.balance = balance;
-        this.active = active;
     }
 
     public Patient(Person person) {
-        this.id = person.getId();
+        this.talons = new ArrayList<>();
         this.person = person;
-        this.active = Activity.NON_ACTIVE;
     }
 
-    public long getDelta() {
-        return delta;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setDelta(long delta) {
-        this.delta = delta;
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
-    public void setDelta() {
-        this.delta = ChronoUnit.MINUTES.between(
-                this.getLastActivity(), LocalDateTime.now());
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -138,93 +89,12 @@ public class Patient implements Comparable<Patient> {
         this.therapy = therapy;
     }
 
-    public List<Procedure> getProceduresForToday() {
-        return proceduresForToday;
+    public List<Talon> getTalons() {
+        return talons;
     }
 
-    public void setProceduresForToday(List<Procedure> proceduresForToday) {
-        this.proceduresForToday = proceduresForToday;
-    }
-
-    public void setOneProcedureForTodayToExecute(Procedure procedure) {
-        this.proceduresForToday.add(procedure);
-    }
-
-    public void setOneProcedureForTodayAsExecuted(Procedure procedure) {
-        int index = this.proceduresForToday.indexOf(procedure);
-        procedure.setExecuted(true);
-        //  System.out.println(this.getPerson().getFirstName());
-        this.proceduresForToday.set(index, procedure);
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getLastActivity() {
-        return lastActivity;
-    }
-
-    public void setLastActivity(LocalDateTime lastActivity) {
-        this.lastActivity = lastActivity;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public Activity getActive() {
-        return active;
-    }
-
-    public void setActive(Activity active) {
-        this.active = active;
-    }
-
-    public Reckoning getReckoning() {
-        return reckoning;
-    }
-
-    public void setReckoning(Reckoning reckoning) {
-        this.reckoning = reckoning;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Patient patient = (Patient) o;
-
-        return this.getPerson().getId() == (patient.getPerson().getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return this.getPerson().getId();
-    }
-
-    @Override
-    public int compareTo(Patient comparePatient) {
-
-        int compareStatus = comparePatient.getStatus().getLevel();
-        int thisStatus = this.getStatus().getLevel();
-        int compareTime = comparePatient.getLastActivity().getSecond();
-
-        if (compareStatus != this.getStatus().getLevel()) {
-            return compareStatus - this.getStatus().getLevel();
-        } else {
-            //  System.out.println("the case");
-            return this.getLastActivity().compareTo(comparePatient.getLastActivity());
-        }
+    public void setTalons(List<Talon> talons) {
+        this.talons = talons;
     }
 
     public LocalDateTime getStartActivity() {
@@ -235,20 +105,130 @@ public class Patient implements Comparable<Patient> {
         this.startActivity = startActivity;
     }
 
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public int getStatusLevel() {
+        return this.getStatus().getLevel();
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Long getDelta(){
+        Long delta =null;
+           if (this.getLastActivity() != null) {
+               delta = ChronoUnit.MINUTES.between(this.getLastActivity()
+                     , LocalDateTime.now());
+           }
+        return delta;
+    }
+
+    public Activity getActivity() {
+
+        Activity activity = Activity.NULL;
+
+        if (this.getTalons().isEmpty()) {
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ON_PROCEDURE))) {
+            activity = Activity.ON_PROCEDURE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ACTIVE))) {
+            activity = Activity.ACTIVE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.NON_ACTIVE))) {
+            activity = Activity.NON_ACTIVE;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.TEMPORARY_NA))) {
+            activity = Activity.TEMPORARY_NA;
+            return activity;
+        }
+
+
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.TEMPORARY_NA))
+                &&
+                this.getTalons().stream()
+                        .map(talon -> talon.getActivity()).noneMatch(ac-> ac.equals(Activity.ACTIVE))
+                ) {
+            activity = Activity.TEMPORARY_NA;
+            return activity;
+        }
+
+        return activity;
+    }
+
+    public int getActivityLevel() {
+        return this.getActivity().getLevel();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Patient)) return false;
+
+        Patient patient = (Patient) o;
+
+        return getId().equals(patient.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+
+/*
+    @Override
+    public int compareTo(Patient comparePatient) {
+
+        int compareStatus = comparePatient.getStatus().getLevel();
+
+        if (compareStatus != this.getStatus().getLevel()) {
+            return comparePatient
+                    .getStatus().getLevel() - this.getStatus().getLevel();
+        } else {
+              if(this.getLastActivity()!= null && comparePatient.getLastActivity()!=null) {
+                  return this.getLastActivity()
+                          .compareTo(comparePatient.getLastActivity());
+              } else return 0;
+        }
+    }
+*/
+
     @Override
     public String toString() {
         return "Patient{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", person=" + person +
                 ", therapy=" + therapy +
-                ", proceduresForToday=" + proceduresForToday +
-                ", status=" + status +
+                ", talons=" + talons +
                 ", lastActivity=" + lastActivity +
                 ", startActivity=" + startActivity +
-                ", delta=" + delta +
+                ", status=" + status +
                 ", balance=" + balance +
-                ", active=" + active +
-                ", reckoning=" + reckoning +
                 '}';
     }
 }

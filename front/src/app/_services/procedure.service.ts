@@ -12,8 +12,7 @@ export class ProcedureService {
   // Define the routes we are going to interact with
   private listUrl   = config.api_path + '/procedure/list/';
   private getUrl    = config.api_path + '/procedure/get/';
-  private updateUrl = config.api_path + '/procedure/update/';
-  private deleteUrl = config.api_path + '/procedure/delete/';
+  private saveUrl = config.api_path + '/procedure/save';
 
   constructor(private http: HttpClient) { }
 
@@ -33,20 +32,12 @@ export class ProcedureService {
       );
   }
 
-  update(model: Procedure) {
+  save(model: Procedure) {
     return this.http
-      .post(this.updateUrl, model)
+      .post(this.saveUrl, model)
       .pipe(
         catchError(this.handleError)
       );
-  }
-
-  delete(id: number) {
-    return this.http
-      .post(this.deleteUrl + id, {})
-      .pipe(
-        catchError(this.handleError)
-     );
   }
 
   // Implement a method to handle errors if any

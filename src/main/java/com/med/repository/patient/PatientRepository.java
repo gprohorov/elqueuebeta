@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
  * Created by george on 15.04.18.
  */
 @Repository
-public interface PatientRepository extends MongoRepository<Patient, Integer>{
+public interface PatientRepository extends MongoRepository<Patient, String>{
+  //  List<Patient> findByLastName(String lastName);
 
 }

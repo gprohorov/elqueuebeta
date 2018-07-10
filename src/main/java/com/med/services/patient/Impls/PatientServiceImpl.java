@@ -1,21 +1,23 @@
 package com.med.services.patient.Impls;
 
-import com.med.DataStorage;
-import com.med.dao.patient.impls.PatientDAOImpl;
-import com.med.model.*;
-import com.med.services.appointment.impls.AppointmentServiceImpl;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.event.impls.EventsServiceImpl;
-import com.med.services.patient.interfaces.IPatientsService;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.tail.Impls.TailServiceImpl;
+import com.med.model.Patient;
+import com.med.model.Status;
+import com.med.model.Talon;
+import com.med.model.Therapy;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
+import com.med.repository.accounting.AccountingRepository;
+import com.med.repository.patient.PatientRepository;
+import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
+import com.med.services.patient.interfaces.IPatientService;
+import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,367 +25,165 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 3/9/18.
  */
-@Service
-public class PatientServiceImpl implements IPatientsService {
-
-   // private List<Patient> patients = new ArrayList<>();
-   // private List<Doctor> doctors = new ArrayList<>();
-   // private List<Procedure> procedures = new ArrayList<>();
-
+@Service 
+public class PatientServiceImpl implements IPatientService {
 
     @Autowired
-    PatientDAOImpl patientDAO;
+    PatientRepository repository;
 
     @Autowired
-    AppointmentServiceImpl appointmentService;
+    TalonServiceImpl talonService;
 
     @Autowired
-    DoctorServiceImpl doctorService;
+    AccountingServiceImpl accountingService;
+    
+    @Autowired
+    AccountingRepository accountingRepository;
 
     @Autowired
-    ProcedureServiceImpl procedureService;
-
-    @Autowired
-    EventsServiceImpl eventsService;
+    RecordServiceImpl hotelService;
 
     @Autowired
     TherapyServiceImpl therapyService;
 
+/*
     @Autowired
     TailServiceImpl tailService;
 
     @Autowired
     DataStorage dataStorage;
 
-//////////////////////////////repositories//////////////////////////////////////
-
-
-    @Override
-    public Patient createPatient(Person person) {
-        return patientDAO.createPatient(person);
-    }
-
-    @Override
-    public Patient createPatient(Patient patient) {
-        return patientDAO.createPatient(patient);
-    }
-
-    @Override
-    public Patient addPatient(Patient patient) {
-
-        return patientDAO.addPatient(patient);
-    }
-
-    @Override
-    public Patient updatePatient(Patient patient) {
-        return patientDAO.updatePatient(patient);
-    }
-
-    @Override
-    public Patient getPatient(int id) {
-        return patientDAO.getPatient(id);
-    }
-
-    @Override
-    public Patient deletePatient(int id) {
-        return patientDAO.deletePatient(id);
-    }
-
-    @Override
-    public List<Patient> getAll() {
-
-        for (Patient patient:patientDAO.getAll()){
-            patient.setDelta(ChronoUnit.MINUTES.between(
-                    patient.getLastActivity(), LocalDateTime.now()
-            ));
-        }
-
-        return   patientDAO.getAll();
-
-    }
-
-    @Override
-    public List<Patient> insertAppointedForToday() {
-
-        // List<Patient> appointed =
-
-        appointmentService
-                .getAppointmentsByDate(LocalDate.now())
-                .stream().map(appointment -> appointment.getPatient())
-                .forEach(el -> this.createPatient(el));
-        //   .collect(Collectors.toList());
-
-        //  appointed.stream().forEach(el -> this.createPatient(el));
-/*
-           for (Patient patient:appointed){
-
-            patientDAO.addPatient(patient);
-            Event event = new Event(null,
-                   LocalDateTime.now(), patient,
-                   doctorService.getDoctor(0),
-                   procedureService.getProcedure(1),
-                   Action.PUT_IN_QUEUE );
-
-            eventsService.addEvent(event);
-        }
-        */
-
-        return this.getAll();
-    }
-
-    public Patient setStatus(int patientID, Status status){return null;}
-
-    @Override
-    public Patient updateStatus(int patientId, Status status) {
-       Patient patient = this.getPatient(patientId);
-       patient.setStatus(status);
-       this.updatePatient(patient);
-        return patient;
-    }
-
-    public Patient updateActivity(int patientId, Activity activity) {
-       Patient patient = this.getPatient(patientId);
-       patient.setActive(activity);
-       patient.setLastActivity(LocalDateTime.now());
-       this.updatePatient(patient);
-        return patient;
-    }
-
-
-    public Patient updateBalance(int patientId, int balance) {
-       Patient patient = this.getPatient(patientId);
-       patient.setBalance(balance);
-       this.updatePatient(patient);
-        return patient;
-    }
-
-
-
-    public Patient updateReckoning(int patientId, Reckoning reckoning) {
-        Patient patient = this.getPatient(patientId);
-        patient.setReckoning(reckoning);
-        this.updatePatient(patient);
-        return patient;
-
-    }
-
-
-    // Add ONE procedure to execute today
- /*   public Patient addProcedure(int patientId, int procedureId) {
-
-        Patient patient = this.getPatient(patientId);
-        Procedure procedure = procedureService.getProcedure(procedureId);
-        patient.assignProcedure(procedure);
-
-        return patient;
-    }
-
-    public Patient removeProcedure(int patientId, int procedureId) {
-
-        Patient patient = this.getPatient(patientId);
-        Procedure procedure = procedureService.getProcedure(procedureId);
-        patient.disAssignProcedure(procedure);
-
-        return patient;
+    @PostConstruct
+    void init() {
+        patients = dataStorage.getPatients();
+        repository.saveAll(patients);
     }
 */
 
-    // add ALL procedures for TODAY according to the therapy
-/*    public Patient addProceduresAll(int patientId) {
-
-        Patient patient = this.getPatient(patientId);
-
-        if(patient.getAssignedProcedures().isEmpty()) {
-            Map<Procedure, Integer> assignedTherapy = patient.getTherapy().getProgress();
-            for(Map.Entry<Procedure, Integer> assignation: assignedTherapy.entrySet()){
-                if (assignation.getValue()>0){
-                    this.addProcedure(patientId,assignation.getKey().getId());
-                }
-            }
-        }
-        return null;
-    }*/
-
-
-
-
-
-
-    // get progress in crowd :  ratio of executed procedures to assigned ones
-    public Double getProgress(int patientId) {
-        Double progress = 0.0;
-/*        Patient patient = this.getPatient(patientId);
-        HashMap<Procedure,Boolean> map = patient.getAssignedProcedures();
-        if (!map.isEmpty()){
-           int nominator = (int) map.entrySet().stream()
-                   .filter(entry->entry.getValue().equals(true)).count();
-           int denominator = map.size();
-           progress = Double.valueOf(nominator) /denominator;
-        }*/
-        return progress;
+    @Override
+    public Patient savePatient(Patient patient) {
+        return repository.save(patient);
     }
 
-
-
-      // get a sorted list of patients to the specified procedure
-    public List<Patient> getQueueToProcedure(int procedureId) {
-
-        Procedure procedure = procedureService.getProcedure(procedureId);
-
-        List<Patient> queue = new ArrayList<>();
-        List<Patient> all = this.getAll().stream()
-                .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
-                .collect(Collectors.toList());
-
-        boolean swtch1 = false;
-        boolean swtch2 = false;
-
-
-        for(Patient patient: all){
-            if (patient.getProceduresForToday().contains(procedure)){
-                int index = patient.getProceduresForToday().indexOf(procedure);
-                if (patient.getProceduresForToday().get(index)
-                        .isExecuted() == false
-                        ){
-                    queue.add(patient);
-                }
-            }
-
-
-
-        }
-/*
-        return this.getAll().stream()
-                .filter(pat -> pat.getActive().equals(Activity.ACTIVE))
-                .filter(pat -> pat.getProceduresForToday()
-                        .contains(procedure)).collect(Collectors.toList());*/
-        return queue;
-    }
-
-
-
-
-    public Patient setTherapy(int patientId, int therapyId) {
-        Patient patient = this.getPatient(patientId);
-        Therapy therapy = therapyService.getTherapy(therapyId);
+    @Override
+    public Patient getPatient(String patientId) {
+        Patient patient = repository.findById(patientId).orElse(null);
+        Therapy therapy = therapyService.findTheLastTherapy(patientId);
         patient.setTherapy(therapy);
-        this.updatePatient(patient);
+        return  patient;
+    }
+
+    public Patient getPatientWithTalons(String id) {
+        List<Talon> talons = new ArrayList<>();
+        Patient patient = repository.findById(id).orElse(null);
+        talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
+                .equals(id)).forEach(talon -> patient.getTalons().add(talon));
+        return  patient;
+    }
+
+    @Override
+    public Patient deletePatient(String id) {
+        Patient patient = this.getPatient(id);
+        repository.deleteById(id);
         return patient;
     }
 
-    public List<Patient> getActivePatients(){
-        return this.getAll().stream()
-                .filter(el->el.getActive().equals(Activity.ACTIVE)
-                    //    ||el.getActive().equals(Activity.ON_PROCEDURE)
-                )
-                .collect(Collectors.toList());
-    }
-////////////////////////  TAILS   //////////////////////////
-    public List<Tail> getTails(){
-       List<Tail> tails = dataStorage.getTails();
-/*
-        for (Procedure procedure: procedureService.getAll()){
-           tails.add(new Tail(procedure.getId(), procedure.getName()));
-        }*/
+    @Override
+    public List<Patient> getAll(String fullName) {
 
+        List<Patient> patients;
 
-        for (Tail tail:tails){
-            for (Patient patient:this.getActivePatients()){
-                if (patient.getProceduresForToday().stream()
-                        .anyMatch(el->el.getId()==tail.getProcedureId()&&!el.isExecuted())
-                   ){
-                    tail.addPatient(patient);
-                }
-            }
+        if (fullName.equals("") || fullName == null) {
+            patients = repository.findAll();
+        } else {
+            // TODO: make human-way query !!!
+            // TODO: make sorting, paging, filtering
+            patients = repository.findAll().stream()
+                    .filter(patient -> patient.getPerson()
+                    .getFullName().toLowerCase().contains(fullName.toLowerCase()))
+                    .collect(Collectors.toList());
         }
-             /*   for (Tail tail:tails){
 
-            if (tail.getPatients().stream()
-                    .anyMatch(patient -> patient.getActive().equals(Activity.ON_PROCEDURE)
-                    )){
-                tail.setVacancies(0);
-            }else {
-                tail.setVacancies(0);
-            }
-        }
-        */
-
-
-
-
-        return tails;
+        return patients;
     }
 
+    @Override
+    public List<Patient> getAllForToday() {
 
+        List<Patient> patients = new ArrayList<>();
+        List<Talon> talons =talonService.getTalonsForToday();
 
-    //  procedure starts => patient gets status ON_PROCEDURE
-    //                  tail gets decremention of a number of responsible  doctors
-    public Patient startProcedure(int patientId, int procedureId) {
+        talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
+                .entrySet().stream().forEach(entry ->
+               {
+                   Patient patient = this.getPatient(entry.getKey());
+                   patient.setTalons(entry.getValue());
+                   patients.add(patient);
+               }
+       );
+        return patients;
+    }
+
+    @Override
+    public List<Patient> saveAll(List<Patient> patients) {
+        return repository.saveAll(patients);
+    }
+
+    public Patient setStatus(String patientId, Status status) {
 
         Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);
+        patient.setStatus(status);
+        return repository.save(patient);
 
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
+    }
 
-      //  patient.setOneProcedureForTodayAsExecuted(procedure);
-        patient.setActive(Activity.ON_PROCEDURE);
+    public Accounting insertIncome(String patientId, int sum, String desc, PaymentType payment) {
 
-        this.getAll().set(index, patient);
+        Accounting accounting = new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
+        return accountingService.createAccounting(accounting);
 
-        tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get().setVacancies(0);
-         //tail.setVacant(false);
+    }
 
-        return patient;
+    public Integer getBalance(String patientId){
+
+        Integer debet = accountingService.getSumlForPatient(patientId);
+        Integer kredit = talonService.getAllTalonsForPatient(patientId)
+                .stream().mapToInt(Talon::getSum).sum();
+
+        return debet + kredit;
     }
 
 
-    // patient has executed a procedure => we mark the procedure  as TRUE in his list of  assigned procedures for tody
-   //                                      patient gets a status ACTIVE
-    //                                     patient gets the time of lastActivity = now
-    //                                     tail gets incremention of a number of responsible  doctors
-    public Patient executeProcedure(int patientId, int procedureId) {
-        Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
-        patient.setOneProcedureForTodayAsExecuted(procedure);
-        patient.setLastActivity(LocalDateTime.now());
-        patient.setActive(Activity.ACTIVE);
-        this.getAll().set(index, patient);
+    //////////// ULTIMATE BALANCE  ///////////////
+    public List<Accounting> getUltimateBalance(String patientId, LocalDate start, LocalDate finish){
 
-        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get();
-        tail.setVacancies( 1);
-        tail.setVacant(true);
+//        Balance balance = new Balance(patientId, start, finish);
 
-        return patient;
-    }
+//        List<Accounting> accountings = accountingService.getAll();
+//        		.stream()
+//                .filter(ac->ac.getPatientId().equals(patientId))
+//                .collect(Collectors.toList());
 
-    // patient has canceled a procedure => we DON'T mark the procedure  as TRUE in his list of  assigned procedures for tody
-   //                                      patient gets a status ACTIVE
-    //                                     tail gets incremention of a number of responsible  doctors
-    public Patient cancelProcedure(int patientId, int procedureId) {
-        Patient patient = this.getPatient(patientId);
-        int index = this.getAll().indexOf(patient);
-        Procedure procedure = patient.getProceduresForToday().stream()
-                .filter(pr -> pr.getId()== procedureId).findAny().get();
+        //balance.setAccountings(accountings);
 
-        patient.setActive(Activity.ACTIVE);
-        patient.setLastActivity(LocalDateTime.now());
-        this.getAll().set(index, patient);
-
-        Tail tail = tailService.getAll().stream().filter(tl -> tl.getProcedureId() == procedureId)
-                .findAny().get();
-        tail.setVacancies( 1);
-        tail.setVacant(true);
-
-        return patient;
+        return accountingRepository.findByPatientId(patientId);
     }
 
 
-    public Patient getFirstFromTail(int procedureId) {
-         return tailService.getFirstActive(procedureId);
+
+    public List<Accounting> getUltimateBalanceShort(String patientId, int days) {
+        return this.getUltimateBalance(patientId, LocalDate.now().minusDays(days+1), LocalDate.now().plusDays(1));
     }
+
+    public List<Accounting> getUltimateBalanceToday(String patientId) {
+       // int days = therapyService.g
+
+        return this.getUltimateBalance(patientId, LocalDate.now().minusDays(0), LocalDate.now().plusDays(1));
+    }
+
+     public List<Accounting> getBalanceForCurrentTherapy(String patientId){
+        LocalDate start = therapyService.findTheLastTherapy(patientId).getStart().toLocalDate();
+        return  this.getUltimateBalance(patientId,start,LocalDate.now());
+    }
+
 }

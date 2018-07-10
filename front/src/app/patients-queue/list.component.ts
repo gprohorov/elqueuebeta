@@ -1,80 +1,153 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { ModalDialogService } from 'ngx-modal-dialog';
+import * as moment from 'moment';
 
-import { Person } from '../_models/index';
-import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
-import { PatientsQueueService, AlertService } from '../_services/index';
+import { Patient } from '../_models/index';
+import { Status, Activity } from '../_storage/index';
+import { AlertService, PatientsQueueService } from '../_services/index';
+
+import { PatientIncomeModalComponent } from '../patient/income.modal.component';
+import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 
 @Component({
-  moduleId: module.id,
-  templateUrl: './list.component.html'
+    templateUrl: './list.component.html'
 })
-export class PatientsQueueListComponent implements OnInit {
+export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
-  sub: Subscription;
-  subTemp: Subscription;
-  items: any[] = [];
-  loading = false;
-  rows = [];
-  Statuses = Statuses;
-  StatusesArr = StatusesArr;
-  Activity = Activity;
-  ActivityArr = ActivityArr;
+    loading = false;
+    
+    sub: Subscription;
+    subTemp: Subscription;
+    items: Patient[] = [];
+    rows = [];
+    filters: any = {
+       all: true,
+       hotel: false,
+       active: false 
+    };
+    Status = Status;
+    Statuses = Object.keys(Status);
+    Activity = Activity;
+    Activities = Object.keys(Activity);
 
-  constructor(private service: PatientsQueueService, private alertService: AlertService) {
-  }
+    constructor(
+        private viewRef: ViewContainerRef,
+        private alertService: AlertService,
+        private modalService: ModalDialogService,
+        private service: PatientsQueueService
+    ) { }
 
-  ngOnInit() {
-    this.load();
-  }
+    ngOnInit() {
+        this.load();
+    }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+    ngOnDestroy() {
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
+    }
 
-  delete(id: number, name: string) {
-    if (confirm('Видалити "' + name + '" ?')) this.service.delete(id).subscribe(() => { this.load(); });
-  }
+    delete(id: string, name: string) {
+        if (confirm('Видалити "' + name + '" ?')) {
+            this.service.delete(id).subscribe(() => { this.load(); });
+        }
+    }
 
-  getFullName(item: Person) {
-    return [item.lastName, item.firstName, item.patronymic].join(' ');
-  }
+    getProgress(list: any[]) {
+        let executed = 0, total = 0;
+        list.forEach(function (item) {
+            if (item.activity == 'EXECUTED') executed++;
+            if (item.activity != 'CANCELED') total++;
+        });
+        return executed + '/' + total;
+    }
 
-  getProgress(list: any[]) {
-    let executed = 0;
-    list.forEach(function(item) {
-      if (item.executed) executed++;
-    });
-    return executed + '/' + list.length;
-  }
+    showAssignProcedurePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.person.fullName,
+            childComponent: PatientAssignProcedureModalComponent,
+            data: { patientId: patient.id, patientName: patient.person.fullName }
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
 
-  updateActivity(id: number, value: string) {
-    this.subTemp = this.service.updateActivity(id, value).subscribe(data => {});
-  }
+    showIncomePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.person.fullName,
+            childComponent: PatientIncomeModalComponent,
+            data: patient
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
+    
+    updateActivity(id: string, value: string) {
+        if (value === 'CANCELED' && !confirm('Встановити процедурі "' + Activity[value].text + '" ?')) return false;
+        this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
+            this.load();
+        });
+    }
 
-  updateStatus(id: number, value: string) {
-    this.subTemp = this.service.updateStatus(id, value).subscribe(data => {});
-  }
+    updateActivityAll(id: string, value: string) {
+        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
+            this.subTemp = this.service.updateActivityAll(id, value).subscribe(data => {
+                this.load();
+            });
+        }
+    }
 
-  updateBalance(id: number, value: string) {
-    this.subTemp = this.service.updateBalance(id, value).subscribe(data => {});
-  }
+    updateStatus(id: string, value: string, event: any) {
+        if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
+            this.subTemp = this.service.updateStatus(id, value).subscribe(data => {
+                this.load();
+            });
+        } else {
+            this.load();
+        }
+    }
 
-  getTimeDiffClass(v: number) {
-    return 'badge badge-pill badge-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
-  }
+    updateBalance(id: string, value: string) {
+        this.subTemp = this.service.updateBalance(id, value).subscribe(data => { });
+    }
 
-  load(search: string = '') {
-    this.loading = true;
-    this.sub = this.service.getAll().subscribe(data => {
-      this.items = data.sort(function(a, b) {
-        const x = a.startActivity, y = b.startActivity;
-        if (x < y) { return -1; }
-        if (x > y) { return 1; }
-        return 0;
-      });
-      this.loading = false;
-    });
-  }
+    getTimeDiffClass(v: number) {
+        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
+    }
+
+    getTalonInfo(talon: any) {
+        let out = '', start, end, diff;
+        if (talon.start) {
+            start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
+            out += start.format('HH:MM');
+        }
+        if (talon.start && talon.executionTime) {
+            end = moment(talon.executionTime, 'YYYY-MM-DDTHH:mm:ss.SSS');
+            diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
+            out += ' - ' + end.format('HH:MM') + ' (' + diff + ' хв.)';
+        } else if (talon.start) {
+            end = moment({});
+            diff = Math.floor(moment.duration(end.diff(start)).asMinutes());
+            out += ' (' + diff + ' хв.)';
+        }
+        if (talon.doctor) {
+            out += ', ' + talon.doctor.fullName + ' (зон: ' + talon.zones + ')';
+        }
+        
+        return out;
+    }
+    
+    load(search: any = null) {
+        this.loading = true;
+        this.sub = this.service.getAll().subscribe(data => {
+            this.items = data.sort(function (a, b) {
+                const x = a.startActivity, y = b.startActivity;
+                if (x < y) { return -1; }
+                if (x > y) { return 1; }
+                return 0;
+            });
+            this.loading = false;
+        });
+    }
 
 }

@@ -1,35 +1,38 @@
-﻿<div class="row">
-  <div class="col">
-    <div class="form-row mb-4">
-      <div class="col-auto">
+﻿<div class="row mb-3">
+    <div class="col-auto">
         <h3>Список лікарів</h3>
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-success" routerLink="/doctor-form">Створити</button>
-      </div>
-      <div class="col-auto mr-auto">
-        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-      </div>
     </div>
-    <div class="content table-responsive table-full-width">
-      <table class="table table-small">
+    <div class="col-auto mr-auto">
+        <button class="btn btn-success" [routerLink]="['/doctor-form']">Створити</button>
+    </div>
+    <div class="col-auto">
+        <button [disabled]="loading" (click)="load()" title="Обновити"
+            [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
+    </div>
+</div>
+<div class="content table-responsive table-full-width">
+    <table class="table table-sm">
         <thead class="thead-light">
-          <tr>
-            <th>ПІБ</th> <th>Телефон</th> <th>Спеціальність</th> <th></th>
-          </tr>
+            <tr>
+                <th [style.min-width.px]="300">ПІБ</th>
+                <th>Телефон</th>
+                <th>Спеціальність</th>
+                <th [style.width.px]="300">Процедури</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of items">
-            <td>{{getFullName(item)}}</td>
-            <td>{{item.cellPhone}}</td>
-            <td>{{item.speciality}}</td>
-            <td align="right">
-              <button class="btn btn-primary btn-sm" [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
-              <button class="btn btn-danger btn-sm" (click)="delete(item.id, getFullName(item))">Видалити</button>
-            </td>
-          </tr>
+            <tr *ngFor="let item of items">
+                <td>{{item.fullName}}</td>
+                <td>{{item.cellPhone}}</td>
+                <td>{{item.speciality}}</td>
+                <td>{{getProcedures(item.procedureIds)}}</td>
+                <td align="right">
+                    <button class="btn btn-primary btn-sm"
+                        [routerLink]="['/doctor-form', { id: item.id }]">Редагувати</button>
+                    <button class="btn btn-danger btn-sm" (click)="delete(item.id, item.fullName)">Видалити</button>
+                </td>
+            </tr>
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
 </div>

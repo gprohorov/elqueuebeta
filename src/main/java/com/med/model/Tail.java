@@ -10,32 +10,25 @@ public class Tail {
     private int procedureId;
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
-    private int vacancies=1;
-    private Patient patientOnProcedure;
+    private Patient patientOnProcedure = null;
     private boolean vacant;
+    private ProcedureType procedureType;
 
     public Tail() {
     }
 
-    public Tail(int procedureId, String procedureName, List<Patient> patients) {
+    public Tail(int procedureId, String procedureName, ProcedureType procedureType, List<Patient> patients, boolean vacant) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.patients = patients;
-        this.vacancies = 1;
-        this.vacant = true;
+        this.vacant = vacant;
+        this.procedureType = procedureType;
     }
 
     public Tail(int procedureId, String procedureName) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
-        this.vacancies = 1;
         this.vacant = true;
-    }
-
-    public Tail(int procedureId, String procedureName, int vacancies) {
-        this.procedureId = procedureId;
-        this.procedureName = procedureName;
-        this.vacancies = vacancies;
     }
 
     public Patient getPatientOnProcedure() {
@@ -70,6 +63,14 @@ public class Tail {
         this.procedureName = procedureName;
     }
 
+    public ProcedureType getProcedureType() {
+        return procedureType;
+    }
+
+    public void setProcedureType(ProcedureType procedureType) {
+        this.procedureType = procedureType;
+    }
+
     public List<Patient> getPatients() {
         return patients;
     }
@@ -85,13 +86,7 @@ public class Tail {
         return patient;
     }
 
-    public int getVacancies() {
-        return vacancies;
-    }
-
-    public void setVacancies(int vacancies) {
-        this.vacancies = vacancies;
-    }
-
-
+/*    public Patient getFirst() {
+        return this.getPatients().stream().findFirst().orElse(null);
+    }*/
 }

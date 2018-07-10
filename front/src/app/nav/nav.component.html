@@ -1,33 +1,35 @@
-﻿<nav class="navbar navbar-expand navbar-light bg-light mb-3">
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга на процедури</a>
-    </li>
-    <li class="nav-item">
-      <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти на сьогодні</a>
-    </li>
-    <li class="nav-item dropdown" ngbDropdown>
-      <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}" routerLinkActive="active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Довідники</a>
-      <div class="dropdown-menu bg-light" ngbDropdownMenu>
-        <a class="dropdown-item" routerLink="/persons" routerLinkActive="active">Пацієнти</a>
-        <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Лікарі</a>
-        <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Процедури</a>
-        <a class="dropdown-item badge-danger" routerLink="" (click)="resetDB()">Reset DB</a>
-      </div>
-    </li>
-    <li class="nav-item dropdown" ngbDropdown>
-      <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Інтерфейси</a>
-      <div class="dropdown-menu bg-light" ngbDropdownMenu>
-        <a class="dropdown-item" routerLink="/doctor-interface-massage">Масажист</a>
-        <a class="dropdown-item" routerLink="/doctor-interface-diagnose">Діагност</a>
-      </div>
-    </li>
-  </ul>
-  <ul class="navbar-nav">
-    <li class="dropdown-item">
-      <a class="dropdown-item" routerLink="/login">
-      Вихід ({{user.speciality}} - {{user.lastName}} {{user.firstName[0]}}. {{user.patronymic[0]}}.)
-      </a>
-    </li>
-  </ul>
+﻿<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="">Меднеан</a>
+    <!-- Doctor interface section START -->
+    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
+        <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти на черзі</a>
+    </div>
+    <!-- Doctor interface section END -->
+    <!-- Administrator interface section START -->
+    <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+        <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Черга
+            на процедури</a>
+        <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти
+            на сьогодні</a>
+        <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">Список
+            пацієнтів</a>
+        <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
+            <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Налаштування</a>
+            <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/doctors" routerLinkActive="active">Список
+                    лікарів</a>
+                <a class="dropdown-item" routerLink="/procedures" routerLinkActive="active">Список
+                    процедур</a>
+                <a class="dropdown-item badge-danger" routerLink="" (click)="resetDB()">Reset DB</a>
+            </div>
+        </div>
+        <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
+    </div>
+    <!-- Administrator interface section END -->
+    <div class="navbar-nav">
+        <a class="dropdown-item" routerLink="/login">
+            Вихід <small>({{user.info?.fullName}})</small>
+        </a>
+    </div>
 </nav>

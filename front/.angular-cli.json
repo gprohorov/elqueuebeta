@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+      "outDir": "../src/main/resources/public",
       "assets": [
         "assets",
         "favicon.ico"
@@ -56,7 +56,8 @@
   "defaults": {
     "styleExt": "css",
     "serve": {
-        "host": "0.0.0.0"
+		"host": "0.0.0.0",
+		"disable-host-check": true
     },
     "class": {
       "spec": false

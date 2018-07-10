@@ -1,0 +1,22 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !date.valid }">
+        <label for="date">Дата</label>
+        <input type="date" class="form-control" name="date" [(ngModel)]="data.date" #date="ngModel"
+            required />
+        <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+        <label for="procedureId">Процедура</label>
+        <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
+            #procedureId="ngModel" required>
+            <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
+                {{procedure.name}}</option>
+        </select>
+        <div class="form-group form-check mt-2 ml-2">
+            <input type="checkbox" class="form-check-input" name="activate"
+                [(value)]="data.activate" [(ngModel)]="data.activate" />
+            <label class="form-check-label">Зробити активною</label>
+        </div>
+        <div *ngIf="f.submitted && !procedureId.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+    </div>
+</form>

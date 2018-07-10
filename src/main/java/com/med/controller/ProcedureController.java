@@ -5,43 +5,25 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
-
-@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")
 public class ProcedureController {
 
+
+
     @Autowired
     ProcedureServiceImpl service;
 
-
-    @RequestMapping("/procedure/list")
-   public List<Procedure> showProceduresDefault(){
-        return service.getAll();
-    }
-
-
     @RequestMapping("/procedure/list/")
-   public List<Procedure> showProcedures(){
+    public List<Procedure> showProcedures() {
         return service.getAll();
     }
-
-
- ////////////////////////////// CRUD ////////////////////////////////////
-
-    // CREATE a new Procedure
-    @PostMapping("/procedure/create")
-    public Procedure createProcedure(@Valid @RequestBody Procedure procedure) {
-        return service.createProcedure(procedure);
-    }
-
 
     // READ the Procedure by id
     @GetMapping("/procedure/get/{id}")
@@ -50,6 +32,24 @@ public class ProcedureController {
         return service.getProcedure(procedureId);
     }
 
+    // CREATE the Procedure
+    @PostMapping("/procedure/save")
+    public Procedure saveProcedure(@RequestBody Procedure procedure) {
+
+//
+        return service.saveProcedure(procedure);
+    }
+
+    // DELETE the procedure by id
+    @PostMapping("/procedure/delete/{id}")
+    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
+
+        return null;
+                //service.deleteProcedure(procedureId);
+
+    }
+
+/*
     // UPDATE the procedure by id
     @PostMapping("/procedure/update/")
     public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
@@ -59,14 +59,8 @@ public class ProcedureController {
 
     }
 
-    // DELETE the procedure by id
-    @PostMapping("/procedure/delete/{id}")
-    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
 
-        return service.deleteProcedure(procedureId);
-
-    }
-
+*/
 
 }
 

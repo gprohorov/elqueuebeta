@@ -16,12 +16,11 @@ import java.util.List;
 @RestController
 public class GenericController {
 
-    @Autowired
-    GenericServiceImpl service;
+	@Autowired
+	GenericServiceImpl service;
 
-
-    @RequestMapping("/generics")
-   public List<Generic> showGenerics(){
-        return service.getAll();
-    }
+	@RequestMapping("/generics")
+	public List<Generic> showGenerics() {
+		return service.getAll();
+	}
 }

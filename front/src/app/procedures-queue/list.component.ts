@@ -1,71 +1,66 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
-import { Person } from '../_models/index';
-import { Statuses, StatusesArr, Activity, ActivityArr } from '../_storage/index';
-import { PatientsQueueService, AlertService } from '../_services/index';
+import { Patient } from '../_models/index';
+import { Status, Activity } from '../_storage/index';
+import { AlertService, PatientsQueueService } from '../_services/index';
 
 @Component({
-  moduleId: module.id,
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css']
 })
-export class ProceduresQueueListComponent implements OnInit {
+export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
-  sub: Subscription;
-  items: any[] = [];
-  loading = false;
-  Statuses = Statuses;
-  StatusesArr = StatusesArr;
-  Activity = Activity;
-  ActivityArr = ActivityArr;
-  updateMasonryLayout = false;
+    loading = false;
 
-  public myOptions: NgxMasonryOptions = {
-    transitionDuration: '0.2s',
-    columnWidth: 200,
-    fitWidth: true,
-    horizontalOrder: true,
-    gutter: 20
-  };
+    sub: Subscription;
+    items: any[] = [];
+    Activity = Activity;
+    Status = Status;
+    updateMasonryLayout = false;
 
-  constructor(
-    private alertService: AlertService,
-    private service: PatientsQueueService
-    ) {
-  }
+    public myOptions: NgxMasonryOptions = {
+        transitionDuration: '0.2s',
+        columnWidth: 200,
+        fitWidth: true,
+        horizontalOrder: true,
+        gutter: 20
+    };
 
-  ngOnInit() {
-    this.load();
-  }
+    constructor(
+        private alertService: AlertService,
+        private service: PatientsQueueService
+    ) { }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+    ngOnInit() {
+        this.load();
+    }
 
-  getFullName(item: Person) {
-    return [item.lastName, item.firstName, item.patronymic].join(' ');
-  }
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
 
-  getProgress(list: any[]) {
-    let executed = 0;
-    list.forEach(function(item) { if (item.executed) executed++; });
-    return executed + '/' + list.length;
-  }
+    getTimeDiffClass(v: number) {
+        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
+    }
 
-  getTimeDiffClass(v: number) {
-    return v > 60 ? 'text-danger' : v > 30 ? 'text-success' : 'text-primary';
-  }
+    toggleGroup(item: any) {
+        item.expanded = !item.expanded;
+        this.updateMasonryLayout = true;
+    }
 
-  toggleGroup(item: any) {
-    item.expanded = !item.expanded;
-    this.updateMasonryLayout = true;
-  }
-
-  load() {
-    this.loading = true;
-    this.sub = this.service.getTails().subscribe(data => { this.items = data; this.loading = false; });
-  }
+    load() {
+        this.loading = true;
+        this.sub = this.service.getTails().subscribe(
+            data => {
+                this.items = data;
+                this.loading = false;
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+    }
 
 }

@@ -1,12 +1,16 @@
 package com.med.services.card.interfaces;
 
-import com.med.dao.card.interfaces.ICardDAO;
+import com.med.model.Card;
 
 /**
  * Created by george on 3/9/18.
  */
+public interface ICardService  {
+    Card saveCard(Card card);
+    Card getCard(int id);
+    Card getCardByProcedureId(int procedureId);
 
-@SuppressWarnings("ALL")
-public interface ICardService extends ICardDAO {
+    Card saveCard(int procedureId, Card card);
+
 
 }

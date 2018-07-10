@@ -1,0 +1,80 @@
+<div class="mb-3" *ngIf="showDetails" id="history">
+    <h5>Історія розрахунків</h5>
+    <div id="history-body">
+        <table class="table table-sm" *ngIf="!loading">
+            <thead class="thead-light">
+                <tr>
+                    <th>Дата</th>
+                    <th>Назва</th>
+                    <th>Сума</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of details">
+                    <td>{{item.dateTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+                    <td>{{getDesc(item)}}</td>
+                    <td>{{item.payment == 'PROC' ? item.sum * -1 : item.sum}} грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього внесено коштів:</strong></td>
+                    <td><strong>{{getSumIncome()}}</strong> грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього надано знижок:</strong></td>
+                    <td><strong>{{getSumDiscount()}}</strong> грн.</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Всього нараховано за процедури:</strong></td>
+                    <td><strong>{{getSumProcedures()}}</strong> грн.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-auto">
+        Баланс: <strong>{{data.balance}}</strong> грн.
+    </div>
+    <div class="col">
+        <span class="fa fa-refresh fa-spin text-secondary" [hidden]="!loading"></span>
+    </div>
+    <div class="col">
+        <button class="btn btn-sm btn-success pull-right" (click)="getDetails()">Детальніше</button>
+    </div>
+</div>
+<form name="form" #f="ngForm" novalidate>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text" [style.width.px]="110">Тип оплати</div>
+        </div>
+        <select class="form-control" name="paymentType" [(ngModel)]="model.paymentType"
+            #paymentType="ngModel" required>
+            <option value="CASH" selected>Готівкою</option>
+            <option value="CARD">Картою</option>
+            <option value="WIRED">Перерахунком</option>
+        </select>
+    </div>
+    <div *ngIf="f.submitted && !paymentType.valid" class="help-block text-danger">Поле
+        обов`язкове</div>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text" [style.width.px]="110">Сума</div>
+        </div>
+        <input type="number" class="form-control" name="sum" [(ngModel)]="model.sum" #sum="ngModel"
+            required />
+    </div>
+    <div *ngIf="f.submitted && !sum.valid" class="help-block text-danger">Поле обов`язкове</div>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text" [style.width.px]="110">Знижка</div>
+        </div>
+        <input type="number" class="form-control" name="discount" [(ngModel)]="model.discount"
+            #discount="ngModel" />
+    </div>
+    <div class="input-group mt-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text" [style.width.px]="110">Коментар</div>
+        </div>
+        <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc" #desc="ngModel" />
+    </div>
+</form>

@@ -1,18 +1,32 @@
 package com.med.services.talon.interfaces;
 
+import com.med.model.Activity;
 import com.med.model.Talon;
-import org.bson.types.ObjectId;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
  * Created by george on 3/9/18.
  */
-@SuppressWarnings("ALL")
 public interface ITalonService {
-    Talon createTalon(Talon talon);
-    Talon getTalon(ObjectId id);
-    Talon deleteTalon(ObjectId id);
-    List<Talon> getAll();
 
+    Talon createTalon(String patientId, int procedureId, int days);
+    Talon createTalon(String patientId, int procedureId, LocalDate date);
+    List<Talon> getAll();
+    Talon getTalon(String id);
+    List<Talon>  getTalonsForToday();
+    List<Talon>  getTalonsForDate(LocalDate date);
+    Talon setActivity(String talonId, Activity activity);
+/*
+
+    Talon createTalon(Talon talon);
+
+    Talon getTalonByPatientAndProcedure(int patientId, int procedureId);
+    Talon updateTalon(Talon talon);
+    Talon deleteTalon(ObjectId id);
+
+
+    int getTodayIncome();
+*/
 }

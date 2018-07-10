@@ -1,47 +1,56 @@
 package com.med.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 /**
  * Created by george on 3/31/18.
  */
-@SuppressWarnings("ALL")
+@Document
 public class Card {
+    @Id
     private int id;
+    private int procedureId;
     private String name;
     private int days;
-    private Set<Procedure> deniedBefore = new HashSet<>();
-    private Set<Procedure> deniedAfter = new HashSet<>();
-    private Set<Procedure> needBefore = new HashSet<>();
-    private Set<Procedure> needAfter = new HashSet<>();
-    private Set<Procedure> changing = new HashSet<>();
+    private boolean anytime;
+    private List<Integer> closeAfter;      // these procedures must be cancelled AFTER this procedure
+                                                // i.e. ultrasound after laser must be removed
+    private List<Integer> activateAfter;  // these procedures must be activated AFTER this procedure
+                                          // i.e massage after water-pulling. Because of gell.
+    private List<Integer> mustBeDoneBefore; //  // these procedures must be done BEFORE this procedure
 
     public Card() {
     }
 
-    public Card(int id, String name, int days, Set<Procedure> deniedBefore, Set<Procedure> deniedAfter, Set<Procedure> needBefore, Set<Procedure> needAfter, Set<Procedure> changing) {
-        this.id = id;
-        this.name =name;
-        this.days = days;
-        this.deniedBefore = deniedBefore;
-        this.deniedAfter = deniedAfter;
-        this.needBefore = needBefore;
-        this.needAfter = needAfter;
-        this.changing = changing;
+    public List<Integer> getMustBeDoneBefore() {
+        return mustBeDoneBefore;
     }
 
-    public Card(int id, String name, int days) {
-        this.id = id;
-        this.name= name;
-        this.days = days;
-        this.deniedBefore = new HashSet<>();
-        this.deniedAfter = new HashSet<>();
-        this.needBefore = new HashSet<>();
-        this.needAfter = new HashSet<>();
-        this.changing = new HashSet<>();
+    public void setMustBeDoneBefore(List<Integer> mustBeDoneBefore) {
+        this.mustBeDoneBefore = mustBeDoneBefore;
     }
 
+    public Card(int id, int procedureId, String name, int days, boolean anytime, List<Integer> closeAfter, List<Integer> activateAfter, List<Integer> mustBeDoneBefore) {
+        this.id = id;
+        this.procedureId = procedureId;
+        this.name = name;
+        this.days = days;
+        this.anytime = anytime;
+        this.closeAfter = closeAfter;
+        this.activateAfter = activateAfter;
+        this.mustBeDoneBefore = mustBeDoneBefore;
+    }
+
+    public List<Integer> getCloseAfter() {
+        return closeAfter;
+    }
+
+    public void setCloseAfter(List<Integer> closeAfter) {
+        this.closeAfter = closeAfter;
+    }
 
     public int getId() {
         return id;
@@ -67,43 +76,28 @@ public class Card {
         this.days = days;
     }
 
-    public Set<Procedure> getDeniedBefore() {
-        return deniedBefore;
+    public int getProcedureId() {
+        return procedureId;
     }
 
-    public void setDeniedBefore(Set<Procedure> deniedBefore) {
-        this.deniedBefore = deniedBefore;
+    public void setProcedureId(int procedureId) {
+        this.procedureId = procedureId;
     }
 
-    public Set<Procedure> getDeniedAfter() {
-        return deniedAfter;
+    public boolean isAnytime() {
+        return anytime;
     }
 
-    public void setDeniedAfter(Set<Procedure> deniedAfter) {
-        this.deniedAfter = deniedAfter;
+    public void setAnytime(boolean anytime) {
+        this.anytime = anytime;
     }
 
-    public Set<Procedure> getNeedBefore() {
-        return needBefore;
+
+    public List<Integer> getActivateAfter() {
+        return activateAfter;
     }
 
-    public void setNeedBefore(Set<Procedure> needBefore) {
-        this.needBefore = needBefore;
-    }
-
-    public Set<Procedure> getNeedAfter() {
-        return needAfter;
-    }
-
-    public void setNeedAfter(Set<Procedure> needAfter) {
-        this.needAfter = needAfter;
-    }
-
-    public Set<Procedure> getChanging() {
-        return changing;
-    }
-
-    public void setChanging(Set<Procedure> changing) {
-        this.changing = changing;
+    public void setActivateAfter(List<Integer> openAfter) {
+        this.activateAfter = openAfter;
     }
 }
