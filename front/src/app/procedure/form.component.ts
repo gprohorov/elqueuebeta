@@ -16,6 +16,7 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     subProcedures: Subscription;
+    procedures: Procedure[];
     Status = Status;
     Statuses = Object.keys(Status);
     ProcedureType = ProcedureType;
