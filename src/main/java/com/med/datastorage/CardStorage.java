@@ -164,7 +164,7 @@ public class CardStorage {
                                 , new ArrayList<Integer>(Arrays.asList(13,19,26,28))
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(26,26,"Пасивна кінезотерапія", 1, false
+                , new Card(26,26,"Пасивна кінезотерапія", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList(6))
                                 , new ArrayList<Integer>(Arrays.asList()))
@@ -179,27 +179,27 @@ public class CardStorage {
                                 , new ArrayList<Integer>(Arrays.asList(6))
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(29,29,"Механотерапія плечового суглобу", 1, false
+                , new Card(29,29,"Механотерапія плечового суглобу", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(30,30,"Механотерапія ліктьового суглобу", 1, false
+                , new Card(30,30,"Механотерапія ліктьового суглобу", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(31,31,"Механотерапія кульшового суглобу", 1, false
+                , new Card(31,31,"Механотерапія кульшового суглобу", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(32,32,"Механотерапія колінного суглобу", 1, false
+                , new Card(32,32,"Механотерапія колінного суглобу", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
 
-                , new Card(33,33,"Пропріорецептивна нейром'язова фасилітація", 1, false
+                , new Card(33,33,"Пропріорецептивна нейром'язова фасилітація", 1, true
                         , new ArrayList<Integer>()
                                 , new ArrayList<Integer>()
                                 , new ArrayList<Integer>(Arrays.asList()))
