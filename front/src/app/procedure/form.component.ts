@@ -45,9 +45,9 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
         this.subProcedures = this.service.getAll().subscribe(
             data => {
                 this.loading = false;
-                this.closeAfter         = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
-                this.activateAfter      = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
-                this.mustBeDoneBefore   = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
+                this.closeAfter         = data.map(x => { return { name: x.name, value: x.id + 'pc', checked: false }; } );
+                this.activateAfter      = data.map(x => { return { name: x.name, value: x.id + 'pa', checked: false }; } );
+                this.mustBeDoneBefore   = data.map(x => { return { name: x.name, value: x.id + 'pm', checked: false }; } );
                 const id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (id > 0) this.load(+id);
             },
@@ -59,15 +59,15 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     initProcedures() {
         this.model.card.closeAfter.forEach(id => {
-            let p = this.closeAfter.find(x => x.value == id);
+            let p = this.closeAfter.find(x => x.value == id + 'pc');
             if (p) p.checked = true;
         });
         this.model.card.activateAfter.forEach(id => {
-            let p = this.activateAfter.find(x => x.value == id);
+            let p = this.activateAfter.find(x => x.value == id + 'pa');
             if (p) p.checked = true;
         });
         this.model.card.mustBeDoneBefore.forEach(id => {
-            let p = this.mustBeDoneBefore.find(x => x.value == id);
+            let p = this.mustBeDoneBefore.find(x => x.value == id + 'pm');
             if (p) p.checked = true;
         });
     }
@@ -89,9 +89,9 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     submit() {
         this.loading = true;
-        this.model.card.closeAfter = this.closeAfter.filter(x => x.checked).map(x => x.value);
-        this.model.card.activateAfter = this.activateAfter.filter(x => x.checked).map(x => x.value);
-        this.model.card.mustBeDoneBefore = this.mustBeDoneBefore.filter(x => x.checked).map(x => x.value);
+        this.model.card.closeAfter = this.closeAfter.filter(x => x.checked).map(x => parseInt(x.value));
+        this.model.card.activateAfter = this.activateAfter.filter(x => x.checked).map(x => parseInt(x.value));
+        this.model.card.mustBeDoneBefore = this.mustBeDoneBefore.filter(x => x.checked).map(x => parseInt(x.value));
         this.service.save(this.model).subscribe(
             data => {
                 this.alertService.success('Процедуру збережено.', true);

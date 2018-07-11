@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" name="anytime"
-                            [(value)]="model.card.anytime" [(ngModel)]="model.card.anytime" />
+                            [(ngModel)]="model.card.anytime" />
                         <label class="form-check-label">Процедура робиться в будь-якому
                             порядку</label>
                     </div>
@@ -69,8 +69,7 @@
                             <div class="form-group">
                                 <div class="form-check" *ngFor="let pc of closeAfter">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="pc.value" [(value)]="pc.checked"
-                                        [(ngModel)]="pc.checked" />
+                                        [name]="pc.value" [(ngModel)]="pc.checked" />
                                     <label class="form-check-label">{{pc.name}}</label>
                                 </div>
                             </div>
@@ -84,8 +83,7 @@
                             <div class="form-group">
                                 <div class="form-check" *ngFor="let pa of activateAfter">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="pa.value" [(value)]="pa.checked"
-                                        [(ngModel)]="pa.checked" />
+                                        [name]="pa.value" [(ngModel)]="pa.checked" />
                                     <label class="form-check-label">{{pa.name}}</label>
                                 </div>
                             </div>
@@ -99,8 +97,7 @@
                             <div class="form-group">
                                 <div class="form-check" *ngFor="let pm of mustBeDoneBefore">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="pm.value" [(value)]="pm.checked"
-                                        [(ngModel)]="pm.checked" />
+                                        [name]="pm.value" [(ngModel)]="pm.checked" />
                                     <label class="form-check-label">{{pm.name}}</label>
                                 </div>
                             </div>
