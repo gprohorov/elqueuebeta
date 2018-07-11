@@ -2,7 +2,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Procedure } from '../_models/index';
+import { Procedure, Card } from '../_models/index';
 import { AlertService, ProcedureService } from '../_services/index';
 import { Status, ProcedureType } from '../_storage/index';
 
@@ -16,7 +16,9 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     subProcedures: Subscription;
-    procedures: Procedure[];
+    closeAfter: any[];
+    activateAfter: any[];
+    mustBeDoneBefore: any[];
     Status = Status;
     Statuses = Object.keys(Status);
     ProcedureType = ProcedureType;
@@ -43,7 +45,9 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
         this.subProcedures = this.service.getAll().subscribe(
             data => {
                 this.loading = false;
-                this.procedures = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
+                this.closeAfter         = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
+                this.activateAfter      = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
+                this.mustBeDoneBefore   = data.map(x => { return { name: x.name, value: x.id, checked: false }; } );
                 const id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (id > 0) this.load(+id);
             },
@@ -54,12 +58,18 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
     }
 
     initProcedures() {
-        /*
-        this.model.procedureIds.forEach(id => {
-            let p = this.procedures.find(x => x.value == id);
+        this.model.card.closeAfter.forEach(id => {
+            let p = this.closeAfter.find(x => x.value == id);
             if (p) p.checked = true;
         });
-        */
+        this.model.card.activateAfter.forEach(id => {
+            let p = this.activateAfter.find(x => x.value == id);
+            if (p) p.checked = true;
+        });
+        this.model.card.mustBeDoneBefore.forEach(id => {
+            let p = this.mustBeDoneBefore.find(x => x.value == id);
+            if (p) p.checked = true;
+        });
     }
 
     load(id: number) {
@@ -67,6 +77,7 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
         this.sub = this.service.get(id).subscribe(
             data => {
                 this.model = data;
+                if (!this.model.card) this.model.card = new Card();
                 this.initProcedures();
                 this.loading = false;
             },
@@ -78,6 +89,9 @@ export class ProcedureFormComponent implements OnInit, OnDestroy {
 
     submit() {
         this.loading = true;
+        this.model.card.closeAfter = this.closeAfter.filter(x => x.checked).map(x => x.value);
+        this.model.card.activateAfter = this.activateAfter.filter(x => x.checked).map(x => x.value);
+        this.model.card.mustBeDoneBefore = this.mustBeDoneBefore.filter(x => x.checked).map(x => x.value);
         this.service.save(this.model).subscribe(
             data => {
                 this.alertService.success('Процедуру збережено.', true);
