@@ -74,6 +74,7 @@ public class TalonServiceImpl implements ITalonService {
     	
     	Procedure procedure = procedureService.getProcedure(procedureId);
     	Talon talon = new Talon(patientId, procedure, date);
+
     	if (activate) {
     		talon.setActivity(Activity.ACTIVE);
     		Patient patient = patientService.getPatient(patientId);

@@ -70,7 +70,7 @@ public class Talon {
         this.patientId = patientId;
         this.date = LocalDate.now();
         this.procedure = procedure;
-        this.zones = 0;
+        this.zones = 1;
         this.desc = "";
         this.executionTime = null;
         this.doctor = null;
@@ -93,7 +93,7 @@ public class Talon {
         this.patientId = patientId;
         this.date = LocalDate.now().plusDays(days);
         this.procedure = procedure;
-        this.zones = 0;
+        this.zones = 1;
         this.desc = "";
         this.executionTime = null;
         this.doctor = null;
