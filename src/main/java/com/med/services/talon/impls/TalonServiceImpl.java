@@ -76,6 +76,11 @@ public class TalonServiceImpl implements ITalonService {
     	Talon talon = new Talon(patientId, procedure, date);
     	if (activate) {
     		talon.setActivity(Activity.ACTIVE);
+    		Patient patient = patientService.getPatient(patientId);
+    		if (patient.getStartActivity()==null){
+    		patient.setStartActivity(LocalDateTime.now());
+    		patient.setLastActivity(LocalDateTime.now());
+    		patientService.savePatient(patient);}
     	}
     	return repository.save(talon);
     }
