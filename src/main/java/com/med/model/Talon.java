@@ -18,7 +18,7 @@ public class Talon {
     private String patientId;
     private LocalDate date;
     private Procedure procedure;
-    private int zones=1;
+    private int zones = 1;
     private String desc;
     private LocalDateTime start;
     private LocalDateTime executionTime;
@@ -93,7 +93,7 @@ public class Talon {
         this.patientId = patientId;
         this.date = LocalDate.now().plusDays(days);
         this.procedure = procedure;
-        this.zones = 0;
+        this.zones = 1;
         this.desc = "";
         this.executionTime = null;
         this.doctor = null;
