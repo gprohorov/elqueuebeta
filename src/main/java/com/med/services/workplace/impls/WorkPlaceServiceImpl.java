@@ -76,7 +76,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
-        talon.setZones(0);
+        talon.setZones(1);
 
         String desc = doctor.getFullName() + ", "
         		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
