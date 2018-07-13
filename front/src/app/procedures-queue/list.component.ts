@@ -21,7 +21,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     updateMasonryLayout = false;
 
     public myOptions: NgxMasonryOptions = {
-        transitionDuration: '0.2s',
+        transitionDuration: '0.001s',
         columnWidth: 200,
         fitWidth: true,
         horizontalOrder: true,
@@ -35,6 +35,9 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.load();
+        setInterval(() => {
+            this.load();
+        }, 2000);
     }
 
     ngOnDestroy() {

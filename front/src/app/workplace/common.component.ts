@@ -57,11 +57,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.canvasInit();
-                const procedure = this.item.patient.therapy.assignments.find(x => { 
-                    return (x.procedureId == this.procedureId) ? x : false; 
-                });
-                if (procedure && procedure.picture) {
-                    procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+                if (this.item.patient.therapy && this.item.patient.therapy.assignments) {
+                    const procedure = this.item.patient.therapy.assignments.find(x => { 
+                        return (x.procedureId == this.procedureId) ? x : false; 
+                    });
+                    if (procedure && procedure.picture) {
+                        procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+                    }
                 }
             }, 0);
         });

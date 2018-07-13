@@ -12,9 +12,9 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        <span>Код:</span> <strong>{{item.patient.therapy.codeDiag}}</strong>
+                        <span>Код:</span> <strong>{{item.patient.therapy?.codeDiag}}</strong>
                     </p>
-                    <p>{{item.patient.therapy.diag}}</p>
+                    <p>{{item.patient.therapy?.diag}}</p>
                 </div>
             </div>
             <div class="card mb-2">
@@ -30,7 +30,7 @@
                     <h4>Нотатки</h4>
                 </div>
                 <div class="card-body">
-                    <p>{{item.patient.therapy.notes}}</p>
+                    <p>{{item.patient.therapy?.notes}}</p>
                 </div>
             </div>
             <div class="card mb-5">
@@ -61,7 +61,7 @@
             </form>
             <button class="btn btn-info btn-lg btn-block mb-2" (click)="addZone()"
                 *ngSwitchCase="true">
-                Зон: {{item.talon.zones}}
+                Зон: {{item.talon?.zones}}
                 <h4>Добавити зону</h4>
             </button>
             <button class="btn btn-primary btn-lg btn-block mb-2" [style.min-height.px]="200"
