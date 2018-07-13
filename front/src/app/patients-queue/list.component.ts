@@ -120,7 +120,6 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         if (talon.start) {
             start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
             out += start.format('HH:mm');
-            console.log(start);
         }
         if (talon.start && talon.executionTime) {
             end = moment(talon.executionTime, 'YYYY-MM-DDTHH:mm:ss.SSS');
