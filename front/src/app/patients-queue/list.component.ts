@@ -143,8 +143,10 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             this.items = data.sort(function (a, b) {
                 // Sort by startActivity
                 // const x = a.startActivity, y = b.startActivity;
+                
                 // Sort by name
                 const x = a.person.fullName, y = b.person.fullName;
+                
                 if (x < y) { return -1; }
                 if (x > y) { return 1; }
                 return 0;
