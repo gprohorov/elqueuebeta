@@ -37,6 +37,9 @@ export class WorkplaceMainComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.load();
+        setInterval(() => {
+            this.load();
+        }, 60000);
     }
 
     ngOnDestroy() {
