@@ -66,4 +66,15 @@ public class Chamber {
     public void setBeds(int beds) {
         this.beds = beds;
     }
+
+    @Override
+    public String toString() {
+        return "Chamber{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", desc='" + desc + '\'' +
+                ", beds=" + beds +
+                '}';
+    }
 }
