@@ -30,6 +30,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
         this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.data.time = 9;
         this.sub = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
             this.data.procedureId = this.procedures[0].id;

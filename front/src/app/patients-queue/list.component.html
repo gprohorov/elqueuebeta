@@ -1,6 +1,8 @@
-﻿<button
-    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+﻿<div class="position-fixed" [style.right.px]="50">
+<button
+    [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
 <div>Фільтри:</div>
 <div class="btn-group mb-3" role="group">
     <button type="button"

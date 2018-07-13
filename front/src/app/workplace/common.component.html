@@ -4,7 +4,7 @@
 <div class="content" *ngIf="item?.patient">
     <h2 class="title">{{item.talon.procedure.name}}</h2>
     <h4 class="title">{{item.patient.person.fullName}}</h4>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-8">
             <div class="card mb-2">
                 <div class="card-header">
@@ -39,13 +39,10 @@
                 </div>
                 <div class="card-body" [innerHTML]="item.talon.desc"></div>
             </div>
-            <form *ngIf="procedureStarted" name="form" (ngSubmit)="f.form.valid && comment()"
-                #f="ngForm" novalidate>
-                <label for="comment">Добавити коментар:</label>
-                <textarea rows="5" class="form-control" name="comment" #comment="ngModel"
-                    [(ngModel)]="model.comment"></textarea>
-                <button class="btn btn-primary pull-right" [disabled]="model.comment == ''">Добавити</button>
-            </form>
+            <label for="comment">Добавити коментар:</label>
+            <textarea rows="5" class="form-control" [(ngModel)]="model.comment"></textarea>
+            <button class="btn btn-primary pull-right" [disabled]="model.comment == ''"
+                (click)="comment()">Добавити</button>
         </div>
         <div class="col-4" [ngSwitch]="procedureStarted">
             <button class="btn btn-danger btn-lg btn-block mb-2" [style.min-height.px]="200"
@@ -62,8 +59,10 @@
                     </h3>
                 </button>
             </form>
-            <button class="btn btn-info btn-lg btn-block mb-2" (click)="addZone()" *ngSwitchCase="true">
-                Зон: {{item.talon.zones}}<h4>Добавити зону</h4>
+            <button class="btn btn-info btn-lg btn-block mb-2" (click)="addZone()"
+                *ngSwitchCase="true">
+                Зон: {{item.talon.zones}}
+                <h4>Добавити зону</h4>
             </button>
             <button class="btn btn-primary btn-lg btn-block mb-2" [style.min-height.px]="200"
                 (click)="startProcedure()" *ngSwitchCase="false">
