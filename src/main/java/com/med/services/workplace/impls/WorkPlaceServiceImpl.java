@@ -348,8 +348,11 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     //   cancelation after execution : some talons may be canceled when the procedure is done
     // i.e ultrasound must be canceled if laser has been done
     private void cancelTalonsByCard(Procedure procedure, String patientId){
+/*
         List<Integer> proceduresToClose = cardService
                 .getCardByProcedureId(procedure.getId()).getCloseAfter();
+     */
+        List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
 
         patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
             if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
@@ -361,12 +364,21 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     //   activation after execution : some talons may be activated ONLY when the procedure is done
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId){
-        List<Integer> proceduresToActivate = cardService
+
+/*        List<Integer> proceduresToActivate = cardService
                 .getCardByProcedureId(procedure.getId()).getActivateAfter();
 
-      //
+     */
+        List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+
+/*
+
         List<Integer> proceduresMustBeDoneByCard = cardService
                 .getCardByProcedureId(procedure.getId()).getMustBeDoneBefore();
+*/
+
+        List<Integer> proceduresMustBeDoneByCard = procedure.getCard().getMustBeDoneBefore();
+
 
         List<Talon> talons = patientService
                 .getPatientWithTalons(patientId).getTalons();
