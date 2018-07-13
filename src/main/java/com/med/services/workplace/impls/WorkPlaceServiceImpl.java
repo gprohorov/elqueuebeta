@@ -277,6 +277,19 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 ////////////////////////////getTailsForDoctor  - the end
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Patient getTalonAndPatient(String talonId) {
 
         Talon talon = talonService.getTalon(talonId);
