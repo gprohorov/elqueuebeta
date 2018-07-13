@@ -40,6 +40,9 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
         this.load();
+        setInterval(() => {
+            this.load();
+        }, 60000);
     }
 
     ngOnDestroy() {
@@ -125,14 +128,31 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
+        }, 
+        error => {
+            this.alertService.error(error, true);
+            this.router.navigate(['workplace']);
         });
+    }
+
+    subZone() {
+        this.loading = true;
+        this.service.subZone(this.item.talon.id).subscribe(
+            data => {
+                this.alertService.success('Зону скасовано.', true);
+                this.load();
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 
     addZone() {
         this.loading = true;
         this.service.addZone(this.item.talon.id).subscribe(
             data => {
-                this.alertService.success('Зміни збережено.', true);
+                this.alertService.success('Зону додано.', true);
                 this.load();
             },
             error => {

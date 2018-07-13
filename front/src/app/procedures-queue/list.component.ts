@@ -37,7 +37,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
         this.load();
         setInterval(() => {
             this.load();
-        }, 2000);
+        }, 60000);
     }
 
     ngOnDestroy() {

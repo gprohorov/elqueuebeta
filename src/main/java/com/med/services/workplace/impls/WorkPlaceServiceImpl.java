@@ -330,17 +330,27 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon addZone(String talonId) {
+    public Talon subZone(String talonId) {
         Talon talon = talonService.getTalon(talonId);
-        talon.setZones(talon.getZones()+1);
-        Doctor doctor = userService.getCurrentUserInfo();
-        talon.setDesc(talon.getDesc() +  doctor.getFullName()
-                + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-        + " - добавлено зону.<br/><br/>");
+        if (talon.getZones() > 1) {
+	        talon.setZones(talon.getZones()-1);
+	        Doctor doctor = userService.getCurrentUserInfo();
+	        talon.setDesc(talon.getDesc() +  doctor.getFullName()
+	                + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+	        + " - скасовано зону.<br/><br/>");
+        }
         return talonService.saveTalon(talon);
     }
-
-
+    
+    public Talon addZone(String talonId) {
+    	Talon talon = talonService.getTalon(talonId);
+    	talon.setZones(talon.getZones()+1);
+    	Doctor doctor = userService.getCurrentUserInfo();
+    	talon.setDesc(talon.getDesc() +  doctor.getFullName()
+    	+ ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+    	+ " - додано зону.<br/><br/>");
+    	return talonService.saveTalon(talon);
+    }
 
 
 ///////////////////////////////////////// Logic ////////////////////////////////////////
