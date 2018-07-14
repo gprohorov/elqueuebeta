@@ -44,28 +44,20 @@ public class TailServiceImpl implements ITailService {
         //this.setSemaforSignal(1,true);
     }
 
-    public HashMap<Integer, Boolean> setAllSemafors() {
-
-     semafor.entrySet().stream().forEach(entry->
-               {
-                   if (
-                          talonService.getTalonsForToday().stream()
-                         .filter(talon -> talon.getProcedure().getId() == entry.getKey())
-                         .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
-                           .count() <  procedureService.getProcedure(entry.getKey()).getNumber()
-                           )  {
-
-                                 entry.setValue(true);
-                   } else {
-
-                       entry.setValue(false) ;
-                   }
-               }
-       );
-
-
-
-        return semafor;
+    public HashMap<Integer, Boolean> setAllSemafors(List<Talon> talonsForToday) {
+	    semafor.entrySet().stream().forEach(entry-> {
+	    	if (talonsForToday.stream()
+	             .filter(talon -> talon.getProcedure().getId() == entry.getKey())
+	             .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+	             .count() <  procedureService.getProcedure(entry.getKey()).getNumber()
+	            ) {
+	    		entry.setValue(true);
+	    	} else {
+	    		entry.setValue(false) ;
+	       }
+		});
+	
+	    return semafor;
     }
 
     public void setSemaforSignal(int procedureId, boolean signal) {
@@ -96,7 +88,9 @@ public class TailServiceImpl implements ITailService {
 
     	long start = System.currentTimeMillis();
     	
-        List<Tail> tails =  talonService.getTalonsForToday().stream().filter(talon ->
+        List<Talon> talonsForToday = talonService.getTalonsForToday();
+        
+        List<Tail> tails = talonsForToday.stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
                 talon.getActivity().equals(Activity.ON_PROCEDURE)
@@ -122,13 +116,11 @@ public class TailServiceImpl implements ITailService {
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
         
-        long middle = System.currentTimeMillis();
-        
-        this.setAllSemafors();
-        
         long end = System.currentTimeMillis();
         
-        System.out.println(">>> " + (middle - start) + " ---  " + (end - middle) + " <<< " + (end - start) );
+        System.out.println(">>> " + (end - start) );
+        
+        this.setAllSemafors(talonsForToday);
         
         return tails;
     }
