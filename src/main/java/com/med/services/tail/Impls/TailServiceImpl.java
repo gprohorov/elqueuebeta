@@ -89,7 +89,7 @@ public class TailServiceImpl implements ITailService {
     	long start = System.currentTimeMillis();
     	
         List<Talon> talonsForToday = talonService.getTalonsForToday();
-        
+
         List<Tail> tails = talonsForToday.stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
@@ -116,12 +116,11 @@ public class TailServiceImpl implements ITailService {
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
         
-        long end = System.currentTimeMillis();
-        
-        System.out.println(">>> " + (end - start) );
-        
         this.setAllSemafors(talonsForToday);
-        
+
+        long end = System.currentTimeMillis();
+        System.out.println(">>> " + (end - start) );
+
         return tails;
     }
 

@@ -132,9 +132,7 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public List<Talon> getTalonsForToday() {
-        return this.getAll().stream()
-                .filter(talon -> talon.getDate().equals(LocalDate.now()))
-                .collect(Collectors.toList());
+        return repository.findByDate(LocalDate.now());
     }
 
 

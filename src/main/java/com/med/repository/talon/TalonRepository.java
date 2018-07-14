@@ -5,6 +5,7 @@ import com.med.model.Talon;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -15,5 +16,6 @@ public interface TalonRepository extends MongoRepository<Talon, String>{
 
     List<Talon> findByActivity(Activity activity);
     List<Talon> findByPatientId(String patientId);
+    List<Talon> findByDate(LocalDate date);
 
 }
