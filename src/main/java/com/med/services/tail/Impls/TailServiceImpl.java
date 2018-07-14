@@ -100,15 +100,17 @@ public class TailServiceImpl implements ITailService {
                 tail.getKey().getId(),
                 tail.getKey().getName(),
                 tail.getKey().getProcedureType(),
-                talonService.toPatientList(tail.getValue()).stream().filter(patient ->
-                    patient.getActivity().equals(Activity.ACTIVE)
-                    ||
-                    patient.getTalons().stream().filter(talonTest ->
-                        talonTest.getProcedure().getId() == tail.getKey().getId()
-                        &&
-                        talonTest.getActivity().equals(Activity.ON_PROCEDURE)
-                    ).findFirst().isPresent()
-                ).sorted(
+                talonService.toPatientList(tail.getValue()).stream()
+//                        .filter(patient ->
+//                    patient.getActivity().equals(Activity.ACTIVE)
+//                    ||
+//                    patient.getTalons().stream().filter(talonTest ->
+//                        talonTest.getProcedure().getId() == tail.getKey().getId()
+//                        &&
+//                        talonTest.getActivity().equals(Activity.ON_PROCEDURE)
+//                    ).findFirst().isPresent()
+//                )
+                        .sorted(
                         ( Comparator.comparing(Patient::getActivityLevel)
                               .thenComparing(Patient::getStatusLevel)
                               .thenComparing(Patient::getDelta) ).reversed()

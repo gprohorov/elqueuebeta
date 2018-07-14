@@ -69,7 +69,7 @@ public class PatientServiceImpl implements IPatientService {
     public Patient getPatient(String patientId) {
         Patient patient = repository.findById(patientId).orElse(null);
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
-        patient.setTherapy(therapy);
+        if (therapy!=null)patient.setTherapy(therapy);
         return  patient;
     }
 
@@ -79,6 +79,14 @@ public class PatientServiceImpl implements IPatientService {
         talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
                 .equals(id)).forEach(talon -> patient.getTalons().add(talon));
         return  patient;
+    }
+
+    public Patient getPatientWithOneTalon(String patientId, int procedureId) {
+        Patient patient = repository.findById(patientId).get();
+        patient.getTalons().add(
+            talonService.getTalonForTodayForPatientForProcedure(patientId, procedureId)
+        );
+        return patient;
     }
 
     @Override

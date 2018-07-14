@@ -406,7 +406,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
 
-        patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
+        talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))
               //     &&permission
                     ){

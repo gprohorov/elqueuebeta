@@ -135,19 +135,24 @@ public class TalonServiceImpl implements ITalonService {
         return repository.findByDate(LocalDate.now());
     }
 
-
+    public Talon getTalonForTodayForPatientForProcedure(String patientId, int procedureId) {
+        return repository.findByDateAndPatientId(LocalDate.now(), patientId)
+            .stream().filter(talon ->
+                ( talon.getActivity().equals(Activity.ACTIVE)
+                    || talon.getActivity().equals(Activity.ON_PROCEDURE)
+                )
+                && talon.getProcedure().getId() == procedureId
+            )
+            .findFirst().get();
+    }
 
     public List<Talon> getAllTalonsForPatient(String patientId) {
-        return this.getAll().stream()
-                .filter(talon -> talon.getPatientId().equals(patientId))
-                .collect(Collectors.toList());
+        return repository.findByPatientId(patientId);
     }
 
     @Override
     public List<Talon> getTalonsForDate(LocalDate date) {
-        return this.getAll().stream()
-                .filter(talon -> talon.getDate().equals(date))
-                .collect(Collectors.toList());
+        return repository.findByDate(date);
     }
 
     @Override
@@ -200,21 +205,12 @@ public class TalonServiceImpl implements ITalonService {
         return null;
     }
 
-
-
-
-
-
-
-
-
-
-
     public List<Patient> toPatientList(List<Talon> talons){
         List<Patient> patients = new ArrayList<>();
 
-        talons.stream().forEach(talon -> patients
-                .add(patientService.getPatientWithTalons(talon.getPatientId()))
+        talons.stream().forEach(talon -> patients.add(
+            patientService.getPatient(talon.getPatientId())
+            )
         );
 
         return patients.stream().collect(Collectors.toList());

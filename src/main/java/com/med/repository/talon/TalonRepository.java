@@ -17,5 +17,6 @@ public interface TalonRepository extends MongoRepository<Talon, String>{
     List<Talon> findByActivity(Activity activity);
     List<Talon> findByPatientId(String patientId);
     List<Talon> findByDate(LocalDate date);
+    List<Talon> findByDateAndPatientId(LocalDate date, String patientId);
 
 }
