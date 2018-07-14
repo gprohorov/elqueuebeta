@@ -16,8 +16,8 @@ public class RecordController {
     @Autowired
     RecordServiceImpl service;
 
-    @RequestMapping("/hotel")
-   public List<KoikaLine> showAll(){
-        return service.getLines(10);
+    @RequestMapping("/koika/list")
+   public List<KoikaLine> showAllKoikasForDays(){
+        return service.getLines(30);
     }
 }

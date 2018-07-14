@@ -20,5 +20,5 @@ public interface IRecordService {
     List<Record> saveAll(List<Record> records);
     List<Record> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish);
     List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish);
-    List<KoikaLine> getLines(int date);
+    List<KoikaLine> getLines(int days);
 }

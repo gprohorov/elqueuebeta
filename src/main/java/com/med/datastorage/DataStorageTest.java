@@ -47,21 +47,6 @@ public class DataStorageTest {
     @PostConstruct
     void init(){
 
-//        recordService.getLines() test start
-
-//        List<KoikaLine> koikaLines = recordService.getLines(10);
-//        for (KoikaLine kl : koikaLines){
-//            System.out.println("New line:\n---------------");
-//            System.out.println(kl.getKoika().toString());
-//            List<HotelDay> hotelDays = kl.getLine();
-//            for (HotelDay hd : hotelDays){
-//                System.out.println(hd.toString());
-//            }
-//        }
-
-//        recordService.getLines() test end
-
-
 //       List<Record> records = new ArrayList<>(
 //               Arrays.asList(
 //                       new Record(patientService.getAll("").get(0).getId(),
@@ -94,10 +79,66 @@ public class DataStorageTest {
 //                               85,
 //                               LocalDateTime.now(),
 //                               LocalDateTime.now().plusDays(4),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(8).getId(),
+//                               "",
+//                               koikaService.getAll().get(12),
+//                               70,
+//                               LocalDateTime.now(),
+//                               LocalDateTime.now().plusDays(1),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(6).getId(),
+//                               "",
+//                               koikaService.getAll().get(11),
+//                               75,
+//                               LocalDateTime.now().plusDays(2),
+//                               LocalDateTime.now().plusDays(4),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(7).getId(),
+//                               "",
+//                               koikaService.getAll().get(10),
+//                               85,
+//                               LocalDateTime.now(),
+//                               LocalDateTime.now().plusDays(1),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(5).getId(),
+//                               "",
+//                               koikaService.getAll().get(9),
+//                               55,
+//                               LocalDateTime.now().plusDays(7),
+//                               LocalDateTime.now().plusDays(8),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(4).getId(),
+//                               "",
+//                               koikaService.getAll().get(8),
+//                               65,
+//                               LocalDateTime.now().minusDays(2),
+//                               LocalDateTime.now().plusDays(2),
+//                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(10).getId(),
+//                               "",
+//                               koikaService.getAll().get(7),
+//                               70,
+//                               LocalDateTime.now(),
+//                               LocalDateTime.now().plusDays(3),
 //                               State.OCCUP)
 //               )
 //       );
 //        recordService.saveAll(records);
+
+        //        recordService.getLines() test
+
+//        List<KoikaLine> koikaLines = recordService.getLines(30);
+//        for (KoikaLine kl : koikaLines){
+//            System.out.println("New line:\n---------------");
+//            System.out.println(kl.getKoika().toString());
+//            List<HotelDay> hotelDays = kl.getLine();
+//            for (HotelDay hd : hotelDays){
+//                System.out.println(hd.toString());
+//            }
+//        }
+
+
 //        List<Koika> koikas = new ArrayList<>(
 //                Arrays.asList(
 //
@@ -134,7 +175,6 @@ public class DataStorageTest {
 //        );
 //
 //        koikaService.saveAll(koikas);
-
 //        System.out.println("----------------- koiki updated------------------------------");
     }
 

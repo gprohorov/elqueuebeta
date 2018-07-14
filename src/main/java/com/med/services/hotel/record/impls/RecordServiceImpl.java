@@ -72,22 +72,30 @@ public class RecordServiceImpl implements IRecordService {
     }
 
     //all Koikas from repository version
-    public List<KoikaLine> getLines(int date){
+    public List<KoikaLine> getLines(int days){
 
         List<KoikaLine> koikaLines = new ArrayList<>();
-        LocalDate endDate = LocalDate.now().plusDays(date);
+        LocalDate endDate = LocalDate.now().plusDays(days);
         List<Koika> allKoikas = koikaService.getAll();
 
         for (Koika koika : allKoikas){
             List<HotelDay> koikaHotelDays = new ArrayList<>();
             LocalDate dateWithFreeState = LocalDate.now();
             List<Record> recordsForKoika = getAllForKoikaFromTo(koika, LocalDate.now(),
-                    LocalDate.now().plusDays(date));
+                    LocalDate.now().plusDays(days));
             if (recordsForKoika != null) {
                 Collections.sort(recordsForKoika, Comparator.comparing(Record::getStart));
                 for (Record record : recordsForKoika) {
                     LocalDate startDay = record.getStart().toLocalDate();
+                    if (startDay.isBefore(LocalDate.now()))
+                    {
+                        startDay = LocalDate.now();
+                    }
                     LocalDate finishDay = record.getFinish().toLocalDate();
+                    if (finishDay.isAfter(endDate))
+                    {
+                        finishDay = endDate;
+                    }
                     while (dateWithFreeState.isBefore(startDay)){
                         koikaHotelDays.add(new HotelDay(dateWithFreeState, State.FREE));   // consider adding another state from Koika document
                         dateWithFreeState = dateWithFreeState.plusDays(1);
