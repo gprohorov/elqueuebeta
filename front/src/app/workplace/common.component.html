@@ -31,20 +31,13 @@
         </div>
     </div>
     <div class="row mb-2" [hidden]="!procedureStarted">
-        <div class="col">
-            <button class="btn btn-info btn-lg btn-block" (click)="subZone()">
-                <h4>Скасувати зону</h4><i class="fa fa-minus"></i>
-            </button>
-        </div>
-        <div class="col-auto text-center">
+        <div class="col btn-group" role="group">
+            <button class="btn btn-info btn-lg" (click)="subZone()"><i class="fa fa-minus fa-5x"></i></button>
             <button class="btn btn-light btn-lg btn-block">
-                <h4>Зон:</h4> <h4>{{item.talon?.zones}}</h4>
+                <h4>Зон:</h4>
+                <h4>{{item.talon?.zones}}</h4>
             </button>
-        </div>
-        <div class="col">
-            <button class="btn btn-info btn-lg btn-block" (click)="addZone()">
-                <h4>Додати зону</h4><i class="fa fa-plus"></i>
-            </button>
+            <button class="btn btn-info btn-lg" (click)="addZone()"><i class="fa fa-plus fa-5x"></i></button>
         </div>
     </div>
     <div class="card mb-2">
