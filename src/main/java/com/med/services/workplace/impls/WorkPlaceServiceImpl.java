@@ -232,11 +232,12 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
         List<Integer> procedureIds = userService.getCurrentUserInfo().getProcedureIds();
+
         tails = tailService.getTails().stream()
                 .filter(tail -> procedureIds.contains(tail.getProcedureId()))
                 .collect(Collectors.toList());
 
-        // inject into the tail thecfirst active patient and all on procedure
+        // inject into the tail the first active patient and all on procedure
     tails.stream().forEach(tail -> {
 
         Patient first = tail.getPatients().stream()
@@ -255,21 +256,11 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
             // first and on procedure -> together
         if (first != null) {patients.add(first);}
 
-       // clean patients from extra talons
-/*
-        patients.stream().forEach(patient -> {
 
-           List<Talon>  talons = patient.getTalons()
-                    .stream().filter(tl->tl.getProcedure().getId()==tail.getProcedureId())
-                    .collect(Collectors.toList());
-           patient.setTalons(talons);
-        });
-*/
-
-
-        tail.setPatients(patients);
-
-            }
+        if (!procedureService.getProcedure(tail.getProcedureId()).getFreeChoice()) {
+            tail.setPatients(patients);
+        }
+        }
 
     );
 
