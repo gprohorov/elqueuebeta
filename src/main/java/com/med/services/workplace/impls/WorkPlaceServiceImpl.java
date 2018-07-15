@@ -237,29 +237,35 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .filter(tail -> procedureIds.contains(tail.getProcedureId()))
                 .collect(Collectors.toList());
 
-        // inject into the tail the first active patient and all on procedure
+        // inject into the tail the first active patient and all on procedure if not freechoice
     tails.stream().forEach(tail -> {
 
-        Patient first = tail.getPatients().stream()
-                .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
-                .findFirst().orElse(null);
+        if (!procedureService.getProcedure(tail.getProcedureId()).getFreeChoice()) {
+
+            Patient first = tail.getPatients().stream()
+                    .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
+                    .findFirst().orElse(null);
 
             List<Patient> patients = tail.getPatients()
-                        .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
-                        .collect(Collectors.toList());
+                    .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
+                    .collect(Collectors.toList());
 
             // switch semafor
-            if (patients.size()< procedureService.getProcedure(tail.getProcedureId()).getNumber())
-            {tail.setVacant(true);}
-            else {tail.setVacant(false);}
+            if (patients.size() < procedureService.getProcedure(tail.getProcedureId()).getNumber()) {
+                tail.setVacant(true);
+            } else {
+                tail.setVacant(false);
+            }
 
             // first and on procedure -> together
-        if (first != null) {patients.add(first);}
-
-
-        if (!procedureService.getProcedure(tail.getProcedureId()).getFreeChoice()) {
+            if (first != null) {
+                patients.add(first);
+            }
             tail.setPatients(patients);
-        }
+            tail.setFreeChoice(false);
+
+        } // of if
+
         }
 
     );
