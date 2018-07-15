@@ -15,6 +15,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     loading = false;
 
     sub: Subscription;
+    reloadFunc: any;
     items: any[] = [];
     Activity = Activity;
     Status = Status;
@@ -35,13 +36,14 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.load();
-        setInterval(() => {
+        this.reloadFunc = setInterval(() => {
             this.load();
         }, 60000);
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+        if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
     getTimeDiffClass(v: number) {

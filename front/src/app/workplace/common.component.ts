@@ -17,6 +17,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     loading = false;
     sub: Subscription;
+    reloadFunc: any;
     subPatient: Subscription;
     subProcedure: Subscription;
 
@@ -40,7 +41,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
         this.load();
-        setInterval(() => {
+        this.reloadFunc = setInterval(() => {
             this.load();
         }, 60000);
     }
@@ -49,6 +50,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         if (this.sub) this.sub.unsubscribe();
         if (this.subPatient) this.subPatient.unsubscribe();
         if (this.subProcedure) this.subProcedure.unsubscribe();
+        if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
     load() {
