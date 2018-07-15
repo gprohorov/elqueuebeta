@@ -14,6 +14,7 @@ public class Procedure {
     private int id;
     private String name;
     private int cabinet;
+    private Boolean freeChoice = false;
     @JsonProperty("FOREIGN")
     private int FOREIGN;
     @JsonProperty("VIP")
@@ -214,6 +215,14 @@ public class Procedure {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public Boolean getFreeChoice() {
+        return freeChoice;
+    }
+
+    public void setFreeChoice(Boolean freeChoice) {
+        this.freeChoice = freeChoice;
     }
 
     @Override
