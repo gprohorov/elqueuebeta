@@ -261,7 +261,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
             if (first != null) {
                 patients.add(first);
             }
-            tail.setPatients(patients);
+            tail.setPatients(patients   );
             tail.setFreeChoice(false);
 
         } // of if
