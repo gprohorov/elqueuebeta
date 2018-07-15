@@ -35,6 +35,13 @@
                     <label class="form-check-label">Зональна</label>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" name="freeChoice"
+                        [(value)]="model.freeChoice" [(ngModel)]="model.freeChoice" />
+                    <label class="form-check-label">Відображати повну чергу</label>
+                </div>
+            </div>
             <label>Ціни для статуса:</label>
             <div class="row form-group" *ngFor="let status of Statuses">
                 <div class="col-md-3">

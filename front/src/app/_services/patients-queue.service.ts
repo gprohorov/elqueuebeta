@@ -20,51 +20,35 @@ export class PatientsQueueService {
     constructor(private http: HttpClient) { }
 
     getAll(search: string = '') {
-        return this.http
-            .get<any[]>(this.listUrl + search)
-            .pipe(catchError(this.handleError));
+        return this.http.get<any[]>(this.listUrl + search).pipe(catchError(this.handleError));
     }
 
     getTails() {
-        return this.http
-            .get<any[]>(this.tailsUrl)
-            .pipe(catchError(this.handleError));
+        return this.http.get<any[]>(this.tailsUrl).pipe(catchError(this.handleError));
     }
 
     getAllByProcedure(id: number) {
-        return this.http
-            .get<any[]>(this.listByProcedureUrl + id)
-            .pipe(catchError(this.handleError));
+        return this.http.get<any[]>(this.listByProcedureUrl + id).pipe(catchError(this.handleError));
     }
 
     updateActivity(id: string, value: string) {
-        return this.http
-            .get(this.updateActivityUrl + id + '/' + value)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.updateActivityUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
 
     updateActivityAll(id: string, value: string) {
-        return this.http
-            .get(this.updateActivityAllUrl + id + '/' + value)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.updateActivityAllUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
 
     updateStatus(id: string, value: string) {
-        return this.http
-            .get(this.updateStatusUrl + id + '/' + value)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.updateStatusUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
 
     updateBalance(id: string, value: string) {
-        return this.http
-            .get(this.updateBalanceUrl + id + '/' + value)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.updateBalanceUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
 
     delete(id: string) {
-        return this.http
-            .get(this.deleteUrl + id)
-            .pipe(catchError(this.handleError));
+        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
