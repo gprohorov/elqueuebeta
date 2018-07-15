@@ -1,7 +1,7 @@
 ﻿<button
     [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
-<div class="content mb-3" *ngIf="item?.patient">
+<div class="mb-3" *ngIf="item?.patient">
     <h2 class="title">{{item.talon.procedure.name}}</h2>
     <h4 class="title">{{item.patient.person.fullName}}</h4>
     <div class="row mb-2">
@@ -36,7 +36,7 @@
                 <h4>Скасувати зону</h4><i class="fa fa-minus"></i>
             </button>
         </div>
-        <div class="col text-center">
+        <div class="col-auto text-center">
             <button class="btn btn-light btn-lg btn-block">
                 <h4>Зон:</h4> <h4>{{item.talon?.zones}}</h4>
             </button>
@@ -62,7 +62,7 @@
         <div class="card-header">
             <h4>Зони</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <canvas #canvas width="500" height="500"></canvas>
         </div>
     </div>
