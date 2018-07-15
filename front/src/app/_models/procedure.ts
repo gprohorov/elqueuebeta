@@ -5,6 +5,7 @@ export class Procedure {
     cabinet         : number;
     number          : number;
     zoned           : boolean;
+    freeChoice      : boolean;
     FOREIGN         : number;
     VIP             : number;
     BUSINESS        : number;

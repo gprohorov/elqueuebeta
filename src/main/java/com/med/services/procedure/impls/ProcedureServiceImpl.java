@@ -8,6 +8,7 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,7 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @Override
     public List<Procedure> getAll() {
-
-
-        return repository.findAll();
+        return repository.findAll().stream().sorted(Comparator.comparing(Procedure::getId)).collect(Collectors.toList());
     }
 
     @Override

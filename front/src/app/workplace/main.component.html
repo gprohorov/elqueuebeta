@@ -13,6 +13,7 @@
         [ngClass]="{'masonry-header': true, 'bg-success': group.vacant, 'bg-danger': !group.vacant}"
         (click)="toggleGroup(group)" [ngStyle]="{'cursor': 'pointer'}"
         title="{{group.procedureName}}">
+        <span class="badge pull-right" [hidden]="!group.freeChoice">{{group.patients?.length}}</span>
         <span class="masonry-header-title">{{group.procedureName}}</span>
     </div>
     <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
