@@ -9,6 +9,8 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +40,12 @@ public class TailServiceImpl implements ITailService {
     @Autowired
     UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(TailServiceImpl.class);
+
+
     @PostConstruct
     void init() {
+
         procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
         //this.setSemaforSignal(1,true);
     }
@@ -120,8 +126,7 @@ public class TailServiceImpl implements ITailService {
         
         this.setAllSemafors(talonsForToday);
 
-        long end = System.currentTimeMillis();
-        System.out.println(">>> " + (end - start) );
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>  tails for all procedures  " + (System.currentTimeMillis() - start));
 
         return tails;
     }
@@ -148,61 +153,5 @@ public class TailServiceImpl implements ITailService {
         return null;
     }
 
-/*
-
-   void temp() {
-       procedureService.getAll()
-               .stream().forEach(procedure
-               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
-       talonService.getTalonsForToday().stream()
-               .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
-               .collect(Collectors.groupingBy(Talon::getProcedure))
-               .entrySet().stream()
-               .forEach(entry-> {
-                   Tail tail = this.getTail(entry.getKey());
-                   tail.setPatients(talonService.toPatientList(entry.getValue()).stream()
-                           .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
-                           .collect(Collectors.toList()));                ;
-               });
-       return tails;
-   }
-
-   @PostConstruct
-   void init() {
-     this.initTails();
-
-   }
-
-
-   private void initTails(){
-       procedureService.getAll()
-               .stream().forEach(procedure
-               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
-   }
-
-   private void resetTails(){
-       tails.stream().forEach(tail -> tail.setPatients(empty));
-   }
-
-
-
-   public Tail getTail(Procedure procedure){
-
-      return tails.stream()
-              .filter(tail -> tail.getProcedureId()==procedure.getId())
-              .findFirst().orElse(null);
-   }
-
-
-   public Tail getTail(String procedureName){
-
-      return tails.stream()
-              .filter(tail -> tail.getProcedureName().equals(patientService))
-              .findFirst().orElse(null);
-   }
-
-
-
-*/
 
 }

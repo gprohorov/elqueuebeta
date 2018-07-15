@@ -213,10 +213,11 @@ public class TalonServiceImpl implements ITalonService {
     public List<Patient> toPatientList(List<Talon> talons){
         List<Patient> patients = new ArrayList<>();
 
-        talons.stream().forEach(talon -> patients.add(
-            patientService.getPatient(talon.getPatientId())
-            )
-        );
+        talons.stream().forEach(talon -> {
+            Patient patient = patientService.getPatient(talon.getPatientId());
+            patient.setActivity(talon.getActivity());
+            patients.add(patient);
+        });
 
         return patients.stream().collect(Collectors.toList());
     }
