@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -39,7 +40,7 @@ public class ProcedureServiceImpl implements IProcedureService {
                 procedure.setId(1);
             } else {
                 procedure.setId(repository.findAll()
-                        .stream().mapToInt(Procedure::getId).max().getAsInt());
+                        .stream().mapToInt(Procedure::getId).max().getAsInt() + 1 );
                 //tailService.
             }
         }
@@ -58,6 +59,12 @@ public class ProcedureServiceImpl implements IProcedureService {
     @Override
     public Procedure updateProcedure(Procedure procedure) {
         return repository.save(procedure);
+    }
+
+
+    public List<Integer> getFreeProcedures() {
+        return this.getAll().stream().filter(procedure -> procedure.getCard().isAnytime())
+                .mapToInt(Procedure::getId).boxed().collect(Collectors.toList());
     }
 
    // public List<Integer>

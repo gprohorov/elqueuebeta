@@ -1,18 +1,24 @@
 package com.med.services.talon.impls;
 
-import com.med.model.*;
+import com.med.model.Activity;
+import com.med.model.Patient;
+import com.med.model.Procedure;
+import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,11 +46,11 @@ public class TalonServiceImpl implements ITalonService {
     @Autowired
     CardServiceImpl cardService;
 
+    private static final Logger logger = LoggerFactory.getLogger(TalonServiceImpl.class);
+
 
     @PostConstruct
-    void init(){
-
-    }
+    void init(){}
 
 
 
@@ -171,8 +177,8 @@ public class TalonServiceImpl implements ITalonService {
             talon.setActivity(activity);
             if (former==Activity.NON_ACTIVE && activity==Activity.ACTIVE) {
                 Patient patient = patientService.getPatient(talon.getPatientId());
-                LocalDateTime sa = patient.getStartActivity();
-                if (sa == null || sa.toLocalDate().isBefore(LocalDate.now())) {
+                LocalDateTime start = patient.getStartActivity();
+                if (start == null || start.toLocalDate().isBefore(LocalDate.now())) {
                     patient.setStartActivity(LocalDateTime.now());
                     patient.setLastActivity(LocalDateTime.now());
                 }
@@ -183,26 +189,25 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-    public List<Talon> setAllActivity(String patientId, Activity activity) {
+    public void setAllActivity(String patientId, Activity activity) {
 
+        LocalDateTime start = LocalDateTime.now();
         List<Talon> talons = this.getTalonsForToday().stream()
                 .filter(talon -> talon.getPatientId().equals(patientId))
                 .collect(Collectors.toList());
 
       if (activity.equals(Activity.ACTIVE)){
-          List<Integer> free = cardService.getFreeProcedures();
+          List<Integer> free = procedureService.getFreeProcedures();
 
           talons.stream().forEach(talon ->{
 
               if (free.contains(Integer.valueOf(talon.getProcedureId())))
-              this.setActivity(talon.getId(), activity);
+              this.setActivity(talon.getId(), Activity.ACTIVE);
           }
           );
-
-          return null;
       }else talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
-        return null;
+      logger.info(">>>> activate talons >>>>>>    " + ChronoUnit.MILLIS.between( start, LocalDateTime.now()) + "ms");
     }
 
     public List<Patient> toPatientList(List<Talon> talons){
