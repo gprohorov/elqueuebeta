@@ -1,1 +1,10 @@
-﻿<h1>Готель</h1>
+﻿<div class="row mb-3">
+    <div class="col-auto mr-auto">
+        <h3>Готель</h3>
+    </div>
+    <div class="col-auto">
+        <button [disabled]="loading" (click)="load()" title="Обновити"
+            [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
+    </div>
+</div>
+<pre>{{items | json}}</pre>

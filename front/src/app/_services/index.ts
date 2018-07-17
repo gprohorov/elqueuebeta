@@ -11,3 +11,5 @@ export * from './patients-queue.service';
 export * from './workplace/main.service';
 export * from './workplace/common.service';
 export * from './workplace/diagnostic.service';
+
+export * from './hotel.service';
