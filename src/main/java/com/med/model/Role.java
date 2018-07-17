@@ -22,6 +22,12 @@ public enum Role implements GrantedAuthority {
             return name();
         }
     },
+    ROLE_HEAD {
+    	@Override
+    	public String getAuthority() {
+    		return name();
+    	}
+    },
     ROLE_USER {
         @Override
         public String getAuthority() {

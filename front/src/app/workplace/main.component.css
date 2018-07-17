@@ -8,18 +8,15 @@
     -webkit-border-radius: 5px;
     background-color: #fff;
     margin: 10px auto;
-    border-left: 2px solid #fff;
-    border-right: 2px solid #fff;
 }
 
 .masonry-header {
     padding: 3px 8px;
     color: #fff;
     font-weight: 500;
-    font-size: 2rem;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
     overflow: hidden;
     /* white-space: nowrap;
     text-overflow: ellipsis; */
@@ -27,7 +24,7 @@
 
 .masonry-body {
     padding: 5px;
-    max-height: 140px;
+    max-height: 130px;
     overflow-y: hidden;
     font-size: 2rem;
 }
@@ -57,5 +54,4 @@
     /* white-space: nowrap; */
     vertical-align: baseline;
     /* text-overflow: ellipsis; */
-    font-size: 2rem;
 }

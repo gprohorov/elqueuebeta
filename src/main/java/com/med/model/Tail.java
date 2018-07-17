@@ -13,6 +13,7 @@ public class Tail {
     private Patient patientOnProcedure = null;
     private boolean vacant;
     private ProcedureType procedureType;
+    private Boolean freeChoice = true;
 
     public Tail() {
     }
@@ -69,6 +70,14 @@ public class Tail {
 
     public void setProcedureType(ProcedureType procedureType) {
         this.procedureType = procedureType;
+    }
+
+    public Boolean getFreeChoice() {
+        return freeChoice;
+    }
+
+    public void setFreeChoice(Boolean freeChoice) {
+        this.freeChoice = freeChoice;
     }
 
     public List<Patient> getPatients() {

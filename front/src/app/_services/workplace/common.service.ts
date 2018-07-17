@@ -15,7 +15,8 @@ export class WorkplaceCommonService {
     private startProcedureUrl = config.api_path + '/workplace/start/';
     private cancelProcedureUrl = config.api_path + '/workplace/cancel/';
     private executeProcedureUrl = config.api_path + '/workplace/execute/';
-    private zoneUrl = config.api_path + '/workplace/zone/';
+    private zoneSubUrl = config.api_path + '/workplace/subzone/';
+    private zoneAddUrl = config.api_path + '/workplace/addzone/';
 
     constructor(private http: HttpClient) { }
 
@@ -29,8 +30,12 @@ export class WorkplaceCommonService {
             .pipe(catchError(this.handleError));
     }
 
+    subZone(talonId: string) {
+        return this.http.get(this.zoneSubUrl + talonId).pipe(catchError(this.handleError));
+    }
+
     addZone(talonId: string) {
-        return this.http.get(this.zoneUrl + talonId).pipe(catchError(this.handleError));
+        return this.http.get(this.zoneAddUrl + talonId).pipe(catchError(this.handleError));
     }
     
     startProcedure(talonId: string) {

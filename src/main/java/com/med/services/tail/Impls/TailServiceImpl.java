@@ -9,6 +9,8 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,34 +40,30 @@ public class TailServiceImpl implements ITailService {
     @Autowired
     UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(TailServiceImpl.class);
+
+
     @PostConstruct
     void init() {
+
         procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
         //this.setSemaforSignal(1,true);
     }
 
-    public HashMap<Integer, Boolean> setAllSemafors() {
-
-     semafor.entrySet().stream().forEach(entry->
-               {
-                   if (
-                          talonService.getTalonsForToday().stream()
-                         .filter(talon -> talon.getProcedure().getId() == entry.getKey())
-                         .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
-                           .count() <  procedureService.getProcedure(entry.getKey()).getNumber()
-                           )  {
-
-                                 entry.setValue(true);
-                   } else {
-
-                       entry.setValue(false) ;
-                   }
-               }
-       );
-
-
-
-        return semafor;
+    public HashMap<Integer, Boolean> setAllSemafors(List<Talon> talonsForToday) {
+	    semafor.entrySet().stream().forEach(entry-> {
+	    	if (talonsForToday.stream()
+	             .filter(talon -> talon.getProcedure().getId() == entry.getKey())
+	             .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+	             .count() <  procedureService.getProcedure(entry.getKey()).getNumber()
+	            ) {
+	    		entry.setValue(true);
+	    	} else {
+	    		entry.setValue(false) ;
+	       }
+		});
+	
+	    return semafor;
     }
 
     public void setSemaforSignal(int procedureId, boolean signal) {
@@ -94,7 +92,11 @@ public class TailServiceImpl implements ITailService {
     */
     public List<Tail> getTails() {
 
-        List<Tail> tails =  talonService.getTalonsForToday().stream().filter(talon ->
+    	long start = System.currentTimeMillis();
+    	
+        List<Talon> talonsForToday = talonService.getTalonsForToday();
+
+        List<Tail> tails = talonsForToday.stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
                 talon.getActivity().equals(Activity.ON_PROCEDURE)
@@ -104,23 +106,27 @@ public class TailServiceImpl implements ITailService {
                 tail.getKey().getId(),
                 tail.getKey().getName(),
                 tail.getKey().getProcedureType(),
-                talonService.toPatientList(tail.getValue()).stream().filter(patient ->
-                    patient.getActivity().equals(Activity.ACTIVE)
-                    ||
-                    patient.getTalons().stream().filter(talonTest ->
-                        talonTest.getProcedure().getId() == tail.getKey().getId()
-                        &&
-                        talonTest.getActivity().equals(Activity.ON_PROCEDURE)
-                    ).findFirst().isPresent()
-                ).sorted(
+                talonService.toPatientList(tail.getValue()).stream()
+//                        .filter(patient ->
+//                    patient.getActivity().equals(Activity.ACTIVE)
+//                    ||
+//                    patient.getTalons().stream().filter(talonTest ->
+//                        talonTest.getProcedure().getId() == tail.getKey().getId()
+//                        &&
+//                        talonTest.getActivity().equals(Activity.ON_PROCEDURE)
+//                    ).findFirst().isPresent()
+//                )
+                        .sorted(
                         ( Comparator.comparing(Patient::getActivityLevel)
                               .thenComparing(Patient::getStatusLevel)
                               .thenComparing(Patient::getDelta) ).reversed()
                 ).collect(Collectors.toList()),
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
+        
+        this.setAllSemafors(talonsForToday);
 
-        this.setAllSemafors();
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>  tails for all procedures  " + (System.currentTimeMillis() - start));
 
         return tails;
     }
@@ -147,61 +153,5 @@ public class TailServiceImpl implements ITailService {
         return null;
     }
 
-/*
-
-   void temp() {
-       procedureService.getAll()
-               .stream().forEach(procedure
-               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
-       talonService.getTalonsForToday().stream()
-               .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
-               .collect(Collectors.groupingBy(Talon::getProcedure))
-               .entrySet().stream()
-               .forEach(entry-> {
-                   Tail tail = this.getTail(entry.getKey());
-                   tail.setPatients(talonService.toPatientList(entry.getValue()).stream()
-                           .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
-                           .collect(Collectors.toList()));                ;
-               });
-       return tails;
-   }
-
-   @PostConstruct
-   void init() {
-     this.initTails();
-
-   }
-
-
-   private void initTails(){
-       procedureService.getAll()
-               .stream().forEach(procedure
-               -> tails.add(new Tail(procedure.getId(), procedure.getName()) ));
-   }
-
-   private void resetTails(){
-       tails.stream().forEach(tail -> tail.setPatients(empty));
-   }
-
-
-
-   public Tail getTail(Procedure procedure){
-
-      return tails.stream()
-              .filter(tail -> tail.getProcedureId()==procedure.getId())
-              .findFirst().orElse(null);
-   }
-
-
-   public Tail getTail(String procedureName){
-
-      return tails.stream()
-              .filter(tail -> tail.getProcedureName().equals(patientService))
-              .findFirst().orElse(null);
-   }
-
-
-
-*/
 
 }

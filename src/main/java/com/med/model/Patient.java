@@ -22,6 +22,8 @@ public class Patient { // implements Comparable<Patient> {
     @Transient
     private Therapy therapy;
     @Transient
+    private Activity activity = Activity.NON_ACTIVE;
+    @Transient
     private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
@@ -134,7 +136,15 @@ public class Patient { // implements Comparable<Patient> {
         return delta;
     }
 
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
     public Activity getActivity() {
+        return this.activity;
+    }
+
+    public Activity calcActivity() {
 
         Activity activity = Activity.NULL;
 
