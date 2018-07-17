@@ -21,7 +21,7 @@ public class RecordController {
     RecordServiceImpl service;
 
 
-    @RequestMapping("/hotel")
+    @RequestMapping("/table")
    public List<Record> showAll(){
         return service.getAll();
     }
