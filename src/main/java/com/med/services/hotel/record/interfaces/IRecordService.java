@@ -1,5 +1,6 @@
 package com.med.services.hotel.record.interfaces;
 
+import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 
@@ -16,7 +17,8 @@ public interface IRecordService {
     Record getRecord(String recordId);
 
     List<Record> getAll();
+    List<Record> saveAll(List<Record> records);
     List<Record> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish);
     List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish);
-
+    List<KoikaLine> getLines(int days);
 }

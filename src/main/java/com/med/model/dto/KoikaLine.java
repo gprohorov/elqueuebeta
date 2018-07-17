@@ -33,4 +33,12 @@ public class KoikaLine {
     public void setLine(List<HotelDay> line) {
         this.line = line;
     }
+
+    @Override
+    public String toString() {
+        return "KoikaLine{" +
+                "koika=" + koika.toString() +
+                ", line=" + line +
+                '}';
+    }
 }

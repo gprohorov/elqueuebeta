@@ -56,4 +56,14 @@ public class Koika {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Koika{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", chamber=" + chamber.toString() +
+                ", price=" + price +
+                '}';
+    }
 }
