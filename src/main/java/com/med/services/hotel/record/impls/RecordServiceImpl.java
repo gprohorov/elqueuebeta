@@ -4,11 +4,7 @@ import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
-<<<<<<< HEAD
 import com.med.model.hotel.State;
-=======
-import com.med.model.hotel.dto.KoikaLine;
->>>>>>> master
 import com.med.repository.hotel.RecordRepository;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.interfaces.IRecordService;
@@ -16,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**

@@ -399,9 +399,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
 
-        boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
-      //
-*/
+    //    boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
+
+
 
 
 
