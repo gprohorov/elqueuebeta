@@ -7,16 +7,15 @@ import com.med.repository.patient.PatientRepository;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by george on 07.05.18.
  */
-//@Component
+@Component
 public class TalonStorage {
 
 
@@ -43,6 +42,23 @@ public class TalonStorage {
 
     @PostConstruct
     void init() {
+
+      //  List<Talon> talons = repository.findAll();
+
+
+     //   talons.stream().forEach(talon -> {
+
+         //  Talon talon1 = new Talon(talon.getPatientId(),talon.getProcedure(), talon.getDate().minusDays(30));
+        //  if (talon.getDate().isBefore(LocalDate.now().minusDays(5))) repository.delete(talon);
+
+      //  });
+
+      //  System.out.println(repository.findAll().size());
+
+
+
+
+        /*
         registration = procedureService.getProcedure(1);
         diagnostics = procedureService.getProcedure(2);
         manual = procedureService.getProcedure(3);
@@ -96,7 +112,7 @@ public class TalonStorage {
                         new Talon(patients.get(21).getId(), ultrasound),
                         new Talon(patients.get(22).getId(), ultrasound)
                 )
-        );
+        );*/
         //  System.out.println(talons.get(0).getDate());
    //   repository.deleteAll();
     //   repository.saveAll(talons);

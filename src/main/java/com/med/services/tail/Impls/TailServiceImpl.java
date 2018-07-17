@@ -96,6 +96,8 @@ public class TailServiceImpl implements ITailService {
     	
         List<Talon> talonsForToday = talonService.getTalonsForToday();
 
+        logger.info(">>>>  talons for today   >>>>>>>> " + (System.currentTimeMillis() - start));
+
         List<Tail> tails = talonsForToday.stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
@@ -123,10 +125,12 @@ public class TailServiceImpl implements ITailService {
                 ).collect(Collectors.toList()),
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
+
+      //  Patient patient =
         
         this.setAllSemafors(talonsForToday);
 
-        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>  tails for all procedures  " + (System.currentTimeMillis() - start));
+        logger.info(">>>>  tails for all procedures >>>>>>>> " + (System.currentTimeMillis() - start));
 
         return tails;
     }
