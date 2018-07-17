@@ -13,7 +13,6 @@ export class ProcedureListComponent implements OnInit {
   sub: Subscription;
   items: Procedure[] = [];
   loading = false;
-  rows = [];
   Status = Status;
   Statuses = Object.keys(Status);
 

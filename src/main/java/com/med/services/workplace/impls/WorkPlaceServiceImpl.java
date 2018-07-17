@@ -76,7 +76,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
-        talon.setZones(0);
+        talon.setZones(1);
 
         String desc = doctor.getFullName() + ", "
         		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
@@ -232,50 +232,60 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
         List<Integer> procedureIds = userService.getCurrentUserInfo().getProcedureIds();
+
         tails = tailService.getTails().stream()
                 .filter(tail -> procedureIds.contains(tail.getProcedureId()))
                 .collect(Collectors.toList());
 
-        // inject into the tail thecfirst active patient and all on procedure
+        // inject into the tail the first active patient and all on procedure if not freechoice
     tails.stream().forEach(tail -> {
 
-        Patient first = tail.getPatients().stream()
-                .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
-                .findFirst().orElse(null);
+        if (!procedureService.getProcedure(tail.getProcedureId()).getFreeChoice()) {
+
+            Patient first = tail.getPatients().stream()
+                    .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
+                    .findFirst().orElse(null);
 
             List<Patient> patients = tail.getPatients()
-                        .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
-                        .collect(Collectors.toList());
+                    .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
+                    .collect(Collectors.toList());
 
             // switch semafor
-            if (patients.size()< procedureService.getProcedure(tail.getProcedureId()).getNumber())
-            {tail.setVacant(true);}
-            else {tail.setVacant(false);}
+            if (patients.size() < procedureService.getProcedure(tail.getProcedureId()).getNumber()) {
+                tail.setVacant(true);
+            } else {
+                tail.setVacant(false);
+            }
 
             // first and on procedure -> together
-        if (first != null) {patients.add(first);}
-
-       // clean patients from extra talons
-/*
-        patients.stream().forEach(patient -> {
-
-           List<Talon>  talons = patient.getTalons()
-                    .stream().filter(tl->tl.getProcedure().getId()==tail.getProcedureId())
-                    .collect(Collectors.toList());
-           patient.setTalons(talons);
-        });
-*/
-
-
-        tail.setPatients(patients);
-
+            if (first != null) {
+                patients.add(first);
             }
+            tail.setPatients(patients);
+            tail.setFreeChoice(false);
+
+        } // of if
+
+        }
 
     );
 
         return tails;
     }
 ////////////////////////////getTailsForDoctor  - the end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public Patient getTalonAndPatient(String talonId) {
 
@@ -317,17 +327,27 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    public Talon addZone(String talonId) {
+    public Talon subZone(String talonId) {
         Talon talon = talonService.getTalon(talonId);
-        talon.setZones(talon.getZones()+1);
-        Doctor doctor = userService.getCurrentUserInfo();
-        talon.setDesc(talon.getDesc() +  doctor.getFullName()
-                + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-        + " - добавлено зону.<br/><br/>");
+        if (talon.getZones() > 1) {
+	        talon.setZones(talon.getZones()-1);
+	        Doctor doctor = userService.getCurrentUserInfo();
+	        talon.setDesc(talon.getDesc() +  doctor.getFullName()
+	                + ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+	        + " - скасовано зону.<br/><br/>");
+        }
         return talonService.saveTalon(talon);
     }
-
-
+    
+    public Talon addZone(String talonId) {
+    	Talon talon = talonService.getTalon(talonId);
+    	talon.setZones(talon.getZones()+1);
+    	Doctor doctor = userService.getCurrentUserInfo();
+    	talon.setDesc(talon.getDesc() +  doctor.getFullName()
+    	+ ", " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+    	+ " - додано зону.<br/><br/>");
+    	return talonService.saveTalon(talon);
+    }
 
 
 ///////////////////////////////////////// Logic ////////////////////////////////////////
@@ -335,8 +355,11 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     //   cancelation after execution : some talons may be canceled when the procedure is done
     // i.e ultrasound must be canceled if laser has been done
     private void cancelTalonsByCard(Procedure procedure, String patientId){
+/*
         List<Integer> proceduresToClose = cardService
                 .getCardByProcedureId(procedure.getId()).getCloseAfter();
+     */
+        List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
 
         patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
             if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
@@ -348,13 +371,22 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     //   activation after execution : some talons may be activated ONLY when the procedure is done
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId){
-        List<Integer> proceduresToActivate = cardService
+
+/*        List<Integer> proceduresToActivate = cardService
                 .getCardByProcedureId(procedure.getId()).getActivateAfter();
 /*
 
-      //
+     */
+        List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+
+/*
+
         List<Integer> proceduresMustBeDoneByCard = cardService
                 .getCardByProcedureId(procedure.getId()).getMustBeDoneBefore();
+*/
+
+        List<Integer> proceduresMustBeDoneByCard = procedure.getCard().getMustBeDoneBefore();
+
 
         List<Talon> talons = patientService
                 .getPatientWithTalons(patientId).getTalons();
@@ -373,7 +405,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 
 
-        patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
+        talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))
               //     &&permission
                     ){

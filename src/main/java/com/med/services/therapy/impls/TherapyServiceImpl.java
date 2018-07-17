@@ -243,6 +243,19 @@ public class TherapyServiceImpl implements ITherapyService {
                 }
 			}
 		}
+		//////////////////////  kostil'
+		Talon manualToday = talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==3)
+                .filter(talon -> talon.getActivity().equals(Activity.NON_ACTIVE))
+                .filter(talon -> talon.getDate().equals(LocalDate.now()))
+                .findFirst().orElse(null);
+		if (manualToday!=null){
+
+		    //int index = talons.indexOf(manualToday);
+		    talons.remove(manualToday);
+        }
+
+
 
 		return talons;
 	}

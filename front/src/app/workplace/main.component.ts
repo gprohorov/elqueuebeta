@@ -16,6 +16,7 @@ export class WorkplaceMainComponent implements OnInit, OnDestroy {
     loading = false;
 
     sub: Subscription;
+    reloadFunc: any;
     items: any[] = [];
     Activity = Activity;
     Status = Status;
@@ -37,10 +38,14 @@ export class WorkplaceMainComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.load();
+        this.reloadFunc = setInterval(() => {
+            this.load();
+        }, 60000);
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+        if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
     getTimeDiffClass(v: number) {

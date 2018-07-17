@@ -9,15 +9,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Created by george on 3/9/18.
+ */
 @RequestMapping("/api/workplace/hotel/")
 @RestController
 public class RecordController {
 
     @Autowired
     RecordServiceImpl service;
-
+    
     @RequestMapping("/koika/list")
-   public List<KoikaLine> showAllKoikasForDays(){
+    public List<KoikaLine> showAllKoikasForDays() {
         return service.getLines(30);
+    }
+
+    @RequestMapping("/record/list")
+    public List<Record> showAll() {
+        return service.getAll();
     }
 }

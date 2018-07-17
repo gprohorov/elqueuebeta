@@ -35,6 +35,13 @@
                     <label class="form-check-label">Зональна</label>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" name="freeChoice"
+                        [(value)]="model.freeChoice" [(ngModel)]="model.freeChoice" />
+                    <label class="form-check-label">Відображати повну чергу</label>
+                </div>
+            </div>
             <label>Ціни для статуса:</label>
             <div class="row form-group" *ngFor="let status of Statuses">
                 <div class="col-md-3">
@@ -57,7 +64,7 @@
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" name="anytime"
-                            [(value)]="model.card.anytime" [(ngModel)]="model.card.anytime" />
+                            [(ngModel)]="model.card.anytime" />
                         <label class="form-check-label">Процедура робиться в будь-якому
                             порядку</label>
                     </div>
@@ -66,12 +73,11 @@
                             <h4>Процедури, що підлягають скасуванню після цієї процедури</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-group" [hidden]="model.card.anytime">
-                                <div class="form-check" *ngFor="let procedure of procedures">
+                            <div class="form-group">
+                                <div class="form-check" *ngFor="let pc of closeAfter">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="procedure.value" [(value)]="procedure.checked"
-                                        [(ngModel)]="procedure.checked" />
-                                    <label class="form-check-label">{{procedure.name}}</label>
+                                        [name]="pc.value" [(ngModel)]="pc.checked" />
+                                    <label class="form-check-label">{{pc.name}}</label>
                                 </div>
                             </div>
                         </div>
@@ -81,12 +87,11 @@
                             <h4>Процедури, що підлягають активації після цієї процедури</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-group" [hidden]="model.card.anytime">
-                                <div class="form-check" *ngFor="let procedure of procedures">
+                            <div class="form-group">
+                                <div class="form-check" *ngFor="let pa of activateAfter">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="procedure.value" [(value)]="procedure.checked"
-                                        [(ngModel)]="procedure.checked" />
-                                    <label class="form-check-label">{{procedure.name}}</label>
+                                        [name]="pa.value" [(ngModel)]="pa.checked" />
+                                    <label class="form-check-label">{{pa.name}}</label>
                                 </div>
                             </div>
                         </div>
@@ -96,12 +101,11 @@
                             <h4>Процедури, що мають проводитися до цієї процедури</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-group" [hidden]="model.card.anytime">
-                                <div class="form-check" *ngFor="let procedure of procedures">
+                            <div class="form-group">
+                                <div class="form-check" *ngFor="let pm of mustBeDoneBefore">
                                     <input type="checkbox" class="form-check-input"
-                                        [name]="procedure.value" [(value)]="procedure.checked"
-                                        [(ngModel)]="procedure.checked" />
-                                    <label class="form-check-label">{{procedure.name}}</label>
+                                        [name]="pm.value" [(ngModel)]="pm.checked" />
+                                    <label class="form-check-label">{{pm.name}}</label>
                                 </div>
                             </div>
                         </div>

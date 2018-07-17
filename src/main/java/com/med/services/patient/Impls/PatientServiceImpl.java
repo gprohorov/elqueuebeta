@@ -13,6 +13,8 @@ import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,8 @@ public class PatientServiceImpl implements IPatientService {
     @Autowired
     TherapyServiceImpl therapyService;
 
+    private static final Logger logger = LoggerFactory.getLogger(PatientServiceImpl.class);
+
 /*
     @Autowired
     TailServiceImpl tailService;
@@ -67,9 +71,10 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public Patient getPatient(String patientId) {
+
         Patient patient = repository.findById(patientId).orElse(null);
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
-        patient.setTherapy(therapy);
+        if (therapy!=null)patient.setTherapy(therapy);
         return  patient;
     }
 
@@ -79,6 +84,14 @@ public class PatientServiceImpl implements IPatientService {
         talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
                 .equals(id)).forEach(talon -> patient.getTalons().add(talon));
         return  patient;
+    }
+
+    public Patient getPatientWithOneTalon(String patientId, int procedureId) {
+        Patient patient = repository.findById(patientId).get();
+        patient.getTalons().add(
+            talonService.getTalonForTodayForPatientForProcedure(patientId, procedureId)
+        );
+        return patient;
     }
 
     @Override
@@ -109,18 +122,20 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public List<Patient> getAllForToday() {
-
+        long start = System.currentTimeMillis();
         List<Patient> patients = new ArrayList<>();
-        List<Talon> talons =talonService.getTalonsForToday();
+        List<Talon> talons = talonService.getTalonsForToday();
 
         talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
                 .entrySet().stream().forEach(entry ->
                {
                    Patient patient = this.getPatient(entry.getKey());
                    patient.setTalons(entry.getValue());
+                   patient.setActivity(patient.calcActivity());
                    patients.add(patient);
                }
        );
+
         return patients;
     }
 

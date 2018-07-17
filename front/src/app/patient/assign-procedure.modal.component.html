@@ -1,22 +1,52 @@
 <form name="form" #f="ngForm" novalidate>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !date.valid }">
-        <label for="date">Дата</label>
-        <input type="date" class="form-control" name="date" [(ngModel)]="data.date" #date="ngModel"
-            required />
-        <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле
+        <div class="row mt-2">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Дата</div>
+                    </div>
+                    <input type="date" class="form-control" name="date" [(ngModel)]="data.date" #date="ngModel"
+                    required />
+                </div>
+                <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле обов`язкове</div>
+            </div>
+            <div class="col-auto ml-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Час</div>
+                        <select class="form-control" name="time" [(ngModel)]="data.time" 
+                            #time="ngModel" required>
+                            <option [ngValue]="9">09:00</option>
+                            <option [ngValue]="10">10:00</option>
+                            <option [ngValue]="11">11:00</option>
+                            <option [ngValue]="12">12:00</option>
+                            <option [ngValue]="13">13:00</option>
+                            <option [ngValue]="14">14:00</option>
+                            <option [ngValue]="15">15:00</option>
+                            <option [ngValue]="16">16:00</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="f.submitted && !time.valid" class="help-block text-danger">Поле обов`язкове</div>
+        </div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Процедура</div>
+            </div>
+            <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
+                #procedureId="ngModel" required>
+                <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
+                    {{procedure.name}}</option>
+            </select>
+        </div>
+        <div *ngIf="f.submitted && !procedureId.valid" class="help-block text-danger">Поле
             обов`язкове</div>
-        <label for="procedureId">Процедура</label>
-        <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
-            #procedureId="ngModel" required>
-            <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
-                {{procedure.name}}</option>
-        </select>
         <div class="form-group form-check mt-2 ml-2">
             <input type="checkbox" class="form-check-input" name="activate"
                 [(value)]="data.activate" [(ngModel)]="data.activate" />
             <label class="form-check-label">Зробити активною</label>
         </div>
-        <div *ngIf="f.submitted && !procedureId.valid" class="help-block text-danger">Поле
-            обов`язкове</div>
     </div>
 </form>

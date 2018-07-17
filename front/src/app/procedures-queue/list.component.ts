@@ -15,13 +15,14 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     loading = false;
 
     sub: Subscription;
+    reloadFunc: any;
     items: any[] = [];
     Activity = Activity;
     Status = Status;
     updateMasonryLayout = false;
 
     public myOptions: NgxMasonryOptions = {
-        transitionDuration: '0.2s',
+        transitionDuration: '0.001s',
         columnWidth: 200,
         fitWidth: true,
         horizontalOrder: true,
@@ -35,10 +36,14 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.load();
+        this.reloadFunc = setInterval(() => {
+            this.load();
+        }, 60000);
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+        if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
     getTimeDiffClass(v: number) {

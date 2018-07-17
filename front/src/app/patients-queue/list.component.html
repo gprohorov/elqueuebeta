@@ -1,6 +1,9 @@
-﻿<button
-    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+﻿<div class="position-fixed" [style.right.px]="50">
+<button
+    [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<!-- 
 <div>Фільтри:</div>
 <div class="btn-group mb-3" role="group">
     <button type="button"
@@ -12,7 +15,8 @@
     <button type="button" class="btn btn-secondary"
         [ngClass]="{'btn': true, 'btn-primary': filters.active, 'btn-secondary': !filters.active}"
         (click)="filters.active = !filters.active">активні</button>
-</div>
+</div> 
+-->
 <div class="content table-responsive table-full-width">
     <table class="table table-sm">
         <thead class="thead-light">
@@ -53,6 +57,7 @@
                                         (click)="showAssignProcedurePopup(item)">Додати
                                         процедуру</button>
                                 </div>
+                                <!-- 
                                 <div class="col input-group">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Статус:</label>
@@ -63,6 +68,7 @@
                                             {{Status[status]?.text}}</option>
                                     </select>
                                 </div>
+                                 -->
                                 <div class="col">
                                     <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
                                 </div>

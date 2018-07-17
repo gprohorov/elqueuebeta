@@ -127,10 +127,10 @@ public class PatientController {
     }
 
     @GetMapping("/talon/setall/activity/{patientId}/{activity}")
-    public List<Talon> setAllActivity(
+    public void setAllActivity(
         @PathVariable(value = "patientId") String patientId,
         @PathVariable(value = "activity") Activity activity) {
-        return  talonService.setAllActivity(patientId, activity);
+        talonService.setAllActivity(patientId, activity);
     }
 
     @GetMapping("/balance/days/{patientId}/{days}")

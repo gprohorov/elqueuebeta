@@ -4,7 +4,11 @@ import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
+<<<<<<< HEAD
 import com.med.model.hotel.State;
+=======
+import com.med.model.hotel.dto.KoikaLine;
+>>>>>>> master
 import com.med.repository.hotel.RecordRepository;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.interfaces.IRecordService;

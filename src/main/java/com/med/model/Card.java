@@ -100,4 +100,18 @@ public class Card {
     public void setActivateAfter(List<Integer> openAfter) {
         this.activateAfter = openAfter;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", procedureId=" + procedureId +
+                ", name='" + name + '\'' +
+                ", days=" + days +
+                ", anytime=" + anytime +
+                ", closeAfter=" + closeAfter +
+                ", activateAfter=" + activateAfter +
+                ", mustBeDoneBefore=" + mustBeDoneBefore +
+                '}';
+    }
 }

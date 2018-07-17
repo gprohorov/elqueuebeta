@@ -14,42 +14,23 @@
     <table class="table table-sm">
         <thead class="thead-light">
             <tr>
-                <th></th>
                 <th>Назва</th>
                 <th>Кабінет</th>
                 <th class="text-nowrap">К-сть місць</th>
-                <th>Зональна</th>
                 <th *ngFor="let status of Statuses" class="text-nowrap">{{Status[status].text}}</th>
                 <th></th>
             </tr>
         </thead>
-        <tbody *ngFor="let item of items; let i = index">
-            <tr (click)="rows[i]=!rows[i]">
-                <td><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i></td>
+        <tbody *ngFor="let item of items">
+            <tr>
                 <td>{{item.name}}</td>
                 <td>{{item.cabinet}}</td>
                 <td>{{item.number}}</td>
-                <td>{{item.zoned == true ? 'Так' : 'Ні'}}</td>
                 <td *ngFor="let status of Statuses">{{item[status]}}</td>
                 <td align="right">
                     <button class="btn btn-primary btn-sm"
                         [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>
                 </td>
-            </tr>
-            <tr [hidden]="!rows[i]">
-            <!-- 
-                <td colspan="100">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <h4 class="col-auto mr-auto">Карта процедури</h4>
-                            </div>
-                        </div>
-                        <div class="card-body">В розробці</div>
-                    </div>
-                </td>
-             -->    
             </tr>
         </tbody>
     </table>

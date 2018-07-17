@@ -1,9 +1,12 @@
-﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
+import { Status } from '../_storage/index';
 import { Patient } from '../_models/index';
-import { AlertService, WorkplaceCommonService } from '../_services/index';
+import { AlertService, WorkplaceCommonService, PatientsQueueService } from '../_services/index';
+import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
 @Component({
     templateUrl: './common.component.html'
@@ -17,9 +20,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     loading = false;
     sub: Subscription;
+    subTemp: Subscription;
     subPatient: Subscription;
     subProcedure: Subscription;
-
+    Status = Status;
+    Statuses = Object.keys(Status);
+    
+    reloadFunc: any;
     item: any;
     talonId: string;
     zones: number = 1;
@@ -29,10 +36,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     model: any = { comment: '' };
 
     constructor(
+        private viewRef: ViewContainerRef,
         private router: Router,
         private route: ActivatedRoute,
         private alertService: AlertService,
-        private service: WorkplaceCommonService
+        private service: WorkplaceCommonService,
+        private patientsQueueService: PatientsQueueService,
+        private modalService: ModalDialogService
     ) { }
 
     ngOnInit() {
@@ -40,12 +50,17 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.procedureId = +this.route.snapshot.paramMap.get('procedureId');
         this.load();
+        this.reloadFunc = setInterval(() => {
+            this.load();
+        }, 60000);
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subPatient) this.subPatient.unsubscribe();
         if (this.subProcedure) this.subProcedure.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
+        if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
     load() {
@@ -57,11 +72,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.canvasInit();
-                const procedure = this.item.patient.therapy.assignments.find(x => { 
-                    return (x.procedureId == this.procedureId) ? x : false; 
-                });
-                if (procedure && procedure.picture) {
-                    procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+                if (this.item.patient.therapy && this.item.patient.therapy.assignments) {
+                    const procedure = this.item.patient.therapy.assignments.find(x => { 
+                        return (x.procedureId == this.procedureId) ? x : false; 
+                    });
+                    if (procedure && procedure.picture) {
+                        procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+                    }
                 }
             }, 0);
         });
@@ -102,6 +119,25 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.cx.stroke();
         }
     }
+    
+    updateStatus(id: string, value: string, event: any) {
+        if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
+            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
+                this.load();
+            });
+        } else {
+            this.load();
+        }
+    }
+
+    showIncomePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.patient.person.fullName,
+            childComponent: PatientIncomeModalComponent,
+            data: patient.patient
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
 
     startProcedure() {
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
@@ -123,14 +159,31 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
+        }, 
+        error => {
+            this.alertService.error(error, true);
+            this.router.navigate(['workplace']);
         });
+    }
+
+    subZone() {
+        this.loading = true;
+        this.service.subZone(this.item.talon.id).subscribe(
+            data => {
+                this.alertService.success('Зону скасовано.', true);
+                this.load();
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 
     addZone() {
         this.loading = true;
         this.service.addZone(this.item.talon.id).subscribe(
             data => {
-                this.alertService.success('Зміни збережено.', true);
+                this.alertService.success('Зону додано.', true);
                 this.load();
             },
             error => {
