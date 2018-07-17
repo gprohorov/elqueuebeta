@@ -1,9 +1,12 @@
-﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
+import { Status } from '../_storage/index';
 import { Patient } from '../_models/index';
-import { AlertService, WorkplaceCommonService } from '../_services/index';
+import { AlertService, WorkplaceCommonService, PatientsQueueService } from '../_services/index';
+import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
 @Component({
     templateUrl: './common.component.html'
@@ -17,10 +20,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     loading = false;
     sub: Subscription;
-    reloadFunc: any;
+    subTemp: Subscription;
     subPatient: Subscription;
     subProcedure: Subscription;
-
+    Status = Status;
+    Statuses = Object.keys(Status);
+    
+    reloadFunc: any;
     item: any;
     talonId: string;
     zones: number = 1;
@@ -30,10 +36,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     model: any = { comment: '' };
 
     constructor(
+        private viewRef: ViewContainerRef,
         private router: Router,
         private route: ActivatedRoute,
         private alertService: AlertService,
-        private service: WorkplaceCommonService
+        private service: WorkplaceCommonService,
+        private patientsQueueService: PatientsQueueService,
+        private modalService: ModalDialogService
     ) { }
 
     ngOnInit() {
@@ -50,6 +59,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         if (this.sub) this.sub.unsubscribe();
         if (this.subPatient) this.subPatient.unsubscribe();
         if (this.subProcedure) this.subProcedure.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
         if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
@@ -108,6 +118,25 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             // strokes the current path with the styles we set earlier
             this.cx.stroke();
         }
+    }
+    
+    updateStatus(id: string, value: string, event: any) {
+        if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
+            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
+                this.load();
+            });
+        } else {
+            this.load();
+        }
+    }
+
+    showIncomePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.patient.person.fullName,
+            childComponent: PatientIncomeModalComponent,
+            data: patient.patient
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
     }
 
     startProcedure() {
