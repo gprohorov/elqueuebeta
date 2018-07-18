@@ -1,5 +1,6 @@
 package com.med.services.hotel.record.impls;
 
+import com.med.model.balance.Accounting;
 import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,15 +35,47 @@ public class RecordServiceImpl implements IRecordService {
     @Autowired
     KoikaServiceImpl koikaService;
 
+
+
     @Override
     public Record createRecord(Record record) {
+
         return repository.save(record);
     }
+
 
     @Override
     public Record updateRecord(Record record) {
        return repository.save(record);
     }
+
+
+    public Record closeRecord(String patientId) {
+
+        //TODO: make correct choice
+        Record record = repository.findByPatientId(patientId).get(0);
+
+        record.setFinish(LocalDateTime.now());
+        record.setState(State.FREE);
+
+        //TODO: create accounting
+
+        Accounting accounting = new Accounting();
+
+        // accountingService.create(record);
+
+       return repository.save(record);
+    }
+
+    private int getBill(Record record){
+
+        ChronoUnit.DAYS.between(LocalDateTime.now(), record.getStart());
+        int sum=0;
+        return sum;
+    }
+
+
+
 
     public List<Record> saveAll(List<Record> records) {
         return repository.saveAll(records);
@@ -118,4 +153,6 @@ public class RecordServiceImpl implements IRecordService {
         }
         return koikaLines;
     }
+
+
 }
