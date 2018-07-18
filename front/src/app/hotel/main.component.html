@@ -8,17 +8,19 @@
     </div>
 </div>
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-sm">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="text-nowrap">Койка №</th>
+                <th scope="col" class="text-nowrap position-fixed" 
+                    [style.margin-left.em]="-4" [style.width.em]="4">№</th>
                 <th scope="col" *ngFor="let date of items[0].line">{{date.date |
                     date:"dd.MM.yyyy"}}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of items">
-                <th scope="row">{{item.koika.name}}</th>
+                <th scope="row" class="position-fixed" 
+                [style.margin-left.em]="-4" [style.width.em]="4">{{item.koika.name}}</th>
                 <td *ngFor="let date of item.line">{{date.state}}</td>
             </tr>
         </tbody>
