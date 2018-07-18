@@ -7,4 +7,20 @@
             [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
     </div>
 </div>
-<pre>{{items | json}}</pre>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="text-nowrap">Койка №</th>
+                <th scope="col" *ngFor="let date of items[0].line">{{date.date |
+                    date:"dd.MM.yyyy"}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items">
+                <th scope="row">{{item.koika.name}}</th>
+                <td *ngFor="let date of item.line">{{date.state}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
