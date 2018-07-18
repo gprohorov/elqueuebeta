@@ -71,13 +71,11 @@ public class AccountingServiceImpl implements IAccountingService {
         return repository.findAll().stream().mapToInt(Accounting::getSum).sum();
     }
 
-
     public List<Accounting> getAllForDate(LocalDate date){
         return this.getAll().stream()
                 .filter(accounting -> accounting.getDateTime().toLocalDate().equals(date))
                 .collect(Collectors.toList());
     }
-
 
     public Integer getSumForDate(LocalDate date){
         return this.getAll().stream()

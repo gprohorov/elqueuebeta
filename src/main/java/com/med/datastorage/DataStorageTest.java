@@ -130,7 +130,7 @@ public class DataStorageTest {
 
 //        List<KoikaLine> koikaLines = recordService.getLines(30);
 //        for (KoikaLine kl : koikaLines){
-//            System.out.println("New line:\n---------------");
+//            System.out.println("\n---------------");
 //            System.out.println(kl.getKoika().toString());
 //            List<HotelDay> hotelDays = kl.getLine();
 //            for (HotelDay hd : hotelDays){
