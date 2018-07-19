@@ -27,12 +27,9 @@ public class AccountingServiceImpl implements IAccountingService {
     @Override
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
-
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
-
         patientService.savePatient(patient);
-
         return accounting ;
     }
 
@@ -56,15 +53,12 @@ public class AccountingServiceImpl implements IAccountingService {
               String patientId
             , LocalDate start
             , LocalDate finish) {
-
         List<Accounting> accountings = this.getAll().stream()
                 .filter(accounting -> accounting.getPatientId().equals(patientId))
                .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(start.minusDays(0)))
                .filter(accounting -> accounting.getDateTime().toLocalDate().isBefore(finish.plusDays(0)))
                 .collect(Collectors.toList());
-
         return accountings;
-
     }
 
     public Integer getASum() {
@@ -107,16 +101,6 @@ public class AccountingServiceImpl implements IAccountingService {
                 .filter(accounting -> accounting.getPatientId().equals(patientId))
                 .mapToInt(Accounting::getSum).sum();
     }
-
-
-
-
-
-
-
-
-
-
 }
 
 

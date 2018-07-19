@@ -1,6 +1,7 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
+import com.med.model.balance.PaymentType;
 import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Record;
@@ -44,9 +45,9 @@ public class DataStorageTest {
     @Autowired
     AccountingServiceImpl accountingService;
 
-    @PostConstruct
-    void init(){
-
+//    @PostConstruct
+//    void init(){
+//
 //       List<Record> records = new ArrayList<>(
 //               Arrays.asList(
 //                       new Record(patientService.getAll("").get(0).getId(),
@@ -111,10 +112,17 @@ public class DataStorageTest {
 //                       new Record(patientService.getAll("").get(4).getId(),
 //                               "",
 //                               koikaService.getAll().get(8),
-//                               65,
-//                               LocalDateTime.now().minusDays(2),
-//                               LocalDateTime.now().plusDays(2),
+//                               100,
+//                               LocalDateTime.now().minusDays(4),
+//                               LocalDateTime.now().plusDays(5),
 //                               State.OCCUP),
+//                       new Record(patientService.getAll("").get(4).getId(),
+//                               "",
+//                               koikaService.getAll().get(8),
+//                               0,
+//                               LocalDateTime.now().minusDays(1),
+//                               LocalDateTime.now().plusDays(2),
+//                               State.PAUSED)
 //                       new Record(patientService.getAll("").get(10).getId(),
 //                               "",
 //                               koikaService.getAll().get(7),
@@ -125,6 +133,17 @@ public class DataStorageTest {
 //               )
 //       );
 //        recordService.saveAll(records);
+
+//        recordService.closeRecord(patientService.getAll("").get(4).getId(), PaymentType.CARD);
+
+//        recordService.relocatePatient(
+//                new Record(patientService.getAll("").get(4).getId(),
+//                        "",
+//                        koikaService.getAll().get(12),
+//                        10,
+//                        LocalDateTime.now(),
+//                        LocalDateTime.now().plusDays(2),
+//                        State.OCCUP), PaymentType.CARD);
 
         //        recordService.getLines() test
 
@@ -176,7 +195,7 @@ public class DataStorageTest {
 //
 //        koikaService.saveAll(koikas);
 //        System.out.println("----------------- koiki updated------------------------------");
-    }
+//    }
 
     public void reset(){
         talonRepository.deleteAll();

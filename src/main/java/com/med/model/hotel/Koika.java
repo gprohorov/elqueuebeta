@@ -11,7 +11,7 @@ public class Koika {
 
     @Id
     private int id;
-    private  String name;
+    private String name;
     private Chamber chamber;
     private int price;
 

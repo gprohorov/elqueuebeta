@@ -68,9 +68,7 @@ public class PatientController {
         return service.deletePatient(patientId);
     }
 
-
     //////////////////////END OF CRUD ////////////////////////////////////
-
 
     // create talon to date for patient on procedure
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
@@ -98,7 +96,6 @@ public class PatientController {
     	return talonService.createActiveTalon(patientId, procedureId, LocalDate.parse(date), activate);
     }
 
-
     // create talon to today for patient on registration
     @GetMapping("/create/talon/today/{patientId}")
     public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
@@ -107,7 +104,6 @@ public class PatientController {
 
         return talonService.createTalon(patientId, 1, 0);
     }
-
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -150,22 +146,14 @@ public class PatientController {
     	return service.getUltimateBalanceToday(patientId);
     }
 
-
     @GetMapping("/hotel/bill/{patientId}")
     public Accounting createBill(@PathVariable(value = "patientId") String patientId) {
-
     	return null;
     }
-
-
-
 
     @PostMapping("/hotel/record/")
     public Record createRecord(@Valid @RequestBody Record record)
                                 {
     	return recordService.createRecord(record);
     }
-
-
-   
 }
