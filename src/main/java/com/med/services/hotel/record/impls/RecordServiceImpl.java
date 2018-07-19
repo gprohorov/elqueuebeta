@@ -11,7 +11,6 @@ import com.med.repository.hotel.RecordRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.interfaces.IRecordService;
-//import jdk.vm.ci.meta.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,6 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList()).get(0);
         record.setFinish(LocalDateTime.now());
         record.setState(State.CLOSED);
-        System.out.println("Sum: "+ getSum(record));
         accountingService.createAccounting(new Accounting(record.getPatientId(), LocalDateTime.now(),
                 getSum(record), paymentType, record.getKoika().getId(), record.getDesc()));
        return repository.save(record);
@@ -70,7 +68,9 @@ public class RecordServiceImpl implements IRecordService {
         if(pausedRecordsOpt.isPresent()){
             List<Record> pausedRecords = pausedRecordsOpt.get();
             for (Record r : pausedRecords){
-                r.setFinish(LocalDateTime.now());
+                if(r.getFinish().isAfter(LocalDateTime.now())){
+                    r.setFinish(LocalDateTime.now());
+                }
                 r.setState(State.CLOSED);
                 repository.save(r);
                 subtractPausedDays += (int)ChronoUnit.DAYS.between(r.getStart(), r.getFinish());
