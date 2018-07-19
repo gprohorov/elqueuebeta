@@ -4,7 +4,6 @@ import com.med.model.Procedure;
 import com.med.repository.procedure.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
 import com.med.services.tail.Impls.TailServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @PostConstruct
     public void init(){
-        System.out.println(getAll());
+     //   System.out.println(getAll());
     }
 
     @Override
