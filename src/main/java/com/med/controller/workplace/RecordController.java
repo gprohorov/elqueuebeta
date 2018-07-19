@@ -31,7 +31,7 @@ public class RecordController {
     }
 
 
-    // CREATE a new Doctor
+    // CREATE a new Record
     @PostMapping("/record/create")
     public Record createDoctor(@Valid @RequestBody Record record) {
 
