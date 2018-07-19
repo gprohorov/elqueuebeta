@@ -263,7 +263,10 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
+    public Talon setOutOfTurn(String talonId, boolean out) {
+        Talon talon = this.getTalon(talonId);
+        talon.setOutOfTurn(out);
 
-
-
+        return repository.save(talon) ;
+    }
 }
