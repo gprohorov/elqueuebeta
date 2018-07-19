@@ -1,9 +1,6 @@
 package com.med.services.tail.Impls;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Tail;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.interfaces.ITailService;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -132,6 +130,42 @@ public class TailServiceImpl implements ITailService {
 
         logger.info(">>>>  tails for all procedures >>>>>>>> " + (System.currentTimeMillis() - start));
 
+
+        //////////////////// OUT OF TURN ///////////////////////
+        List<ProcedurePatient> outOfTurn = new ArrayList<>();
+
+        talonService.getTalonsForToday().stream()
+                .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
+                .filter(talon -> talon.isOutOfTurn())
+                .forEach(talon -> outOfTurn.add(new ProcedurePatient(
+                         talon.getProcedure(),talon.getPatientId()
+                         ))
+                 );
+
+       if (!outOfTurn.isEmpty()){
+
+            ProcedurePatient item = outOfTurn.get(0);
+             Tail tail =  tails.stream()
+                     .filter(tail1 -> tail1.getProcedureId()==item.getProcedure().getId())
+                     .findFirst().get();
+
+
+                Patient buffer = tail.getPatients().get(0);
+
+                Patient first = tail.getPatients().stream()
+                        .filter(patient -> patient.getId().equals(item.getPatientId()))
+                        .findFirst().get();
+                int index = tail.getPatients().indexOf(first);
+
+                tail.getPatients().set(0, first);
+                tail.getPatients().set(index, buffer);
+            }
+
+
+
+        logger.info(">>>>  out of turn  ----- >>>>>>>> " + (System.currentTimeMillis() - start));
+
+
         return tails;
     }
 
@@ -157,5 +191,37 @@ public class TailServiceImpl implements ITailService {
         return null;
     }
 
+private class ProcedurePatient{
+
+        private Procedure procedure;
+        private String patientId;
+
+    public ProcedurePatient() {
+    }
+
+    public ProcedurePatient(Procedure procedure, String patientId) {
+        this.procedure = procedure;
+        this.patientId = patientId;
+    }
+
+    public Procedure getProcedure() {
+        return procedure;
+    }
+
+    public void setProcedure(Procedure procedure) {
+        this.procedure = procedure;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+}
+
 
 }
+
+
