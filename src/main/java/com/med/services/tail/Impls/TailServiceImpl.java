@@ -160,11 +160,7 @@ public class TailServiceImpl implements ITailService {
                 tail.getPatients().set(0, first);
                 tail.getPatients().set(index, buffer);
             }
-
-
-
         logger.info(">>>>  out of turn  ----- >>>>>>>> " + (System.currentTimeMillis() - start));
-
 
         return tails;
     }

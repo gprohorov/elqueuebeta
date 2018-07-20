@@ -125,6 +125,8 @@ public class PatientServiceImpl implements IPatientService {
         long start = System.currentTimeMillis();
         List<Patient> patients = new ArrayList<>();
         List<Talon> talons = talonService.getTalonsForToday();
+     //   logger.info(">>>>  talons for today --- >>>>>>>> " + (System.currentTimeMillis() - start));
+
 
         talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
                 .entrySet().stream().forEach(entry ->
@@ -135,6 +137,10 @@ public class PatientServiceImpl implements IPatientService {
                    patients.add(patient);
                }
        );
+
+        logger.info(">>>> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + (System.currentTimeMillis() - start));
+        logger.info(">>>>  patients for toady --- >>>>>>>> " + (System.currentTimeMillis() - start));
+
 
         return patients;
     }
