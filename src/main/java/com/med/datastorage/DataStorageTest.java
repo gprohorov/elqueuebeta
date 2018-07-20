@@ -46,8 +46,8 @@ public class DataStorageTest {
     @Autowired
     AccountingServiceImpl accountingService;
 
-    @PostConstruct
-    void init(){
+//    @PostConstruct
+//    void init(){
 
 //       List<Record> records = new ArrayList<>(
 //               Arrays.asList(
@@ -166,7 +166,11 @@ public class DataStorageTest {
 //                Arrays.asList(
 //                        new Koika(1,"1/1", chamberService.getChamber(1),450)
 //                        ,
+//                        new Koika(9,"2/5", chamberService.getChamber(5),300)
+//                        ,
 //                        new Koika(2,"1/2", chamberService.getChamber(2),300)
+//                        ,
+//                        new Koika(11,"2/6", chamberService.getChamber(6),300)
 //                        ,
 //                        new Koika(3,"2/2", chamberService.getChamber(2),300)
 //                        ,
@@ -174,28 +178,24 @@ public class DataStorageTest {
 //                        ,
 //                        new Koika(5,"2/3", chamberService.getChamber(3),350)
 //                        ,
+//                        new Koika(13,"2/7", chamberService.getChamber(7),350)
+//                        ,
 //                        new Koika(6,"1/4", chamberService.getChamber(4),300)
 //                        ,
 //                        new Koika(7,"2/4", chamberService.getChamber(4),300)
 //                        ,
 //                        new Koika(8,"1/5", chamberService.getChamber(5),300)
 //                        ,
-//                        new Koika(9,"2/5", chamberService.getChamber(5),300)
-//                        ,
 //                        new Koika(10,"1/6", chamberService.getChamber(6),300)
 //                        ,
-//                        new Koika(11,"2/6", chamberService.getChamber(6),300)
-//                        ,
 //                        new Koika(12,"1/7", chamberService.getChamber(7),350)
-//                        ,
-//                        new Koika(13,"2/7", chamberService.getChamber(7),350)
 //                        ,
 //                        new Koika(14,"1/9", chamberService.getChamber(9),450)
 //                )
 //        );
 //        koikaService.saveAll(koikas);
 //        System.out.println("----------------- koiki updated------------------------------");
-    }
+//    }
 
     public void reset(){
         talonRepository.deleteAll();

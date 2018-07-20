@@ -4,6 +4,7 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
+import com.med.model.hotel.Chamber;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.text.CollationElementIterator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -133,24 +135,12 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList());
     }
 
-    public List<Koika> getFreeKoikasForDay(LocalDateTime localDateTime){
-        List<Koika> koikas = koikaService.getAll();
-        List<Koika> notFreeKoikas = new ArrayList<>();
-        for (Koika koika : koikas){
-            if (findByKoikaAndDate(koika, localDateTime) != null){
-                notFreeKoikas.add(koika);
-            }
-        }
-        koikas.removeAll(notFreeKoikas);
-        return koikas;
-    }
-
     @Override
     public Record findByKoikaAndDate(Koika koika, LocalDateTime localDateTime) {
-            return repository.findByKoika(koika).stream()
-                    .filter(record -> record.getStart().isBefore(localDateTime))
-                    .filter(record -> record.getFinish().isAfter(localDateTime))
-                    .findFirst().orElse(null);
+        return repository.findByKoika(koika).stream()
+                .filter(record -> record.getStart().isBefore(localDateTime))
+                .filter(record -> record.getFinish().isAfter(localDateTime))
+                .findFirst().orElse(null);
     }
 
     public List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish) {
@@ -161,11 +151,24 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList());
     }
 
+    public List<Koika> getFreeKoikasForDay(LocalDateTime localDateTime){
+        List<Koika> freeKoikas = koikaService.getAll();
+        List<Koika> notFreeKoikas = new ArrayList<>();
+        for (Koika koika : freeKoikas){
+            if (findByKoikaAndDate(koika, localDateTime) != null){
+                notFreeKoikas.add(koika);
+            }
+        }
+        freeKoikas.removeAll(notFreeKoikas);
+        return freeKoikas;
+    }
+
     //all Koikas from repository version
     public List<KoikaLine> getLines(int days){
         List<KoikaLine> koikaLines = new ArrayList<>();
         LocalDate endDate = LocalDate.now().plusDays(days);
         List<Koika> allKoikas = koikaService.getAll();
+        Collections.sort(allKoikas, (a, b) -> a.compareTo(b));
         for (Koika koika : allKoikas){
             List<HotelDay> koikaHotelDays = new ArrayList<>();
             LocalDate dateWithFreeState = LocalDate.now();

@@ -57,6 +57,14 @@ public class Koika {
         this.price = price;
     }
 
+    public int compareTo(Koika two){
+        int one = getChamber().getName().compareTo(two.getChamber().getName()) ;
+        if (one == 0){
+            return getName().compareTo(two.getName());
+        }
+        return one;
+    }
+
     @Override
     public String toString() {
         return "Koika{" +
