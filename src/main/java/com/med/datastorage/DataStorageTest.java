@@ -4,6 +4,7 @@ import com.med.model.Patient;
 import com.med.model.balance.PaymentType;
 import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
+import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;
 import com.med.repository.talon.TalonRepository;
@@ -45,9 +46,9 @@ public class DataStorageTest {
     @Autowired
     AccountingServiceImpl accountingService;
 
-//    @PostConstruct
-//    void init(){
-//
+    @PostConstruct
+    void init(){
+
 //       List<Record> records = new ArrayList<>(
 //               Arrays.asList(
 //                       new Record(patientService.getAll("").get(0).getId(),
@@ -122,7 +123,7 @@ public class DataStorageTest {
 //                               0,
 //                               LocalDateTime.now().minusDays(1),
 //                               LocalDateTime.now().plusDays(2),
-//                               State.PAUSED)
+//                               State.PAUSED),
 //                       new Record(patientService.getAll("").get(10).getId(),
 //                               "",
 //                               koikaService.getAll().get(7),
@@ -136,6 +137,11 @@ public class DataStorageTest {
 
 //        recordService.closeRecord(patientService.getAll("").get(4).getId(), PaymentType.CARD);
 
+//        List<Koika> koikas = recordService.getFreeKoikasForDay(LocalDateTime.now().plusDays(1));
+//        for (Koika k : koikas){
+//            System.out.println(k);
+//        }
+
 //        recordService.relocatePatient(
 //                new Record(patientService.getAll("").get(4).getId(),
 //                        "",
@@ -145,9 +151,7 @@ public class DataStorageTest {
 //                        LocalDateTime.now().plusDays(2),
 //                        State.OCCUP), PaymentType.CARD);
 
-        //        recordService.getLines() test
-
-//        List<KoikaLine> koikaLines = recordService.getLines(30);
+//        List<KoikaLine> koikaLines = recordService.getLines(1);
 //        for (KoikaLine kl : koikaLines){
 //            System.out.println("\n---------------");
 //            System.out.println(kl.getKoika().toString());
@@ -160,42 +164,38 @@ public class DataStorageTest {
 
 //        List<Koika> koikas = new ArrayList<>(
 //                Arrays.asList(
-//
-//                        new Koika(1,"1/2", chamberService.getChamber(1),15)
+//                        new Koika(1,"1/1", chamberService.getChamber(1),450)
 //                        ,
-//                        new Koika(1,"1/1", chamberService.getChamber(1),18)
+//                        new Koika(2,"1/2", chamberService.getChamber(2),300)
 //                        ,
-//                        new Koika(2,"1/9", chamberService.getChamber(9),18)
+//                        new Koika(3,"2/2", chamberService.getChamber(2),300)
 //                        ,
-//                        new Koika(3,"1/3", chamberService.getChamber(3),15)
+//                        new Koika(4,"1/3", chamberService.getChamber(3),350)
 //                        ,
-//                        new Koika(4,"2/3", chamberService.getChamber(3),15)
+//                        new Koika(5,"2/3", chamberService.getChamber(3),350)
 //                        ,
-//                        new Koika(5,"1/7", chamberService.getChamber(7),15)
+//                        new Koika(6,"1/4", chamberService.getChamber(4),300)
 //                        ,
-//                        new Koika(6,"2/7", chamberService.getChamber(7),15)
+//                        new Koika(7,"2/4", chamberService.getChamber(4),300)
 //                        ,
-//                        new Koika(7,"1/2", chamberService.getChamber(2),13)
+//                        new Koika(8,"1/5", chamberService.getChamber(5),300)
 //                        ,
-//                        new Koika(8,"2/2", chamberService.getChamber(2),13)
+//                        new Koika(9,"2/5", chamberService.getChamber(5),300)
 //                        ,
-//                        new Koika(9,"1/4", chamberService.getChamber(4),13)
+//                        new Koika(10,"1/6", chamberService.getChamber(6),300)
 //                        ,
-//                        new Koika(10,"2/4", chamberService.getChamber(4),13)
+//                        new Koika(11,"2/6", chamberService.getChamber(6),300)
 //                        ,
-//                        new Koika(11,"1/5", chamberService.getChamber(5),13)
+//                        new Koika(12,"1/7", chamberService.getChamber(7),350)
 //                        ,
-//                        new Koika(12,"2/5", chamberService.getChamber(5),13)
+//                        new Koika(13,"2/7", chamberService.getChamber(7),350)
 //                        ,
-//                        new Koika(13,"1/6", chamberService.getChamber(6),13)
-//                        ,
-//                        new Koika(14,"2/6", chamberService.getChamber(6),13)
+//                        new Koika(14,"1/9", chamberService.getChamber(9),450)
 //                )
 //        );
-//
 //        koikaService.saveAll(koikas);
 //        System.out.println("----------------- koiki updated------------------------------");
-//    }
+    }
 
     public void reset(){
         talonRepository.deleteAll();

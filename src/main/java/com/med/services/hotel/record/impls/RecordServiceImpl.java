@@ -63,6 +63,7 @@ public class RecordServiceImpl implements IRecordService {
     private int getSum(Record record){
         int days = (int)ChronoUnit.DAYS.between(record.getStart(), record.getFinish());
         int subtractPausedDays = 0;
+        int sum = 0;
         Optional<List<Record>> pausedRecordsOpt = getPausedRecordsFromTo(record.getPatientId(), record.getStart().toLocalDate(),
                 record.getFinish().toLocalDate());
         if(pausedRecordsOpt.isPresent()){
@@ -76,7 +77,15 @@ public class RecordServiceImpl implements IRecordService {
                 subtractPausedDays += (int)ChronoUnit.DAYS.between(r.getStart(), r.getFinish());
             }
         }
-        return (days - subtractPausedDays) * record.getPrice();
+        sum = (days - subtractPausedDays) * record.getPrice();
+        record.setDesc(formDescForClosedRecord(record.getKoika().getName(), days, subtractPausedDays, record.getPrice(), sum));
+        return -sum;
+    }
+
+    private String formDescForClosedRecord(String koikaName, int recordDays, int pausedRecordDays,
+                                           int recordPrice, int sum){
+        return "Ліжко " + koikaName + ": ("+recordDays +"[дні] - " + pausedRecordDays
+                + "[дні на паузі]) * " + recordPrice + "[ціна] = " + sum + "[сума]";
     }
 
     private Optional<List<Record>> getPausedRecordsFromTo(String patientId, LocalDate from, LocalDate to){
@@ -84,7 +93,6 @@ public class RecordServiceImpl implements IRecordService {
                 .filter(record->record.getStart().toLocalDate().isAfter(from.minusDays(1)))
                 .filter(record->record.getStart().toLocalDate().isBefore(to.plusDays(1)))
                 .filter(record1 -> record1.getState() == State.PAUSED)
-                .limit(1)
                 .collect(Collectors.toList()));
     }
 
@@ -112,6 +120,11 @@ public class RecordServiceImpl implements IRecordService {
     }
 
     @Override
+    public Record getRecord(String recordId) {
+        return repository.findById(recordId).orElse(null);
+    }
+
+    @Override
     public List<Record> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish) {
         return repository.findByPatientId(patientId).stream()
                 .filter(record->record.getFinish() != null)
@@ -120,9 +133,24 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList());
     }
 
+    public List<Koika> getFreeKoikasForDay(LocalDateTime localDateTime){
+        List<Koika> koikas = koikaService.getAll();
+        List<Koika> notFreeKoikas = new ArrayList<>();
+        for (Koika koika : koikas){
+            if (findByKoikaAndDate(koika, localDateTime) != null){
+                notFreeKoikas.add(koika);
+            }
+        }
+        koikas.removeAll(notFreeKoikas);
+        return koikas;
+    }
+
     @Override
-    public Record getRecord(String recordId) {
-        return repository.findById(recordId).orElse(null);
+    public Record findByKoikaAndDate(Koika koika, LocalDateTime localDateTime) {
+            return repository.findByKoika(koika).stream()
+                    .filter(record -> record.getStart().isBefore(localDateTime))
+                    .filter(record -> record.getFinish().isAfter(localDateTime))
+                    .findFirst().orElse(null);
     }
 
     public List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish) {

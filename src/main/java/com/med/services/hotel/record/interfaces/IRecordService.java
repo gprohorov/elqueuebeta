@@ -5,6 +5,7 @@ import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public interface IRecordService {
     Record createRecord(Record record);
     Record updateRecord(Record record);
     Record getRecord(String recordId);
+    Record findByKoikaAndDate(Koika koika, LocalDateTime localDateTime);
 
     List<Record> getAll();
     List<Record> saveAll(List<Record> records);
