@@ -131,10 +131,30 @@ public class TailServiceImpl implements ITailService {
         logger.info(">>>>  tails for all procedures >>>>>>>> " + (System.currentTimeMillis() - start));
 
 
+        ///////////////////// extract ON_PROCEDURE patients from another tails
+        List<Talon> talonsOnProcedure = talonsForToday.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+                .collect(Collectors.toList());
+
+        talonsOnProcedure.stream().forEach(talon -> {
+            Patient patient = patientService.getPatient(talon.getPatientId());
+            tails.stream().forEach(tail -> {
+                if (tail.getProcedureId() != talon.getProcedure().getId()
+                        &&
+                     tail.getPatients().contains(patient)   ){
+
+                    tail.getPatients().remove(patient);
+                }
+
+            });
+
+        });
+        logger.info(">>>>  remove on_procedure pats   >>>>>>>> " + (System.currentTimeMillis() - start));
+
         //////////////////// OUT OF TURN ///////////////////////
         List<ProcedurePatient> outOfTurn = new ArrayList<>();
 
-        talonService.getTalonsForToday().stream()
+        talonsForToday.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
                 .filter(talon -> talon.isOutOfTurn())
                 .forEach(talon -> outOfTurn.add(new ProcedurePatient(
@@ -144,21 +164,25 @@ public class TailServiceImpl implements ITailService {
 
        if (!outOfTurn.isEmpty()){
 
-            ProcedurePatient item = outOfTurn.get(0);
+            outOfTurn.stream().forEach(item->{
+           // ProcedurePatient item = outOfTurn.get(0);
              Tail tail =  tails.stream()
                      .filter(tail1 -> tail1.getProcedureId()==item.getProcedure().getId())
                      .findFirst().get();
-
 
                 Patient buffer = tail.getPatients().get(0);
 
                 Patient first = tail.getPatients().stream()
                         .filter(patient -> patient.getId().equals(item.getPatientId()))
-                        .findFirst().get();
-                int index = tail.getPatients().indexOf(first);
+                        .findFirst().orElse(null);
+               if (first!=null) {
+                   int index = tail.getPatients().indexOf(first);
 
-                tail.getPatients().set(0, first);
-                tail.getPatients().set(index, buffer);
+                   tail.getPatients().set(0, first);
+                   tail.getPatients().set(index, buffer);
+               }
+       });
+
             }
         logger.info(">>>>  out of turn  ----- >>>>>>>> " + (System.currentTimeMillis() - start));
 

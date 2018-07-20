@@ -2,6 +2,7 @@ package com.med.services.accounting.impls;
 
 import com.med.model.Patient;
 import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -71,23 +72,37 @@ public class AccountingServiceImpl implements IAccountingService {
 
     }
 
-    public Integer getASum() {
-        return repository.findAll().stream().mapToInt(Accounting::getSum).sum();
+    public Long getASum() {
+        return repository.findAll().stream().mapToLong(Accounting::getSum).sum();
     }
 
 
     public List<Accounting> getAllForDate(LocalDate date){
-        return this.getAll().stream()
+        return repository.findByDate(date).stream()
                 .filter(accounting -> accounting.getDateTime().toLocalDate().equals(date))
                 .collect(Collectors.toList());
     }
 
 
-    public Integer getSumForDate(LocalDate date){
-        return this.getAll().stream()
-                .filter(accounting -> accounting.getDateTime().toLocalDate().equals(date))
-                .mapToInt(Accounting::getSum).sum();
+    public Long getSumForDateTotal(LocalDate date){
+        return this.getAllForDate(date).stream()
+                .filter(accounting -> accounting.getSum()>0)
+                .filter(accounting -> !accounting.getPayment().equals(PaymentType.DISCOUNT))
+                .mapToLong(Accounting::getSum)
+                .sum();
     }
+
+
+    public Long getSumForDateCash(LocalDate date){
+        return this.getAllForDate(date).stream()
+                .filter(accounting -> accounting.getSum()>0)
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
+                .mapToLong(Accounting::getSum)
+                .sum();
+    }
+
+
+
 
     public List<Accounting> getAllFrom(LocalDate date){
         return this.getAll().stream()

@@ -2,9 +2,9 @@ package com.med.repository.accounting;
 
 import com.med.model.balance.Accounting;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,5 +18,7 @@ public interface AccountingRepository extends MongoRepository<Accounting, String
 //    public Object calcBalance(String patientId);
 
 	List<Accounting> findByPatientId(String patientId);
+	List<Accounting> findByDate(LocalDate date);
+
 	
 }
