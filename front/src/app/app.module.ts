@@ -49,6 +49,8 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
+import { StatisticComponent } from './statistic/main.component';
+
 import { 
     WorkplaceMainComponent,
     WorkplaceCommonComponent,
@@ -125,6 +127,12 @@ const appRoutes: Routes = [
     },
 
     {
+        path: 'statistic', component: StatisticComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+
+    {
         path: 'workplace', component: WorkplaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
@@ -170,6 +178,7 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
+        StatisticComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent

@@ -2,7 +2,10 @@
     <a class="navbar-brand" href="">Меднеан</a>
     <!-- Doctor interface section START -->
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
-        <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти на черзі</a>
+        <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти на
+            черзі</a>
+        <a class="dropdown-item" routerLink='/statistic' routerLinkActive="active"
+            *ngxPermissionsOnly="['ROLE_HEAD']">Статистика</a>
     </div>
     <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->
