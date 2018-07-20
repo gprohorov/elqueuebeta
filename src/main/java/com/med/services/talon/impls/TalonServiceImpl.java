@@ -219,7 +219,7 @@ public class TalonServiceImpl implements ITalonService {
             patients.add(patient);
         });
 
-        return patients.stream().collect(Collectors.toList());
+        return patients;
     }
 
     public List<Talon> saveTalons(List<Talon> talons) {
