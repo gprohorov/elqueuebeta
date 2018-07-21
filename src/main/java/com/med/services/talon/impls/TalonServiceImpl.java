@@ -161,6 +161,12 @@ public class TalonServiceImpl implements ITalonService {
         return repository.findByDate(date);
     }
 
+
+    public List<Talon> getAllTallonsBetween(LocalDate start, LocalDate finish){
+        return repository.findByDateBetween(start, finish);
+    }
+
+
     @Override
     public Talon setActivity(String talonId, Activity activity) {
         List<Activity> activities = new ArrayList<>(

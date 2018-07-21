@@ -207,4 +207,8 @@ public class PatientServiceImpl implements IPatientService {
         return  this.getUltimateBalance(patientId,start,LocalDate.now());
     }
 
+    public List<Patient> getDebetors(){
+         return repository.findBySumLessThan(0);
+    }
+
 }
