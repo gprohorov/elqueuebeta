@@ -91,4 +91,9 @@ public class StatisticServiceImpl implements IStatisticService {
                 .filter(accounting -> !accounting.getPayment().equals(PaymentType.DISCOUNT))
                 .mapToLong(Accounting::getSum).sum();
     }
+
+    @Override
+    public Long getPatientTotalSum(String patientId) {
+        return null;
+    }
 }

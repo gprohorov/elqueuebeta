@@ -16,6 +16,7 @@ public interface IStatisticService {
     Long getAllPatientsCount();
     List<Patient> getAllDebtors();
     Long getTotalCash();
+    Long getPatientTotalSum(String patientId);
 
 
 }
