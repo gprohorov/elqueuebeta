@@ -178,28 +178,19 @@ public class PatientServiceImpl implements IPatientService {
     //////////// ULTIMATE BALANCE  ///////////////
     public List<Accounting> getUltimateBalance(String patientId, LocalDate start, LocalDate finish){
 
-//        Balance balance = new Balance(patientId, start, finish);
 
-//        List<Accounting> accountings = accountingService.getAll();
-//        		.stream()
-//                .filter(ac->ac.getPatientId().equals(patientId))
-//                .collect(Collectors.toList());
-
-        //balance.setAccountings(accountings);
-
-        return accountingRepository.findByPatientId(patientId);
+   //     return accountingRepository.findByPatientId(patientId);
+        return accountingRepository.findByPatientIdAndDateBetween(patientId,start,finish);
     }
-
-
 
     public List<Accounting> getUltimateBalanceShort(String patientId, int days) {
         return this.getUltimateBalance(patientId, LocalDate.now().minusDays(days+1), LocalDate.now().plusDays(1));
     }
 
     public List<Accounting> getUltimateBalanceToday(String patientId) {
-       // int days = therapyService.g
+        LocalDate start = therapyService.findTheLastTherapy(patientId).getStart().toLocalDate();
 
-        return this.getUltimateBalance(patientId, LocalDate.now().minusDays(0), LocalDate.now().plusDays(1));
+        return this.getUltimateBalance(patientId, start.minusDays(1), LocalDate.now().plusDays(1));
     }
 
      public List<Accounting> getBalanceForCurrentTherapy(String patientId){
@@ -208,7 +199,7 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     public List<Patient> getDebetors(){
-         return repository.findBySumLessThan(0);
+         return repository.findByBalanceLessThan(0);
     }
 
 }

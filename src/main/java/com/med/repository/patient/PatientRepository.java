@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String>{
   //  List<Patient> findByLastName(String lastName);
-    List<Patient> findBySumLessThan(long debet);
+    List<Patient> findByBalanceLessThan(long balance);
 
 }
