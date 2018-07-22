@@ -56,7 +56,10 @@ public class StatisticsController {
     public List<DoctorProcedureZoneFee> getDoctorsStatistics(
               @PathVariable(value = "start") String start,
               @PathVariable(value = "finish") String finish) {
-        return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
+
+    	// TODO: Seems to be groupingBy inside is not working propertly. Duplicate doctors in table. 
+        
+    	return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
     @RequestMapping("/procedures/count")

@@ -11,14 +11,24 @@ export class PatientsDebetorsComponent implements OnInit, OnDestroy {
     
     sub: Subscription;  
     data: any;
+    sum: number = 0;
     
     constructor(private service: StatisticService, private alertService: AlertService) { }
     
     ngOnInit() {
-        this.sub = this.service.getPatientsDebetors().subscribe(data => { this.data = data; });
+        this.load();
     }
     
     ngOnDestroy() {
         this.sub.unsubscribe();
+    }
+    
+    load() {
+        this.sub = this.service.getPatientsDebetors().subscribe(data => { 
+            this.data = data;
+            data.reduce( (accumulator, currentValue) => {
+                this.sum += currentValue.balance;
+            });
+        });
     }
 }
