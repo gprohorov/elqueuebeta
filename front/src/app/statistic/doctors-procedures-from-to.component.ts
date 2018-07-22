@@ -10,6 +10,7 @@ import { StatisticService, AlertService } from '../_services/index';
 export class DoctorsProceduresFromToComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    loading = false;
     data: any;
     sum: number = 0;
     start: Date = new Date();

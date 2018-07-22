@@ -11,6 +11,7 @@ export class CashSummaryComponent implements OnInit, OnDestroy {
     
     sub: Subscription;
     data: any;
+    loading = false;
     
     constructor(private service: StatisticService, private alertService: AlertService) { }
     

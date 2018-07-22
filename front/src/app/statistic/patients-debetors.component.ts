@@ -9,7 +9,8 @@ import { StatisticService, AlertService } from '../_services/index';
 
 export class PatientsDebetorsComponent implements OnInit, OnDestroy {
     
-    sub: Subscription;  
+    sub: Subscription;
+    loading = false;
     data: any;
     sum: number = 0;
     
