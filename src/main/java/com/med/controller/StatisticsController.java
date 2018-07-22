@@ -1,7 +1,9 @@
 package com.med.controller;
 
 import com.med.model.Patient;
+import com.med.model.statistics.dto.AvailableexecutedPart;
 import com.med.model.statistics.dto.DoctorProcedureZoneFee;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +24,9 @@ public class StatisticsController {
 
 
     @Autowired
+    AccountingServiceImpl accountingService;
+
+    @Autowired
     StatisticServiceImpl service;
 
 
@@ -32,12 +37,33 @@ public class StatisticsController {
         return service.getCashAvailable();
     }
 
+
+
     @RequestMapping("/cash/total")
     public Long getCashTotal(){
         return service.getTotalCash();
     }
 
-      @RequestMapping("/doctors/{start}/{finish}")
+
+
+    //  Готивка в кассе:  вывдится три числа 1. Сколько уже есть
+    //                                       2. Сколько уже насчитано за процедуры всем пацам
+    //                                       3. Какой процент процедур сделано по отнош. к назначенным
+    @RequestMapping("/report/current")
+    public AvailableexecutedPart getCurrentReport(){
+        return accountingService.getCurrentReport();
+    }
+
+
+
+    // Лекари - загальна колькость процедур
+    // Выводится по каждому врачу:
+    //   1. Имя доктора
+    //   2. Кол-во процедур
+    //   3. Кол-во зон
+    //   4. НАработанных денег
+
+    @RequestMapping("/doctors/{start}/{finish}")
     public List<DoctorProcedureZoneFee> getDoctorsStatistics(
               @PathVariable(value = "start") LocalDate start,
               @PathVariable(value = "finish") LocalDate finish)
@@ -54,7 +80,7 @@ public class StatisticsController {
     public Long getPatientsCount(){
         return service.getAllPatientsCount();
     }
-
+     //  Боржники
     @RequestMapping("/patients/debetors")
     public List<Patient> getPatientsDebets(){
         return service.getAllDebtors();
