@@ -4,8 +4,24 @@
     <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
         <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти на
             черзі</a>
-        <a class="dropdown-item" routerLink='/statistic' routerLinkActive="active"
-            *ngxPermissionsOnly="['ROLE_HEAD']">Статистика</a>
+        <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_HEAD']">
+            <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Статистика</a>
+            <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/statistic/cash-summary"
+                    routerLinkActive="active">Готівка в касі</a>
+                <a class="dropdown-item" routerLink="/statistic/doctors-procedures-from-to"
+                    routerLinkActive="active">Лікарі - загальна кількість процедур</a>
+                <i class="dropdown-item disabled">Процедури - по лікарям</i>
+                <i class="dropdown-item disabled">Процедури - по лікарям з підсумком</i>
+                <i class="dropdown-item disabled">Процедури - по кількості</i>
+                <i class="dropdown-item disabled">Паціенти - ПІБ / Кількість / Готівка</i>
+                <i class="dropdown-item disabled">Паціенти - звідки</i>
+                <a class="dropdown-item" routerLink="/statistic/patients-debetors"
+                    routerLinkActive="active">Боржники звичайні</a>
+                <i class="dropdown-item disabled">Боржники VIP</i>
+            </div>
+        </div>
     </div>
     <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->

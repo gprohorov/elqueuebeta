@@ -23,6 +23,7 @@ import {
     DoctorService,
     ProcedureService,
     PatientsQueueService,
+    StatisticService,
     WorkplaceMainService,
     WorkplaceCommonService,
     WorkplaceDiagnosticService
@@ -49,9 +50,11 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
-import { StatisticComponent } from './statistic/main.component';
+import { CashSummaryComponent } from './statistic/cash-summary.component';
+import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
+import { PatientsDebetorsComponent } from './statistic/patients-debetors.component';
 
-import { 
+import {
     WorkplaceMainComponent,
     WorkplaceCommonComponent,
     WorkplaceDiagnosticComponent
@@ -80,7 +83,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
     },
-    
+
     {
         path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -127,7 +130,17 @@ const appRoutes: Routes = [
     },
 
     {
-        path: 'statistic', component: StatisticComponent,
+        path: 'statistic/cash-summary', component: CashSummaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
+        path: 'statistic/doctors-procedures-from-to', component: DoctorsProceduresFromToComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
+        path: 'statistic/patients-debetors', component: PatientsDebetorsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
@@ -178,7 +191,9 @@ const appRoutes: Routes = [
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
-        StatisticComponent,
+        CashSummaryComponent,
+        DoctorsProceduresFromToComponent,
+        PatientsDebetorsComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent
@@ -196,6 +211,7 @@ const appRoutes: Routes = [
         DoctorService,
         ProcedureService,
         PatientsQueueService,
+        StatisticService,
         WorkplaceMainService,
         WorkplaceCommonService,
         WorkplaceDiagnosticService,

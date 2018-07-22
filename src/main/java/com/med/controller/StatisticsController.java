@@ -22,39 +22,29 @@ import java.util.List;
 @CrossOrigin("*")
 public class StatisticsController {
 
-
     @Autowired
     AccountingServiceImpl accountingService;
 
     @Autowired
     StatisticServiceImpl service;
 
-
-
-
     @RequestMapping("/cash/now")
-    public Long getCashAvailable(){
+    public Long getCashAvailable() {
         return service.getCashAvailable();
     }
 
-
-
     @RequestMapping("/cash/total")
-    public Long getCashTotal(){
+    public Long getCashTotal() {
         return service.getTotalCash();
     }
-
-
 
     //  Готивка в кассе:  вывдится три числа 1. Сколько уже есть
     //                                       2. Сколько уже насчитано за процедуры всем пацам
     //                                       3. Какой процент процедур сделано по отнош. к назначенным
     @RequestMapping("/report/current")
-    public AvailableexecutedPart getCurrentReport(){
+    public AvailableexecutedPart getCurrentReport() {
         return accountingService.getCurrentReport();
     }
-
-
 
     // Лекари - загальна колькость процедур
     // Выводится по каждому врачу:
@@ -62,75 +52,58 @@ public class StatisticsController {
     //   2. Кол-во процедур
     //   3. Кол-во зон
     //   4. НАработанных денег
-
     @RequestMapping("/doctors/{start}/{finish}")
     public List<DoctorProcedureZoneFee> getDoctorsStatistics(
-              @PathVariable(value = "start") LocalDate start,
-              @PathVariable(value = "finish") LocalDate finish)
-      {
-        return service.getDoctorsProceduresFromTo(start,finish);
+              @PathVariable(value = "start") String start,
+              @PathVariable(value = "finish") String finish) {
+        return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
     @RequestMapping("/procedures/count")
-    public Long getProceduresCount(){
+    public Long getProceduresCount() {
         return service.getAllProceduresCount();
     }
 
     @RequestMapping("/patients/count")
-    public Long getPatientsCount(){
+    public Long getPatientsCount() {
         return service.getAllPatientsCount();
     }
-     //  Боржники
+
+    // Боржники
     @RequestMapping("/patients/debetors")
-    public List<Patient> getPatientsDebets(){
+    public List<Patient> getPatientsDebets() {
         return service.getAllDebtors();
     }
 
-
-
-
 /*
-
-
-
-
-
     // get a Person list by lastName
     @GetMapping("/doctor/list/{name}")
     public List<Doctor> getDoctorsByLastName(@PathVariable(value = "name") String lastName) {
         return service.getDoctorListByLetters(lastName);
     }
 
-
-
     // CREATE a new Doctor
     @PostMapping("/doctor/create")
     public Doctor createDoctor(@Valid @RequestBody Doctor doctor) {
-
         return service.createDoctor(doctor);
     }
-
 
     // READ the Doctor by id
     @GetMapping("/doctor/get/{id}")
     public Doctor showOneDoctor(@PathVariable(value = "id")  int doctorId) {
-
         return service.getDoctor(doctorId);
     }
 
     // UPDATE the doctor by id
     @PostMapping("/doctor/update/")
-    public Doctor updateDoctor(@Valid @RequestBody Doctor updates)  {
+    public Doctor updateDoctor(@Valid @RequestBody Doctor updates) {
      //   updates.setId(doctorId);
-
         return service.updateDoctor(updates);
-
     }
 
     // DELETE the doctor by id
     @GetMapping("/doctor/delete/{id}")
-    public Doctor delDoctor(@PathVariable(value = "id")  int doctorId)  {
-
+    public Doctor delDoctor(@PathVariable(value = "id")  int doctorId) {
         return service.deleteDoctor(doctorId);
 
     }
