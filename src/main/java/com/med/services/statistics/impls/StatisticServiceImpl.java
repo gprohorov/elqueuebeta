@@ -2,13 +2,16 @@ package com.med.services.statistics.impls;
 
 import com.med.model.Activity;
 import com.med.model.Patient;
+import com.med.model.Procedure;
 import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.statistics.interfaces.IStatisticService;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -36,6 +39,9 @@ public class StatisticServiceImpl implements IStatisticService {
     DoctorServiceImpl doctorService;
 
     @Autowired
+    ProcedureServiceImpl procedureService;
+
+    @Autowired
     PatientServiceImpl patientService;
 
     @Autowired
@@ -56,20 +62,14 @@ public class StatisticServiceImpl implements IStatisticService {
     public List<DoctorProcedureZoneFee> getDoctorsProceduresFromTo(LocalDate start, LocalDate finish) {
 
         List<Talon> talons = talonService.getAllTallonsBetween(start,finish);
-        System.out.println(" all talons for the interval" + talons.size());
+
         List<DoctorProcedureZoneFee> result = new ArrayList<>();
 
         Map<String, List<Talon>> map =  talons.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.groupingBy(talon->talon.getDoctor().getFullName()));
-        logger.info(">>>>  map size  >>>>>>>> " + map.size());
 
-
-
-
-    //    talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-     //           .collect(Collectors.groupingBy(Talon::getDoctor))
-            map    .entrySet().stream().forEach(entry->{
+        map.entrySet().stream().forEach(entry->{
 
             DoctorProcedureZoneFee item = new DoctorProcedureZoneFee();
             item.setName(entry.getKey());
@@ -115,4 +115,26 @@ public class StatisticServiceImpl implements IStatisticService {
     public Long getPatientTotalSum(String patientId) {
         return null;
     }
+
+
+public List<ProcedureStatistics> getProcedureStatistics(LocalDate start, LocalDate finish){
+
+    List<ProcedureStatistics> list = new ArrayList<>();
+
+     List<Talon> allTallonsBetween = talonService.getAllTallonsBetween(start, finish);
+
+    final List<Procedure> procedures = procedureService.getAll();
+
+
+    return  null;
+}
+
+
+
+
+
+
+
+
+
 }

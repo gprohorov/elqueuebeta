@@ -3,6 +3,7 @@ package com.med.controller;
 import com.med.model.Patient;
 import com.med.model.statistics.dto.AvailableexecutedPart;
 import com.med.model.statistics.dto.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,8 @@ public class StatisticsController {
               @PathVariable(value = "start") String start,
               @PathVariable(value = "finish") String finish) {
 
-    	// TODO: Seems to be groupingBy inside is not working propertly. Duplicate doctors in table. 
+    	// TODO: Seems to be groupingBy inside is not working propertly. Duplicate doctors in table.
+        // Done!
         
     	return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
@@ -78,38 +80,14 @@ public class StatisticsController {
         return service.getAllDebtors();
     }
 
-/*
-    // get a Person list by lastName
-    @GetMapping("/doctor/list/{name}")
-    public List<Doctor> getDoctorsByLastName(@PathVariable(value = "name") String lastName) {
-        return service.getDoctorListByLetters(lastName);
-    }
 
-    // CREATE a new Doctor
-    @PostMapping("/doctor/create")
-    public Doctor createDoctor(@Valid @RequestBody Doctor doctor) {
-        return service.createDoctor(doctor);
-    }
+    @RequestMapping("/procedures/{start}/{finish}")
+    public List<ProcedureStatistics> getProceduresStatistics(
+            @PathVariable(value = "start") String start,
+            @PathVariable(value = "finish") String finish) {
 
-    // READ the Doctor by id
-    @GetMapping("/doctor/get/{id}")
-    public Doctor showOneDoctor(@PathVariable(value = "id")  int doctorId) {
-        return service.getDoctor(doctorId);
-    }
 
-    // UPDATE the doctor by id
-    @PostMapping("/doctor/update/")
-    public Doctor updateDoctor(@Valid @RequestBody Doctor updates) {
-     //   updates.setId(doctorId);
-        return service.updateDoctor(updates);
+        return service.getProcedureStatistics(LocalDate.parse(start), LocalDate.parse(finish));
     }
-
-    // DELETE the doctor by id
-    @GetMapping("/doctor/delete/{id}")
-    public Doctor delDoctor(@PathVariable(value = "id")  int doctorId) {
-        return service.deleteDoctor(doctorId);
-
-    }
-*/
 
 }
