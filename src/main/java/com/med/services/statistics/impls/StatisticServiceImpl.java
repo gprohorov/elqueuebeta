@@ -121,12 +121,62 @@ public List<ProcedureStatistics> getProcedureStatistics(LocalDate start, LocalDa
 
     List<ProcedureStatistics> list = new ArrayList<>();
 
-     List<Talon> allTallonsBetween = talonService.getAllTallonsBetween(start, finish);
+     List<Talon> talons = talonService.getAllTallonsBetween(start, finish);
 
     final List<Procedure> procedures = procedureService.getAll();
 
+    procedures.stream().forEach(procedure -> {
 
-    return  null;
+        ProcedureStatistics statistics = new ProcedureStatistics();
+
+        statistics.setName(procedure.getName());
+
+        Long assigned =  talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .count();
+
+        Long executed =  talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .count();
+
+        Long cancelled =  talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .filter(talon -> talon.getActivity().equals(Activity.CANCELED))
+                .count();
+
+/*        Long expired =  talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .filter(talon -> talon.getActivity().equals(Activity.CANCELED))
+                .count();
+        */
+
+        Long expired = assigned - executed - cancelled;
+
+        Long zones = (long) talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .mapToInt(Talon::getZones).sum();
+
+         Long fee = (long) talons.stream()
+                .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .mapToInt(Talon::getSum).sum();
+
+
+         statistics.setAssigned(assigned);
+         statistics.setExecuted(executed);
+         statistics.setCancelled(cancelled);
+         statistics.setExpired(expired);
+         statistics.setZones(zones);
+         statistics.setFee(fee);
+
+        list.add(statistics);
+
+    });
+
+
+    return  list;
 }
 
 

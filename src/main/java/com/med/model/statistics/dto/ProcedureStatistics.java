@@ -5,18 +5,18 @@ package com.med.model.statistics.dto;
  */
 public class ProcedureStatistics {
     private String name;
-    private Integer assigned;
-    private Integer executed;
-    private Integer cancelled;
-    private Integer expired;
-    private Integer zones;
-    private Integer fee;
+    private Long assigned;
+    private Long executed;
+    private Long cancelled;
+    private Long expired;
+    private Long zones;
+    private Long fee;
 
 
     public ProcedureStatistics() {
     }
 
-    public ProcedureStatistics(String name, Integer assigned, Integer executed, Integer cancelled, Integer expired, Integer zones, Integer fee) {
+    public ProcedureStatistics(String name, Long assigned, Long executed, Long cancelled, Long expired, Long zones, Long fee) {
         this.name = name;
         this.assigned = assigned;
         this.executed = executed;
@@ -34,57 +34,51 @@ public class ProcedureStatistics {
         this.name = name;
     }
 
-    public Integer getAssigned() {
+    public Long getAssigned() {
         return assigned;
     }
 
-    public void setAssigned(Integer assigned) {
+    public void setAssigned(Long assigned) {
         this.assigned = assigned;
     }
 
-    public Integer getExecuted() {
+    public Long getExecuted() {
         return executed;
     }
 
-    public void setExecuted(Integer executed) {
+    public void setExecuted(Long executed) {
         this.executed = executed;
     }
 
-    public Integer getCancelled() {
+    public Long getCancelled() {
         return cancelled;
     }
 
-    public void setCancelled(Integer cancelled) {
+    public void setCancelled(Long cancelled) {
         this.cancelled = cancelled;
     }
 
-    public Integer getExpired() {
+    public Long getExpired() {
         return expired;
     }
 
-    public void setExpired(Integer expired) {
+    public void setExpired(Long expired) {
         this.expired = expired;
     }
 
-    public Integer getZones() {
+    public Long getZones() {
         return zones;
     }
 
-    public void setZones(Integer zones) {
+    public void setZones(Long zones) {
         this.zones = zones;
     }
 
-    public Integer getFee() {
+    public Long getFee() {
         return fee;
     }
 
-    public void setFee(Integer fee) {
+    public void setFee(Long fee) {
         this.fee = fee;
     }
-
-
-
-
-
-
 }
