@@ -163,7 +163,7 @@ public class TalonServiceImpl implements ITalonService {
 
 
     public List<Talon> getAllTallonsBetween(LocalDate start, LocalDate finish){
-        return repository.findByDateBetween(start, finish);
+        return repository.findByDateBetween(start.minusDays(1), finish.plusDays(1));
     }
 
 
