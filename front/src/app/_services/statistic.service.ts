@@ -10,6 +10,7 @@ export class StatisticService {
     // Define the routes we are going to interact with
     private cashSummaryUrl = config.api_path + '/statistics/report/current';
     private doctorsProceduresFromToUrl = config.api_path + '/statistics/doctors/';
+    private proceduresStatistics = config.api_path + '/statistics/procedures/';
     private patientsDebetorsUrl = config.api_path + '/statistics/patients/debetors';
 
     constructor(private http: HttpClient) { }
@@ -20,6 +21,14 @@ export class StatisticService {
 
     getDoctorsProceduresFromTo(start: Date, finish: Date) {
         return this.http.get(this.doctorsProceduresFromToUrl
+            + start.toISOString().split('T').shift()
+            + '/'
+            + finish.toISOString().split('T').shift()
+        ).pipe(catchError(this.handleError));
+    }
+    
+    getProceduresStatistics(start: Date, finish: Date) {
+        return this.http.get(this.proceduresStatistics
             + start.toISOString().split('T').shift()
             + '/'
             + finish.toISOString().split('T').shift()

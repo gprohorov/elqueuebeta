@@ -31,6 +31,7 @@ export class DoctorsProceduresFromToComponent implements OnInit, OnDestroy {
     load() {
         this.sub = this.service.getDoctorsProceduresFromTo(this.start, this.finish).subscribe(data => {
             this.data = data;
+            this.sum = 0;
             data.reduce( (accumulator, currentValue) => {
                 this.sum += currentValue.fee;
             });

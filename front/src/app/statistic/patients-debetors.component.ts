@@ -27,6 +27,7 @@ export class PatientsDebetorsComponent implements OnInit, OnDestroy {
     load() {
         this.sub = this.service.getPatientsDebetors().subscribe(data => { 
             this.data = data;
+            this.sum = 0;
             data.reduce( (accumulator, currentValue) => {
                 this.sum += currentValue.balance;
             });

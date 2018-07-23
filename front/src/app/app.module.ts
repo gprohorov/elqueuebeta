@@ -52,6 +52,7 @@ import { ProceduresQueueListComponent } from './procedures-queue/list.component'
 
 import { CashSummaryComponent } from './statistic/cash-summary.component';
 import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
+import { ProceduresStatisticsComponent } from './statistic/procedures-statistics.component';
 import { PatientsDebetorsComponent } from './statistic/patients-debetors.component';
 
 import {
@@ -140,6 +141,11 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
+        path: 'statistic/procedures-statistics', component: ProceduresStatisticsComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
         path: 'statistic/patients-debetors', component: PatientsDebetorsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
@@ -193,6 +199,7 @@ const appRoutes: Routes = [
         ProceduresQueueListComponent,
         CashSummaryComponent,
         DoctorsProceduresFromToComponent,
+        ProceduresStatisticsComponent,
         PatientsDebetorsComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
