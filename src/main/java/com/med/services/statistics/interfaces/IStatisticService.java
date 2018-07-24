@@ -1,7 +1,7 @@
 package com.med.services.statistics.interfaces;
 
 import com.med.model.Patient;
-import com.med.model.statistics.dto.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
 
 import java.time.LocalDate;
 import java.util.List;

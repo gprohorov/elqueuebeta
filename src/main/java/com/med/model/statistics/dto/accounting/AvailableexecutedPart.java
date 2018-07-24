@@ -1,4 +1,4 @@
-package com.med.model.statistics.dto;
+package com.med.model.statistics.dto.accounting;
 
 /**
  * Created by george on 22.07.18.

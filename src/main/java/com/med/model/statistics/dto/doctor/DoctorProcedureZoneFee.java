@@ -1,4 +1,4 @@
-package com.med.model.statistics.dto;
+package com.med.model.statistics.dto.doctor;
 
 /**
  * Created by george on 21.07.18.

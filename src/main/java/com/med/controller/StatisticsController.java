@@ -1,9 +1,10 @@
 package com.med.controller;
 
 import com.med.model.Patient;
-import com.med.model.statistics.dto.AvailableexecutedPart;
-import com.med.model.statistics.dto.DoctorProcedureZoneFee;
-import com.med.model.statistics.dto.ProcedureStatistics;
+import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
+import com.med.model.statistics.dto.doctor.DoctorPercent;
+import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,19 @@ public class StatisticsController {
             @PathVariable(value = "finish") String finish) {
 
 
-        return service.getProcedureStatistics(LocalDate.parse(start), LocalDate.parse(finish));
+        return service.getProceduresStatistics(LocalDate.parse(start), LocalDate.parse(finish));
+    }
+
+    @RequestMapping("/procedures/{start}/{finish}/{procedureId}")
+    public List<DoctorPercent> getProcedureStatisticsByDoctors(
+            @PathVariable(value = "start") String start,
+            @PathVariable(value = "finish") String finish,
+            @PathVariable(value = "procedureId") int procedureId) {
+
+
+        return service.getProcedureStatisticsByDoctor(LocalDate.parse(start)
+                , LocalDate.parse(finish)
+                , procedureId);
     }
 
 }

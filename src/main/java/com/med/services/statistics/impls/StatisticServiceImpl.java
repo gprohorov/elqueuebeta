@@ -1,13 +1,11 @@
 package com.med.services.statistics.impls;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Procedure;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.model.statistics.dto.DoctorProcedureZoneFee;
-import com.med.model.statistics.dto.ProcedureStatistics;
+import com.med.model.statistics.dto.doctor.DoctorPercent;
+import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -117,7 +115,7 @@ public class StatisticServiceImpl implements IStatisticService {
     }
 
 
-public List<ProcedureStatistics> getProcedureStatistics(LocalDate start, LocalDate finish){
+public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalDate finish){
 
     List<ProcedureStatistics> list = new ArrayList<>();
 
@@ -180,6 +178,44 @@ public List<ProcedureStatistics> getProcedureStatistics(LocalDate start, LocalDa
 }
 
 
+    public List<DoctorPercent> getProcedureStatisticsByDoctor(LocalDate start, LocalDate finish, int procedureId) {
+
+       final List<Doctor> doctors = doctorService.getAll().stream()
+               .filter(doctor -> doctor.getProcedureIds().contains(procedureId))
+               .collect(Collectors.toList());
+
+
+       final List<Talon> talons = talonService.getAllTallonsBetween(start, finish).stream()
+                .filter(talon -> talon.getProcedure().getId()==procedureId)
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
+
+       final Long all = Long.valueOf(talons.size());
+
+        List<DoctorPercent>  list = new ArrayList<>();
+
+       if (all!=0) {
+
+           doctors.stream().forEach(doctor ->{
+
+               Long executed = talons.stream()
+                       .filter(talon -> talon.getDoctor().equals(doctor))
+                       .count();
+               DoctorPercent item = new DoctorPercent(doctor.getFullName()
+                       , 100* executed/all);
+
+               list.add(item);
+                   }
+
+
+
+           );
+
+
+
+
+
+       }
 
 
 
@@ -187,4 +223,14 @@ public List<ProcedureStatistics> getProcedureStatistics(LocalDate start, LocalDa
 
 
 
+
+
+
+
+
+
+
+    return list;
+
+}
 }

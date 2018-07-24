@@ -1,4 +1,4 @@
-package com.med.model.statistics.dto;
+package com.med.model.statistics.dto.procedure;
 
 /**
  * Created by george on 23.07.18.

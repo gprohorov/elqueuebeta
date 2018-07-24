@@ -5,7 +5,7 @@ import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.model.statistics.dto.AvailableexecutedPart;
+import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.patient.Impls.PatientServiceImpl;
