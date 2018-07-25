@@ -4,10 +4,10 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.dto.HotelDay;
 import com.med.model.dto.KoikaLine;
-import com.med.model.hotel.Chamber;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;
+import com.med.model.hotel.dto.RecordDto;
 import com.med.repository.hotel.RecordRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
@@ -15,8 +15,7 @@ import com.med.services.hotel.record.interfaces.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.text.CollationElementIterator;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -43,6 +42,20 @@ public class RecordServiceImpl implements IRecordService {
     @Override
     public Record createRecord(Record record) {
         return repository.save(record);
+    }
+
+
+    public Record createRecordFromDto(@Valid RecordDto recordDto) {
+        Record record = new Record();
+        record.setPatientId(recordDto.getPatientId());
+        record.setKoika(koikaService.getKoika(recordDto.getKoikaId()));
+        record.setDesc(recordDto.getDesc());
+        record.setStart(recordDto.getStart());
+        record.setFinish(recordDto.getFinish());
+        record.setPrice(recordDto.getPrice());
+        record.setState(recordDto.getState());
+
+        return this.createRecord(record);
     }
 
     @Override

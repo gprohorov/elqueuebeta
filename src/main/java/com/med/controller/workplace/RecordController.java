@@ -3,13 +3,13 @@ package com.med.controller.workplace;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
+import com.med.model.hotel.dto.RecordDto;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,11 +42,11 @@ public class RecordController {
     public List<Record> showAll() {
         return service.getAll();
     }
-/*
+
     // CREATE a new Record
     @PostMapping("/record/create")
 
-    public Record createRecord(@Valid @RequestBody Record record) {
-        return service.createRecordFromDto(record);
-    }*/
+    public Record createRecord(@Valid @RequestBody RecordDto recordDto) {
+        return service.createRecordFromDto(recordDto);
+    }
 }
