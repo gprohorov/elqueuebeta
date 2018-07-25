@@ -15,6 +15,6 @@ public interface IAccountingService {
     Accounting getAccounting(String accountingId);
     List<Accounting> getAll();
 
-    List<Accounting> getAllIncomesForPatienetFromTo(String patientId, LocalDate start, LocalDate finish);
+    List<Accounting> getAllIncomesForPatientFromTo(String patientId, LocalDate start, LocalDate finish);
 
 }

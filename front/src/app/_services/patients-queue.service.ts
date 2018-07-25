@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
@@ -14,6 +14,7 @@ export class PatientsQueueService {
     private deleteUrl = config.api_path + '/patient/delete/';
     private updateActivityUrl = config.api_path + '/patient/talon/set/activity/';
     private updateActivityAllUrl = config.api_path + '/patient/talon/setall/activity/';
+    private updateOutOfTurnUrl = config.api_path + '/patient/talon/set/outofturn/';
     private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
 
@@ -37,6 +38,10 @@ export class PatientsQueueService {
 
     updateActivityAll(id: string, value: string) {
         return this.http.get(this.updateActivityAllUrl + id + '/' + value).pipe(catchError(this.handleError));
+    }
+
+    updateOutOfTurn(id: string, value: boolean) {
+        return this.http.get(this.updateOutOfTurnUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
 
     updateStatus(id: string, value: string) {

@@ -1,0 +1,51 @@
+﻿<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="content table-responsive table-full-width">
+    <h4>Процедури - по кількості ({{start | date: "dd.MM.yyyy"}} - {{finish | date:
+        "dd.MM.yyyy"}})</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Назва</th>
+                <th>Назначено</th>
+                <th>Зроблено</th>
+                <th>Скасовано</th>
+                <th>Пропущено</th>
+                <th>Зон</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let item of data">
+            <tr [ngStyle]="{'cursor': 'pointer'}" (click)="getInfo(item.procedureId)">
+                <td><i
+                    [ngClass]="{'fa': true, 'fa-caret-right': !procedures[item.procedureId],
+                    'fa-caret-down': procedures[item.procedureId] }"></i>
+                    {{item.name}}</td>
+                <td class="text-right text-nowrap">{{item.assigned}}</td>
+                <td class="text-right text-nowrap">{{item.executed}}</td>
+                <td class="text-right text-nowrap">{{item.cancelled}}</td>
+                <td class="text-right text-nowrap">{{item.expired}}</td>
+                <td class="text-right text-nowrap">{{item.zones}}</td>
+                <td class="text-right text-nowrap">{{item.fee}} грн.</td>
+            </tr>
+            <tr *ngIf="procedures[item.procedureId]">
+                <td colspan="7">
+                    <div *ngIf="procedures[item.procedureId].length == 0">Дані відсутні.</div>
+                    <p *ngFor="let doc of procedures[item.procedureId]">{{doc.doctorName}} -
+                        {{doc.percent}}%</p>
+                </td>
+            </tr>
+        </tbody>
+        <tr>
+            <td><strong>Всього:</strong></td>
+            <td class="text-right text-nowrap"><strong>{{assigned}}</strong></td>
+            <td class="text-right text-nowrap"><strong>{{executed}}</strong></td>
+            <td class="text-right text-nowrap"><strong>{{cancelled}}</strong></td>
+            <td class="text-right text-nowrap"><strong>{{expired}}</strong></td>
+            <td class="text-right text-nowrap"><strong>{{zones}}</strong></td>
+            <td class="text-right text-nowrap"><strong>{{sum}} грн.</strong></td>
+        </tr>
+    </table>
+</div>

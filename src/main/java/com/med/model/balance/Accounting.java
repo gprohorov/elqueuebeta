@@ -3,6 +3,7 @@ package com.med.model.balance;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -15,6 +16,7 @@ public class Accounting {
     private Integer doctorId;
     private String patientId;
     private LocalDateTime dateTime;
+    private LocalDate date;
     private String talonId;
     private Integer sum = 0;
     private PaymentType payment;
@@ -36,6 +38,7 @@ public class Accounting {
     public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
         this.patientId = patientId;
         this.dateTime = dateTime;
+        this.date = this.dateTime.toLocalDate();
         this.sum = sum;
         this.payment = payment;
         this.desc = desc;
@@ -45,10 +48,19 @@ public class Accounting {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.dateTime = dateTime;
+        this.date = this.dateTime.toLocalDate();
         this.talonId = talonId;
         this.sum = sum;
         this.payment = payment;
         this.desc = desc;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getTalonId() {return talonId;}

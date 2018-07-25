@@ -157,6 +157,12 @@ public class TalonServiceImpl implements ITalonService {
         return repository.findByDate(date);
     }
 
+
+    public List<Talon> getAllTallonsBetween(LocalDate start, LocalDate finish){
+        return repository.findByDateBetween(start.minusDays(1), finish.plusDays(1));
+    }
+
+
     @Override
     public Talon setActivity(String talonId, Activity activity) {
         List<Activity> activities = new ArrayList<>(
@@ -212,10 +218,11 @@ public class TalonServiceImpl implements ITalonService {
         talons.stream().forEach(talon -> {
             Patient patient = patientService.getPatient(talon.getPatientId());
             patient.setActivity(talon.getActivity());
+            patient.setTherapy(null);
             patients.add(patient);
         });
 
-        return patients.stream().collect(Collectors.toList());
+        return patients;
     }
 
     public List<Talon> saveTalons(List<Talon> talons) {
@@ -256,5 +263,12 @@ public class TalonServiceImpl implements ITalonService {
         });
 
         return procedures;
+    }
+
+    public Talon setOutOfTurn(String talonId, boolean out) {
+        Talon talon = this.getTalon(talonId);
+        talon.setOutOfTurn(out);
+
+        return repository.save(talon) ;
     }
 }

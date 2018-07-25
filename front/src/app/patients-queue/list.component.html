@@ -105,8 +105,9 @@
                                 <div class="col-auto mr-auto">
                                     <p title="{{Activity[talon.activity].text}}">
                                         <span
-                                            class="{{talon.activity == 'EXECUTED' ? 'fa fa-check' : ''}}
-                                                     btn btn-{{Activity[talon.activity].cssClass}}">
+                                            [ngClass]="{'fa fa-check': (talon.activity == 'EXECUTED'), 
+                                                      'fa fa-flag': talon.outOfTurn}"
+                                            class="btn btn-{{Activity[talon.activity].cssClass}}">
                                             {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
                                     </p>
                                 </div>
@@ -131,6 +132,11 @@
                                         class="btn btn-sm btn-secondary text-white"
                                         (click)="updateActivity(talon.id, 'CANCELED')">
                                         <i class="fa fa-ban"></i>
+                                    </button>
+                                    <button title='Встановити "Поза чергою"'
+                                        class="btn btn-sm btn-warning text-white"
+                                        (click)="updateOutOfTurn(talon.id, !talon.outOfTurn)">
+                                        <i class="fa fa-flag"></i>
                                     </button>
                                 </div>
                             </div>

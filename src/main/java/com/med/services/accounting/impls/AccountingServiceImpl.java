@@ -1,10 +1,15 @@
 package com.med.services.accounting.impls;
 
+import com.med.model.Activity;
 import com.med.model.Patient;
+import com.med.model.Talon;
 import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
+import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,9 @@ public class AccountingServiceImpl implements IAccountingService {
     PatientServiceImpl patientService;
 
     @Autowired
+    TalonServiceImpl talonService;
+
+    @Autowired
     AccountingRepository repository;
 
     @Override
@@ -31,6 +39,10 @@ public class AccountingServiceImpl implements IAccountingService {
         patient.setBalance(patient.getBalance() + accounting.getSum());
         patientService.savePatient(patient);
         return accounting ;
+    }
+
+    public List<Accounting> saveAll(List<Accounting> accountings){
+        return repository.saveAll(accountings);
     }
 
     @Override
@@ -47,35 +59,75 @@ public class AccountingServiceImpl implements IAccountingService {
         repository.deleteAll();
     }
 
-    // TODO: Human query
     @Override
-    public List<Accounting> getAllIncomesForPatienetFromTo(
-              String patientId
-            , LocalDate start
-            , LocalDate finish) {
-        List<Accounting> accountings = this.getAll().stream()
-                .filter(accounting -> accounting.getPatientId().equals(patientId))
-               .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(start.minusDays(0)))
-               .filter(accounting -> accounting.getDateTime().toLocalDate().isBefore(finish.plusDays(0)))
-                .collect(Collectors.toList());
-        return accountings;
+    public List<Accounting> getAllIncomesForPatientFromTo(String patientId, LocalDate start
+                                                            , LocalDate finish)
+    { return repository.findByPatientIdAndDateBetween(patientId,start,finish); }
+
+
+
+    public Long getASum() {
+        return repository.findAll().stream().mapToLong(Accounting::getSum).sum();
     }
 
-    public Integer getASum() {
-        return repository.findAll().stream().mapToInt(Accounting::getSum).sum();
-    }
 
     public List<Accounting> getAllForDate(LocalDate date){
-        return this.getAll().stream()
-                .filter(accounting -> accounting.getDateTime().toLocalDate().equals(date))
-                .collect(Collectors.toList());
+        return repository.findByDate(date);
     }
 
-    public Integer getSumForDate(LocalDate date){
-        return this.getAll().stream()
-                .filter(accounting -> accounting.getDateTime().toLocalDate().equals(date))
-                .mapToInt(Accounting::getSum).sum();
+    public Long getSumForDateTotal(LocalDate date){
+        return this.getAllForDate(date).stream()
+                .filter(accounting -> accounting.getSum()>0)
+                .filter(accounting -> !accounting.getPayment().equals(PaymentType.DISCOUNT))
+                .mapToLong(Accounting::getSum)
+                .sum();
     }
+
+
+    public Long getSumForDateCash(LocalDate date){
+        return this.getAllForDate(date).stream()
+                .filter(accounting -> accounting.getSum()>0)
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
+                .mapToLong(Accounting::getSum)
+                .sum();
+    }
+
+    public AvailableexecutedPart getCurrentReport(){
+
+        List<Accounting> today = this.getAllForDate(LocalDate.now());
+
+        AvailableexecutedPart report = new AvailableexecutedPart();
+
+        Long available = today.stream()
+                .filter(accounting -> accounting.getSum()>0)
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
+                .mapToLong(Accounting::getSum)
+                .sum();
+        report.setAvailable(available);
+
+        Long executed = today.stream()
+                .filter(accounting -> accounting.getSum()<0)
+                .mapToLong(Accounting::getSum)
+                .sum();
+        report.setExecuted(executed);
+
+        List<Talon> talonsforToday = talonService.getTalonsForDate(LocalDate.now());
+        int assigned = talonsforToday.size();
+        int done = (int) talonsforToday.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .count();
+        int part =  (100* done)/assigned;
+
+        report.setPercentage(part);
+
+
+        return report;
+    }
+
+
+
+
+
+
 
     public List<Accounting> getAllFrom(LocalDate date){
         return this.getAll().stream()

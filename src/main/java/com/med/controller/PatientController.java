@@ -119,6 +119,14 @@ public class PatientController {
         @PathVariable(value = "activity") Activity activity) {
         return  talonService.setActivity(talonId, activity);
     }
+    @GetMapping("/talon/set/outofturn/{talonId}/{out}")
+    public Talon talonSetOutOfTurn(
+        @PathVariable(value = "talonId") String talonId,
+        @PathVariable(value = "out") boolean out) {
+        return  talonService.setOutOfTurn(talonId, out);
+    }
+
+
 
     @GetMapping("/set/status/{patientId}/{status}")
     public Patient patientSetStatus(

@@ -201,7 +201,7 @@ public class TherapyServiceImpl implements ITherapyService {
 
 			////////////////// accounting manual
 
-			String descr = procedure.getName();
+			String descr = manual.getName();
 			Accounting accounting = new Accounting(manualTherapyTalon.getDoctor().getId(), patient.getId(),
 					LocalDateTime.now(), talon.getId(), (-1 * manualTherapyTalon.getSum()), PaymentType.PROC, descr);
 			accountingService.createAccounting(accounting);

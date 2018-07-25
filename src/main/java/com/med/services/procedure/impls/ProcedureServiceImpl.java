@@ -26,7 +26,7 @@ public class ProcedureServiceImpl implements IProcedureService {
 
     @PostConstruct
     public void init(){
-     //   System.out.println(getAll());
+       // System.out.println(getAll());
     }
 
     @Override

@@ -18,5 +18,7 @@ public interface TalonRepository extends MongoRepository<Talon, String>{
     List<Talon> findByPatientId(String patientId);
     List<Talon> findByDate(LocalDate date);
     List<Talon> findByDateAndPatientId(LocalDate date, String patientId);
+    List<Talon> findByDateBetween(LocalDate start, LocalDate finish);
+
 
 }

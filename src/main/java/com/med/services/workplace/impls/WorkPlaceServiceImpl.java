@@ -77,6 +77,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setStart(LocalDateTime.now());
         talon.setDoctor(doctor);
         talon.setZones(1);
+        talon.setOutOfTurn(false);
 
         String desc = doctor.getFullName() + ", "
         		+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
@@ -261,7 +262,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
             if (first != null) {
                 patients.add(first);
             }
-            tail.setPatients(patients);
+            tail.setPatients(patients   );
             tail.setFreeChoice(false);
 
         } // of if
@@ -398,12 +399,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Talon> talonsHasBeenDone = talons.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
-
     //    boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
-
-
-
-
 
         talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))
