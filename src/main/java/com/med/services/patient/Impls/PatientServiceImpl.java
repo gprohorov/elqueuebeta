@@ -134,6 +134,7 @@ public class PatientServiceImpl implements IPatientService {
                    Patient patient = this.getPatient(entry.getKey());
                    patient.setTalons(entry.getValue());
                    patient.setActivity(patient.calcActivity());
+                   patient.setTherapy(null);
                    patients.add(patient);
                }
        );
