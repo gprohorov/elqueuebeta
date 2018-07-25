@@ -127,6 +127,8 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         ProcedureStatistics statistics = new ProcedureStatistics();
 
+        statistics.setProcedureId(procedure.getId());
+        
         statistics.setName(procedure.getName());
 
         Long assigned =  talons.stream()

@@ -34,6 +34,14 @@ export class StatisticService {
             + finish.toISOString().split('T').shift()
         ).pipe(catchError(this.handleError));
     }
+    
+    getProceduresStatisticsByDoctors(start: Date, finish: Date, procedureId: number) {
+        return this.http.get(this.proceduresStatistics
+            + [start.toISOString().split('T').shift(), 
+               finish.toISOString().split('T').shift(), 
+               procedureId].join('/')
+        ).pipe(catchError(this.handleError));
+    }
 
     getPatientsDebetors() {
         return this.http.get(this.patientsDebetorsUrl).pipe(catchError(this.handleError));

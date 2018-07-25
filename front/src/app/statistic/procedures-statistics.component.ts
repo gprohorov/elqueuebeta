@@ -10,10 +10,13 @@ import { StatisticService, AlertService } from '../_services/index';
 export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    subTemp: Subscription;
     loading = false;
     data: any;
     start: Date = new Date();
     finish: Date = new Date();
+    
+    procedures: any = {};
     
     assigned: number = 0;
     executed: number = 0;
@@ -31,12 +34,21 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
     }
 
+    getInfo(procedureId: number) {
+        this.sub = this.service.getProceduresStatisticsByDoctors(this.start, this.finish, procedureId)
+            .subscribe(data => { 
+                this.procedures[procedureId] = data;
+            });
+    }
+    
     load() {
         this.sub = this.service.getProceduresStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;
+            this.procedures = {};
             this.assigned = 0;
             this.executed = 0;
             this.cancelled = 0;
