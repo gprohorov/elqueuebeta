@@ -222,6 +222,7 @@ public class TalonServiceImpl implements ITalonService {
         talons.stream().forEach(talon -> {
             Patient patient = patientService.getPatient(talon.getPatientId());
             patient.setActivity(talon.getActivity());
+            patient.setTherapy(null);
             patients.add(patient);
         });
 

@@ -3,6 +3,7 @@ package com.med.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,6 +21,7 @@ public class Patient { // implements Comparable<Patient> {
 
     private Person person;
     @Transient
+    @Nullable
     private Therapy therapy;
     @Transient
     private Activity activity = Activity.NON_ACTIVE;
