@@ -26,7 +26,8 @@ import {
     StatisticService,
     WorkplaceMainService,
     WorkplaceCommonService,
-    WorkplaceDiagnosticService
+    WorkplaceDiagnosticService,
+    HotelService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -222,6 +223,7 @@ const appRoutes: Routes = [
         WorkplaceMainService,
         WorkplaceCommonService,
         WorkplaceDiagnosticService,
+        HotelService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [PatientIncomeModalComponent, PatientAssignProcedureModalComponent],

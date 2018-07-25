@@ -14,7 +14,6 @@ public class Talon {
 
     @Id
     private String id;
-
     private String patientId;
     private LocalDate date;
     private Procedure procedure;

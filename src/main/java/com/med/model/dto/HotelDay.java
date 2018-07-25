@@ -1,14 +1,12 @@
-package com.med.model.hotel.dto;
+package com.med.model.dto;
 
 import com.med.model.hotel.State;
 
 import java.time.LocalDate;
 
-/**
- * Created by george on 05.07.18.
- */
 public class HotelDay {
-    private  LocalDate date;
+
+    private LocalDate date;
     private State state;
 
     public HotelDay() {
@@ -33,5 +31,13 @@ public class HotelDay {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "HotelDay{" +
+                "date=" + date +
+                ", state=" + state +
+                '}';
     }
 }

@@ -5,7 +5,9 @@ import com.med.model.Patient;
 import com.med.model.Status;
 import com.med.model.Talon;
 import com.med.model.balance.Accounting;
+import com.med.model.hotel.Record;
 import com.med.repository.accounting.AccountingRepository;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class PatientController {
 
     @Autowired
     AccountingRepository accountingRepository;
+
+    @Autowired
+    RecordServiceImpl recordService;
 
     ////////////////////////// CRUD//////////////////////////
 
@@ -63,9 +68,7 @@ public class PatientController {
         return service.deletePatient(patientId);
     }
 
-
     //////////////////////END OF CRUD ////////////////////////////////////
-
 
     // create talon to date for patient on procedure
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
@@ -93,7 +96,6 @@ public class PatientController {
     	return talonService.createActiveTalon(patientId, procedureId, LocalDate.parse(date), activate);
     }
 
-
     // create talon to today for patient on registration
     @GetMapping("/create/talon/today/{patientId}")
     public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
@@ -102,7 +104,6 @@ public class PatientController {
 
         return talonService.createTalon(patientId, 1, 0);
     }
-
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -152,5 +153,15 @@ public class PatientController {
     public List<Accounting> getBalanceToday(@PathVariable(value = "patientId") String patientId) {
     	return service.getUltimateBalanceToday(patientId);
     }
-   
+
+    @GetMapping("/hotel/bill/{patientId}")
+    public Accounting createBill(@PathVariable(value = "patientId") String patientId) {
+    	return null;
+    }
+
+    @PostMapping("/hotel/record/")
+    public Record createRecord(@Valid @RequestBody Record record)
+                                {
+    	return recordService.createRecord(record);
+    }
 }

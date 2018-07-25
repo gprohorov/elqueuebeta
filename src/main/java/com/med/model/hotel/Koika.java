@@ -11,7 +11,7 @@ public class Koika {
 
     @Id
     private int id;
-    private  String name;
+    private String name;
     private Chamber chamber;
     private int price;
 
@@ -55,5 +55,23 @@ public class Koika {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int compareTo(Koika two){
+        int one = getChamber().getName().compareTo(two.getChamber().getName()) ;
+        if (one == 0){
+            return getName().compareTo(two.getName());
+        }
+        return one;
+    }
+
+    @Override
+    public String toString() {
+        return "Koika{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", chamber=" + chamber.toString() +
+                ", price=" + price +
+                '}';
     }
 }

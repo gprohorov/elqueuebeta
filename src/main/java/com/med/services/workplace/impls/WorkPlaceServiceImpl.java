@@ -375,6 +375,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
 /*        List<Integer> proceduresToActivate = cardService
                 .getCardByProcedureId(procedure.getId()).getActivateAfter();
+/*
 
      */
         List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
@@ -398,11 +399,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Talon> talonsHasBeenDone = talons.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
-
-      //  boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
-      //
-
-
+    //    boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
 
         talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))

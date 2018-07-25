@@ -43,7 +43,7 @@ public class PatientServiceImpl implements IPatientService {
     AccountingRepository accountingRepository;
 
     @Autowired
-    RecordServiceImpl hotelService;
+    RecordServiceImpl recordService;
 
     @Autowired
     TherapyServiceImpl therapyService;

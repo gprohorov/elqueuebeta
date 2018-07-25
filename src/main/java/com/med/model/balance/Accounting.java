@@ -21,8 +21,18 @@ public class Accounting {
     private Integer sum = 0;
     private PaymentType payment;
     private String desc = "";
+    private int koikaId;
 
     public Accounting() {
+    }
+
+    public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, int koikaId, String desc) {
+        this.patientId = patientId;
+        this.dateTime = dateTime;
+        this.sum = sum;
+        this.payment = payment;
+        this.desc = desc;
+        this.koikaId = koikaId;
     }
 
     public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
@@ -113,5 +123,12 @@ public class Accounting {
         this.payment = payment;
     }
 
+    public int getKoikaId() {
+        return koikaId;
+    }
+
+    public void setKoikaId(int koikaId) {
+        this.koikaId = koikaId;
+    }
 
 }

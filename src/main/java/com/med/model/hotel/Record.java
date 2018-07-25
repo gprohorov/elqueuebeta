@@ -1,5 +1,6 @@
 package com.med.model.hotel;
 
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 public class Record {
     @Id
     private String id;
-
     private String patientId;
     private String desc;
     private Koika koika;
@@ -33,24 +33,6 @@ public class Record {
         this.finish = finish;
         this.state = state;
     }
-
-    public Record(String patientId, String desc, Koika koika, LocalDateTime start, LocalDateTime finish, State state) {
-        this.patientId = patientId;
-        this.desc = desc;
-        this.koika = koika;
-        this.start = start;
-        this.finish = finish;
-        this.state = state;
-    }
-
-    public Record(String patientId, Koika koika, int days) {
-        this.patientId = patientId;
-        this.koika = koika;
-        this.start = LocalDateTime.now();
-        this.finish = LocalDateTime.now().plusDays(days);
-        this.state = State.OCCUP;
-    }
-
 
     public String getId() {
         return id;
@@ -118,11 +100,12 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Hotel{" +
+        return "Record{" +
                 "id='" + id + '\'' +
                 ", patientId='" + patientId + '\'' +
                 ", desc='" + desc + '\'' +
                 ", koika=" + koika +
+                ", price=" + price +
                 ", start=" + start +
                 ", finish=" + finish +
                 ", state=" + state +

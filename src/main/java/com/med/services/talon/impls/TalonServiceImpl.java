@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Component
 public class TalonServiceImpl implements ITalonService {
 
-
     @Autowired
     TalonRepository repository;
 
@@ -48,11 +47,8 @@ public class TalonServiceImpl implements ITalonService {
 
     private static final Logger logger = LoggerFactory.getLogger(TalonServiceImpl.class);
 
-
     @PostConstruct
     void init(){}
-
-
 
     @Override
     public Talon createTalon(String patientId, int procedureId, int days) {
@@ -268,7 +264,6 @@ public class TalonServiceImpl implements ITalonService {
 
         return procedures;
     }
-
 
     public Talon setOutOfTurn(String talonId, boolean out) {
         Talon talon = this.getTalon(talonId);

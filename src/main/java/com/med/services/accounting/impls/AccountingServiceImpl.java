@@ -32,17 +32,12 @@ public class AccountingServiceImpl implements IAccountingService {
     @Autowired
     AccountingRepository repository;
 
-
-
     @Override
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
-
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
-
         patientService.savePatient(patient);
-
         return accounting ;
     }
 
@@ -64,9 +59,6 @@ public class AccountingServiceImpl implements IAccountingService {
         repository.deleteAll();
     }
 
-
-
-
     @Override
     public List<Accounting> getAllIncomesForPatientFromTo(String patientId, LocalDate start
                                                             , LocalDate finish)
@@ -82,7 +74,6 @@ public class AccountingServiceImpl implements IAccountingService {
     public List<Accounting> getAllForDate(LocalDate date){
         return repository.findByDate(date);
     }
-
 
     public Long getSumForDateTotal(LocalDate date){
         return this.getAllForDate(date).stream()
@@ -162,16 +153,6 @@ public class AccountingServiceImpl implements IAccountingService {
                 .filter(accounting -> accounting.getPatientId().equals(patientId))
                 .mapToInt(Accounting::getSum).sum();
     }
-
-
-
-
-
-
-
-
-
-
 }
 
 
