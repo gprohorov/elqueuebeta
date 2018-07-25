@@ -3,11 +3,13 @@ package com.med.controller.workplace;
 import com.med.model.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
+import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,12 +22,18 @@ import java.util.List;
 public class RecordController {
 
     @Autowired
+    KoikaServiceImpl koikaService;
+
+    @Autowired
     RecordServiceImpl service;
     
-    @RequestMapping("/koika/list")
+    @RequestMapping("/booking")
     public List<KoikaLine> showAllKoikasForDays() {
         return service.getLines(30);
     }
+
+    @RequestMapping("/koika/list")
+    public List<Koika> showKoikas() { return koikaService.getAll();}
 
     //show free koikas for today
     public List<Koika> showFreeKoikasForToday(){return service.getFreeKoikasForDay(LocalDateTime.now());}
@@ -34,10 +42,11 @@ public class RecordController {
     public List<Record> showAll() {
         return service.getAll();
     }
-
+/*
     // CREATE a new Record
     @PostMapping("/record/create")
+
     public Record createRecord(@Valid @RequestBody Record record) {
-        return service.createRecord(record);
-    }
+        return service.createRecordFromDto(record);
+    }*/
 }
