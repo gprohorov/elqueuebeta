@@ -28,7 +28,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     load() {
         this.loading = true;
-        this.sub = this.service.getAll().subscribe(data => {
+        this.sub = this.service.getBooking().subscribe(data => {
             this.items = data;
             this.loading = false;
         });

@@ -9,14 +9,24 @@ import { Procedure } from '../_models/index';
 
 @Injectable()
 export class HotelService {
-  private listUrl   = config.api_path + '/workplace/hotel/koika/list/';
+  private bookingUrl        = config.api_path + '/workplace/hotel/booking/';
+  private koikaListUrl      = config.api_path + '/workplace/hotel/koika/list/';
+  private createRecordUrl   = config.api_path + '/workplace/hotel/record/create/';
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get(this.listUrl).pipe(catchError(this.handleError));
+  getBooking() {
+      return this.http.get(this.bookingUrl).pipe(catchError(this.handleError));
   }
 
+  getKoikaList() {
+      return this.http.get(this.koikaListUrl).pipe(catchError(this.handleError));
+  }
+  
+  createRecord(record: any) {
+      return this.http.post(this.createRecordUrl, record).pipe(catchError(this.handleError));
+  }
+  
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
     console.error('An error occurred', err);

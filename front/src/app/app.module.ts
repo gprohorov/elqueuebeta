@@ -38,6 +38,7 @@ import { HotelMainComponent } from './hotel/main.component';
 
 import { PatientIncomeModalComponent } from './patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from './patient/assign-procedure.modal.component';
+import { PatientAssignHotelModalComponent } from './patient/assign-hotel.modal.component';
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
 
@@ -193,6 +194,7 @@ const appRoutes: Routes = [
         HotelMainComponent,
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
+        PatientAssignHotelModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -226,7 +228,11 @@ const appRoutes: Routes = [
         HotelService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
-    entryComponents: [PatientIncomeModalComponent, PatientAssignProcedureModalComponent],
+    entryComponents: [
+        PatientIncomeModalComponent,
+        PatientAssignProcedureModalComponent,
+        PatientAssignHotelModalComponent
+    ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
 })

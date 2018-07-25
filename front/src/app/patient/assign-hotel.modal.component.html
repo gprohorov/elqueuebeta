@@ -1,0 +1,65 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+        <div class="row">
+            <div class="col">
+                <input type="radio" value="BOOK" name="state" [(ngModel)]="data.state">
+                Бронювати
+                <input type="radio" class="ml-2" value="OCCUP" name="state" [(ngModel)]="data.state">
+                Поселити
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Дата заїзду</div>
+                    </div>
+                    <input type="date" class="form-control" name="start" [(ngModel)]="data.start"
+                        #start="ngModel" required />
+                </div>
+                <div *ngIf="f.submitted && !start.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Дата виїзду</div>
+                    </div>
+                    <input type="date" class="form-control" name="finish" [(ngModel)]="data.finish"
+                        #finish="ngModel" required />
+                </div>
+                <div *ngIf="f.submitted && !finish.valid" class="help-block text-danger">Поле
+                    обов`язкове</div>
+            </div>
+        </div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Койка</div>
+            </div>
+            <select class="form-control" name="koikaId" [(ngModel)]="data.koikaId"
+                #koikaId="ngModel" required>
+                <option *ngFor="let koika of koikas" [ngValue]="koika.id">{{koika.name}}</option>
+            </select>
+        </div>
+        <div *ngIf="f.submitted && !koikaId.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Ціна</div>
+            </div>
+            <input type="number" class="form-control" name="price" [(ngModel)]="data.price"
+                #price="ngModel" required />
+        </div>
+        <div *ngIf="f.submitted && !price.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+        <div class="row mt-2">
+            <div class="col">
+                <label for="desc">Примітка</label>
+                <textarea rows="2" class="form-control" name="desc" #desc="ngModel"
+                    [(ngModel)]="data.desc"></textarea>
+            </div>
+        </div>
+    </div>
+</form>

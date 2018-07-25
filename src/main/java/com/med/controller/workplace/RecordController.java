@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by george on 3/9/18.
  */
-@RequestMapping("/api/workplace/hotel/")
+@RequestMapping("/api/workplace/hotel")
 @RestController
 @CrossOrigin("*")
 public class RecordController {
