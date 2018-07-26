@@ -181,6 +181,7 @@ public class RecordServiceImpl implements IRecordService {
         List<KoikaLine> koikaLines = new ArrayList<>();
         LocalDate endDate = LocalDate.now().plusDays(days);
         List<Koika> allKoikas = koikaService.getAll();
+       // allKoikas.stream().sorted(Comparator.comparing(koika -> koika.getChamber().getName())).collect(Collectors.toList())
         Collections.sort(allKoikas, (a, b) -> a.compareTo(b));
         for (Koika koika : allKoikas){
             List<HotelDay> koikaHotelDays = new ArrayList<>();
