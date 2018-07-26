@@ -34,16 +34,6 @@ public class Record {
         this.state = state;
     }
     
-    public Record(String patientId, String desc, Koika koika, int price, String start, String finish, State state) {
-    	this.patientId = patientId;
-    	this.desc = desc;
-    	this.koika = koika;
-    	this.price = price;
-    	this.start = LocalDateTime.parse(start);
-    	this.finish = LocalDateTime.parse(finish);
-    	this.state = state;
-    }
-
     public String getId() {
         return id;
     }
@@ -92,8 +82,8 @@ public class Record {
         this.start = start;
     }
     
-    public void setStart(String start) {
-    	this.start = LocalDateTime.parse(start);
+    public void setStringStart(String start) {
+    	this.start = LocalDateTime.parse(start + "T00:00:00");
     }
 
     public LocalDateTime getFinish() {
@@ -104,8 +94,8 @@ public class Record {
         this.finish = finish;
     }
     
-    public void setFinish(String finish) {
-    	this.finish = LocalDateTime.parse(finish);
+    public void setStringFinish(String finish) {
+    	this.finish = LocalDateTime.parse(finish + "T00:00:00");
     }
 
     public State getState() {

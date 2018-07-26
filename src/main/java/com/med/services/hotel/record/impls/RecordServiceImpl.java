@@ -50,8 +50,8 @@ public class RecordServiceImpl implements IRecordService {
         record.setPatientId(recordDto.getPatientId());
         record.setKoika(koikaService.getKoika(recordDto.getKoikaId()));
         record.setDesc(recordDto.getDesc());
-        record.setStart(recordDto.getStart());
-        record.setFinish(recordDto.getFinish());
+        record.setStringStart(recordDto.getStart());
+        record.setStringFinish(recordDto.getFinish());
         record.setPrice(recordDto.getPrice());
         record.setState(recordDto.getState());
 
