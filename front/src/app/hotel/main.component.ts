@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { HotelState } from '../_storage/index';
 import { AlertService, HotelService } from '../_services/index';
 
 @Component({
@@ -12,6 +13,8 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     loading = false;
     sub: Subscription;
     items: any[];
+    HotelState = HotelState;
+    HotelStates = Object.keys(HotelState);
     
     constructor(
         private alertService: AlertService,

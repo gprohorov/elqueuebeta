@@ -3,7 +3,7 @@ echo 'Building Front-end...'
 echo ''
 echo ''
 cd front
-ng build -prod
+ng build -prod --locale uk
 
 echo ''
 echo ''
