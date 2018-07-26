@@ -2,8 +2,6 @@ package com.med.model.hotel.dto;
 
 import com.med.model.hotel.State;
 
-import java.time.LocalDateTime;
-
 /**
  * Created by george on 25.07.18.
  */
@@ -13,21 +11,21 @@ public class RecordDto {
     private String desc;
     private int koikaId;
     private int price;
-    private LocalDateTime start;
-    private LocalDateTime finish;
+    private String start;
+    private String finish;
     private State state;
 
     public RecordDto() {
     }
-
-    public RecordDto(String patientId, String desc, int koikaId, int price, LocalDateTime start, LocalDateTime finish, State state) {
-        this.patientId = patientId;
-        this.desc = desc;
-        this.koikaId = koikaId;
-        this.price = price;
-        this.start = start;
-        this.finish = finish;
-        this.state = state;
+    
+    public RecordDto(String patientId, String desc, int koikaId, int price, String start, String finish, State state) {
+    	this.patientId = patientId;
+    	this.desc = desc;
+    	this.koikaId = koikaId;
+    	this.price = price;
+    	this.start = start;
+    	this.finish = finish;
+    	this.state = state;
     }
 
     public String getPatientId() {
@@ -62,20 +60,20 @@ public class RecordDto {
         this.price = price;
     }
 
-    public LocalDateTime getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public void setStart(String start) {
+    	this.start = start;
     }
 
-    public LocalDateTime getFinish() {
+    public String getFinish() {
         return finish;
     }
-
-    public void setFinish(LocalDateTime finish) {
-        this.finish = finish;
+    
+    public void setFinish(String finish) {
+    	this.finish = finish;
     }
 
     public State getState() {

@@ -33,6 +33,16 @@ public class Record {
         this.finish = finish;
         this.state = state;
     }
+    
+    public Record(String patientId, String desc, Koika koika, int price, String start, String finish, State state) {
+    	this.patientId = patientId;
+    	this.desc = desc;
+    	this.koika = koika;
+    	this.price = price;
+    	this.start = LocalDateTime.parse(start);
+    	this.finish = LocalDateTime.parse(finish);
+    	this.state = state;
+    }
 
     public String getId() {
         return id;
@@ -81,6 +91,10 @@ public class Record {
     public void setStart(LocalDateTime start) {
         this.start = start;
     }
+    
+    public void setStart(String start) {
+    	this.start = LocalDateTime.parse(start);
+    }
 
     public LocalDateTime getFinish() {
         return finish;
@@ -88,6 +102,10 @@ public class Record {
 
     public void setFinish(LocalDateTime finish) {
         this.finish = finish;
+    }
+    
+    public void setFinish(String finish) {
+    	this.finish = LocalDateTime.parse(finish);
     }
 
     public State getState() {
