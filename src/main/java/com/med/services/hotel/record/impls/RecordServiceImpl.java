@@ -12,6 +12,7 @@ import com.med.repository.hotel.RecordRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.interfaces.IRecordService;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,9 @@ public class RecordServiceImpl implements IRecordService {
 
     @Autowired
     AccountingServiceImpl accountingService;
+
+    @Autowired
+    PatientServiceImpl patientService;
 
     @Override
     public Record createRecord(Record record) {
@@ -183,6 +187,9 @@ public class RecordServiceImpl implements IRecordService {
         List<Koika> allKoikas = koikaService.getAll();
        // allKoikas.stream().sorted(Comparator.comparing(koika -> koika.getChamber().getName())).collect(Collectors.toList())
         Collections.sort(allKoikas, (a, b) -> a.compareTo(b));
+/*        allKoikas.stream().sorted(Comparator.comparing(koika -> koika.getChamber().getName()))
+
+                .collect(Collectors.toList());*/
         for (Koika koika : allKoikas){
             List<HotelDay> koikaHotelDays = new ArrayList<>();
             LocalDate dateWithFreeState = LocalDate.now();
@@ -192,6 +199,7 @@ public class RecordServiceImpl implements IRecordService {
                 Collections.sort(recordsForKoika, Comparator.comparing(Record::getStart));
                 for (Record record : recordsForKoika) {
                     LocalDate startDay = record.getStart().toLocalDate();
+     /*??????*/     koika.setPatient(patientService.getPatient(record.getPatientId()));
                     if (startDay.isBefore(LocalDate.now()))
                     {
                         startDay = LocalDate.now();

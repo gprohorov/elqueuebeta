@@ -1,7 +1,9 @@
 package com.med.model.hotel;
 
+import com.med.model.Patient;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 /**
  * Created by george on 22.05.18.
@@ -14,15 +16,18 @@ public class Koika {
     private String name;
     private Chamber chamber;
     private int price;
+    @Nullable
+    private Patient patient;
 
     public Koika() {
     }
 
-    public Koika(int id, String name, Chamber chamber, int price) {
+    public Koika(int id, String name, Chamber chamber, int price, Patient patient) {
         this.id = id;
         this.name = name;
         this.chamber = chamber;
         this.price = price;
+        this.patient = patient;
     }
 
     public int getId() {
@@ -63,6 +68,14 @@ public class Koika {
             return getName().compareTo(two.getName());
         }
         return one;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     @Override
