@@ -2,8 +2,8 @@ package com.med.services.hotel.record.impls;
 
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.model.dto.HotelDay;
-import com.med.model.dto.KoikaLine;
+import com.med.model.hotel.dto.HotelDay;
+import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;

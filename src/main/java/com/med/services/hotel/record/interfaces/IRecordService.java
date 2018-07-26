@@ -1,6 +1,6 @@
 package com.med.services.hotel.record.interfaces;
 
-import com.med.model.dto.KoikaLine;
+import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 

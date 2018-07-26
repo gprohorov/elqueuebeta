@@ -1,4 +1,4 @@
-package com.med.model.dto;
+package com.med.model.hotel.dto;
 
 import com.med.model.hotel.Koika;
 

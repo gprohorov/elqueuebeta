@@ -1,6 +1,6 @@
 package com.med.controller.workplace;
 
-import com.med.model.dto.KoikaLine;
+import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.dto.RecordDto;

@@ -1,12 +1,6 @@
 package com.med.datastorage;
 
 import com.med.model.Patient;
-import com.med.model.balance.PaymentType;
-import com.med.model.dto.HotelDay;
-import com.med.model.dto.KoikaLine;
-import com.med.model.hotel.Koika;
-import com.med.model.hotel.Record;
-import com.med.model.hotel.State;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
@@ -16,10 +10,6 @@ import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
