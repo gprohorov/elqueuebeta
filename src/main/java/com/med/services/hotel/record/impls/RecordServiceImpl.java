@@ -1,5 +1,6 @@
 package com.med.services.hotel.record.impls;
 
+import com.med.model.Patient;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.hotel.dto.HotelDay;
@@ -7,6 +8,7 @@ import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;
+import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
 import com.med.repository.hotel.RecordRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -228,5 +230,29 @@ public class RecordServiceImpl implements IRecordService {
             koikaLines.add(new KoikaLine(koika, koikaHotelDays));
         }
         return koikaLines;
+    }
+
+    public List<KoikaRecord> getKoikaMap() {
+        List<KoikaRecord> map = new ArrayList<>();
+
+        koikaService.getAll().stream().forEach(koika -> {
+
+            KoikaRecord koikaRecord = new KoikaRecord();
+            List<Record> list = repository.findByKoika(koika).stream()
+                    .filter(record -> record.getFinish().isAfter(LocalDateTime.now().minusDays(1)))
+                    .collect(Collectors.toList());
+            list.stream().forEach(record -> {
+
+                Patient patient = patientService.getPatient(record.getPatientId());
+                patient.setTherapy(null);
+                record.getKoika().setPatient(patient);
+            });
+            koikaRecord.setKoika(koika);
+            koikaRecord.setRecords(list);
+            map.add(koikaRecord);
+        });
+
+
+        return map;
     }
 }

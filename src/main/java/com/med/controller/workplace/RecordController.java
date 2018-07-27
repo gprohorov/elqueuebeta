@@ -3,6 +3,7 @@ package com.med.controller.workplace;
 import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
+import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
@@ -30,6 +31,11 @@ public class RecordController {
     @RequestMapping("/booking")
     public List<KoikaLine> showAllKoikasForDays() {
         return service.getLines(30);
+    }
+
+    @RequestMapping("/koika/map")
+    public List<KoikaRecord> showMap() {
+        return service.getKoikaMap();
     }
 
     @RequestMapping("/koika/list")
