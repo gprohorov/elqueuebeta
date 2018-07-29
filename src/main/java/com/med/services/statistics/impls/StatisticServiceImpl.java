@@ -217,7 +217,7 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
         return list;
     }
 
-    PatientDTO getPatientStatistics(String patientId) {
+    public PatientDTO getPatientStatistics(String patientId) {
 
         PatientDTO statistics = new PatientDTO();
         statistics.setPatient(patientService.getPatient(patientId));
