@@ -13,6 +13,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     loading = false;
     sub: Subscription;
     items: any[];
+    dates: any[] = [];
     HotelState = HotelState;
     HotelStates = Object.keys(HotelState);
     
@@ -22,6 +23,13 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     ) { }
     
     ngOnInit() {
+        let date = new Date();
+        date = new Date(date.setDate(date.getDate() - 1));
+        for (let i=1; i<=28; i++) {
+            date = new Date(date.setDate(date.getDate() + 1));
+            let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
+            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });
+        }
         this.load();
     }
     
@@ -31,7 +39,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     load() {
         this.loading = true;
-        this.sub = this.service.getBooking().subscribe(data => {
+        this.sub = this.service.getKoikaMap().subscribe(data => {
             this.items = data;
             this.loading = false;
         });
