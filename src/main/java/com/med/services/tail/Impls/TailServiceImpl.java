@@ -125,11 +125,47 @@ public class TailServiceImpl implements ITailService {
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
 
-      //  Patient patient =
-        
-        this.setAllSemafors(talonsForToday);
+        logger.info(">>>>  grouping >>>>>>>> " + (System.currentTimeMillis() - start));
+/*
+        *//* another way of grouping*//*
+        procedureService.getAll().stream().forEach(procedure -> {
 
-        logger.info(">>>>  tails for all procedures >>>>>>>> " + (System.currentTimeMillis() - start));
+            logger.info("-------- " + procedure.getId() + " ------"  );
+
+
+            long startGrouping = System.currentTimeMillis();
+            Tail tail = new Tail();
+            tail.setProcedureId(procedure.getId());
+            tail.setProcedureName(procedure.getName());
+            tail.setProcedureType(procedure.getProcedureType());
+            List<Talon> talons = talonsForToday.stream()
+                    .filter(talon -> talon.getProcedure().getId()==procedure.getId())
+                    .filter(talon ->
+                            talon.getActivity().equals(Activity.ACTIVE)
+                                    ||
+                                    talon.getActivity().equals(Activity.ON_PROCEDURE))
+                    .collect(Collectors.toList());
+
+            logger.info(">>>>  grouping  >>>>>>>> "  + ((System.currentTimeMillis() - startGrouping)));
+
+            long startSorting = System.currentTimeMillis();
+            List<Patient> patients = talonService.toPatientList(talons).stream()
+                    .sorted(
+                            ( Comparator.comparing(Patient::getActivityLevel)
+                                    .thenComparing(Patient::getStatusLevel)
+                                    .thenComparing(Patient::getDelta) ).reversed()
+                    ).collect(Collectors.toList());
+            tail.setPatients(patients);
+
+            logger.info(">>>>  sorting   >>>>>>>> "  +  ((System.currentTimeMillis() - startSorting)));
+
+
+        });
+          *//**//*
+
+ */       this.setAllSemafors(talonsForToday);
+
+        logger.info(">>>>  semafores >>>>>>>>>> " + (System.currentTimeMillis() - start));
 
 
         ///////////////////// extract ON_PROCEDURE patients from another tails
@@ -150,7 +186,7 @@ public class TailServiceImpl implements ITailService {
             });
 
         });
-        logger.info(">>>>  remove on_procedure pats   >>>>>>>> " + (System.currentTimeMillis() - start));
+        logger.info(">>>>  remove on_procedure patients >>>> " + (System.currentTimeMillis() - start));
 
         //////////////////// OUT OF TURN ///////////////////////
         List<ProcedurePatient> outOfTurn = new ArrayList<>();
@@ -185,7 +221,7 @@ public class TailServiceImpl implements ITailService {
        });
 
             }
-        logger.info(">>>>  out of turn  ----- >>>>>>>> " + (System.currentTimeMillis() - start));
+        logger.info(">>>>  move out of turn  & final >>>>>>>> " + (System.currentTimeMillis() - start));
 
         return tails;
     }

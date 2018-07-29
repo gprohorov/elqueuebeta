@@ -5,6 +5,7 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
@@ -13,6 +14,7 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.statistics.interfaces.IStatisticService;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,6 +50,9 @@ public class StatisticServiceImpl implements IStatisticService {
 
     @Autowired
     AccountingServiceImpl accountingService;
+
+    @Autowired
+    TherapyServiceImpl therapyService;
 
     private static final Logger logger = LoggerFactory.getLogger(TailServiceImpl.class);
 
@@ -173,11 +179,9 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         list.add(statistics);
 
-    });
-
-
-    return  list;
-}
+     });
+     return  list;
+    }
 
 
     public List<DoctorPercent> getProcedureStatisticsByDoctor(LocalDate start, LocalDate finish, int procedureId) {
@@ -196,7 +200,7 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         List<DoctorPercent>  list = new ArrayList<>();
 
-       if (all!=0) {
+         if (all!=0) {
 
            doctors.stream().forEach(doctor ->{
 
@@ -208,31 +212,80 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
                list.add(item);
                    }
-
-
-
            );
-
-
-
-
-
        }
+        return list;
+    }
+
+    PatientDTO getPatientStatistics(String patientId) {
+
+        PatientDTO statistics = new PatientDTO();
+        statistics.setPatient(patientService.getPatient(patientId));
+
+        Therapy therapy = therapyService.findTheLastTherapy(patientId);
+        LocalDate start = therapy.getStart().toLocalDate();
+        statistics.setStart(start);
+
+        List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
+                .filter(talon -> talon.getDate().isAfter(start.minusDays(1)))
+                .collect(Collectors.toList());
+        if (talons.isEmpty()){return null;}
+
+        LocalDate finish = talons.stream().map(talon -> talon.getDate())
+                .sorted(Comparator.reverseOrder()).findFirst().orElse(null);
+        statistics.setFinish(finish);
+
+        int days = (int) talons.stream().map(talon -> talon.getDate())
+                .distinct().count();
+        statistics.setDays(days);
+
+        int procedures = (int) talons.size();
+        statistics.setProcedures(procedures);
+
+        int zones =  talons.stream().mapToInt(talon -> talon.getZones()).sum();
+        statistics.setZones(zones);
 
 
+       List<Accounting> accountings = patientService
+               .getUltimateBalance(patientId,start.minusDays(1),finish.plusDays(1));
 
+       int bill = accountings.stream()
+               .filter(accounting ->(
+                       accounting.getPayment().equals(PaymentType.PROC)
+                         ||
+                       accounting.getPayment().equals(PaymentType.HOTEL)
+               ))
+               .mapToInt(Accounting::getSum)
+               .sum();
+       statistics.setBill(bill*(-1));
 
+       int cash = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.CASH)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setCash(cash);
 
+       int card = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.CARD)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setCard(card);
 
+        int discount = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.DISCOUNT)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setDiscount(discount);
 
+        statistics.setDebt(cash + card + discount - bill);
 
+        return statistics; // of patient
+    }
 
-
-
-
-
-
-    return list;
-
-}
 }
