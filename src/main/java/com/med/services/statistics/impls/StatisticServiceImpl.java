@@ -333,4 +333,18 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         return statisticsDTO;
     }
+
+    public List<GeneralStatisticsDTO> getGeneralStatisticsFromTo(LocalDate start, LocalDate finish) {
+        List<GeneralStatisticsDTO> list = new ArrayList<>();
+
+        LocalDate date = start;
+
+        while (!date.equals(LocalDate.now())){
+            GeneralStatisticsDTO dto = new GeneralStatisticsDTO();
+            dto = this.getGeneralStatisticsDay(date);
+            list.add(dto);
+        }
+
+    return list;
+    }
 }

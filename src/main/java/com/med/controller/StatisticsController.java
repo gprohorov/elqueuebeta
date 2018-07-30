@@ -110,10 +110,17 @@ public class StatisticsController {
                 , procedureId);
     }
 
-    @RequestMapping("/general/{day}}")
-    public GeneralStatisticsDTO getProcedureStatisticsByDoctors(
+    @RequestMapping("/general/{day}")
+    public GeneralStatisticsDTO getGeneralStatisticsByDay(
             @PathVariable(value = "day") String day) {
         return service.getGeneralStatisticsDay(LocalDate.parse(day));
+    }
+
+    @RequestMapping("/general/list/{start}/{finish}")
+    public List<GeneralStatisticsDTO> getGenralStatisticsFromTo(
+            @PathVariable(value = "start") String start,
+            @PathVariable(value = "finish") String finish) {
+        return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
 
