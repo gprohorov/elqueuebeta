@@ -5,6 +5,7 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -288,4 +289,48 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
         return statistics; // of patient
     }
 
+    public GeneralStatisticsDTO getGeneralStatisticsDay(LocalDate date) {
+
+        GeneralStatisticsDTO statisticsDTO = new GeneralStatisticsDTO();
+        List<Talon> talons = talonService.getTalonsForDate(date);
+
+        statisticsDTO.setDate(date);
+
+        int patients = (int) talons.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .map(talon -> talon.getPatientId())
+                .distinct()
+                .count();
+        statisticsDTO.setPatients(patients);
+
+        int doctors = (int) talons.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .map(talon -> talon.getDoctor().getId())
+                .distinct()
+                .count();
+        statisticsDTO.setDoctors(doctors);
+
+        long cash =  accountingService.getSumForDateCash(date);
+        statisticsDTO.setCash(cash);
+
+        long card =  accountingService.getSumForDateTotal(date) - cash;
+        statisticsDTO.setCard(card);
+
+        long bill =  talons.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .mapToLong(Talon::getSum)
+                .sum();
+        statisticsDTO.setCard(bill);
+
+        long discount = accountingService.getAllFrom(date).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
+                .mapToLong(Accounting::getSum)
+                .sum();
+        statisticsDTO.setDiscount(discount);
+
+        long debt = bill - cash - card - discount;
+        statisticsDTO.setDebt(debt);
+
+        return statisticsDTO;
+    }
 }

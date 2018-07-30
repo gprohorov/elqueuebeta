@@ -4,6 +4,7 @@ import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -104,11 +105,17 @@ public class StatisticsController {
             @PathVariable(value = "start") String start,
             @PathVariable(value = "finish") String finish,
             @PathVariable(value = "procedureId") int procedureId) {
-
-
         return service.getProcedureStatisticsByDoctor(LocalDate.parse(start)
                 , LocalDate.parse(finish)
                 , procedureId);
     }
+
+    @RequestMapping("/general/{day}}")
+    public GeneralStatisticsDTO getProcedureStatisticsByDoctors(
+            @PathVariable(value = "day") String day) {
+        return service.getGeneralStatisticsDay(LocalDate.parse(day));
+    }
+
+
 
 }
