@@ -4,6 +4,8 @@ import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
+import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
@@ -86,21 +88,41 @@ public class StatisticsController {
     public List<ProcedureStatistics> getProceduresStatistics(
             @PathVariable(value = "start") String start,
             @PathVariable(value = "finish") String finish) {
-
-
         return service.getProceduresStatistics(LocalDate.parse(start), LocalDate.parse(finish));
     }
+    @RequestMapping("/patient/{id}")
+    public PatientDTO getPatientStatistics(
+            @PathVariable(value = "id") String id
+            ) {
+        return service.getPatientStatistics(id);
+    }
+
+
+
 
     @RequestMapping("/procedures/{start}/{finish}/{procedureId}")
     public List<DoctorPercent> getProcedureStatisticsByDoctors(
             @PathVariable(value = "start") String start,
             @PathVariable(value = "finish") String finish,
             @PathVariable(value = "procedureId") int procedureId) {
-
-
         return service.getProcedureStatisticsByDoctor(LocalDate.parse(start)
                 , LocalDate.parse(finish)
                 , procedureId);
     }
+
+    @RequestMapping("/general/{day}")
+    public GeneralStatisticsDTO getGeneralStatisticsByDay(
+            @PathVariable(value = "day") String day) {
+        return service.getGeneralStatisticsDay(LocalDate.parse(day));
+    }
+
+    @RequestMapping("/general/list/{start}/{finish}")
+    public List<GeneralStatisticsDTO> getGenralStatisticsFromTo(
+            @PathVariable(value = "start") String start,
+            @PathVariable(value = "finish") String finish) {
+        return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
+    }
+
+
 
 }
