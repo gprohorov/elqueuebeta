@@ -8,6 +8,8 @@
             <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Статистика</a>
             <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/statistic/general-from-to"
+                    routerLinkActive="active">Загальна статистика</a>
                 <a class="dropdown-item" routerLink="/statistic/cash-summary"
                     routerLinkActive="active">Готівка в касі</a>
                 <a class="dropdown-item" routerLink="/statistic/doctors-procedures-from-to"

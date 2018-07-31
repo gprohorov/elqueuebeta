@@ -342,10 +342,11 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         LocalDate date = start;
 
-        while (!date.equals(LocalDate.now())){
+        while (!date.equals(finish)){
             GeneralStatisticsDTO dto = new GeneralStatisticsDTO();
             dto = this.getGeneralStatisticsDay(date);
             list.add(dto);
+            date = date.plusDays(1);
         }
 
     return list;
