@@ -40,8 +40,11 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     load() {
         this.loading = true;
         this.sub = this.service.getKoikaMap().subscribe(data => {
-            this.items = data;
             this.loading = false;
+            this.items = data;
+            this.items.forEach(item => {
+                
+            });
         });
     }
 }

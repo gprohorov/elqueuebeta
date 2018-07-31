@@ -1,0 +1,51 @@
+﻿<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="content table-responsive table-full-width" *ngIf="data">
+    <h4>Статистика по пацієнту: <i>{{data?.patient.person.fullName}}</i></h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Початок лікування</td>
+                <td>{{data.start | date:"dd.MM.yyyy"}}</td>
+            </tr>
+            <tr>
+                <td>Кінець лікування</td>
+                <td>{{data.finish | date:"dd.MM.yyyy"}}</td>
+            </tr>
+            <tr>
+                <td>Зроблено процедур</td>
+                <td>{{data.procedures}}</td>
+            </tr>
+            <tr>
+                <td>Зроблено зон</td>
+                <td>{{data.zones}}</td>
+            </tr>
+            <tr>
+                <td>Днів</td>
+                <td>{{data.days}}</td>
+            </tr>
+            <tr>
+                <td>Нараховано</td>
+                <td>{{data.bill}} грн.</td>
+            </tr>
+            <tr>
+                <td>Готівкою</td>
+                <td>{{data.cash}} грн.</td>
+            </tr>
+            <tr>
+                <td>Картою</td>
+                <td>{{data.card}} грн.</td>
+            </tr>
+            <tr>
+                <td>Знижкою</td>
+                <td>{{data.discount}} грн.</td>
+            </tr>
+            <tr>
+                <td>Борг</td>
+                <td>{{data.debt}} грн.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

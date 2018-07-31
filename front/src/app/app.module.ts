@@ -56,6 +56,7 @@ import { CashSummaryComponent } from './statistic/cash-summary.component';
 import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
 import { ProceduresStatisticsComponent } from './statistic/procedures-statistics.component';
 import { PatientsDebetorsComponent } from './statistic/patients-debetors.component';
+import { PatientStatisticsComponent } from './statistic/patient-statistics.component';
 
 import {
     WorkplaceMainComponent,
@@ -90,12 +91,12 @@ const appRoutes: Routes = [
     {
         path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
         path: 'patient-form', component: PatientFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
     {
@@ -152,6 +153,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
+    {
+        path: 'statistic/patient/:patientId', component: PatientStatisticsComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -204,6 +210,7 @@ const appRoutes: Routes = [
         DoctorsProceduresFromToComponent,
         ProceduresStatisticsComponent,
         PatientsDebetorsComponent,
+        PatientStatisticsComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent
