@@ -369,7 +369,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
      */
         List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
 
-        patientService.getPatientWithTalons(patientId).getTalons().stream().forEach(talon -> {
+        patientService.getPatientWithTalons(patientId).getTalons().stream()
+                .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED))
+                .forEach(talon -> {
             if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
                 talon.setActivity(Activity.CANCELED);
                 talonService.saveTalon(talon);
@@ -406,7 +408,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Talon> talonsHasBeenDone = talons.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
-    //    boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
+       boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
 
         talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))

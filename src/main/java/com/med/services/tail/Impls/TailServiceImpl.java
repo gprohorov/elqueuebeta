@@ -206,8 +206,8 @@ public class TailServiceImpl implements ITailService {
              Tail tail =  tails.stream()
                      .filter(tail1 -> tail1.getProcedureId()==item.getProcedure().getId())
                      .findFirst().get();
-
-                Patient buffer = tail.getPatients().get(0);
+// TODO:   check up
+                Patient buffer = tail.getPatients().stream().findFirst().orElse(null);
 
                 Patient first = tail.getPatients().stream()
                         .filter(patient -> patient.getId().equals(item.getPatientId()))
@@ -216,7 +216,7 @@ public class TailServiceImpl implements ITailService {
                    int index = tail.getPatients().indexOf(first);
 
                    tail.getPatients().set(0, first);
-                   tail.getPatients().set(index, buffer);
+                  if (buffer!= null )tail.getPatients().set(index, buffer);
                }
        });
 

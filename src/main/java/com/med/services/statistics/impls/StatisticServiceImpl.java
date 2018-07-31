@@ -229,10 +229,13 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
                 .filter(talon -> talon.getDate().isAfter(start.minusDays(1)))
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
         if (talons.isEmpty()){return null;}
 
-        LocalDate finish = talons.stream().map(talon -> talon.getDate())
+        LocalDate finish = talons.stream()
+
+                .map(talon -> talon.getDate())
                 .sorted(Comparator.reverseOrder()).findFirst().orElse(null);
         statistics.setFinish(finish);
 
@@ -284,7 +287,7 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
                 .sum();
         statistics.setDiscount(discount);
 
-        statistics.setDebt(cash + card + discount - bill);
+        statistics.setDebt(cash + card + discount + bill);
 
         return statistics; // of patient
     }
