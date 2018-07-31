@@ -31,6 +31,7 @@ public class Patient { // implements Comparable<Patient> {
     private LocalDateTime startActivity;
     private Status status = Status.SOCIAL;
     private int balance;
+    private LocalDateTime registration;
 
 
 
@@ -54,11 +55,21 @@ public class Patient { // implements Comparable<Patient> {
         this.lastActivity = lastActivity;
         this.startActivity = startActivity;
         this.status = status;
+        this.registration = LocalDateTime.now();
     }
 
     public Patient(Person person) {
         this.talons = new ArrayList<>();
         this.person = person;
+        this.registration = LocalDateTime.now();
+    }
+
+    public LocalDateTime getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(LocalDateTime registration) {
+        this.registration = registration;
     }
 
     public int getBalance() {
