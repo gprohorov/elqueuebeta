@@ -346,7 +346,9 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
             GeneralStatisticsDTO dto = new GeneralStatisticsDTO();
             dto = this.getGeneralStatisticsDay(date);
             list.add(dto);
+
             date = date.plusDays(1);
+
         }
 
     return list;
