@@ -49,12 +49,15 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
             state: this.data.state
         }).subscribe(() => {
             this.alertService.success('Пацієнта ' + this.data.patientName + ' поселено/заброньовано в готель.');
-//                + this.procedures.find(x => x.id == this.data.procedureId).name);
             options.closeDialogSubject.next();
         });
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+    }
+    
+    updatePrice(koikaId) {
+        this.data.price = this.koikas.find(x => x.id == koikaId).price;
     }
 }

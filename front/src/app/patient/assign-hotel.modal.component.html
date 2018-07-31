@@ -39,8 +39,8 @@
                 <div class="input-group-text">Койка</div>
             </div>
             <select class="form-control" name="koikaId" [(ngModel)]="data.koikaId"
-                #koikaId="ngModel" required>
-                <option *ngFor="let koika of koikas" [ngValue]="koika.id">{{koika.name}}</option>
+                #koikaId="ngModel" (change)="updatePrice($event.target.value)" required>
+                <option *ngFor="let koika of koikas" [value]="koika.id">{{koika.name}}</option>
             </select>
         </div>
         <div *ngIf="f.submitted && !koikaId.valid" class="help-block text-danger">Поле

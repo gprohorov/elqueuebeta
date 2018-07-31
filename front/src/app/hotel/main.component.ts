@@ -12,7 +12,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     loading = false;
     sub: Subscription;
-    items: any[];
+    items: any[] = [];
     dates: any[] = [];
     HotelState = HotelState;
     HotelStates = Object.keys(HotelState);
