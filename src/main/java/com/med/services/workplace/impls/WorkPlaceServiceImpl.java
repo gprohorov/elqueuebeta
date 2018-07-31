@@ -10,6 +10,7 @@ import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import com.med.services.user.UserService;
 import com.med.services.workplace.interfaces.IWorkPlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     @Autowired
     CardServiceImpl cardService;
+
+    @Autowired
+    TherapyServiceImpl therapyService;
 
 
 
@@ -128,6 +132,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         tail.setPatientOnProcedure(null);
         this.setBusy(procedure.getId());
 
+        // create accounting
         String descr = procedure.getName() + " x" + talon.getZones();
         Accounting accounting = new Accounting(doctor.getId()
                 , patient.getId()
@@ -139,7 +144,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         accountingService.createAccounting(accounting);
 
 
- /////////////////  0000000000000000000000000
+ /////////////////  cancelling and activating approp. talons
         this.cancelTalonsByCard(procedure,patient.getId());
         this.activateTalonsByCard(procedure,patient.getId());
 
@@ -318,11 +323,13 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         Talon talon = talonService.getTalon(talonId);
 
-        String desc = talon.getDesc()
-                + userService.getCurrentUserInfo().getFullName() + ", "
+        String desc = userService.getCurrentUserInfo().getFullName() + ", "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + ": <br/>"
                 + text + "<br/><br/>";
-        talon.setDesc(desc);
+        talon.setDesc(talon.getDesc() + desc);
+        Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
+        therapy.setNotes( therapy.getNotes() + desc);
+        therapyService.saveTherapy(therapy);
 
         return talonService.saveTalon(talon);
     }
