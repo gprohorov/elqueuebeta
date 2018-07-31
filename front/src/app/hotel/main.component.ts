@@ -43,7 +43,10 @@ export class HotelMainComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.items = data;
             this.items.forEach(item => {
-                
+                item.line = this.dates;
+                item.records.forEach(record => {
+                    
+                });
             });
         });
     }

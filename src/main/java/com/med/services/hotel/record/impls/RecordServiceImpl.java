@@ -240,6 +240,7 @@ public class RecordServiceImpl implements IRecordService {
             KoikaRecord koikaRecord = new KoikaRecord();
             List<Record> list = repository.findByKoika(koika).stream()
                     .filter(record -> record.getFinish().isAfter(LocalDateTime.now().minusDays(1)))
+                    .sorted(Comparator.comparing(Record::getStart))
                     .collect(Collectors.toList());
             list.stream().forEach(record -> {
 
