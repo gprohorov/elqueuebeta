@@ -12,17 +12,19 @@
                     routerLinkActive="active">Готівка в касі</a>
                 <a class="dropdown-item" routerLink="/statistic/doctors-procedures-from-to"
                     routerLinkActive="active">Лікарі - загальна кількість процедур</a>
-                <i class="dropdown-item disabled">Процедури - по лікарям</i>
-                <i class="dropdown-item disabled">Процедури - по лікарям з підсумком</i>
+                <i class="dropdown-item disabled">Процедури - по лікарям</i> <i
+                    class="dropdown-item disabled">Процедури - по лікарям з підсумком</i>
                 <a class="dropdown-item" routerLink="/statistic/procedures-statistics"
                     routerLinkActive="active">Процедури - по кількості</a>
-                <i class="dropdown-item disabled">Паціенти - ПІБ / Кількість / Готівка</i>
-                <i class="dropdown-item disabled">Паціенти - звідки</i>
+                <i class="dropdown-item disabled">Паціенти - ПІБ / Кількість / Готівка</i> <i
+                    class="dropdown-item disabled">Паціенти - звідки</i>
                 <a class="dropdown-item" routerLink="/statistic/patients-debetors"
                     routerLinkActive="active">Боржники звичайні</a>
                 <i class="dropdown-item disabled">Боржники VIP</i>
             </div>
         </div>
+        <a class="dropdown-item" routerLink="/patients" routerLinkActive="active"
+            *ngxPermissionsOnly="['ROLE_HEAD']">Список пацієнтів</a>
     </div>
     <!-- Doctor interface section END -->
     <!-- Administrator interface section START -->
@@ -49,7 +51,7 @@
     <!-- Administrator interface section END -->
     <div class="navbar-nav">
         <a class="dropdown-item" routerLink="/login">
-            Вихід <small>({{user.info?.fullName}})</small>
+            Вихід <small>({{user.info?.fullName || user.username}})</small>
         </a>
     </div>
 </nav>

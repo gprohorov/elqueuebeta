@@ -12,6 +12,7 @@ export class StatisticService {
     private doctorsProceduresFromToUrl = config.api_path + '/statistics/doctors/';
     private proceduresStatistics = config.api_path + '/statistics/procedures/';
     private patientsDebetorsUrl = config.api_path + '/statistics/patients/debetors';
+    private patientStatisticsUrl = config.api_path + '/statistics/patient/';
 
     constructor(private http: HttpClient) { }
 
@@ -45,6 +46,10 @@ export class StatisticService {
 
     getPatientsDebetors() {
         return this.http.get(this.patientsDebetorsUrl).pipe(catchError(this.handleError));
+    }
+    
+    getPatientStatistics(patientId: string) {
+        return this.http.get(this.patientStatisticsUrl + patientId).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

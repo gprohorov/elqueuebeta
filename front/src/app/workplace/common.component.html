@@ -56,6 +56,10 @@
                                 {{Status[status]?.text}}</option>
                         </select>
                     </div>
+                    <div class="col-auto">
+                        <a href="/statistic/patient/{{item.patient.id}}" target="_blank"
+                            class="btn btn-secondary">Статистика</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,9 +101,7 @@
         <div class="card-header">
             <h4>Нотатки</h4>
         </div>
-        <div class="card-body">
-            <p>{{item.patient.therapy?.notes}}</p>
-        </div>
+        <div class="card-body" [innerHTML]="item.patient.therapy?.notes"></div>
     </div>
     <div class="card mb-5">
         <div class="card-header">

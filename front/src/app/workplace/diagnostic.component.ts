@@ -267,11 +267,14 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
                         });
                         if (this.canvasBuffer.length == 0) {
                             for (let i = 0; i <= this.procedures.length; i++) {
-                                if (this.procedures[i].picture && this.procedures[i].picture.length > 0) {
-                                    this.restoreCanvas(this.procedures[i].picture);
-                                    this.currentProcedureId = this.procedures[i].id;
-                                    this.currentProcedureName = this.procedures[i].name;
-                                    break;
+                                if (this.procedures[i] 
+                                    && this.procedures[i].picture 
+                                    && this.procedures[i].picture.length > 0
+                                    ) {
+                                        this.restoreCanvas(this.procedures[i].picture);
+                                        this.currentProcedureId = this.procedures[i].id;
+                                        this.currentProcedureName = this.procedures[i].name;
+                                        break;
                                 }
                             }
                         }
@@ -299,7 +302,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }
-    
+
     startProcedure() {
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
