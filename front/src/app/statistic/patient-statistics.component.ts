@@ -14,7 +14,6 @@ export class PatientStatisticsComponent implements OnInit, OnDestroy {
     loading = false;
     patientId: string;
     data: any;
-    sum: number = 0;
     
     constructor(
         private router: Router,
@@ -36,10 +35,6 @@ export class PatientStatisticsComponent implements OnInit, OnDestroy {
         this.sub = this.service.getPatientStatistics(this.patientId).subscribe(data => { 
             console.log(data);
             this.data = data;
-//            this.sum = 0;
-//            data.reduce( (accumulator, currentValue) => {
-//                this.sum += currentValue.balance;
-//            });
         });
     }
 }

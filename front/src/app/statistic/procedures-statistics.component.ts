@@ -55,7 +55,7 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
             this.expired = 0;
             this.zones = 0;
             this.sum = 0;
-            data.reduce( (accumulator, currentValue) => {
+            data.forEach( currentValue => {
                 this.assigned += currentValue.assigned;
                 this.executed += currentValue.executed;
                 this.cancelled += currentValue.cancelled;

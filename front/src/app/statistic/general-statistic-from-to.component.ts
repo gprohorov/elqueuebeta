@@ -47,7 +47,7 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
             this.discount = 0;
             this.debt = 0;
             
-            data.reduce( (accumulator, currentValue) => {
+            data.forEach( currentValue => {
                 this.patients += currentValue.patients;
                 this.doctors += currentValue.doctors;
                 this.cash += currentValue.cash;
