@@ -12,8 +12,8 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     sub: Subscription;
     loading = false;
     data: any;
-    start: Date = new Date();
-    finish: Date = new Date();
+    start: string;
+    finish: string;
     
     patients: number = 0;
     doctors: number = 0;
@@ -24,7 +24,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     debt: number = 0;
 
     constructor(private service: StatisticService, private alertService: AlertService) {
-        this.start.setDate(this.start.getDate()-7);
+        let start = new Date(), finish = new Date();
+        start.setDate(-7);
+        this.start = start.toISOString().split('T').shift();
+        this.finish = finish.toISOString().split('T').shift();
     }
 
     ngOnInit() {

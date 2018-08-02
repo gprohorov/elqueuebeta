@@ -17,11 +17,8 @@ export class StatisticService {
 
     constructor(private http: HttpClient) { }
 
-    getGeneralStatisticsFromTo(start: Date, finish: Date) {
-        return this.http.get(this.generalStatisticsFromToUrl
-                + start.toISOString().split('T').shift()
-                + '/'
-                + finish.toISOString().split('T').shift()
+    getGeneralStatisticsFromTo(start: string, finish: string) {
+        return this.http.get(this.generalStatisticsFromToUrl + start + '/' + finish
             ).pipe(catchError(this.handleError));
     }
 
@@ -29,27 +26,18 @@ export class StatisticService {
         return this.http.get(this.cashSummaryUrl).pipe(catchError(this.handleError));
     }
 
-    getDoctorsProceduresFromTo(start: Date, finish: Date) {
-        return this.http.get(this.doctorsProceduresFromToUrl
-            + start.toISOString().split('T').shift()
-            + '/'
-            + finish.toISOString().split('T').shift()
+    getDoctorsProceduresFromTo(start: string, finish: string) {
+        return this.http.get(this.doctorsProceduresFromToUrl + start + '/' + finish
         ).pipe(catchError(this.handleError));
     }
 
-    getProceduresStatistics(start: Date, finish: Date) {
-        return this.http.get(this.proceduresStatistics
-            + start.toISOString().split('T').shift()
-            + '/'
-            + finish.toISOString().split('T').shift()
+    getProceduresStatistics(start: string, finish: string) {
+        return this.http.get(this.proceduresStatistics + start + '/' + finish
         ).pipe(catchError(this.handleError));
     }
 
-    getProceduresStatisticsByDoctors(start: Date, finish: Date, procedureId: number) {
-        return this.http.get(this.proceduresStatistics
-            + [start.toISOString().split('T').shift(),
-            finish.toISOString().split('T').shift(),
-                procedureId].join('/')
+    getProceduresStatisticsByDoctors(start: string, finish: string, procedureId: number) {
+        return this.http.get(this.proceduresStatistics + start + '/' + finish + '/' + procedureId 
         ).pipe(catchError(this.handleError));
     }
 

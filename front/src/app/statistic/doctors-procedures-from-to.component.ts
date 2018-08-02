@@ -13,11 +13,14 @@ export class DoctorsProceduresFromToComponent implements OnInit, OnDestroy {
     loading = false;
     data: any;
     sum: number = 0;
-    start: Date = new Date();
-    finish: Date = new Date();
+    start: string;
+    finish: string;
 
     constructor(private service: StatisticService, private alertService: AlertService) {
-        this.start.setDate(1);
+        let start = new Date(), finish = new Date();
+        start.setDate(-7);
+        this.start = start.toISOString().split('T').shift();
+        this.finish = finish.toISOString().split('T').shift();
     }
 
     ngOnInit() {

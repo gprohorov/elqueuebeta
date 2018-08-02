@@ -1,19 +1,18 @@
-﻿<div class="form-inline mb-5">
+﻿<form class="form-inline mb-3">
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Початок</div>
         </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" />
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
     </div>
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Кінець</div>
         </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" />
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
     </div>
-    <button class="btn btn-primary">Показати</button>
-</div>
-<h4>Загальна статистика ({{start | date: "dd.MM.yyyy"}} - {{finish | date: "dd.MM.yyyy"}})</h4>
+</form>
+<h4>Загальна статистика</h4>
 <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>

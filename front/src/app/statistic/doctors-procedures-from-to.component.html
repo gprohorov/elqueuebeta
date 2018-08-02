@@ -1,9 +1,19 @@
-﻿<div class="position-fixed" [style.right.px]="50">
-    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-        [disabled]="loading" (click)="load()" title="Обновити"></button>
-</div>
+﻿<form class="form-inline mb-3">
+    <div class="input-group mr-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Початок</div>
+        </div>
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+    </div>
+    <div class="input-group mr-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Кінець</div>
+        </div>
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+    </div>
+</form>
 <div class="content table-responsive table-full-width">
-    <h4>Лікарі - загальна кількість процедур ({{start | date: "dd.MM.yyyy"}} - {{finish | date: "dd.MM.yyyy"}})</h4>
+    <h4>Лікарі - загальна кількість процедур</h4>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
