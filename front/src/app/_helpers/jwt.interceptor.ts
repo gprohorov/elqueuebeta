@@ -26,7 +26,7 @@ export class JwtInterceptor implements HttpInterceptor {
   return next.handle(authReq).do((event: any) => {},
     ( error: any ) => {
       if (error instanceof HttpErrorResponse) {
-        if (error.status === 401) {
+        if (error.status === 401 || error.status === 403) {
           this.auth.deAuth();
         }
       }
