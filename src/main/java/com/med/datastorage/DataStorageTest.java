@@ -1,16 +1,16 @@
 package com.med.datastorage;
 
-import com.med.model.Patient;
+import com.med.model.Activity;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
+import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import java.time.LocalDate;
 
 /**
  * Created by george on 3/9/18.
@@ -188,18 +188,31 @@ public class DataStorageTest {
 //    }
 
     public void reset(){
-        talonRepository.deleteAll();
-        accountingService.deleteAll();
-        List<Patient> patients = patientService.getAll("");
-        patients.stream().forEach(
-                patient -> {
-                    patient.setStartActivity(null);
-                    patient.setLastActivity(null);
-                    patient.setBalance(0);
-                }
-        );
-        patientService.saveAll(patients);
+
+     //   talonRepository.deleteAll();
+  //      accountingService.deleteAll();
+    //    List<Patient> patients = patientService.getAll("");
+    //    patients.stream().forEach(
+     //           patient -> {
+     //               patient.setStartActivity(null);
+     //               patient.setLastActivity(null);
+     //               patient.setBalance(0);
+     //           }
+    //    );
+    //    patientService.saveAll(patients);
+
+
+
+        talonRepository.findByDate(LocalDate.now()).stream()
+                .forEach(talon -> {
+
+                    if (talon.getActivity().equals(Activity.ON_PROCEDURE)){
+                        talon.setActivity(Activity.NON_ACTIVE);
+                    }
+                });
     }
+
+
 
     public void resetPatientsTable() {
         System.out.println(" talon table updated");
