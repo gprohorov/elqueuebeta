@@ -13,6 +13,8 @@ import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import com.med.services.user.UserService;
 import com.med.services.workplace.interfaces.IWorkPlaceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +59,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     @Autowired
     TherapyServiceImpl therapyService;
 
-
+    private static final Logger logger = LoggerFactory.getLogger(TailServiceImpl.class);
 
     public Patient getFirstFromTail(int procedureId){
 
@@ -120,7 +122,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         talon.setStatus(patient.getStatus());
         if(talon.getZones()==0) talon.setZones(1);
 
-        int price = this.getPrice(patient, procedure);
+        int price = this.getPrice(patient, procedure.getId());
+
         int sum = procedure.isZoned()? price*talon.getZones(): price;
         talon.setSum(sum);
         talonService.saveTalon(talon);
@@ -152,8 +155,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 
-    int getPrice(Patient patient, Procedure procedure){
+    private int getPrice(Patient patient, int procedureId){
         int price ;
+        Procedure procedure = procedureService.getProcedure(procedureId);
         switch (patient.getStatus()){
 
             case SOCIAL: price= procedure.getSOCIAL();
@@ -382,24 +386,13 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId){
 
-/*        List<Integer> proceduresToActivate = cardService
-                .getCardByProcedureId(procedure.getId()).getActivateAfter();
-/*
-
-     */
         List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
 
-/*
-
-        List<Integer> proceduresMustBeDoneByCard = cardService
-                .getCardByProcedureId(procedure.getId()).getMustBeDoneBefore();
-*/
-
-        List<Integer> proceduresMustBeDoneByCard = procedure.getCard().getMustBeDoneBefore();
-
-
         List<Talon> talons = patientService
-                .getPatientWithTalons(patientId).getTalons();
+                .getPatientWithTalons(patientId).getTalons().stream()
+                .filter(talon -> talon.getActivity().equals(Activity.NON_ACTIVE))
+                .collect(Collectors.toList());
+/*
 
         List<Talon> talonsToBeDone = talons.stream()
                 .filter(talon-> proceduresMustBeDoneByCard.contains(talon.getProcedure().getId()))
@@ -408,7 +401,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Talon> talonsHasBeenDone = talons.stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
-       boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
+      boolean permission = (talonsHasBeenDone.size() == talonsToBeDone.size()) ? true : false;
+*/
 
         talons.stream().forEach(talon -> {
             if (proceduresToActivate.contains(Integer.valueOf(talon.getProcedure().getId()))

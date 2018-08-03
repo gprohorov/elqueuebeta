@@ -296,6 +296,9 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         GeneralStatisticsDTO statisticsDTO = new GeneralStatisticsDTO();
         List<Talon> talons = talonService.getTalonsForDate(date);
+        List<Accounting> accountings = accountingService.getAllForDate(date);
+   //     logger.info(" ---------- " + accountings.size() + " -----  ");
+    //    logger.info(" ---------- " + date + " -----  ");
 
         statisticsDTO.setDate(date);
 
@@ -313,26 +316,36 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
                 .count();
         statisticsDTO.setDoctors(doctors);
 
-        long cash =  accountingService.getSumForDateCash(date);
+      //  long cash =  accountingService.getSumForDateCash(date);
+        long cash =  accountings.stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
+                .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setCash(cash);
 
-        long card =  accountingService.getSumForDateTotal(date) - cash;
+
+
+        long card =  accountings.stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.CARD))
+                .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setCard(card);
 
-        long bill =  talons.stream()
-                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-                .mapToLong(Talon::getSum)
-                .sum();
-        statisticsDTO.setCard(bill);
 
-        long discount = accountingService.getAllFrom(date).stream()
+
+        long bill =  accountings.stream()
+                .filter(accounting -> accounting.getSum()<0)
+                .mapToLong(Accounting::getSum).sum();
+        statisticsDTO.setBill(bill);
+
+        long discount =  accountings.stream()
                 .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
-                .mapToLong(Accounting::getSum)
-                .sum();
+                .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setDiscount(discount);
 
-        long debt = bill - cash - card - discount;
+        long debt = bill + cash + card + discount;
         statisticsDTO.setDebt(debt);
+        System.out.println("-----------------------------------");
+        System.out.println(statisticsDTO.toString());
+
 
         return statisticsDTO;
     }
