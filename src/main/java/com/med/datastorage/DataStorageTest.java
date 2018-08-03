@@ -1,6 +1,7 @@
 package com.med.datastorage;
 
 import com.med.model.Activity;
+import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by george on 3/9/18.
@@ -203,13 +205,16 @@ public class DataStorageTest {
 
 
 
-        talonRepository.findByDate(LocalDate.now()).stream()
+      List<Talon> talons=  talonRepository.findByDate(LocalDate.now());
+
+      talons.stream()
                 .forEach(talon -> {
 
                     if (talon.getActivity().equals(Activity.ON_PROCEDURE)){
                         talon.setActivity(Activity.NON_ACTIVE);
                     }
                 });
+      talonRepository.saveAll(talons);
     }
 
 
