@@ -148,7 +148,7 @@ public class Patient { // implements Comparable<Patient> {
            }
            if (delta!=null && delta >300){
                this.setLastActivity(null);
-               delta=null;
+               delta=300L;
            }
 
         return delta;
