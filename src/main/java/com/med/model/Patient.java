@@ -146,10 +146,12 @@ public class Patient { // implements Comparable<Patient> {
                delta = ChronoUnit.MINUTES.between(this.getLastActivity()
                      , LocalDateTime.now());
            }
+/*
            if (delta!=null && delta >300){
                this.setLastActivity(null);
-               delta=null;
+               delta=300L;
            }
+*/
 
         return delta;
     }
