@@ -20,10 +20,9 @@
             <tr *ngFor="let item of items">
                 <th scope="row" class="position-fixed" [style.margin-left.em]="-4"
                     [style.width.em]="4">{{item.koika.name}}</th>
-                <td>&nbsp;</td>
-                    <!-- <td *ngFor="let date of item.line"
+                <td *ngFor="let date of item.line"
                     class="text-light bg-{{HotelState[date.state].cssClass}}"
-                    title="{{HotelState[date.state].text}}">&nbsp;</td> -->
+                    title="{{HotelState[date.state].text}}">{{date.name}}</td>
             </tr>
         </tbody>
     </table>

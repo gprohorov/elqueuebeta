@@ -23,10 +23,11 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     ) { }
     
     ngOnInit() {
-        let date = new Date();
-        date = new Date(date.setDate(date.getDate() - 1));
-        for (let i=1; i<=28; i++) {
-            date = new Date(date.setDate(date.getDate() + 1));
+        let currentDay = new Date();
+        currentDay.setDate(currentDay.getDate() - 1);
+        currentDay.setHours(0, 0, 0, 0);
+        for (let i = 0; i < 30; i++) {
+            let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
             let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
             this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });
         }
@@ -43,10 +44,21 @@ export class HotelMainComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.items = data;
             this.items.forEach(item => {
-                item.line = this.dates;
+                let line = [];
                 item.records.forEach(record => {
-                    
+                    let start = new Date(record.start);
+                    let finish = new Date(record.finish);
+                    let currentDay = null;
+                    for (let i = 0; i < 30; i++) {
+                        currentDay = this.dates[i].date;
+                        if (line[i] == undefined) line[i] = {state: 'FREE', name: '&nbsp;'};
+                        if (start <= currentDay && finish >= currentDay) {
+                            line[i].state = record.state;
+                            line[i].name = record.koika.patient.person.fullName;
+                        }
+                    }
                 });
+                item.line = line.length > 0 ? line : new Array(30).fill({state: 'FREE', name: '&nbsp;'});
             });
         });
     }
