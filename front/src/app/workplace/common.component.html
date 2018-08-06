@@ -7,14 +7,15 @@
     <div class="row mb-2">
         <div class="col">
             <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="100"
-                (click)="startProcedure()" [hidden]="procedureStarted">
+                (click)="startProcedure()" [hidden]="procedureStarted" [disabled]="loading">
                 <h3 class="font-weight-bold">
                     РОЗПОЧАТИ<br />ПРОЦЕДУРУ
                 </h3>
             </button>
             <form name="formExecute" (ngSubmit)="fe.form.valid && executeProcedure()" #fe="ngForm"
                 novalidate [hidden]="!procedureStarted">
-                <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="100">
+                <button class="btn btn-success btn-lg btn-block" [style.min-height.px]="100"
+                    [disabled]="loading">
                     <h3 class="font-weight-bold">
                         ЗАВЕРШИТИ<br />ПРОЦЕДУРУ
                     </h3>
@@ -23,7 +24,7 @@
         </div>
         <div class="col">
             <button class="btn btn-danger btn-lg btn-block" [style.min-height.px]="100"
-                (click)="cancelProcedure()" [hidden]="!procedureStarted">
+                (click)="cancelProcedure()" [hidden]="!procedureStarted" [disabled]="loading">
                 <h3 class="font-weight-bold">
                     СКАCУВАТИ<br />ПРОЦЕДУРУ
                 </h3>
@@ -39,11 +40,12 @@
                 <div class="card-body row">
                     <div class="col-auto input-group" [style.max-width.px]="400">
                         <div class="input-group-prepend">
-                            <label class="input-group-text"> Баланс:
-                                {{item.patient.balance}} грн. </label>
+                            <label class="input-group-text">Баланс: {{item.patient.balance}}
+                                грн.</label>
                         </div>
                         <button class="btn btn-warning" (click)="showIncomePopup(item)"
-                            [hidden]="!procedureStarted">Історія розрахунків</button>
+                            [hidden]="!procedureStarted" [disabled]="loading">Історія
+                            розрахунків</button>
                     </div>
                     <div class="col-auto input-group" [style.max-width.px]="300">
                         <div class="input-group-prepend">
@@ -51,14 +53,15 @@
                         </div>
                         <select class="custom-select" [(ngModel)]="item.patient.status"
                             [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
-                            (ngModelChange)="updateStatus(item.patient.id, item.patient.status)">
+                            (ngModelChange)="updateStatus(item.patient.id, item.patient.status)"
+                            [disabled]="loading">
                             <option *ngFor="let status of Statuses" [ngValue]="status">
                                 {{Status[status]?.text}}</option>
                         </select>
                     </div>
                     <div class="col-auto">
                         <a href="/statistic/patient/{{item.patient.id}}" target="_blank"
-                            class="btn btn-secondary">Статистика</a>
+                            class="btn btn-secondary" [disabled]="loading">Статистика</a>
                     </div>
                 </div>
             </div>
@@ -66,14 +69,14 @@
     </div>
     <div class="row mb-2" [hidden]="!procedureStarted">
         <div class="col btn-group" role="group">
-            <button class="btn btn-info btn-lg" (click)="subZone()">
+            <button class="btn btn-info btn-lg" (click)="subZone()" [disabled]="loading">
                 <i class="fa fa-minus fa-5x"></i>
             </button>
-            <button class="btn btn-light btn-lg btn-block">
+            <button class="btn btn-light btn-lg btn-block" [disabled]="loading">
                 <h4>Зон:</h4>
                 <h4>{{item.talon?.zones}}</h4>
             </button>
-            <button class="btn btn-info btn-lg" (click)="addZone()">
+            <button class="btn btn-info btn-lg" (click)="addZone()" [disabled]="loading">
                 <i class="fa fa-plus fa-5x"></i>
             </button>
         </div>
@@ -110,7 +113,7 @@
         <div class="card-body" [innerHTML]="item.talon.desc"></div>
     </div>
     <label for="comment">Додати коментар:</label>
-    <textarea rows="5" class="form-control" [(ngModel)]="model.comment"></textarea>
-    <button class="btn btn-primary pull-right mb-3" [disabled]="model.comment == ''"
+    <textarea rows="5" class="form-control" [(ngModel)]="model.comment" [disabled]="loading"></textarea>
+    <button class="btn btn-primary pull-right mb-3" [disabled]="model.comment == '' || loading"
         (click)="comment()">Додати</button>
 </div>

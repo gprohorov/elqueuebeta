@@ -286,6 +286,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
     updateStatus(id: string, value: string, event: any) {
         if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
+            this.loading = true;
             this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
                 this.load();
             });
@@ -304,6 +305,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     startProcedure() {
+        this.loading = true;
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
             this.load();
@@ -312,6 +314,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
     cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
+            this.loading = true;
             this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
                 this.router.navigate(['workplace']);
@@ -320,6 +323,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
+        this.loading = true;
         // form assignment
         this.model.assignments = [];
         this.procedures.forEach((p) => {
