@@ -82,6 +82,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         talon.setActivity(Activity.ON_PROCEDURE);
         talon.setStart(LocalDateTime.now());
+
         talon.setDoctor(doctor);
         talon.setZones(1);
         talon.setOutOfTurn(false);
@@ -94,10 +95,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         patient.setLastActivity(LocalDateTime.now());
         patientService.savePatient(patient);
 
-        tail.setPatientOnProcedure(patient);
-        tail.setVacant(false);
+      // tail.setPatientOnProcedure(patient);
+      // tail.setVacant(false);
 
-        tailService.setSemaforSignal(talon.getProcedure().getId(), false);
+      // tailService.setSemaforSignal(talon.getProcedure().getId(), false);
         return talonService.saveTalon(talon);
     }
 
