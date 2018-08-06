@@ -18,10 +18,11 @@
                             </div>
                             <input type="text" class="form-control" name="codeDiag"
                                 #codeDiag="ngModel" [(ngModel)]="model.codeDiag"
-                                [readonly]="!procedureStarted" />
+                                [readonly]="!procedureStarted" [disabled]="loading" />
                         </div>
                         <textarea rows="3" class="form-control" name="diag" #diag="ngModel"
-                            [(ngModel)]="model.diag" [readonly]="!procedureStarted"></textarea>
+                            [(ngModel)]="model.diag" [readonly]="!procedureStarted"
+                            [disabled]="loading"></textarea>
                     </div>
                 </div>
                 <div class="card mb-2">
@@ -30,25 +31,26 @@
                     </div>
                     <div class="card-body">
                         <textarea rows="5" class="form-control" name="notes" #notes="ngModel"
-                            [(ngModel)]="model.notes" [readonly]="!procedureStarted"></textarea>
+                            [(ngModel)]="model.notes" [readonly]="!procedureStarted"
+                            [disabled]="loading"></textarea>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <button *ngIf="procedureStarted" class="btn btn-success btn-lg btn-block"
-                    [style.min-height.px]="200" (click)="executeProcedure()">
+                    [style.min-height.px]="200" (click)="executeProcedure()" [disabled]="loading">
                     <h3 class="font-weight-bold">
                         ЗАВЕРШИТИ<br />ДІАГНОСТИКУ
                     </h3>
                 </button>
                 <button *ngIf="procedureStarted" class="btn btn-danger btn-lg btn-block"
-                    [style.min-height.px]="200" (click)="cancelProcedure()">
+                    [style.min-height.px]="200" (click)="cancelProcedure()" [disabled]="loading">
                     <h3 class="font-weight-bold">
                         СКАCУВАТИ<br />ДІАГНОСТИКУ
                     </h3>
                 </button>
                 <button *ngIf="!procedureStarted" class="btn btn-primary btn-lg btn-block"
-                    [style.min-height.px]="200" (click)="startProcedure()">
+                    [style.min-height.px]="200" (click)="startProcedure()" [disabled]="loading">
                     <h3 class="font-weight-bold">
                         РОЗПОЧАТИ<br />ДІАГНОСТИКУ
                     </h3>
@@ -64,11 +66,12 @@
                     <div class="card-body row">
                         <div class="col-auto input-group" [style.max-width.px]="400">
                             <div class="input-group-prepend">
-                                <label class="input-group-text"> Баланс:
-                                    {{item.patient.balance}} грн. </label>
+                                <label class="input-group-text">Баланс:
+                                    {{item.patient.balance}} грн.</label>
                             </div>
                             <button class="btn btn-warning" (click)="showIncomePopup(item)"
-                                [hidden]="!procedureStarted">Історія розрахунків</button>
+                                [hidden]="!procedureStarted" [disabled]="loading">Історія
+                                розрахунків</button>
                         </div>
                         <div class="col-auto input-group" [style.max-width.px]="300">
                             <div class="input-group-prepend">
@@ -77,13 +80,13 @@
                             <select class="custom-select" [(ngModel)]="item.patient.status"
                                 [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
                                 (ngModelChange)="updateStatus(item.patient.id, item.patient.status)">
-                                <option *ngFor="let status of Statuses" [ngValue]="status">
-                                    {{Status[status]?.text}}</option>
+                                <option *ngFor="let status of Statuses" [ngValue]="status"
+                                    [disabled]="loading">{{Status[status]?.text}}</option>
                             </select>
                         </div>
                         <div class="col-auto">
                             <a href="/statistic/patient/{{item.patient.id}}" target="_blank"
-                                class="btn btn-secondary">Статистика</a>
+                                class="btn btn-secondary" [disabled]="loading">Статистика</a>
                         </div>
                     </div>
                 </div>
@@ -127,10 +130,11 @@
                                 <div class="input-group-text">Тривалість (днів)</div>
                             </div>
                             <input type="number" class="form-control" name="days" #days="ngModel"
-                                [(ngModel)]="model.days" [readonly]="!procedureStarted" />
+                                [(ngModel)]="model.days" [readonly]="!procedureStarted"
+                                [disabled]="loading" />
                         </div>
                         <div class="mb-2">
-                            <button [disabled]="!procedureStarted" [style.width.px]="400"
+                            <button [disabled]="!procedureStarted || loading" [style.width.px]="400"
                                 [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
                                                 'btn-primary': model.manualTherapy,
                                                 'btn-secondary': !model.manualTherapy}"
@@ -140,7 +144,8 @@
                         <div class="mb-2" *ngIf="procedures?.length">
                             <div *ngFor="let procedure of procedures">
                                 <div *ngIf="procedure.header">{{procedure.header}}</div>
-                                <button [disabled]="!procedureStarted" [style.width.px]="400"
+                                <button [disabled]="!procedureStarted || loading"
+                                    [style.width.px]="400"
                                     [ngClass]="{'text-left': true, 'm-1': true, 'btn': true,
                                                 'btn-primary': procedure?.selected,
                                                 'btn-secondary': !procedure?.selected}"
@@ -150,7 +155,7 @@
                                 </button>
                                 <button [hidden]="!isCorrectable(procedure)"
                                     (click)="correctProcedure(procedure)"
-                                    class="ml-1 btn btn-warning">Корегувати</button>
+                                    class="ml-1 btn btn-warning" [disabled]="loading">Корегувати</button>
                             </div>
                         </div>
                     </div>

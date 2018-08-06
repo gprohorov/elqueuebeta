@@ -140,6 +140,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     }
 
     startProcedure() {
+        this.loading = true;
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру розпочато.');
             this.load();
@@ -148,6 +149,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
+            this.loading = true;
             this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(data => {
                 this.alertService.success('Процедуру скасовано.');
                 this.router.navigate(['workplace']);
@@ -156,6 +158,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     }
 
     executeProcedure() {
+        this.loading = true;
         this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);

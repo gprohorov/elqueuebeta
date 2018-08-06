@@ -23,14 +23,6 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     ) { }
     
     ngOnInit() {
-        let currentDay = new Date();
-        currentDay.setDate(currentDay.getDate() - 1);
-        currentDay.setHours(0, 0, 0, 0);
-        for (let i = 0; i < 30; i++) {
-            let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
-            let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
-            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });
-        }
         this.load();
     }
     
@@ -40,14 +32,24 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     load() {
         this.loading = true;
+        let currentDay = new Date();
+        currentDay.setDate(currentDay.getDate() - 1);
+        currentDay.setHours(0, 0, 0, 0);
+        for (let i = 0; i < 30; i++) {
+            let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
+            let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
+            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });
+        }
         this.sub = this.service.getKoikaMap().subscribe(data => {
             this.loading = false;
             this.items = data;
             this.items.forEach(item => {
                 let line = [];
                 item.records.forEach(record => {
-                    let start = new Date(record.start);
-                    let finish = new Date(record.finish);
+                    let start:any = new Date(record.start);
+                    let finish:any = new Date(record.finish);
+                    let delta:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
+                    console.log(start, finish, delta);
                     let currentDay = null;
                     for (let i = 0; i < 30; i++) {
                         currentDay = this.dates[i].date;
