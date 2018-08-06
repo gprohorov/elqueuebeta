@@ -32,6 +32,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     load() {
         this.loading = true;
+        this.dates = [];
         let currentDay = new Date();
         currentDay.setDate(currentDay.getDate() - 1);
         currentDay.setHours(0, 0, 0, 0);
