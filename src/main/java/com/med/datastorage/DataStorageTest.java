@@ -1,6 +1,7 @@
 package com.med.datastorage;
 
 import com.med.model.Activity;
+import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -200,7 +202,7 @@ public class DataStorageTest {
                     patient.setLastActivity(null);
                    patient.setBalance(0);
                }
-       );
+       );Hope1234
        patientService.saveAll(patients);
 */
 
@@ -216,8 +218,13 @@ public class DataStorageTest {
                 });
       talonRepository.saveAll(talons);
 
+     List<Patient> patients = patientService.getAll("");
 
+     patients.stream().forEach(patient -> {
 
+         if (patient.getRegistration()==null){patient.setRegistration(LocalDateTime.now().minusDays(15));}
+     });
+     patientService.saveAll(patients);
     }
 
 
