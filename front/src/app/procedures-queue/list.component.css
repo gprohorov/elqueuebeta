@@ -34,12 +34,18 @@
 
 .masonry-list-item {
     display: inline-block;
-    max-width: 130px;
+    max-width: 110px;
     white-space: nowrap;
     overflow: hidden;
     line-height: 1.5;
     text-overflow: ellipsis;
     vertical-align: baseline;
+}
+
+.masonry-list-icon {
+    font-size: .875rem;
+    padding: .03rem .1rem;
+    vertical-align: top;
 }
 
 .masonry-header-title {

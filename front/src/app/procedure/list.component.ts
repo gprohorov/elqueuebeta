@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { Procedure } from '../_models/index';
-import { ProcedureService, AlertService } from '../_services/index';
+import { AlertService, ProcedureService } from '../_services/index';
 import { Status } from '../_storage/index';
 
 @Component({
@@ -16,19 +16,21 @@ export class ProcedureListComponent implements OnInit {
   Status = Status;
   Statuses = Object.keys(Status);
 
-  constructor(private service: ProcedureService, private alertService: AlertService) {
-  }
+  constructor(
+      private alertService: AlertService,
+      private service: ProcedureService
+  ) { }
 
   ngOnInit() {
     this.load();
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if (this.sub) this.sub.unsubscribe();
   }
-
-  load(search: string = '') {
+  
+  load() {
     this.loading = true;
-    this.sub = this.service.getAll(search).subscribe(data => { this.items = data; this.loading = false; });
+    this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });
   }
 }
