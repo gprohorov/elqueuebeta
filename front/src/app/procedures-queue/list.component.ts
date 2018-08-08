@@ -15,6 +15,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     loading = false;
 
     sub: Subscription;
+    subTemp: Subscription;
     reloadFunc: any;
     items: any[] = [];
     Activity = Activity;
@@ -42,7 +43,8 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subTemp) this.subTemp.unsubscribe();
         if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
@@ -55,6 +57,12 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
         this.updateMasonryLayout = true;
     }
 
+    updateOutOfTurn(id: string, value: boolean) {
+        this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
+            this.load();
+        });
+    }
+    
     load() {
         this.loading = true;
         this.sub = this.service.getTails().subscribe(

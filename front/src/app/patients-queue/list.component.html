@@ -1,22 +1,16 @@
 ﻿<div class="position-fixed" [style.right.px]="50">
-<button
-    [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-    [disabled]="loading" (click)="load()" title="Обновити"></button>
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
-<!-- 
 <div>Фільтри:</div>
 <div class="btn-group mb-3" role="group">
     <button type="button"
-        [ngClass]="{'btn': true, 'btn-primary': filters.all, 'btn-secondary': !filters.all}"
-        (click)="filters.all = !filters.all">усі</button>
+        [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
+        (click)="filters = 'all'">усі</button>
     <button type="button" class="btn btn-secondary"
-        [ngClass]="{'btn': true, 'btn-primary': filters.hotel, 'btn-secondary': !filters.hotel}"
-        (click)="filters.hotel = !filters.hotel">готельні</button>
-    <button type="button" class="btn btn-secondary"
-        [ngClass]="{'btn': true, 'btn-primary': filters.active, 'btn-secondary': !filters.active}"
-        (click)="filters.active = !filters.active">активні</button>
+        [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
+        (click)="filters = 'active'">активні</button>
 </div> 
--->
 <div class="content table-responsive table-full-width">
     <table class="table table-sm">
         <thead class="thead-light">
@@ -32,7 +26,8 @@
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
-            <tr (dblclick)="rows[i]=!rows[i]">
+            <tr (dblclick)="rows[i]=!rows[i]" [hidden]="(item.activity != 'ACTIVE' 
+                    && item.activity != 'ON_PROCEDURE') && filters == 'active'">
                 <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
                     [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
                 </td>
@@ -104,8 +99,7 @@
                             <div class="row" *ngFor="let talon of item.talons">
                                 <div class="col-auto mr-auto">
                                     <p title="{{Activity[talon.activity].text}}">
-                                        <span
-                                            [ngClass]="{'fa fa-flag': talon.outOfTurn }"
+                                        <span [ngClass]="{'fa fa-arrow-circle-up': talon.outOfTurn }"
                                             class="btn btn-{{Activity[talon.activity].cssClass}}">
                                             {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
                                     </p>
@@ -132,10 +126,12 @@
                                         (click)="updateActivity(talon.id, 'CANCELED')">
                                         <i class="fa fa-ban"></i>
                                     </button>
-                                    <button title='Встановити "Поза чергою"'
-                                        class="btn btn-sm btn-warning text-white"
+                                    <button title='{{ talon.outOfTurn ? "Зняти" : "Встановити"}} "Поза чергою"'
+                                        [ngClass]="{'btn': true, 'text-white': true, 'btn-sm': true, 
+                                        'btn-warning': !talon.outOfTurn, 'btn-success': talon.outOfTurn }"
                                         (click)="updateOutOfTurn(talon.id, !talon.outOfTurn)">
-                                        <i class="fa fa-flag"></i>
+                                        <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': !talon.outOfTurn, 
+                                            'fa-arrow-circle-down': talon.outOfTurn}"></i>
                                     </button>
                                 </div>
                             </div>
