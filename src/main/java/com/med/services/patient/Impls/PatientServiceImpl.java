@@ -66,6 +66,20 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public Patient savePatient(Patient patient) {
+        patient.setRegistration(LocalDateTime.now());
+/*
+        repository.save(patient);
+        Patient pt = this.getAll("").stream().
+                filter(pat->pat.getRegistration().toLocalDate()!= null).
+                filter(pat->pat.getRegistration().toLocalDate().equals(LocalDate.now()))
+        .sorted(Comparator.comparing(Patient::getRegistration).reversed())
+                .findFirst().orElse(null);
+        if (pt!=null){
+            talonService.createActiveTalon(pt.getId(),1,LocalDate.now(),true);
+        }
+
+*/
+
         return repository.save(patient);
     }
 
