@@ -85,7 +85,8 @@ public class TalonServiceImpl implements ITalonService {
     		patient.setLastActivity(LocalDateTime.now());
     		patientService.savePatient(patient);}
     	}
-    	return repository.save(talon);
+       // System.out.println(" patid " + talon.getPatientId());
+        return repository.save(talon);
     }
 
     @Override

@@ -64,13 +64,18 @@ public class PatientServiceImpl implements IPatientService {
     }
 */
 
+    public void deleteAll(List<Patient> patients){
+        repository.deleteAll(patients);
+    }
+
     @Override
     public Patient savePatient(Patient patient) {
+        System.out.println("pat -- from service ----- > "+patient.toString());
         patient.setRegistration(LocalDateTime.now());
-
+     //
         repository.save(patient);
 
-     //   talonService.createActiveTalon(patient.getId(),1,LocalDate.now(),true);
+      //  talonService.createActiveTalon(patient.getId(),2,LocalDate.now(),true);
 
         return patient;
     }

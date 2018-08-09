@@ -59,6 +59,7 @@ public class PatientController {
     // Save the patient
     @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
+        System.out.println("pat -- from controller ----- > "+patient.toString());
         return service.savePatient(patient);
     }
 

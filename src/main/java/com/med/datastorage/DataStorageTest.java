@@ -9,6 +9,7 @@ import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,6 +40,9 @@ public class DataStorageTest {
 
     @Autowired
     AccountingServiceImpl accountingService;
+
+    @Autowired
+    ProcedureServiceImpl procedureService;
 
 //    @PostConstruct
 //    void init(){
@@ -215,6 +219,9 @@ public class DataStorageTest {
                     if (talon.getActivity().equals(Activity.ON_PROCEDURE)){
                         talon.setActivity(Activity.NON_ACTIVE);
                     }
+                    if (talon.getProcedure()==null){
+                        talon.setProcedure(procedureService.getProcedure(2));
+                    }
                 });
       talonRepository.saveAll(talons);
 
@@ -225,6 +232,18 @@ public class DataStorageTest {
          if (patient.getRegistration()==null){patient.setRegistration(LocalDateTime.now().minusDays(15));}
      });
      patientService.saveAll(patients);
+/*
+
+     patients =  patientService.getAll("").stream()
+             .filter(patient -> patient.getRegistration().isAfter(LocalDateTime.now().minusHours(2)))
+             .collect(Collectors.toList());
+
+        talons = talonRepository.findByDate(LocalDate.now());
+        talonRepository.deleteAll(talons);
+         patientService.deleteAll(patients);
+
+*/
+
     }
 
 

@@ -147,6 +147,7 @@ public class Talon {
     }
 
     public int getProcedureId() {
+        if (procedure==null){return 2;}
         return this.procedure.getId();
     }
 
