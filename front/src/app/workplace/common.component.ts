@@ -29,7 +29,6 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     reloadFunc: any;
     item: any;
     talonId: string;
-    zones: number = 1;
     patientId: string;
     procedureId: number;
     procedureStarted: boolean = false;
@@ -159,14 +158,15 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     executeProcedure() {
         this.loading = true;
-        this.subProcedure = this.service.executeProcedure(this.item.talon.id).subscribe(data => {
-            this.alertService.success('Процедуру завершено.');
-            this.router.navigate(['workplace']);
-        }, 
-        error => {
-            this.alertService.error(error, true);
-            this.router.navigate(['workplace']);
-        });
+        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.item.talon.zones)
+            .subscribe(data => {
+                this.alertService.success('Процедуру завершено.');
+                this.router.navigate(['workplace']);
+            }, 
+            error => {
+                this.alertService.error(error, true);
+                this.router.navigate(['workplace']);
+            });
     }
 
     subZone() {
