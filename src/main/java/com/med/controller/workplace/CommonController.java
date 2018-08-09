@@ -76,10 +76,10 @@ public class CommonController {
 
     //////////////////////////////// EXECUTE ///////////////////
 
-    @GetMapping("/execute/{talonId}")
-    public void execute(@PathVariable(value = "talonId") String talonId) {
+    @GetMapping("/execute/{talonId}/{zones}")
+    public void execute(@PathVariable(value = "talonId") String talonId, @PathVariable(value = "zones") int zones) {
         int doctorId = userService.getCurrentUserInfo().getId();
-        workPlaceService.execute(talonId, doctorId);
+        workPlaceService.execute(talonId, zones, doctorId);
     }
 
 

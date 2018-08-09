@@ -103,7 +103,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     }
 
 //////////////////////////////////  EXECUTE //////////////////////////
-    public Talon execute(String talonId, int doctorId) {
+    public Talon execute(String talonId, int zones, int doctorId) {
 
         Talon talon = talonService.getTalon(talonId);
 
@@ -115,6 +115,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         talon.setActivity(Activity.EXECUTED);
         talon.setExecutionTime(LocalDateTime.now());
+        talon.setZones(zones);
 
         Doctor doctor = doctorService.getDoctor(doctorId);
         String desc = doctor.getFullName() + ", "
