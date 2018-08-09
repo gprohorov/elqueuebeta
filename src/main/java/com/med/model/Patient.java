@@ -173,6 +173,12 @@ public class Patient { // implements Comparable<Patient> {
         }
 
         if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.INVITED))) {
+            activity = Activity.INVITED;
+            return activity;
+        }
+
+        if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ON_PROCEDURE))) {
             activity = Activity.ON_PROCEDURE;
             return activity;

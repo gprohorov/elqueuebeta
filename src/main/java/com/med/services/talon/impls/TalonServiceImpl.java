@@ -268,7 +268,11 @@ public class TalonServiceImpl implements ITalonService {
 
     public Talon setOutOfTurn(String talonId, boolean out) {
         Talon talon = this.getTalon(talonId);
-        talon.setOutOfTurn(out);
+        if (out) {
+            talon.setActivity(Activity.INVITED);
+        } else {
+            talon.setActivity(Activity.ACTIVE);
+        }
 
         return repository.save(talon) ;
     }

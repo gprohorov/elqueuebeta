@@ -4,7 +4,8 @@ package com.med.model;
  * Created by george on 3/22/18.
  */
 public enum Activity {
-    ON_PROCEDURE(7),
+    ON_PROCEDURE(8),
+    INVITED(7),
     ACTIVE(6),
     TEMPORARY_NA(5),
     NON_ACTIVE(4),

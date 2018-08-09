@@ -26,8 +26,6 @@ public class Talon {
     private int sum;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
-    ////////
-    private boolean outOfTurn = false;
 
 
     public Activity getActivity() {
@@ -192,14 +190,6 @@ public class Talon {
     }
 
     public void setSum(int sum) {this.sum = sum;}
-
-    public boolean isOutOfTurn() {
-        return outOfTurn;
-    }
-
-    public void setOutOfTurn(boolean outOfTurn) {
-        this.outOfTurn = outOfTurn;
-    }
 
     @Override
     public String toString() {

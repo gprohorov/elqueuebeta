@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -186,43 +185,6 @@ public class TailServiceImpl implements ITailService {
             });
 
         });
-        logger.info(">>>>  remove on_procedure patients >>>> " + (System.currentTimeMillis() - start));
-
-        //////////////////// OUT OF TURN ///////////////////////
-        List<ProcedurePatient> outOfTurn = new ArrayList<>();
-
-        talonsForToday.stream()
-                .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
-                .filter(talon -> talon.isOutOfTurn())
-                .forEach(talon -> outOfTurn.add(new ProcedurePatient(
-                         talon.getProcedure(),talon.getPatientId()
-                         ))
-                 );
-
-       if (!outOfTurn.isEmpty()){
-
-            outOfTurn.stream().forEach(item->{
-           // ProcedurePatient item = outOfTurn.get(0);
-             Tail tail =  tails.stream()
-                     .filter(tail1 -> tail1.getProcedureId()==item.getProcedure().getId())
-                     .findFirst().get();
-// TODO:   check up
-                Patient buffer = tail.getPatients().stream().findFirst().orElse(null);
-
-                Patient first = tail.getPatients().stream()
-                        .filter(patient -> patient.getId().equals(item.getPatientId()))
-                        .findFirst().orElse(null);
-               if (first!=null) {
-                   int index = tail.getPatients().indexOf(first);
-
-                   tail.getPatients().set(0, first);
-                  if (buffer!= null )tail.getPatients().set(index, buffer);
-               }
-       });
-
-            }
-        logger.info(">>>>  move out of turn  & final >>>>>>>> " + (System.currentTimeMillis() - start));
-
         return tails;
     }
 
