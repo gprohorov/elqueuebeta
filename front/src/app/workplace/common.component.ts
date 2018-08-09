@@ -25,7 +25,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     subProcedure: Subscription;
     Status = Status;
     Statuses = Object.keys(Status);
-    
+
     reloadFunc: any;
     item: any;
     talonId: string;
@@ -72,8 +72,8 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             setTimeout(() => {
                 this.canvasInit();
                 if (this.item.patient.therapy && this.item.patient.therapy.assignments) {
-                    const procedure = this.item.patient.therapy.assignments.find(x => { 
-                        return (x.procedureId == this.procedureId) ? x : false; 
+                    const procedure = this.item.patient.therapy.assignments.find(x => {
+                        return (x.procedureId == this.procedureId) ? x : false;
                     });
                     if (procedure && procedure.picture) {
                         procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
@@ -118,7 +118,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.cx.stroke();
         }
     }
-    
+
     updateStatus(id: string, value: string, event: any) {
         if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
             this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
@@ -141,8 +141,12 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     startProcedure() {
         this.loading = true;
         this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
-            this.alertService.success('Процедуру розпочато.');
-            this.load();
+            if (data == null) {
+              this.router.navigate(['workplace']);
+            } else {
+              this.alertService.success('Процедуру розпочато.');
+              this.load();
+            }
         });
     }
 
@@ -162,7 +166,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             .subscribe(data => {
                 this.alertService.success('Процедуру завершено.');
                 this.router.navigate(['workplace']);
-            }, 
+            },
             error => {
                 this.alertService.error(error, true);
                 this.router.navigate(['workplace']);
@@ -194,7 +198,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
                 this.loading = false;
             });
     }
-    
+
     comment() {
         this.loading = true;
         this.service.commentProcedure(this.item.talon.id, this.model.comment).subscribe(

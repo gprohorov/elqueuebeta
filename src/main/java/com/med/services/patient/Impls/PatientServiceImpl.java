@@ -70,14 +70,8 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public Patient savePatient(Patient patient) {
-        System.out.println("pat -- from service ----- > "+patient.toString());
         patient.setRegistration(LocalDateTime.now());
-     //
-        repository.save(patient);
-
-      //  talonService.createActiveTalon(patient.getId(),2,LocalDate.now(),true);
-
-        return patient;
+        return repository.save(patient);
     }
 
     @Override

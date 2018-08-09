@@ -59,8 +59,13 @@ public class PatientController {
     // Save the patient
     @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
-        System.out.println("pat -- from controller ----- > "+patient.toString());
-        return service.savePatient(patient);
+        if (patient.getId() == null) {
+            service.savePatient(patient);
+            talonService.createActiveTalon(patient.getId(), 2, LocalDate.now(), true);
+        } else {
+            service.savePatient(patient);
+        }
+        return patient;
     }
 
     // DELETE the patient by id

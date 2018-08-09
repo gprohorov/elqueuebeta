@@ -74,7 +74,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         Talon talon = talonService.getTalon(talonId);
 
         Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
-       // if (! patient.getActivity().equals(Activity.ACTIVE)){return null;}
+        if (! patient.calcActivity().equals(Activity.ACTIVE)){
+            return null;
+        }
 
         Tail tail = tailService.getTail(talon.getProcedure().getId()                         );
 
@@ -135,7 +137,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
        // patient.setBalance(patient.getBalance()-sum);
         patientService.savePatient(patient);
 
-        tail.setPatientOnProcedure(null);
+//        tail.setPatientOnProcedure(null);
         this.setBusy(procedure.getId());
 
         // create accounting

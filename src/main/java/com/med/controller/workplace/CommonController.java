@@ -66,12 +66,12 @@ public class CommonController {
 
     //@RequestMapping("/start/{patientId}/{procedureId}")
     @RequestMapping("/start/{talonId}")
-    public void start(@PathVariable(value = "talonId") String talonId) {
+    public Talon start(@PathVariable(value = "talonId") String talonId) {
         Talon talon = talonService.getTalon(talonId);
         int doctorId = userService.getCurrentUserInfo().getId();
         if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
-            workPlaceService.start(talonId, doctorId);
-        }
+            return workPlaceService.start(talonId, doctorId);
+        } else { return null; }
     }
 
     //////////////////////////////// EXECUTE ///////////////////
