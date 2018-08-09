@@ -126,12 +126,11 @@
                                         (click)="updateActivity(talon.id, 'CANCELED')">
                                         <i class="fa fa-ban"></i>
                                     </button>
-                                    <button title='{{ talon.outOfTurn ? "Зняти" : "Встановити"}} "Поза чергою"'
-                                        [ngClass]="{'btn': true, 'text-white': true, 'btn-sm': true, 
-                                        'btn-warning': !talon.outOfTurn, 'btn-success': talon.outOfTurn }"
-                                        (click)="updateOutOfTurn(talon.id, !talon.outOfTurn)">
-                                        <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': !talon.outOfTurn, 
-                                            'fa-arrow-circle-down': talon.outOfTurn}"></i>
+                                    <button title='Поза чергою'
+                                        class="btn btn-sm btn-info text-white"
+                                        (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED')">
+                                        <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': talon.activity != 'INVITED', 
+                                            'fa-arrow-circle-down': talon.activity == 'INVITED'}"></i>
                                     </button>
                                 </div>
                             </div>
