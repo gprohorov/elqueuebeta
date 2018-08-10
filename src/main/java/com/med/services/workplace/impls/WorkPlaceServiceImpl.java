@@ -331,6 +331,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .filter(tl->tl.getProcedure().getId()==procedureId)
                 .filter(tl->(tl.getActivity().equals(Activity.ACTIVE)
                 || tl.getActivity().equals(Activity.ON_PROCEDURE)
+                || tl.getActivity().equals(Activity.INVITED)
                 ))
                 .findFirst().orElse(null);
 
