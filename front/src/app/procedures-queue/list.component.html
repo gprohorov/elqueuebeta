@@ -21,7 +21,7 @@
             <button title='{{ item?.outOfTurn ? "Зняти" : "Встановити"}} "Поза чергою"'
                 [ngClass]="{'btn': true, 'text-white': true, 'btn-sm': true, 'masonry-list-icon': true, 
                     'btn-info': true }"
-                (click)="updateOutOfTurn(item?.talonId, !item?.outOfTurn)">
+                (click)="updateOutOfTurn(item?.talon.id, item.activity != 'INVITED')">
                 <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED', 
                     'fa-arrow-circle-down': item.activity == 'INVITED'}"></i>
             </button>
