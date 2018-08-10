@@ -20,10 +20,10 @@
         <div *ngFor="let item of group.patients">
             <button title='{{ item?.outOfTurn ? "Зняти" : "Встановити"}} "Поза чергою"'
                 [ngClass]="{'btn': true, 'text-white': true, 'btn-sm': true, 'masonry-list-icon': true, 
-                    'btn-warning': !item?.outOfTurn, 'btn-success': item?.outOfTurn }"
+                    'btn-info': true }"
                 (click)="updateOutOfTurn(item?.talonId, !item?.outOfTurn)">
-                <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': !item?.outOfTurn, 
-                    'fa-arrow-circle-down': item?.outOfTurn}"></i>
+                <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED', 
+                    'fa-arrow-circle-down': item.activity == 'INVITED'}"></i>
             </button>
             <span class="masonry-list-item badge badge-{{Activity[item.activity].cssClass}}"
                 title="{{item.person.fullName}} ({{Status[item.status].text}})">
