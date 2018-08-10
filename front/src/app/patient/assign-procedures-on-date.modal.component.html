@@ -1,0 +1,35 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !date.valid }">
+        <div class="row mt-2">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Дата</div>
+                    </div>
+                    <input type="date" class="form-control" name="date" [(ngModel)]="data.date" #date="ngModel"
+                    required />
+                </div>
+                <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле обов`язкове</div>
+            </div>
+            <div class="col-auto ml-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Час</div>
+                        <select class="form-control" name="time" [(ngModel)]="data.time" 
+                            #time="ngModel" required>
+                            <option [ngValue]="9">09:00</option>
+                            <option [ngValue]="10">10:00</option>
+                            <option [ngValue]="11">11:00</option>
+                            <option [ngValue]="12">12:00</option>
+                            <option [ngValue]="13">13:00</option>
+                            <option [ngValue]="14">14:00</option>
+                            <option [ngValue]="15">15:00</option>
+                            <option [ngValue]="16">16:00</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="f.submitted && !time.valid" class="help-block text-danger">Поле обов`язкове</div>
+        </div>
+    </div>
+</form>
