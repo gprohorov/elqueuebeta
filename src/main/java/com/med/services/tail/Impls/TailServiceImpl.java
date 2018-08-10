@@ -163,10 +163,13 @@ public class TailServiceImpl implements ITailService {
 
         });
           *//**//*
+          *
+          *
 
- */       this.setAllSemafors(talonsForToday);
+ */
+        this.setAllSemafors(talonsForToday);
 
-   //     logger.info(">>>>  semafores >>>>>>>>>> " + (System.currentTimeMillis() - start));
+   //   Hope1234  logger.info(">>>>  semafores >>>>>>>>>> " + (System.currentTimeMillis() - start));
 
 
         ///////////////////// extract ON_PROCEDURE patients from another tails
@@ -192,6 +195,9 @@ public class TailServiceImpl implements ITailService {
             });
 
         });
+
+        logger.info(">>>>  tails created >>>>> " + (System.currentTimeMillis() - start));
+
         return tails;
     }
 

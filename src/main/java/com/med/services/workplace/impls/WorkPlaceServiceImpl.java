@@ -74,8 +74,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         Talon talon = talonService.getTalon(talonId);
 
         Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
+        System.out.println(" pat act ---  "+patient.calcActivity());
         if (! (patient.calcActivity().equals(Activity.ACTIVE)
-            || patient.calcActivity().equals(Activity.INVITED))
+            || patient.calcActivity().equals(Activity.INVITED)
+                )
             ) {
             return null;
         }

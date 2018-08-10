@@ -1,7 +1,5 @@
 package com.med.datastorage;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -14,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -197,21 +195,16 @@ public class DataStorageTest {
 
     public void reset(){
 
- /*      talonRepository.deleteAll();
-       accountingService.deleteAll();
-      List<Patient> patients = patientService.getAll("");
-      patients.stream().forEach(
-               patient -> {
-                   patient.setStartActivity(null);
-                    patient.setLastActivity(null);
-                   patient.setBalance(0);
-               }
-       );Hope1234
-       patientService.saveAll(patients);
-*/
+
+        List<Talon> talons= talonRepository.findAll().stream()
+                .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
+        talonRepository.deleteAll(talons);
 
 
-      List<Talon> talons=  talonRepository.findByDate(LocalDate.now());
+
+ /*       talonRepository.findByDate(LocalDate.now()); Hope1234
+
 
       talons.stream()
                 .forEach(talon -> {
@@ -232,16 +225,6 @@ public class DataStorageTest {
          if (patient.getRegistration()==null){patient.setRegistration(LocalDateTime.now().minusDays(15));}
      });
      patientService.saveAll(patients);
-/*
-
-     patients =  patientService.getAll("").stream()
-             .filter(patient -> patient.getRegistration().isAfter(LocalDateTime.now().minusHours(2)))
-             .collect(Collectors.toList());
-
-        talons = talonRepository.findByDate(LocalDate.now());
-        talonRepository.deleteAll(talons);
-         patientService.deleteAll(patients);
-
 */
 
     }
