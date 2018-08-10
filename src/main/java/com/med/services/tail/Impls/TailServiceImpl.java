@@ -93,12 +93,14 @@ public class TailServiceImpl implements ITailService {
     	
         List<Talon> talonsForToday = talonService.getTalonsForToday();
 
-        logger.info(">>>>  talons for today   >>>>>>>> " + (System.currentTimeMillis() - start));
+    //    logger.info(">>>>  talons for today   >>>>>>>> " + (System.currentTimeMillis() - start));
 
         List<Tail> tails = talonsForToday.stream().filter(talon ->
                 talon.getActivity().equals(Activity.ACTIVE)
                 ||
                 talon.getActivity().equals(Activity.ON_PROCEDURE)
+                ||
+                talon.getActivity().equals(Activity.INVITED)
             )
             .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
             .map(tail -> new Tail(
@@ -124,7 +126,7 @@ public class TailServiceImpl implements ITailService {
                 getSemaforSignal(tail.getKey().getId())
             ) ).collect(Collectors.toList());
 
-        logger.info(">>>>  grouping >>>>>>>> " + (System.currentTimeMillis() - start));
+     //   logger.info(">>>>  grouping >>>>>>>> " + (System.currentTimeMillis() - start));
 /*
         *//* another way of grouping*//*
         procedureService.getAll().stream().forEach(procedure -> {
@@ -164,12 +166,17 @@ public class TailServiceImpl implements ITailService {
 
  */       this.setAllSemafors(talonsForToday);
 
-        logger.info(">>>>  semafores >>>>>>>>>> " + (System.currentTimeMillis() - start));
+   //     logger.info(">>>>  semafores >>>>>>>>>> " + (System.currentTimeMillis() - start));
 
 
         ///////////////////// extract ON_PROCEDURE patients from another tails
         List<Talon> talonsOnProcedure = talonsForToday.stream()
-                .filter(talon -> talon.getActivity().equals(Activity.ON_PROCEDURE))
+                .filter(talon ->(
+                                talon.getActivity().equals(Activity.ON_PROCEDURE)
+                ||
+                                talon.getActivity().equals(Activity.INVITED)
+                                )
+                )
                 .collect(Collectors.toList());
 
         talonsOnProcedure.stream().forEach(talon -> {

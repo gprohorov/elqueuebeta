@@ -262,6 +262,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                     .filter(patient -> patient.getActivity().equals(Activity.ACTIVE))
                     .findFirst().orElse(null);
 
+            Patient invited = tail.getPatients().stream()
+                    .filter(patient -> patient.getActivity().equals(Activity.INVITED))
+                    .findFirst().orElse(null);
+
             List<Patient> patients = tail.getPatients()
                     .stream().filter(patient -> patient.getActivity().equals(Activity.ON_PROCEDURE))
                     .collect(Collectors.toList());
@@ -274,10 +278,15 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
             }
 
             // first and on procedure -> together
+            if (invited != null) {
+                patients.add(invited);
+            }
+
+            // first and on procedure -> together
             if (first != null) {
                 patients.add(first);
             }
-            tail.setPatients(patients   );
+            tail.setPatients(patients);
             tail.setFreeChoice(false);
 
         } // of if
