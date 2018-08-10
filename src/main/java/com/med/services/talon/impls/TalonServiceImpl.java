@@ -221,6 +221,7 @@ public class TalonServiceImpl implements ITalonService {
          //   System.out.println(talon.toString());
             patient.setActivity(talon.getActivity());
             patient.setTherapy(null);
+            patient.setTalon(talon);
             patients.add(patient);
         });
 
