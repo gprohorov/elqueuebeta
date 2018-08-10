@@ -39,6 +39,7 @@ import { HotelMainComponent } from './hotel/main.component';
 import { PatientIncomeModalComponent } from './patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from './patient/assign-procedure.modal.component';
 import { PatientAssignHotelModalComponent } from './patient/assign-hotel.modal.component';
+import { PatientAssignProceduresOnDateModalComponent } from './patient/assign-procedures-on-date.modal.component';
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
 
@@ -206,6 +207,7 @@ const appRoutes: Routes = [
         HotelMainComponent,
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
+        PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
@@ -245,6 +247,7 @@ const appRoutes: Routes = [
     entryComponents: [
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
+        PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],

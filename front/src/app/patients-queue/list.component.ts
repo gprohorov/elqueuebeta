@@ -11,6 +11,7 @@ import { AlertService, PatientsQueueService } from '../_services/index';
 
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
+import { PatientAssignProceduresOnDateModalComponent } from '../patient/assign-procedures-on-date.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
@@ -75,6 +76,15 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientIncomeModalComponent,
             data: patient
+        });
+        this.alertService.subject.subscribe(() => { this.load() });
+    }
+    
+    showAssignProceduresOnDatePopup(patient: any) {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Пацієнт: ' + patient.person.fullName,
+            childComponent: PatientAssignProceduresOnDateModalComponent,
+            data: { patientId: patient.id, patientName: patient.person.fullName }
         });
         this.alertService.subject.subscribe(() => { this.load() });
     }

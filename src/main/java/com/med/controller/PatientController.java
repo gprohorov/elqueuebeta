@@ -37,7 +37,7 @@ public class PatientController {
     @Autowired
     RecordServiceImpl recordService;
 
-    ////////////////////////// CRUD//////////////////////////
+    ////////////////////////// CRUD //////////////////////////
 
     // getAll
     @GetMapping("/list/")
@@ -138,8 +138,6 @@ public class PatientController {
         return  talonService.setOutOfTurn(talonId, out);
     }
 
-
-
     @GetMapping("/set/status/{patientId}/{status}")
     public Patient patientSetStatus(
         @PathVariable(value = "patientId") String patientId,
@@ -172,8 +170,7 @@ public class PatientController {
     }
 
     @PostMapping("/hotel/record/")
-    public Record createRecord(@Valid @RequestBody Record record)
-                                {
+    public Record createRecord(@Valid @RequestBody Record record) {
     	return recordService.createRecord(record);
     }
 }
