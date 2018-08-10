@@ -270,12 +270,26 @@ public class TalonServiceImpl implements ITalonService {
 
     public Talon setOutOfTurn(String talonId, boolean out) {
         Talon talon = this.getTalon(talonId);
+        if (talon.getActivity().equals(Activity.ON_PROCEDURE)) {
+            return null;
+        }
         if (out) {
             talon.setActivity(Activity.INVITED);
         } else {
             talon.setActivity(Activity.ACTIVE);
         }
-
         return repository.save(talon) ;
+    }
+
+
+    public List<Talon> createTalonsForPatientToDate(String patientId, LocalDate date) {
+       Patient patient = patientService.getPatientWithTalons(patientId);
+        List<Talon> talons = new ArrayList<>();
+
+        patient.getTalons().stream().forEach(talon -> {
+            Talon tl = new Talon(patientId, talon.getProcedure(), date);
+            if (talon.getProcedure().getId()!=2){talons.add(tl);}
+        });
+    return repository.saveAll(talons);
     }
 }

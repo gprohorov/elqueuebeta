@@ -92,6 +92,12 @@ public class PatientController {
                              @PathVariable(value = "date") String date) {
         return talonService.createTalon(patientId, procedureId, LocalDate.parse(date));
     }
+    // create talons list to date for patient acc. to therapy
+    @GetMapping("/create/talons/{patientId}/{date}")
+    public List<Talon> createTalonsToDate(@PathVariable(value = "patientId") String patientId,
+                             @PathVariable(value = "date") String date) {
+        return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date));
+    }
     
     // create active talon to date for patient on procedure
     @GetMapping("/create/activetalon/{patientId}/{procedureId}/{date}/{activate}")
