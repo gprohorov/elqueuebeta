@@ -69,6 +69,7 @@ public class CommonController {
     public Talon start(@PathVariable(value = "talonId") String talonId) {
         Talon talon = talonService.getTalon(talonId);
         int doctorId = userService.getCurrentUserInfo().getId();
+        //TODO talon can be null and it can cause NullPointerException
         if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
             return workPlaceService.start(talonId, doctorId);
         } else { return null; }

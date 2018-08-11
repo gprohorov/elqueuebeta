@@ -94,15 +94,16 @@ public class TalonServiceImpl implements ITalonService {
 
         return repository.save(talon);
     }
-    
+
     public Talon createActiveTalon(String patientId, int procedureId, LocalDate date, int time, Boolean activate) {
-    	
+
     	Procedure procedure = procedureService.getProcedure(procedureId);
     	Talon talon = new Talon(patientId, procedure, date, time);
 
     	if (activate) {
     		talon.setActivity(Activity.ACTIVE);
     		Patient patient = patientService.getPatient(patientId);
+    		//TODO patient can be NULL and it can cause NullPointerException
     		if (patient.getStartActivity()==null){
     		patient.setStartActivity(LocalDateTime.now());
     		patient.setLastActivity(LocalDateTime.now());
@@ -126,10 +127,15 @@ public class TalonServiceImpl implements ITalonService {
     public Talon getTalonByProcedure(String patientId, int procedureId, Activity activity) {
         Talon talon = this.getTalonsForToday().stream()
                 .filter(tal -> tal.getProcedure().getId()==procedureId)
+                //TODO String is an Object, please compare string by .equals (patientId it is a String)
                 .filter(tal -> tal.getPatientId()==patientId)
                 .filter(tal -> tal.getActivity().equals(activity))
                 .findFirst().orElse(null);
-
+        /*
+        Would be better for performance if use springData:
+        findByDateAndProcedureIdAndPatientIdAndActivity(LocalDate date,int procedureId,String patientId,Activity activity)
+        and take first.
+        */
         return talon;
     }
 
@@ -142,16 +148,26 @@ public class TalonServiceImpl implements ITalonService {
                 .filter(tal -> tal.getPatientId().equals(patientId))
                 .filter(tal->tal.getActivity().equals(activity))
                 .findFirst().orElse(null);
-
+        /*
+        would be better for performance if use springData:
+        findByDateAndPatientIdAndActivity(LocalDate date,String patientId,Activity activity)
+        and take first.
+        */
         return talon;
     }
 
     public Talon getTalonByDoctor(String patientId, int doctorId, Activity activity) {
         Talon talon = this.getTalonsForToday().stream()
                 .filter(tal -> tal.getDoctor().getId()==doctorId)
+                 //TODO String is an Object, please compare string by .equals (patientId it is a String)
                 .filter(tal->tal.getPatientId()==patientId)
                 .filter(tal->tal.getActivity().equals(activity))
                 .findFirst().orElse(null);
+        /*
+        would be better for performance if use springData:
+        findByDateAndDoctorIdAndPatientIdAndActivity(LocalDate date,int doctorId,String patientId,Activity activity)
+        and take first.
+        */
 
         return talon;
     }
@@ -174,6 +190,11 @@ public class TalonServiceImpl implements ITalonService {
                 && talon.getProcedure().getId() == procedureId
             )
             .findFirst().get();
+        /*
+        Would be better for performance if use springData:
+        findByDateAndProcedureIdAndPatientId(LocalDate date,int procedureId,String patientId)
+        and filter by Activity.ACTIVE or Activity.ON_PROCEDURE and take first.
+        */
     }
 
     public List<Talon> getAllTalonsForPatient(String patientId) {
@@ -193,6 +214,8 @@ public class TalonServiceImpl implements ITalonService {
 
     @Override
     public Talon setActivity(String talonId, Activity activity) {
+        // TODO actually redundant new ArrayList().
+        //List<Activity> activities = Arrays.asList(...
         List<Activity> activities = new ArrayList<>(
             Arrays.asList(
                 Activity.EXECUTED,
@@ -228,13 +251,14 @@ public class TalonServiceImpl implements ITalonService {
 
       if (activity.equals(Activity.ACTIVE)){
           List<Integer> free = procedureService.getFreeProcedures();
-
+          //TODO Redundant stream()
           talons.stream().forEach(talon ->{
-
+              //TODO Simplify free.contains(talon.getProcedureId())
               if (free.contains(Integer.valueOf(talon.getProcedureId())))
               this.setActivity(talon.getId(), Activity.ACTIVE);
           }
           );
+          //TODO Redundant stream()
       }else talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
       if (activity.equals(Activity.NON_ACTIVE)){
@@ -253,7 +277,7 @@ public class TalonServiceImpl implements ITalonService {
 
     public List<Patient> toPatientList(List<Talon> talons){
         List<Patient> patients = new ArrayList<>();
-
+        //TODO Redundant stream()
         talons.stream().forEach(talon -> {
             Patient patient = patientService.getPatient(talon.getPatientId());
          //   System.out.println(talon.toString());
@@ -275,7 +299,8 @@ public class TalonServiceImpl implements ITalonService {
             String patientId
             , LocalDate start
             , LocalDate finish){
-
+        //would be better for performance if use springData:
+        //findByActivityAndPatientIdAndDateBetween(Activity activity, String patientId, LocalDate start, LocalDate finish)
         return getAll().stream()
                 .filter(talon -> talon.getPatientId().equals(patientId))
                 .filter(talon -> talon.getDate().isAfter(start.minusDays(0)))
@@ -296,18 +321,21 @@ public class TalonServiceImpl implements ITalonService {
     public List<Procedure> getFilledProcedures() {
 
         List<Procedure> procedures =procedureService.getAll();
+        //TODO Redundant stream(). can be replaced with  procedures.forEach(...
         procedures.stream().forEach(procedure -> {
 
             int nmbr = (int) this.getTalonsForToday().stream()
                     .filter(talon -> talon.getProcedure().equals(procedure)).count();
             procedure.setToday(nmbr);
         });
-
+        /*Not sure that it is good name for this method, as I understood.
+        getFilledProceduresForToday() will be much better*/
         return procedures;
     }
 
     public Talon setOutOfTurn(String talonId, boolean out) {
         Talon talon = this.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
         if (talon.getActivity().equals(Activity.ON_PROCEDURE)) {
             return null;
         }
@@ -355,7 +383,7 @@ public class TalonServiceImpl implements ITalonService {
                 patientService.savePatient(patient);
             }
          });
-         
+
             // recall the udarno-wave therapy last time date -  KOSTIL
          Talon talon = talons.stream().filter(tl->tl.getProcedure().getId()==9)
                  .findFirst().orElse(null);

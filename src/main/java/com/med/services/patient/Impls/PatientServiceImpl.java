@@ -58,9 +58,9 @@ public class PatientServiceImpl implements IPatientService {
 
 	/*
 	 * @Autowired TailServiceImpl tailService;
-	 * 
+	 *
 	 * @Autowired DataStorage dataStorage;
-	 * 
+	 *
 	 * @PostConstruct void init() { patients = dataStorage.getPatients();
 	 * repository.saveAll(patients); }
 	 */
@@ -93,7 +93,7 @@ public class PatientServiceImpl implements IPatientService {
 		 * (data.getAppointed()!=0)?data.getAppointed():LocalDateTime.now().
 		 * getHour(); int prId = (data.getProcedureId()!=0) ?
 		 * data.getProcedureId() : 2; boolean actv=false;
-		 * 
+		 *
 		 */
 
 		if (data.isActivate() && data.getDate() != null && data.getAppointed() > 0 && data.getProcedureId() > 0) {
@@ -118,13 +118,30 @@ public class PatientServiceImpl implements IPatientService {
 		return patient;
 	}
 
-	public Patient getPatientWithTalons(String id) {
-		List<Talon> talons = new ArrayList<>();
-		Patient patient = repository.findById(id).orElse(null);
-		talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId().equals(id))
-				.forEach(talon -> patient.getTalons().add(talon));
-		return patient;
-	}
+    public Patient getPatientWithTalons(String id) {
+        List<Talon> talons = new ArrayList<>();
+        Patient patient = repository.findById(id).orElse(null);
+        talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
+                //TODO patient can be null and it can cause NPE
+                .equals(id)).forEach(talon -> patient.getTalons().add(talon));
+
+        /*
+        I am thinking that this method  is too hard to understand and should looks like this:
+        List<Talon> talons = talonService.getTalonsForToday()
+                                         .stream()
+                                         .filter(t -> t.getPatientId().equals(id))
+                                         .collect(Collectors.toList());
+        Patient patient = repository.findById(id)
+                                    .orElse(null);
+        if (patient != null) {
+            patient.getTalons().addAll(talons);
+        }
+        It is easier to understand and customize if needed.
+        And actually bad name of the method because actually it is getPatientWithTalonsForToday(...).
+
+        */
+        return  patient;
+    }
 
 	public Patient getPatientWithOneTalon(String patientId, int procedureId) {
 		Patient patient = repository.findById(patientId).get();
@@ -136,7 +153,7 @@ public class PatientServiceImpl implements IPatientService {
 	public List<Patient> getAll(String fullName) {
 		Collator ukrCollator = Collator.getInstance(new Locale("uk", "UA"));
 	    ukrCollator.setStrength(Collator.PRIMARY);
-		return repository.findByThePersonFullName(fullName).stream().sorted((o1, o2) -> 
+		return repository.findByThePersonFullName(fullName).stream().sorted((o1, o2) ->
 			ukrCollator.compare(o1.getPerson().getFullName(), o2.getPerson().getFullName())
 		).limit(30).collect(Collectors.toList());
 	}
@@ -160,7 +177,7 @@ public class PatientServiceImpl implements IPatientService {
 			}
 
 			/*
-			 * 
+			 *
 			 * if (patient.getDelta()> 150){
 			 * patient.setActivity(Activity.NON_ACTIVE);
 			 * patient.setStartActivity(null); patient.setLastActivity(null); }
