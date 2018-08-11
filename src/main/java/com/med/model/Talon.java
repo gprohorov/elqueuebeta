@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Created by george on 22.04.18.
@@ -190,6 +191,24 @@ public class Talon {
     }
 
     public void setSum(int sum) {this.sum = sum;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Talon talon = (Talon) o;
+        return zones == talon.zones && sum == talon.sum && Objects.equals(id, talon.id) && Objects.equals(patientId, talon.patientId) && Objects.equals(date, talon.date) && Objects.equals(procedure, talon.procedure) && Objects.equals(desc, talon.desc) && Objects.equals(start, talon.start) && Objects.equals(executionTime, talon.executionTime) && Objects.equals(doctor, talon.doctor) && status == talon.status && activity == talon.activity;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, patientId, date, procedure, zones, desc, start, executionTime, doctor, status, sum, activity);
+    }
 
     @Override
     public String toString() {

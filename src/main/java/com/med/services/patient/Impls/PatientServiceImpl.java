@@ -87,7 +87,24 @@ public class PatientServiceImpl implements IPatientService {
         List<Talon> talons = new ArrayList<>();
         Patient patient = repository.findById(id).orElse(null);
         talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId()
+                //TODO patient can be null and it can cause NPE
                 .equals(id)).forEach(talon -> patient.getTalons().add(talon));
+
+        /*
+        I am thinking that this method  is too hard to understand and should looks like this:
+        List<Talon> talons = talonService.getTalonsForToday()
+                                         .stream()
+                                         .filter(t -> t.getPatientId().equals(id))
+                                         .collect(Collectors.toList());
+        Patient patient = repository.findById(id)
+                                    .orElse(null);
+        if (patient != null) {
+            patient.getTalons().addAll(talons);
+        }
+        It is easier to understand and customize if needed.
+        And actually bad name of the method because actually it is getPatientWithTalonsForToday(...).
+
+        */
         return  patient;
     }
 

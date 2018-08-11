@@ -72,7 +72,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     public Talon start(String talonId, int doctorId) {
 
         Talon talon = talonService.getTalon(talonId);
-
+        //TODO talon can be null and it can cause NullPointerException
         Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
         System.out.println(" pat act ---  "+patient.calcActivity());
         if (! (patient.calcActivity().equals(Activity.ACTIVE)
@@ -193,6 +193,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     public Talon cancel(String talonId,  String desc) {
 
         Talon talon = talonService.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
         Tail tail= tailService.getTail(talon.getProcedure().getId());
 
         talon.setActivity(Activity.TEMPORARY_NA);
@@ -317,6 +318,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     public Patient getTalonAndPatient(String talonId) {
 
         Talon talon = talonService.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
         Patient patient = patientService.getPatient(talon.getPatientId());
         patient.getTalons().clear();
         patient.getTalons().add(talon);
@@ -348,6 +350,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         String desc = userService.getCurrentUserInfo().getFullName() + ", "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + ": <br/>"
                 + text + "<br/><br/>";
+        //TODO talon can be null and it can cause NullPointerException
         talon.setDesc(talon.getDesc() + desc);
         Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
         therapy.setNotes( therapy.getNotes() + desc);
@@ -359,6 +362,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     public Talon subZone(String talonId) {
         Talon talon = talonService.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
         if (talon.getZones() > 1) {
 	        talon.setZones(talon.getZones()-1);
 	        Doctor doctor = userService.getCurrentUserInfo();
@@ -371,6 +375,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     
     public Talon addZone(String talonId) {
     	Talon talon = talonService.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
     	talon.setZones(talon.getZones()+1);
     	Doctor doctor = userService.getCurrentUserInfo();
     	talon.setDesc(talon.getDesc() +  doctor.getFullName()

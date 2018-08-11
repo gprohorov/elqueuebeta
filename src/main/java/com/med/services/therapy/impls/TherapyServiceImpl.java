@@ -109,6 +109,7 @@ public class TherapyServiceImpl implements ITherapyService {
 	public void startProcedure(String talonId) {
 
 		Talon talon = talonService.getTalon(talonId);
+		//TODO talon can be null and it can cause NullPointerException
 		Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
 
 		Tail tail = tailService.getTail(talon.getProcedure().getId());
@@ -138,6 +139,7 @@ public class TherapyServiceImpl implements ITherapyService {
 	public void cancelProcedure(String talonId) {
 
 		Talon talon = talonService.getTalon(talonId);
+        //TODO talon can be null and it can cause NullPointerException
 		Tail tail = tailService.getTail(talon.getProcedure().getId());
 		talon.setActivity(Activity.TEMPORARY_NA);
 		Doctor doctor = userService.getCurrentUserInfo();
