@@ -37,7 +37,7 @@ export class PatientService {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string, number appointed, activate: boolean) {
+    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number, activate: boolean) {
         return this.http.get(this.assignProcedureUrl
             + [patientId, procedureId, date, appointed, activate || false].join('/'))
             .pipe(catchError(this.handleError));
