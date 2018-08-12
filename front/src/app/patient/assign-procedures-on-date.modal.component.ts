@@ -35,7 +35,7 @@ export class PatientAssignProceduresOnDateModalComponent implements IModalDialog
         if (!f.form.valid) return false;
 
         this.patientService.assignProceduresOnDate(
-            this.data.patientId, this.data.date
+            this.data.patientId, this.data.date, this.data.appointed
         ).subscribe(() => {
             this.alertService.success('Пацієнта ' + this.data.patientName
                 + ' назначено на процедури на наступну дату.');

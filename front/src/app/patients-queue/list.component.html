@@ -29,8 +29,9 @@
                 <th>Статус</th>
                 <th>Баланс</th>
                 <th>Прогрес</th>
-                <th>Час очікування</th>
+                <th>Очікування</th>
                 <th>Початок</th>
+                <th>Назначено</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
@@ -49,6 +50,7 @@
                 <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
                         ? item.delta + ' хв.' : ''}}</span></td>
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
+                <td>{{item.appointed}}:00</td>
             </tr>
             <tr [hidden]="!rows[i]">
                 <td colspan="100">

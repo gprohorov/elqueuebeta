@@ -37,13 +37,15 @@ export class PatientService {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string, activate: boolean) {
+    assignProcedure(patientId: string, procedureId: number, date: string, number appointed, activate: boolean) {
         return this.http.get(this.assignProcedureUrl
-            + [patientId, procedureId, date, activate || false].join('/')).pipe(catchError(this.handleError));
+            + [patientId, procedureId, date, appointed, activate || false].join('/'))
+            .pipe(catchError(this.handleError));
     }
     
-    assignProceduresOnDate(patientId: string, date: string) {
-        return this.http.get(this.assignProceduresOnDateUrl + patientId + '/' + date).pipe(catchError(this.handleError));
+    assignProceduresOnDate(patientId: string, date: string, appointed: number) {
+        return this.http.get(this.assignProceduresOnDateUrl + patientId + '/' + date + '/' + appointed)
+            .pipe(catchError(this.handleError));
     }
 
     income(data: any) {

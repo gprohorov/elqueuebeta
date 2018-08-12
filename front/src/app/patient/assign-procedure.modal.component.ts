@@ -42,7 +42,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         if (!f.form.valid) return false;
 
         this.patientService.assignProcedure(
-            this.data.patientId, this.data.procedureId, this.data.date, this.data.activate
+            this.data.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
         ).subscribe(() => {
             this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
                 + this.procedures.find(x => x.id == this.data.procedureId).name);
