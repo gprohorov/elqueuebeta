@@ -24,7 +24,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     subTemp: Subscription;
     items: Patient[] = [];
     rows = [];
-    date: Date = new Date(); 
+    date: string = (new Date()).toISOString().split('T')[0]; 
     filters: any = 'all'; // possible values: 'all', 'active' 
     Status = Status;
     Statuses = Object.keys(Status);
@@ -150,9 +150,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return out;
     }
     
-    load(search: any = null) {
+    changeDay(days: number) {
+        let date = new Date(this.date);
+        date.setDate(date.getDate() + days);
+        this.date = date.toISOString().split('T')[0];
+        this.load();
+    }
+    
+    load() {
         this.loading = true;
-        this.sub = this.service.getAll().subscribe(data => {
+        this.sub = this.service.getAll(this.date).subscribe(data => {
             this.items = data.sort(function (a, b) {
                 // Sort by startActivity
                 // const x = a.startActivity, y = b.startActivity;

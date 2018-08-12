@@ -13,8 +13,10 @@
                 (click)="filters = 'active'">активні</button>
         </div>
     </div>
-    <div class="col-auto">
-        <input type="date" class="form-control" name="date" [(ngModel)]="date" [(ngValue)]="date" />
+    <div class="col-auto form-inline">
+        <button class="btn btn-success" (click)="changeDay(-1)"><i class="fa fa-arrow-left"></i></button>
+        <input type="date" class="form-control ml-2 mr-2" name="date" [(ngModel)]="date" [(ngValue)]="date" (change)="load()" />
+        <button class="btn btn-success" (click)="changeDay(1)"><i class="fa fa-arrow-right"></i></button>
     </div>
 </div>
 <div class="content table-responsive table-full-width">
