@@ -259,4 +259,26 @@ public class TherapyServiceImpl implements ITherapyService {
 	}
 
 
+	//////////    13.08 18
+	public List<Talon> generateTalonsByTherapyToDate(Therapy therapy, LocalDate date) {
+
+
+
+		List<Procedure> procedures = new ArrayList<>();
+		List<Talon> talons = new ArrayList<>();
+
+		therapy.getAssignments().stream().forEach(ass ->
+
+		{
+			Procedure procedure = procedureService.getProcedure(ass.getProcedureId());
+			procedures.add(procedure);
+		});
+
+		procedures.stream().forEach(procedure -> {
+			talons.add(new Talon(therapy.getPatientId(), procedure, date));
+		});
+
+		return talons;
+	}
+
 }

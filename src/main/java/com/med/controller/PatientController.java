@@ -125,6 +125,19 @@ public class PatientController {
         return service.getAllForToday();
     }
 
+
+    // 12.08.18
+    // getAll patients for the date together with their's talons
+    @GetMapping("/list/{date}")
+    public List<Patient> showPatientsForDate(
+            @PathVariable(value = "date") String date
+    ) {
+        return service.getAllForDate(LocalDate.parse(date));
+    }
+
+
+
+
     @GetMapping("/talon/set/activity/{talonId}/{activity}")
     public Talon talonSetActivity(
         @PathVariable(value = "talonId") String talonId,

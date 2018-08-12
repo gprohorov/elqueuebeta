@@ -1,15 +1,13 @@
 package com.med.services.talon.impls;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Procedure;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
+import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,9 @@ public class TalonServiceImpl implements ITalonService {
 
     @Autowired
     CardServiceImpl cardService;
+
+    @Autowired
+    TherapyServiceImpl therapyService;
 
     private static final Logger logger = LoggerFactory.getLogger(TalonServiceImpl.class);
 
@@ -137,6 +138,10 @@ public class TalonServiceImpl implements ITalonService {
     public List<Talon> getTalonsForToday() {
         return repository.findByDate(LocalDate.now());
     }
+
+
+
+
 
     public Talon getTalonForTodayForPatientForProcedure(String patientId, int procedureId) {
         return repository.findByDateAndPatientId(LocalDate.now(), patientId)
@@ -286,10 +291,25 @@ public class TalonServiceImpl implements ITalonService {
        Patient patient = patientService.getPatientWithTalons(patientId);
         List<Talon> talons = new ArrayList<>();
 
-        patient.getTalons().stream().forEach(talon -> {
-            Talon tl = new Talon(patientId, talon.getProcedure(), date);
-            if (talon.getProcedure().getId()!=2){talons.add(tl);}
-        });
+        talons = repository.findByDateAndPatientId(date, patientId);
+        if (!talons.isEmpty()) repository.deleteAll(talons);
+
+        Therapy therapy = therapyService.findTheLastTherapy(patientId);
+        if (therapy!=null){
+         talons = therapyService.generateTalonsByTherapyToDate(therapy,date);
+        }else {
+            Procedure diagnostics = procedureService.getProcedure(2);
+            talons.add(new Talon(patientId, diagnostics, date));
+        }
     return repository.saveAll(talons);
     }
+
+
+    public List<Talon> removeTalonsForPatientToDate(String patientId, LocalDate date) {
+        List<Talon> talons = repository.findByDateAndPatientId(date, patientId);
+        repository.deleteAll(talons);
+    return talons;
+    }
+
+
 }

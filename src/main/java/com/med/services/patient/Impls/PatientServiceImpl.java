@@ -208,4 +208,32 @@ public class PatientServiceImpl implements IPatientService {
          return repository.findByBalanceLessThan(0);
     }
 
+
+
+  //    !!!  PATIENTS WITH TALONS  FOR DATE !!!
+    public List<Patient> getAllForDate(LocalDate date) {
+
+        List<Patient> patients = new ArrayList<>();
+        List<Talon> talons = talonService.getTalonsForDate(date);
+
+        talons.stream().collect(Collectors.groupingBy(Talon::getPatientId))
+                .entrySet().stream().forEach(entry ->
+                {
+                    Patient patient = this.getPatient(entry.getKey());
+                    patient.setTalons(entry.getValue());
+                    patient.setActivity(patient.calcActivity());
+                    patient.setTherapy(null);
+                    patients.add(patient);
+                }
+        );
+
+
+
+        return patients;
+    }
+
+
+
+
+
 }
