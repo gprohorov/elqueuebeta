@@ -128,7 +128,7 @@ public class PatientController {
 
     // 12.08.18
     // getAll patients for the date together with their's talons
-    @GetMapping("/list/{date}")
+    @GetMapping("/list/date/{date}")
     public List<Patient> showPatientsForDate(
             @PathVariable(value = "date") String date
     ) {
