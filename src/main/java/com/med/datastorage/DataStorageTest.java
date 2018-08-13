@@ -1,5 +1,6 @@
 package com.med.datastorage;
 
+import com.med.model.Activity;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -197,7 +198,9 @@ public class DataStorageTest {
 
 
         List<Talon> talons= talonRepository.findAll().stream()
-                .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
+             //   .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
+                .filter(talon -> talon.getDate().equals(LocalDate.now()))
+                .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
                 .collect(Collectors.toList());
         talonRepository.deleteAll(talons);
 
@@ -205,7 +208,7 @@ public class DataStorageTest {
 
  /*       talonRepository.findByDate(LocalDate.now()); Hope1234
 
-
+Hope1234
       talons.stream()
                 .forEach(talon -> {
 
