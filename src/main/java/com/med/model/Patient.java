@@ -26,7 +26,7 @@ public class Patient { // implements Comparable<Patient> {
     @Transient
     private Activity activity = Activity.NON_ACTIVE;
     @Transient
-    private int appointed;
+    private int appointed = 10;
     @Transient
     private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity;
@@ -158,25 +158,18 @@ public class Patient { // implements Comparable<Patient> {
                delta = ChronoUnit.MINUTES.between(this.getLastActivity()
                      , LocalDateTime.now());
            }
-/*
-           if (delta!=null && delta >300){
-               this.setLastActivity(null);
-               delta=300L;
-           }
-*/
-
         return delta;
     }
 
     public int getAppointed() {
-        int appointment = 10;
+
 
         if (this.getTalons().isEmpty()) {
-            return appointment;
+            return this.appointed;
         } else {
-            appointment = this.getTalons().get(0).getAppointed();
+            return this.getTalons().get(0).getAppointed();
         }
-        return appointed;
+
     }
 
     public void setAppointed(int appointed) {

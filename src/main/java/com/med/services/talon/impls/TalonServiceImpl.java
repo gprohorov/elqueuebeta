@@ -322,6 +322,7 @@ public class TalonServiceImpl implements ITalonService {
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
         if (therapy!=null){
          talons = therapyService.generateTalonsByTherapyToDate(therapy,date);
+         talons.stream().forEach(talon -> talon.setAppointed(time));
         }else {
             Procedure diagnostics = procedureService.getProcedure(2);
             talons.add(new Talon(patientId, diagnostics, date, time));
