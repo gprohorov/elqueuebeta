@@ -68,7 +68,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             childComponent: PatientAssignProcedureModalComponent,
             data: { patientId: patient.id, patientName: patient.person.fullName }
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
     }
 
     showIncomePopup(patient: any) {
@@ -77,7 +77,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             childComponent: PatientIncomeModalComponent,
             data: patient
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
     }
     
     showAssignProceduresOnDatePopup(patient: any) {
@@ -86,7 +86,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             childComponent: PatientAssignProceduresOnDateModalComponent,
             data: { patientId: patient.id, patientName: patient.person.fullName }
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
     }
     
     updateActivity(id: string, value: string) {
@@ -161,16 +161,12 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.sub = this.service.getAll(this.date).subscribe(data => {
             this.items = data.sort(function (a, b) {
-                // Sort by startActivity
-                // const x = a.startActivity, y = b.startActivity;
-                
-                // Sort by name
+//                const x = a.startActivity, y = b.startActivity;
 //                const x = a.person.fullName, y = b.person.fullName;
-//                
-//                if (x < y) { return -1; }
-//                if (x > y) { return 1; }
-//                return 0;
-                return a.appointed - b.appointed;
+                const x = a.appointed, y = b.appointed;
+                if (x < y) { return -1; }
+                if (x > y) { return 1; }
+                return 0;
             });
             this.loading = false;
         });
