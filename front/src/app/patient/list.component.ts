@@ -38,12 +38,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
         this.items = this.patientService.sortBy($event, this.items);
     }
 
-    delete(id: string, name: string) {
-        if (confirm('Видалити "' + name + '" ?')) {
-            this.patientService.delete(id).subscribe(() => { this.load(); });
-        }
-    }
-
     showAssignProcedurePopup(patientId: string) {
         const patient = this.items.filter(x => patientId == x.id)[0];
         this.modalService.openDialog(this.viewRef, {
