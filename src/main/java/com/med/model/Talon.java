@@ -19,6 +19,7 @@ public class Talon {
     private Procedure procedure;
     private int zones = 1;
     private String desc;
+    private int appointed;
     private LocalDateTime start;
     private LocalDateTime executionTime;
     private Doctor doctor;
@@ -86,6 +87,20 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
+        this.appointed = 9;
+
+    }
+
+    public Talon(String patientId, Procedure procedure, LocalDate date, int appointed) {
+        this.patientId = patientId;
+        this.date = date;
+        this.procedure = procedure;
+        this.zones = 1;
+        this.desc = "";
+        this.executionTime = null;
+        this.doctor = null;
+        this.sum = 0;
+        this.appointed = appointed;
 
     }
     public Talon(String patientId, Procedure procedure, int days) {
@@ -98,6 +113,14 @@ public class Talon {
         this.doctor = null;
         this.sum = 0;
 
+    }
+
+    public int getAppointed() {
+        return appointed;
+    }
+
+    public void setAppointed(int appointed) {
+        this.appointed = appointed;
     }
 
     public Status getStatus() {

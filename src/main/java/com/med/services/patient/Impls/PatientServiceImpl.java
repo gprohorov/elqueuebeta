@@ -144,7 +144,7 @@ public class PatientServiceImpl implements IPatientService {
                }
        );
 
-        logger.info(">>>> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + (System.currentTimeMillis() - start));
+       // logger.info(">>>> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + (System.currentTimeMillis() - start));
         logger.info(">>>>  patients for toady --- >>>>>>>> " + (System.currentTimeMillis() - start));
 
 

@@ -26,6 +26,8 @@ public class Patient { // implements Comparable<Patient> {
     @Transient
     private Activity activity = Activity.NON_ACTIVE;
     @Transient
+    private int appointed;
+    @Transient
     private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
@@ -164,6 +166,21 @@ public class Patient { // implements Comparable<Patient> {
 */
 
         return delta;
+    }
+
+    public int getAppointed() {
+        int appointment = 10;
+
+        if (this.getTalons().isEmpty()) {
+            return appointment;
+        } else {
+            appointment = this.getTalons().get(0).getAppointed();
+        }
+        return appointed;
+    }
+
+    public void setAppointed(int appointed) {
+        this.appointed = appointed;
     }
 
     public void setActivity(Activity activity) {
