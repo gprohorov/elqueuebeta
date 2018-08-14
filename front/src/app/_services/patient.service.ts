@@ -12,7 +12,6 @@ export class PatientService {
     // Define the routes we are going to interact with
     private listUrl = config.api_path + '/patient/list/';
     private getUrl = config.api_path + '/patient/get/';
-    private deleteUrl = config.api_path + '/patient/delete/';
     private saveUrl = config.api_path + '/patient/save/';
     private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private assignProceduresOnDateUrl = config.api_path + '/patient/create/talons/';
@@ -27,10 +26,6 @@ export class PatientService {
 
     get(id: string) {
         return this.http.get<Patient>(this.getUrl + id).pipe(catchError(this.handleError));
-    }
-
-    delete(id: string) {
-        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
     }
 
     update(model: Patient) {

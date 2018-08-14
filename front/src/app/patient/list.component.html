@@ -52,9 +52,6 @@
                                     <button class="btn btn-primary"
                                         [routerLink]="['/patient-form', { id: item.id }]">
                                         Редагувати</button>
-                                    <button class="btn btn-danger"
-                                        (click)="delete(item.id, item.person.fullName)">
-                                        Видалити</button>
                                     <button class="btn btn-info"
                                         (click)="showAssignProcedurePopup(item.id)">
                                         Призначити процедуру</button>

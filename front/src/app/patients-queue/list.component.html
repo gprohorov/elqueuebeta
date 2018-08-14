@@ -38,7 +38,7 @@
         <tbody *ngFor="let item of items; let i = index">
             <tr (dblclick)="rows[i]=!rows[i]"
                 [hidden]="(item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active'"
-                [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
+                [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
                 <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
                     [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
                 </td>
