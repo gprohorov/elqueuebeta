@@ -1,4 +1,6 @@
 ﻿<div class="position-fixed" [style.right.px]="50">
+    <button class="fa fa-eject text-success btn btn-light mb-3"
+        title="Наверх" (click)="scrollToTop()"></button>
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
@@ -7,22 +9,44 @@
         <div class="btn-group mb-3" role="group">
             <button type="button"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
-                (click)="filters = 'all'">усі</button>
+                (click)="filters = 'all'">Усі <span class="badge badge-light ml-3">{{totalPatients}}</span></button>
             <button type="button" class="btn btn-secondary"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
-                (click)="filters = 'active'">активні</button>
+                (click)="filters = 'active'">Активні <span class="badge badge-light ml-3">{{activePatients}}</span></button>
         </div>
     </div>
     <div class="col-auto form-inline">
-        <button class="btn btn-success" (click)="changeDay(-1)"><i class="fa fa-arrow-left"></i></button>
-        <input type="date" class="form-control ml-2 mr-2" name="date" [(ngModel)]="date" [(ngValue)]="date" (change)="load()" 
-        format="yyyy-m-d"/>
-        <button class="btn btn-success" (click)="changeDay(1)"><i class="fa fa-arrow-right"></i></button>
+        <button class="btn btn-success" (click)="changeDay(-1)">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <input type="date" class="form-control ml-2 mr-2" name="date" [(ngModel)]="date"
+            [(ngValue)]="date" (change)="load()" format="yyyy-m-d" />
+        <button class="btn btn-success" (click)="changeDay(1)">
+            <i class="fa fa-arrow-right"></i>
+        </button>
     </div>
 </div>
-<div class="content table-responsive table-full-width">
+<div class="form-inline">
+    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(i)"
+        [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
+        popoverTitle="{{item.person.fullName}}" placement="bottom" 
+        [hidden]="(item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active'"
+        [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
+        <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
+        <span class="pull-right">{{item.appointed}}:00</span>
+        <ng-template #popContent>
+            Активність: <span class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
+            <br/>Статус: <strong>{{Status[item.status].text}}</strong>
+            <br/>Баланс: <strong>{{item.balance}} грн.</strong>
+            <br/>Прогрес: <strong>{{getProgress(item.talons)}}</strong>
+            <br/>Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
+            <br/>Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong>
+        </ng-template>
+    </button>
+</div>
+<div class="mt-2 content table-responsive table-full-width">
     <table class="table table-sm">
-        <thead class="thead-light">
+        <thead class="thead-dark">
             <tr>
                 <th></th>
                 <th [style.min-width.px]="300">ПІБ</th>
@@ -36,7 +60,7 @@
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
-            <tr (dblclick)="rows[i]=!rows[i]"
+            <tr (dblclick)="rows[i]=!rows[i]" id="row-{{i}}"
                 [hidden]="(item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active'"
                 [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
                 <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
@@ -48,7 +72,7 @@
                 <td>{{Status[item.status].text}}</td>
                 <td>{{item.balance}}</td>
                 <td>{{getProgress(item.talons)}}</td>
-                <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                <td><span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null
                         ? item.delta + ' хв.' : ''}}</span></td>
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
                 <td>{{item.appointed}}:00</td>
@@ -69,7 +93,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <button class="btn btn-info"
-                                        (click)="showAssignProceduresOnDatePopup(item)">Наступна дата</button>
+                                        (click)="showAssignProceduresOnDatePopup(item)">Наступна
+                                        дата</button>
                                 </div>
                                 <div class="col-auto ml-auto">
                                     <button

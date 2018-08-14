@@ -23,6 +23,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     sub: Subscription;
     subTemp: Subscription;
     items: Patient[] = [];
+    totalPatients: number;
+    activePatients: number;
     rows = [];
     date: string = (new Date()).toISOString().split('T')[0]; 
     filters: any = 'all'; // possible values: 'all', 'active' 
@@ -47,10 +49,14 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         if (this.subTemp) this.subTemp.unsubscribe();
     }
 
-    delete(id: string, name: string) {
-        if (confirm('Видалити "' + name + '" ?')) {
-            this.service.delete(id).subscribe(() => { this.load(); });
-        }
+    scrollToTop() {
+        window.scrollTo(0,0);
+    }
+    
+    scrollToRow(i) {
+        this.rows[i] = true;
+        let el = document.getElementById('row-' + i);
+        el.scrollIntoView();
     }
 
     getProgress(list: any[]) {
@@ -125,7 +131,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     getTimeDiffClass(v: number) {
-        return 'text-' + (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
+        return (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
     getTalonInfo(talon: any) {
@@ -160,23 +166,10 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     load() {
         this.loading = true;
         this.sub = this.service.getAll(this.date).subscribe(data => {
-//            this.items = data.sort(function (a, b) {
-//                const x = a.startActivity, y = b.startActivity;
-//                const x = a.person.fullName, y = b.person.fullName;
-//                const x = a.appointed, y = b.appointed;
-//                if (x < y) { return -1; }
-//                if (x > y) { return 1; }
-//                return 0;
-//            }).sort(function (a, b) {
-////              const x = a.startActivity, y = b.startActivity;
-//                const x = a.person.fullName, y = b.person.fullName;
-//                if (a.appointed != b.appointed) { return false; }
-//                if (x < y) { return -1; }
-//                if (x > y) { return 1; }
-//                return 0;
-//            });
             data.forEach(x => { x.fullName = x.person.fullName });
             this.items = data.sort(sort_by('appointed', 'fullName'));
+            this.totalPatients = data.length;
+            this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length; 
             this.loading = false;
         });
     }
