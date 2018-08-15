@@ -1,9 +1,6 @@
 package com.med.services.patient.Impls;
 
-import com.med.model.Patient;
-import com.med.model.Status;
-import com.med.model.Talon;
-import com.med.model.Therapy;
+import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.accounting.AccountingRepository;
@@ -69,8 +66,30 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public Patient savePatient(Patient patient) {
+    public Patient deletePatient(String id) {
+        Patient patient = this.getPatient(id);
+        List<Talon>  talons = talonService.getAllTalonsForPatient(id);
+        talonService.deleteAll(talons);
+        repository.deleteById(id);
+        return patient;
+    }
+
+
+
+    public Patient registratePatient(Patient patient) {
+
         patient.setRegistration(LocalDateTime.now());
+        patient.setStartActivity(LocalDateTime.now());
+        patient.setLastActivity(LocalDateTime.now());
+        patient.setActivity(Activity.ACTIVE);
+        repository.save(patient);
+        talonService.createActiveTalon(patient.getId(), 2, LocalDate.now(), 10, true);
+
+        return patient;
+    }
+
+    @Override
+    public Patient savePatient(Patient patient) {
         return repository.save(patient);
     }
 
@@ -99,12 +118,6 @@ public class PatientServiceImpl implements IPatientService {
         return patient;
     }
 
-    @Override
-    public Patient deletePatient(String id) {
-        Patient patient = this.getPatient(id);
-        repository.deleteById(id);
-        return patient;
-    }
 
     @Override
     public List<Patient> getAll(String fullName) {
@@ -140,6 +153,16 @@ public class PatientServiceImpl implements IPatientService {
                    patient.setTalons(entry.getValue());
                    patient.setActivity(patient.calcActivity());
                    patient.setTherapy(null);
+                   if (patient.getDelta()==null) {
+                       patient.setStartActivity(LocalDateTime.now());
+                       patient.setLastActivity (LocalDateTime.now());
+                   }
+
+
+
+                   if (!patient.getLastActivity().toLocalDate().equals(LocalDate.now())){
+                       patient.setLastActivity(null);
+                   }
                    patients.add(patient);
                }
        );

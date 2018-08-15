@@ -221,7 +221,7 @@ public class TherapyServiceImpl implements ITherapyService {
 	//////////// 02.07.18 ///////////////////////////
 	public List<Talon> generateTalonsByTherapy(Therapy therapy) {
 
-		int days = therapy.getDays();
+		int days = 1;
 
 		List<Procedure> procedures = new ArrayList<>();
 		List<Talon> talons = new ArrayList<>();

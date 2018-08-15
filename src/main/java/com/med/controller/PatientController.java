@@ -67,6 +67,16 @@ public class PatientController {
         }
         return patient;
     }
+    // Registrate the patient
+    @PostMapping("/registrate/")
+    public Patient registratePatient(@Valid @RequestBody Patient patient) {
+        if (patient.getId() == null) {
+            service.registratePatient(patient);
+           } else {
+            service.savePatient(patient);
+        }
+        return patient;
+    }
 
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
