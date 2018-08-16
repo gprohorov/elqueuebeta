@@ -329,10 +329,12 @@ public class TalonServiceImpl implements ITalonService {
         if (therapy!=null){
          talons = therapyService.generateTalonsByTherapyToDate(therapy,date);
          talons.stream().forEach(talon -> talon.setAppointed(time));
+         
+
          Talon talon = talons.stream().filter(tl->tl.getProcedure().getId()==9)
                  .findFirst().orElse(null);
              if (talon!=null){
-             String last = this.getLastExecuted(talon);
+             LastTalonInfo last = this.getLastExecuted(talon);
              talon.setLast(last);
             }
         }else {
@@ -403,24 +405,19 @@ public class TalonServiceImpl implements ITalonService {
         return price;
     }
 
-    private String getLastExecuted(Talon talon){
-        String responce ="... ";
-        Talon tln =
-                repository.findByPatientIdAndDateGreaterThan(talon.getPatientId(),
+    private LastTalonInfo getLastExecuted(Talon talon){
+        Talon tln = repository.findByPatientIdAndDateGreaterThan(talon.getPatientId(),
                        LocalDate.now().minusDays(10)).stream()
                         .filter(tal -> tal.getProcedure().getId()==9 )
                         .filter(tal -> tal.getActivity().equals(Activity.EXECUTED))
                         .sorted(Comparator.comparing(Talon::getDate).reversed())
                         .findFirst().orElse(null);
 
-      if (tln!=null){
+        if (tln == null) {
+            return null;
+        }
 
-          responce+= tln.getDate().getDayOfMonth() + " " + tln.getDate().getMonth() + "  "
-                  + tln.getZones() + "zn   "
-                  + tln.getDoctor().getFullName().substring(0,3);
-      }
-
-        return responce;
+        return new LastTalonInfo(tln.getDate(), tln.getZones(), tln.getDoctor());
     }
 
 }
