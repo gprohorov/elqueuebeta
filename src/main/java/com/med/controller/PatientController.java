@@ -211,15 +211,4 @@ public class PatientController {
         return  service.patientBye(patientId);
     }
 
-
-    @GetMapping("/execute/{talonId}")
-    public Talon execute(
-            @PathVariable(value = "talonId") String talonId) {
-        int doctorId = userService.getCurrentUserInfo().getId();
-        return  talonService.quickExecute(talonId, doctorId);
-    }
-
-
-
-
 }

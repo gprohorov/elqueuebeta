@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
             this.findOne(SecurityContextHolder.getContext().getAuthentication().getName()).getId()
         );
     }
-
+    
     public List<SimpleGrantedAuthority> getAuthority(User user) {
         return Arrays.asList(new SimpleGrantedAuthority(user.getAuthorities().get(0).name()));
     }

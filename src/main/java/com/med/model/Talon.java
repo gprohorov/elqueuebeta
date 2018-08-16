@@ -23,6 +23,7 @@ public class Talon {
     private int appointed;
     private LocalDateTime start;
     private LocalDateTime executionTime;
+    @Nullable
     private Doctor doctor;
     private Status status = Status.SOCIAL;
     private int sum;
