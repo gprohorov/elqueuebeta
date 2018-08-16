@@ -27,6 +27,8 @@ public class Talon {
     private Doctor doctor;
     private Status status = Status.SOCIAL;
     private int sum;
+    @Nullable
+    private String last = null;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
 
@@ -39,7 +41,13 @@ public class Talon {
         this.activity = activity;
     }
 
+    public String getLast() {
+        return last;
+    }
 
+    public void setLast(String last) {
+        this.last = last;
+    }
 
     public Talon() {
     }
