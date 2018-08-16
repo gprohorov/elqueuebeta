@@ -10,6 +10,7 @@ import com.med.repository.accounting.AccountingRepository;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,9 @@ public class PatientController {
 
     @Autowired
     RecordServiceImpl recordService;
+
+    @Autowired
+    UserService userService;
 
     ////////////////////////// CRUD //////////////////////////
 
@@ -206,6 +210,16 @@ public class PatientController {
             @PathVariable(value = "patientId") String patientId) {
         return  service.patientBye(patientId);
     }
+
+
+    @GetMapping("/execute/{talonId}")
+    public Talon execute(
+            @PathVariable(value = "talonId") String talonId) {
+        int doctorId = userService.getCurrentUserInfo().getId();
+        return  talonService.quickExecute(talonId, doctorId);
+    }
+
+
 
 
 }

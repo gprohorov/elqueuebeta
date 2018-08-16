@@ -8,6 +8,7 @@ import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.interfaces.ITalonService;
 import com.med.services.therapy.impls.TherapyServiceImpl;
+import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +47,9 @@ public class TalonServiceImpl implements ITalonService {
 
     @Autowired
     TherapyServiceImpl therapyService;
+
+    @Autowired
+    WorkPlaceServiceImpl workPlaceService;
 
     private static final Logger logger = LoggerFactory.getLogger(TalonServiceImpl.class);
 
@@ -336,6 +341,62 @@ public class TalonServiceImpl implements ITalonService {
         List<Talon> talons = repository.findByDateAndPatientId(date, patientId);
         repository.deleteAll(talons);
     return talons;
+    }
+
+
+    public Talon quickExecute(String talonId, int doctorId) {
+
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        Talon talon = repository.findById(talonId).orElse(null);
+        Patient patient = patientService.getPatient(talon.getPatientId());
+        Procedure procedure = talon.getProcedure();
+
+        talon.setDoctor(doctor);
+        talon.setActivity(Activity.EXECUTED);
+        talon.setStart(LocalDateTime.now());
+        talon.setExecutionTime(LocalDateTime.now());
+        talon.setZones(1);
+
+        String desc = doctor.getFullName() + ", "
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+                + " - процедуру завершено.<br/><br/>";
+        talon.setDesc(talon.getDesc() + desc);
+        talon.setStatus(patient.getStatus());
+
+        int price = this.getPrice(patient, procedure.getId());
+
+        int sum = procedure.isZoned()? price*talon.getZones(): price;
+        talon.setSum(sum);
+       // talonService.saveTalon(talon);
+
+       return repository.save(talon);
+    }
+
+
+    private int getPrice(Patient patient, int procedureId){
+        int price ;
+        Procedure procedure = procedureService.getProcedure(procedureId);
+        switch (patient.getStatus()){
+
+            case SOCIAL: price= procedure.getSOCIAL();
+                break;
+
+            case VIP: price= procedure.getVIP();
+                break;
+
+            case ALL_INCLUSIVE: price= procedure.getALL_INCLUSIVE();
+                break;
+
+            case BUSINESS: price= procedure.getBUSINESS();
+                break;
+
+            case FOREIGN:    price=procedure.getFOREIGN();
+                break;
+
+            default:price=procedure.getSOCIAL();
+                break;
+        }
+        return price;
     }
 
 
