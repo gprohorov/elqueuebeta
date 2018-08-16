@@ -13,6 +13,7 @@ export class PatientService {
     private listUrl = config.api_path + '/patient/list/';
     private getUrl = config.api_path + '/patient/get/';
     private saveUrl = config.api_path + '/patient/save/';
+    private deleteUrl = config.api_path + '/patient/delete/';
     private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private assignProceduresOnDateUrl = config.api_path + '/patient/create/talons/';
     private incomeUrl = config.api_path + '/income/create';
@@ -32,12 +33,16 @@ export class PatientService {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
+    delete(id: number) {
+        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
+    }
+
     assignProcedure(patientId: string, procedureId: number, date: string, appointed: number, activate: boolean) {
         return this.http.get(this.assignProcedureUrl
             + [patientId, procedureId, date, appointed, activate || false].join('/'))
             .pipe(catchError(this.handleError));
     }
-    
+
     assignProceduresOnDate(patientId: string, date: string, appointed: number) {
         return this.http.get(this.assignProceduresOnDateUrl + patientId + '/' + date + '/' + appointed)
             .pipe(catchError(this.handleError));

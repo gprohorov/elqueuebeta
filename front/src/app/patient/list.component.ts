@@ -65,6 +65,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
         let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
     }
     
+    delete(id: number, name: string) {
+        if (confirm('Видалити "' + name + '" ?')) {
+            this.subDelete = this.patientService.delete(id).subscribe(() => { this.load(); });
+        }
+    }
+    
     load(search: string = '') {
         this.loading = true;
         this.sub = this.patientService.getAll(search).subscribe(data => {
