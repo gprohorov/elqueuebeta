@@ -33,14 +33,18 @@
         [hidden]="(item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active'"
         [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
         <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
-        <span class="pull-right">{{item.appointed}}:00</span>
+        <span class="pull-right">
+            <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
+            {{item.appointed}}:00
+        </span>
         <ng-template #popContent>
             Активність: <span class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
             <br/>Статус: <strong>{{Status[item.status].text}}</strong>
             <br/>Баланс: <strong>{{item.balance}} грн.</strong>
             <br/>Прогрес: <strong>{{getProgress(item.talons)}}</strong>
-            <br/>Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
+            <br/>Назначено: <strong>{{item.appointed}}:00</strong>
             <br/>Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong>
+            <br/>Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
         </ng-template>
     </button>
 </div>
