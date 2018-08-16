@@ -60,24 +60,13 @@ public class PatientController {
     @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
         if (patient.getId() == null) {
-            service.savePatient(patient);
-            talonService.createActiveTalon(patient.getId(), 2, LocalDate.now(), 10, true);
+        	service.registratePatient(patient);
         } else {
             service.savePatient(patient);
         }
         return patient;
     }
-    // Registrate the patient
-    @PostMapping("/registrate/")
-    public Patient registratePatient(@Valid @RequestBody Patient patient) {
-        if (patient.getId() == null) {
-            service.registratePatient(patient);
-           } else {
-            service.savePatient(patient);
-        }
-        return patient;
-    }
-
+    
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
     public Patient delPatient(@PathVariable(value = "id") String patientId) {
