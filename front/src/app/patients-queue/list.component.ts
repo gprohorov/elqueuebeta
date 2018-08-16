@@ -136,6 +136,9 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
     getTalonInfo(talon: any) {
         let out = '', start, end, diff;
+        if (talon.last) {
+            out += talon.last + ' ';
+        }
         if (talon.start) {
             start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
             out += start.format('HH:mm');
