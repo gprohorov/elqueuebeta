@@ -331,13 +331,7 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-
-
-
-
-
-
-
+    /////////   remove all talons for date in order to create new ones
     public List<Talon> removeTalonsForPatientToDate(String patientId, LocalDate date) {
         List<Talon> talons = repository.findByDateAndPatientId(date, patientId);
         repository.deleteAll(talons);

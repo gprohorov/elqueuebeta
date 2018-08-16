@@ -112,13 +112,14 @@ public class PatientController {
         return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date));
     }Hope1234
 */
-
-      // create talons list to date for patient according to therapy, appointed to time
+       //*******************************************************************************
+      // create talon LIST to date for patient according to therapy, appointed to time
     @GetMapping("/create/talons/{patientId}/{date}/{time}")
     public List<Talon> createTalonsToDate(@PathVariable(value = "patientId") String patientId,
                              @PathVariable(value = "date") String date,
                              @PathVariable(value = "time") int time) {
-        return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date), time);
+     //   return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date), time);
+        return service.assignPatientToDate(patientId, LocalDate.parse(date), time);
     }
 
 
@@ -210,4 +211,12 @@ public class PatientController {
     public Record createRecord(@Valid @RequestBody Record record) {
     	return recordService.createRecord(record);
     }
+
+    @GetMapping("/bye/{patientId}")
+    public Patient bye(
+            @PathVariable(value = "patientId") String patientId) {
+        return  service.patientBye(patientId);
+    }
+
+
 }
