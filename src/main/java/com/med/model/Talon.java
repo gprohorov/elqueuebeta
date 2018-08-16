@@ -28,7 +28,7 @@ public class Talon {
     private Status status = Status.SOCIAL;
     private int sum;
     @Nullable
-    private LocalDate last = null;
+    private String last = null;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
 
@@ -41,11 +41,11 @@ public class Talon {
         this.activity = activity;
     }
 
-    public LocalDate getLast() {
+    public String getLast() {
         return last;
     }
 
-    public void setLast(LocalDate last) {
+    public void setLast(String last) {
         this.last = last;
     }
 
