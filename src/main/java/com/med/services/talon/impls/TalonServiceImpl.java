@@ -366,7 +366,7 @@ public class TalonServiceImpl implements ITalonService {
         int sum = procedure.isZoned() ? price * talon.getZones() : price;
         talon.setSum(sum);
 
-       return repository.save(talon);
+        return repository.save(talon);
     }
 
 
