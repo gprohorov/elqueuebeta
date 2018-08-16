@@ -131,7 +131,7 @@
                         <div class="card-body">
                             <div class="row" *ngFor="let talon of item.talons">
                                 <div class="col-auto mr-auto">
-                                    <p title="{{Activity[talon.activity].text}}">
+                                    <p title="{{getTalonTitle(talon)}}">
                                         <span
                                             [ngClass]="{'fa fa-arrow-circle-up': talon.outOfTurn }"
                                             class="btn btn-{{Activity[talon.activity].cssClass}}">

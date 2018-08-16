@@ -134,10 +134,21 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return (v > 60 ? 'danger' : v > 30 ? 'success' : 'primary');
     }
 
+    getTalonTitle(talon: any) {
+        let out = Activity[talon.activity].text, lastDate;
+        if (talon.last && talon.last.date) {
+            lastDate = moment(talon.last.date, 'YYYY-MM-DD');
+            out += '. Останній раз проводилося ' + lastDate.format('DD.MM.YYYY') + ', ' + talon.last.zones + ' зон';
+            if (talon.last.doctor) out += ', ' + talon.last.doctor.fullName;
+        }
+        return out;
+    }
+    
     getTalonInfo(talon: any) {
-        let out = '', start, end, diff;
-        if (talon.last) {
-            out += talon.last + ' ';
+        let out = '', start, end, diff, lastDate;
+        if (talon.last && talon.last.date) {
+            lastDate = moment(talon.last.date, 'YYYY-MM-DD');
+            out += lastDate.format('DD.MM.YYYY') + ' ';
         }
         if (talon.start) {
             start = moment(talon.start, 'YYYY-MM-DDTHH:mm:ss.SSS');
