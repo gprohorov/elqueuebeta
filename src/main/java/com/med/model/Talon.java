@@ -2,6 +2,7 @@ package com.med.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public class Talon {
     private Doctor doctor;
     private Status status = Status.SOCIAL;
     private int sum;
+    @Nullable
+    private LocalDate last = null;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
 
@@ -37,7 +40,13 @@ public class Talon {
         this.activity = activity;
     }
 
+    public LocalDate getLast() {
+        return last;
+    }
 
+    public void setLast(LocalDate last) {
+        this.last = last;
+    }
 
     public Talon() {
     }
