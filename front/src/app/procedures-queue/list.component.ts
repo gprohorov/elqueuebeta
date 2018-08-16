@@ -57,10 +57,21 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
         this.updateMasonryLayout = true;
     }
 
-    updateOutOfTurn(id: string, value: boolean) {
-        this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
-            this.load();
-        });
+    updateOutOfTurn(id: string, value: boolean, patientName: string, procedureName: string) {
+        if (confirm((value ? 'Призначити' : 'Зняти') + ' "Поза чергою" пацієнта "'
+                + patientName + '", процедура "'  + procedureName + '" ?')) {
+            this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
+                this.load();
+            });
+        }
+    }
+
+    executeProcedure(talonId: string, patientName: string, procedureName: string) {
+        if (confirm('Виконати процедуру "' + procedureName + '" для пацієнта "' + patientName + '" ?')) {
+            this.subTemp = this.service.executeProcedure(talonId).subscribe(data => {
+                this.load();
+            });
+        }
     }
     
     load() {

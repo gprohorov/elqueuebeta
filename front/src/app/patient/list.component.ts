@@ -15,6 +15,7 @@ import { PatientAssignProcedureModalComponent } from './assign-procedure.modal.c
 export class PatientListComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    subDelete: Subscription;
     items: Patient[];
     loading = false;
     rows = [];
@@ -31,7 +32,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subDelete) this.subDelete.unsubscribe();
     }
 
     onSorted($event: PatientSearchCriteria) {

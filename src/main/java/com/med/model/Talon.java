@@ -2,6 +2,7 @@ package com.med.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class Talon {
     private int appointed;
     private LocalDateTime start;
     private LocalDateTime executionTime;
+    @Nullable
     private Doctor doctor;
     private Status status = Status.SOCIAL;
     private int sum;

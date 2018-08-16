@@ -344,20 +344,18 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-    public Talon quickExecute(String talonId, int doctorId) {
+    public Talon quickExecute(String talonId) {
 
-        Doctor doctor = doctorService.getDoctor(doctorId);
         Talon talon = repository.findById(talonId).orElse(null);
         Patient patient = patientService.getPatient(talon.getPatientId());
         Procedure procedure = talon.getProcedure();
 
-        talon.setDoctor(doctor);
         talon.setActivity(Activity.EXECUTED);
         talon.setStart(LocalDateTime.now());
         talon.setExecutionTime(LocalDateTime.now());
         talon.setZones(1);
 
-        String desc = doctor.getFullName() + ", "
+        String desc = "Адміністратор, "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
                 + " - процедуру завершено.<br/><br/>";
         talon.setDesc(talon.getDesc() + desc);
@@ -365,9 +363,8 @@ public class TalonServiceImpl implements ITalonService {
 
         int price = this.getPrice(patient, procedure.getId());
 
-        int sum = procedure.isZoned()? price*talon.getZones(): price;
+        int sum = procedure.isZoned() ? price * talon.getZones() : price;
         talon.setSum(sum);
-       // talonService.saveTalon(talon);
 
        return repository.save(talon);
     }
