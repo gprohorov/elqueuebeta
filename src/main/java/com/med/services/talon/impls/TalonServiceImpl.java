@@ -356,13 +356,18 @@ public class TalonServiceImpl implements ITalonService {
     public Talon quickExecute(String talonId) {
 
         Talon talon = repository.findById(talonId).orElse(null);
-        Patient patient = patientService.getPatient(talon.getPatientId());
         Procedure procedure = talon.getProcedure();
+        if (procedure.getId()!=3) return null;
+
+        Patient patient = patientService.getPatient(talon.getPatientId());
+
+        Doctor doctor = doctorService.getAll().get(0);
 
         talon.setActivity(Activity.EXECUTED);
         talon.setStart(LocalDateTime.now());
         talon.setExecutionTime(LocalDateTime.now());
         talon.setZones(1);
+        talon.setDoctor(doctor);
 
         String desc = "Адміністратор, "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))

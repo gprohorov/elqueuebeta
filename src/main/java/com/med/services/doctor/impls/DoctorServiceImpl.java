@@ -41,7 +41,7 @@ public class DoctorServiceImpl implements IDoctorService {
     public Doctor createDoctor(Doctor doctor) {
         if (doctor.getId()==0) {
             int id = this.getAll().stream().mapToInt(Doctor::getId).max().getAsInt() + 1;
-            doctor.setId(id);
+            doctor.setId(id+1);
         }
         return repository.insert(doctor);
     }
@@ -76,24 +76,10 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Override
     public List<Doctor> getAll() {
-
-      //  List<Doctor> doctors =repository.findAll();
-       // doctors.stream().forEach(doctor -> doctor.setUser(UserRepository.findById(doctor.getUserId).get());
-
-      //  return repository.findAll().stream().sorted().collect(Collectors.toList());
-        return repository.findAll().stream().sorted(Comparator.comparing(Doctor::getId))
+     return repository.findAll().stream().sorted(Comparator.comparing(Doctor::getId))
                 .collect(Collectors.toList());
     }
-/*
 
-    @Override
-    public Doctor getDoctorListByName(String lastName) {
-
-        return repository.findAll().stream()
-                .filter(doctor -> doctor.getLastName().equals(lastName))
-                .findFirst().get();
-    }
-*/
 
 
 }

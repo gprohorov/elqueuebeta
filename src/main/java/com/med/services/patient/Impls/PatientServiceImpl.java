@@ -252,6 +252,13 @@ public class PatientServiceImpl implements IPatientService {
                     Patient patient = this.getPatient(entry.getKey());
                     patient.setTalons(entry.getValue());
                     patient.setActivity(patient.calcActivity());
+
+                    if (patient.getDelta()!=null && patient.getDelta()>300) {
+                    //    logger.info(patient.getPerson().getFullName());
+                        patient.setStartActivity(LocalDateTime.now());
+                        patient.setLastActivity(LocalDateTime.now());
+                       repository.save(patient);
+                    }
                     patient.setTherapy(null);
                     patients.add(patient);
                 }

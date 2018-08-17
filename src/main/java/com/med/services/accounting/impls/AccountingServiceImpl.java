@@ -37,6 +37,7 @@ public class AccountingServiceImpl implements IAccountingService {
         repository.save(accounting);
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
+        patientService.patientBye(patient.getId());
         patientService.savePatient(patient);
         return accounting ;
     }

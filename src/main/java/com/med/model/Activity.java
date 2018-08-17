@@ -7,6 +7,8 @@ public enum Activity {
     ON_PROCEDURE(8),
     INVITED(7),
     ACTIVE(6),
+    GAMEOVER(5),
+    STUCK(5),
     TEMPORARY_NA(5),
     NON_ACTIVE(4),
     EXECUTED(3),

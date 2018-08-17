@@ -241,6 +241,7 @@ public class TherapyServiceImpl implements ITherapyService {
                 }
 			}
 		}
+
 		//////////////////////  kostil'
 		Talon manualToday = talons.stream()
                 .filter(talon -> talon.getProcedure().getId()==3)
@@ -253,6 +254,13 @@ public class TherapyServiceImpl implements ITherapyService {
 		    talons.remove(manualToday);
         }
 
+ 		talons.stream().forEach(talon -> {
+
+ 		if (talon.getProcedure().getCard().isAnytime()){
+ 			talon.setActivity(Activity.ACTIVE);
+		}
+
+		 });
 
 
 		return talons;
@@ -275,7 +283,10 @@ public class TherapyServiceImpl implements ITherapyService {
 		});
 
 		procedures.stream().forEach(procedure -> {
-			talons.add(new Talon(therapy.getPatientId(), procedure, date));
+			Talon talon = new Talon(therapy.getPatientId(), procedure, date);
+			if (procedure.getCard().isAnytime() && date.equals(LocalDate.now())) {
+				talon.setActivity(Activity.ACTIVE);}
+			talons.add(talon);
 		});
 
 		return talons;
