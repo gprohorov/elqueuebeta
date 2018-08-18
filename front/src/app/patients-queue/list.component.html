@@ -18,6 +18,9 @@
                 (click)="filters = 'notactive'">Не активні <span class="badge badge-light ml-3">{{notActivePatients}}</span></button>
         </div>
     </div>
+    <div class="col">
+        <button class="btn btn-success" [routerLink]="['/patient-form']">Створити</button>
+    </div>
     <div class="col-auto form-inline">
         <button class="btn btn-success" (click)="changeDay(-1)">
             <i class="fa fa-arrow-left"></i>
@@ -30,7 +33,7 @@
     </div>
 </div>
 <div class="form-inline">
-    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(i)"
+    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(item, i)"
         [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
         popoverTitle="{{item.person.fullName}}" placement="bottom" 
         [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
@@ -70,10 +73,10 @@
         <tbody *ngFor="let item of items; let i = index" 
             [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
                       || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')">
-            <tr (dblclick)="rows[i]=!rows[i]" id="row-{{i}}"
+            <tr (dblclick)="item.expanded=!item.expanded" id="row-{{i}}"
                 [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
+                <td [ngStyle]="{'cursor': 'pointer'}" (click)="item.expanded=!item.expanded"><i
+                    [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
                 </td>
                 <td>{{item.person.fullName}}</td>
                 <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
@@ -86,7 +89,7 @@
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
                 <td>{{item.appointed}}:00</td>
             </tr>
-            <tr [hidden]="!rows[i]">
+            <tr [hidden]="!item.expanded">
                 <td colspan="100">
                     <div class="card">
                         <div class="card-header">

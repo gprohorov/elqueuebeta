@@ -26,7 +26,6 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     totalPatients: number;
     activePatients: number;
     notActivePatients: number;
-    rows = [];
     date: string = (new Date()).toISOString().split('T')[0]; 
     filters: any = 'all'; // possible values: 'all', 'active', 'notactive'
     Status = Status;
@@ -54,8 +53,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         window.scrollTo(0,0);
     }
     
-    scrollToRow(i) {
-        this.rows[i] = true;
+    scrollToRow(item, i) {
+        item.expanded = true;
         let el = document.getElementById('row-' + i);
         el.scrollIntoView();
     }
