@@ -25,9 +25,10 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     items: Patient[] = [];
     totalPatients: number;
     activePatients: number;
+    notActivePatients: number;
     rows = [];
     date: string = (new Date()).toISOString().split('T')[0]; 
-    filters: any = 'all'; // possible values: 'all', 'active' 
+    filters: any = 'all'; // possible values: 'all', 'active', 'notactive'
     Status = Status;
     Statuses = Object.keys(Status);
     Activity = Activity;
@@ -183,6 +184,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.totalPatients = data.length;
             this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length;
+            this.notActivePatients = this.totalPatients - this.activePatients;
             this.loading = false;
         });
     }
