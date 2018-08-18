@@ -166,7 +166,6 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         if (talon.doctor) {
             out += ', ' + talon.doctor.fullName + ' (зон: ' + talon.zones + ')';
         }
-        
         return out;
     }
     
@@ -183,7 +182,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data.forEach(x => { x.fullName = x.person.fullName });
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.totalPatients = data.length;
-            this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length; 
+            this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length;
             this.loading = false;
         });
     }
