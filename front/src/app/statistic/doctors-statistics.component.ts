@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { StatisticService, AlertService } from '../_services/index';
 
 @Component({
-    templateUrl: './patient-statistics.component.html'
+    templateUrl: './doctors-statistics.component.html'
 })
 
-export class PatientStatisticsComponent implements OnInit, OnDestroy {
+export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
     
     sub: Subscription;
     loading = false;
@@ -32,7 +32,7 @@ export class PatientStatisticsComponent implements OnInit, OnDestroy {
     }
     
     load() {
-        this.sub = this.service.getPatientStatistics(this.patientId).subscribe(data => { 
+        this.sub = this.service.getDoctorsCurrentStatistics().subscribe(data => { 
             this.data = data;
         });
     }

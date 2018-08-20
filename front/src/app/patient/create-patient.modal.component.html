@@ -1,0 +1,49 @@
+﻿<div class="row justify-content-md-center">
+    <div class="col-6">
+        <h2>{{model?.id ? 'Редагування' : 'Створення'}} пацієнта</h2>
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fullName.valid }">
+                <label for="fullName">ПІБ (прізвище, ім`я та по-батькові)</label> <input type="text"
+                    class="form-control" name="fullName" [(ngModel)]="model?.person.fullName"
+                    #fullName="ngModel" required />
+                <div *ngIf="f.submitted && !fullName.valid" class="help-block">Поле
+                    обов`язкове</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Стать</label>
+                    <div class="form-group radio">
+                        <label class="mr-3"><input type="radio" name="gender" value="true"
+                            [(ngModel)]="model?.person.gender" #gender="ngModel">чол.</label> <label><input
+                            type="radio" name="gender" value="false"
+                            [(ngModel)]="model?.person.gender" #gender="ngModel">жін.</label>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Дата народження</label> <input type="date"
+                            class="form-control" name="dateOfBirth"
+                            [(ngModel)]="model?.person.dateOfBirth" #dateOfBirth="ngModel" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cellPhone">Телефон</label> <input type="text" class="form-control"
+                    name="cellPhone" [(ngModel)]="model?.person.cellPhone" #cellPhone="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="town">Місто / село</label> <input type="text" class="form-control"
+                    name="town" [(ngModel)]="model?.person.town" #town="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="address">Адреса</label> <input type="text" class="form-control"
+                    name="address" [(ngModel)]="model?.person.address" #address="ngModel" />
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+                <button [routerLink]="['/patients']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
+            </div>
+        </form>
+    </div>
+</div>
