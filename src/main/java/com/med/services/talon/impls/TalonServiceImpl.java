@@ -229,8 +229,19 @@ public class TalonServiceImpl implements ITalonService {
           );
       }else talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
+      if (activity.equals(Activity.NON_ACTIVE)){
+          Patient patient = patientService.getPatient(patientId);
+          patient.setStartActivity(null);
+          patient.setLastActivity(null);
+          patientService.savePatient(patient);
+      }
+
       logger.info(">>>> activate talons >>>>>>    " + ChronoUnit.MILLIS.between( start, LocalDateTime.now()) + "ms");
     }
+
+
+
+
 
     public List<Patient> toPatientList(List<Talon> talons){
         List<Patient> patients = new ArrayList<>();
