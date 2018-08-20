@@ -162,5 +162,31 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-6">
+                <button *ngIf="procedureStarted" class="btn btn-success btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="executeProcedure()" [disabled]="loading">
+                    <h3 class="font-weight-bold">
+                        ЗАВЕРШИТИ<br />ДІАГНОСТИКУ
+                    </h3>
+                </button>
+            </div>
+            <div class="col-6">
+                <button *ngIf="procedureStarted" class="btn btn-danger btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="cancelProcedure()" [disabled]="loading">
+                    <h3 class="font-weight-bold">
+                        СКАCУВАТИ<br />ДІАГНОСТИКУ
+                    </h3>
+                </button>
+            </div>
+            <div class="col-6">
+                <button *ngIf="!procedureStarted" class="btn btn-primary btn-lg btn-block"
+                    [style.min-height.px]="200" (click)="startProcedure()" [disabled]="loading">
+                    <h3 class="font-weight-bold">
+                        РОЗПОЧАТИ<br />ДІАГНОСТИКУ
+                    </h3>
+                </button>
+            </div>
+        </div>
     </form>
 </div>
