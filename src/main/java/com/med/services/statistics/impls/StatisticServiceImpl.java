@@ -3,8 +3,10 @@ package com.med.services.statistics.impls;
 import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
+import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
+import com.med.model.statistics.dto.doctor.ProcedureCount;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -366,4 +369,92 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
     return list;
     }
+
+/////////////////////////////////////// CURRENT DOCTOR
+    public DoctorCurrentStatistics getOneDoctorCurrentStatistics(int doctorId){
+
+        List<Talon> talons = talonService.getTalonsForDate(LocalDate.now()).stream()
+
+                .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)
+                                || talon.getActivity().equals(Activity.ON_PROCEDURE)
+                        ))
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
+                .collect(Collectors.toList());
+
+        DoctorCurrentStatistics statistics = new DoctorCurrentStatistics();
+
+        if (!talons.isEmpty()) {
+
+            statistics.setName(this.getLastName(doctorService.getDoctor(doctorId).getFullName()));
+
+            LocalDateTime start = talons.stream().map(talon -> talon.getStart())
+                    .findFirst().orElse(null);
+
+            statistics.setStartWork(start);
+//////////////////////////////////////////////////////////////
+
+            Talon lastTalon = talons.stream()
+                    .sorted(Comparator.comparing(Talon::getStart).reversed())
+                    .findFirst().orElse(null);
+
+            if (lastTalon.getActivity().equals(Activity.ON_PROCEDURE)) {
+                statistics.setLastActivity(lastTalon.getStart());
+                Patient patient = patientService.getPatient(lastTalon.getPatientId());
+                statistics.setCurrentPatient(this.getLastName(patient.getPerson().getFullName()));
+            }
+
+            if (lastTalon.getActivity().equals(Activity.EXECUTED)) {
+                statistics.setLastActivity(lastTalon.getExecutionTime());
+                statistics.setCurrentPatient("");
+            }
+
+            Long zones = (long) talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                    .mapToInt(Talon::getZones).sum();
+            statistics.setZonesCount(zones);
+
+            Long fee = (long) talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                    .mapToInt(Talon::getSum).sum();
+            statistics.setFee(fee);
+
+            List<String> names = new ArrayList<>();
+
+            talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                    .forEach(talon -> {
+                String name = patientService.getPatient(talon.getPatientId()).getPerson().getFullName();
+                names.add(this.getLastName(name));
+            });
+            statistics.setPatients(names);
+
+            List<ProcedureCount> map = new ArrayList<>();
+            talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                    .collect(Collectors.groupingBy(tal -> tal.getProcedure(), Collectors.counting()))
+                    .forEach((key,value) -> {
+                        ProcedureCount item = new ProcedureCount(key.getName(),value);
+                        map.add(item);
+                    });
+            statistics.setProcedureMap(map);
+
+        }
+    return statistics;
+    }
+
+
+    public List<DoctorCurrentStatistics> getDoctorsListCurrentStatictics(){
+
+        List<DoctorCurrentStatistics> list = new ArrayList<>();
+
+        doctorService.getAll().stream().forEach(doctor -> {
+            DoctorCurrentStatistics statistics = this.getOneDoctorCurrentStatistics(doctor.getId());
+            list.add(statistics);
+        });
+
+
+
+    return list;
+    }
+
+     private String getLastName(String fullName){
+         int index = fullName.indexOf(" ");
+        return fullName.substring(0, index-1);
+     }
 }

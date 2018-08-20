@@ -396,6 +396,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 .forEach(talon -> {
             if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
                 talon.setActivity(Activity.CANCELED);
+                logger.info("procedure " + procedure.getName() + " cancelled by card");
                 talonService.saveTalon(talon);
             }
         });

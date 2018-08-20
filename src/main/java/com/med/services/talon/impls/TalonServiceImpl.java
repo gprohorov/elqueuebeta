@@ -328,9 +328,16 @@ public class TalonServiceImpl implements ITalonService {
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
         if (therapy!=null){
          talons = therapyService.generateTalonsByTherapyToDate(therapy,date);
-         talons.stream().forEach(talon -> talon.setAppointed(time));
+         talons.stream().forEach(talon -> {
+                 talon.setAppointed(time);
+            if(date.equals(LocalDate.now())) {
+                patient.setStartActivity(LocalDateTime.now());
+                patient.setLastActivity(LocalDateTime.now());
+                patientService.savePatient(patient);
+            }
+         });
          
-
+            // recall the udarno-wave therapy last time date -  KOSTIL
          Talon talon = talons.stream().filter(tl->tl.getProcedure().getId()==9)
                  .findFirst().orElse(null);
              if (talon!=null){

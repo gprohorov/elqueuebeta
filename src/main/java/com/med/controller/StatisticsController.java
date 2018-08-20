@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
+import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
@@ -66,6 +67,15 @@ public class StatisticsController {
         
     	return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
+
+       @RequestMapping("/doctors/current/")
+    public List<DoctorCurrentStatistics> getDoctorsCurrentStatistics() {
+    	return service.getDoctorsListCurrentStatictics();
+    }
+
+
+
+
 
     @RequestMapping("/procedures/count")
     public Long getProceduresCount() {

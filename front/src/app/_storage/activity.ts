@@ -4,8 +4,8 @@
     INVITED:        { text: 'Поза чергою',      cssClass: 'info'        },
     ON_PROCEDURE:   { text: 'На процедурі',     cssClass: 'warning'     },
     TEMPORARY_NA:   { text: 'Відсутній',        cssClass: 'primary'     },
-    GAMEOVER:       { text: 'Закінчено',        cssClass: 'secondary'   },
-    STUCK:          { text: 'Застрягло',        cssClass: 'secondary'   },
+    GAMEOVER:       { text: 'Закінчено',        cssClass: 'light'       },
+    STUCK:          { text: 'Застрягло',        cssClass: 'primary'     },
     EXECUTED:       { text: 'Виконано',         cssClass: 'dark'        },
     CANCELED:       { text: 'Скасовано',        cssClass: 'secondary'   },
     EXPIRED:        { text: 'Вичерпано',        cssClass: 'secondary'   }

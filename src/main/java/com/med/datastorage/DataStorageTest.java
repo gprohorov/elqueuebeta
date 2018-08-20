@@ -1,6 +1,5 @@
 package com.med.datastorage;
 
-import com.med.model.Activity;
 import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -196,8 +194,12 @@ public class DataStorageTest {
 
     public void reset(){
 
+        List<Talon> talons = talonRepository
+                .findByDateBetween(LocalDate.now(), LocalDate.now().plusDays(10));
+        talonRepository.deleteAll(talons);
 
-        List<Talon> talons= talonRepository.findAll().stream()
+
+     /*     List<Talon> talons= talonRepository.findAll().stream()
              //   .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
                 .filter(talon -> talon.getDate().equals(LocalDate.now()))
                 .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
@@ -206,9 +208,9 @@ public class DataStorageTest {
 
 
 
- /*       talonRepository.findByDate(LocalDate.now()); Hope1234
+      talonRepository.findByDate(LocalDate.now()); Hope1234
 
-Hope1234
+
       talons.stream()
                 .forEach(talon -> {
 

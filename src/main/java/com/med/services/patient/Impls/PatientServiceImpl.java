@@ -250,20 +250,22 @@ public class PatientServiceImpl implements IPatientService {
                 .entrySet().stream().forEach(entry ->
                 {
                     Patient patient = this.getPatient(entry.getKey());
-                    patient.setTalons(entry.getValue());
-                    patient.setActivity(patient.calcActivity());
+                    if (patient!=null) {  /* kostil */
+                        patient.setTalons(entry.getValue());
+                        patient.setActivity(patient.calcActivity());
 
-                    if (patient.getDelta()!=null && patient.getDelta()>300) {
-                    //    logger.info(patient.getPerson().getFullName());
-                        patient.setStartActivity(LocalDateTime.now());
-                        patient.setLastActivity(LocalDateTime.now());
-                       repository.save(patient);
+                        if (patient.getDelta() != null && patient.getDelta() > 300) {
+                            //    logger.info(patient.getPerson().getFullName());
+                            patient.setStartActivity(LocalDateTime.now());
+                            patient.setLastActivity(LocalDateTime.now());
+                            repository.save(patient);
+                        }
+                        patient.setTherapy(null);
+                        patients.add(patient);
                     }
-                    patient.setTherapy(null);
-                    patients.add(patient);
                 }
         );
-            String s = (date.equals(LocalDate.now())) ? "today" : date.toString();
+            String s = (date.equals(LocalDate.now())) ? "toaday" : date.toString();
             logger.info(" patients for " + s + "  -  " + (System.currentTimeMillis() - start)+"ms");
 
         return patients;
@@ -271,7 +273,7 @@ public class PatientServiceImpl implements IPatientService {
 
     // talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date), time)
 
-    ///////////////  assign to date //////////////////////////
+    ///////////////  assign to date ////////////////////////// Hope1234
     //********************************************************
     public List<Talon> assignPatientToDate(String patientId, LocalDate date, int time){
 
@@ -294,6 +296,7 @@ public class PatientServiceImpl implements IPatientService {
 
             if (!talon.getActivity().equals(Activity.EXECUTED)){
                 talon.setActivity(Activity.CANCELED);
+                logger.info("procedure " + talon.getProcedure().getName() + " cancelled by BYE");
             }
                 }
         );
