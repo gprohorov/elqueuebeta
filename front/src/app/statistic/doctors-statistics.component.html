@@ -12,7 +12,9 @@
                 <th>Остання активність</th>
                 <th>Пацієнт на процедурі</th>
                 <th>Пацієнти</th>
+                <th>Всього пацієнтів</th>
                 <th>Процедури</th>
+                <th>Всього процедур</th>
                 <th>Кількість зон</th>
                 <th>Нараховано</th>
             </tr>
@@ -23,8 +25,14 @@
                 <td>{{item.startWork | date:"HH:mm"}}</td>
                 <td>{{item.lastActivity | date:"HH:mm"}}</td>
                 <td>{{item.currentPatient}}</td>
-                <td>{{item.patients | json}}</td>
-                <td>{{item.procedureMap | json}}</td>
+                <td><p *ngFor="let p of item.patients;">{{p}}</p></td>
+                <td>{{item.patients?.length}}</td>
+                <td>
+                  <p *ngFor="let p of item.procedureMap;">
+                    {{p.procedureName}} ({{p.count}})
+                  </p>
+                </td>
+                <td>{{getCount(item.procedureMap)}}</td>
                 <td>{{item.zonesCount}}</td>
                 <td>{{item.fee}}</td>
             </tr>

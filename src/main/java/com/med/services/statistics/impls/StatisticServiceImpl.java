@@ -454,7 +454,6 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
     }
 
      private String getLastName(String fullName){
-         int index = fullName.indexOf(" ");
-        return fullName.substring(0, index-1);
+         return fullName.split(" ")[0];
      }
 }
