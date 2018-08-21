@@ -22,7 +22,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     
     sub: Subscription;
     subTemp: Subscription;
-    items: Patient[] = [];
+    items: any[] = [];
     totalPatients: number;
     activePatients: number;
     notActivePatients: number;
@@ -53,10 +53,12 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         window.scrollTo(0,0);
     }
     
-    scrollToRow(item, i) {
-        item.expanded = true;
-        let el = document.getElementById('row-' + i);
-        el.scrollIntoView();
+    scrollToRow(itemId) {
+        let item = this.items.find(x => { return x.id == itemId });
+        if (item) {
+            item.expanded = true;
+            document.getElementById('row-' + item.id).scrollIntoView();
+        }
     }
 
     getProgress(list: any[]) {
@@ -68,66 +70,52 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return executed + '/' + total;
     }
 
-    showAssignProcedurePopup(patient: any) {
+    showAssignProcedurePopup(item: any) {
         this.modalService.openDialog(this.viewRef, {
-            title: 'Пацієнт: ' + patient.person.fullName,
+            title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
-            data: { patientId: patient.id, patientName: patient.person.fullName }
+            data: { patientId: item.id, patientName: item.person.fullName }
         });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
     }
 
-    showIncomePopup(patient: any) {
+    showIncomePopup(item: any) {
         this.modalService.openDialog(this.viewRef, {
-            title: 'Пацієнт: ' + patient.person.fullName,
+            title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientIncomeModalComponent,
-            data: patient
+            data: item
         });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
     }
     
-    showAssignProceduresOnDatePopup(patient: any) {
+    showAssignProceduresOnDatePopup(item: any) {
         this.modalService.openDialog(this.viewRef, {
-            title: 'Пацієнт: ' + patient.person.fullName,
+            title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProceduresOnDateModalComponent,
-            data: { patientId: patient.id, patientName: patient.person.fullName }
+            data: { itemId: item.id, itemName: item.person.fullName }
         });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
     }
     
-    updateActivity(id: string, value: string) {
+    updateActivity(id: string, value: string, item: any) {
         if (value === 'CANCELED' && !confirm('Встановити процедурі "' + Activity[value].text + '" ?')) return false;
         this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
-            this.load();
+            this.load(item.id);
         });
     }
 
-    updateActivityAll(id: string, value: string) {
+    updateActivityAll(item: any, value: string) {
         if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
-            this.subTemp = this.service.updateActivityAll(id, value).subscribe(data => {
-                this.load();
+            this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(data => {
+                this.load(item.id);
             });
         }
     }
     
-    updateOutOfTurn(id: string, value: boolean) {
+    updateOutOfTurn(id: string, value: boolean, item: any) {
         this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
-            this.load();
+            this.load(item.id);
         });
-    }
-
-    updateStatus(id: string, value: string, event: any) {
-        if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
-            this.subTemp = this.service.updateStatus(id, value).subscribe(data => {
-                this.load();
-            });
-        } else {
-            this.load();
-        }
-    }
-
-    updateBalance(id: string, value: string) {
-        this.subTemp = this.service.updateBalance(id, value).subscribe(data => { });
     }
 
     getTimeDiffClass(v: number) {
@@ -176,7 +164,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.load();
     }
     
-    load() {
+    load(itemId: string = null) {
         this.loading = true;
         this.sub = this.service.getAll(this.date).subscribe(data => {
             data.forEach(x => { x.fullName = x.person.fullName });
@@ -185,6 +173,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length;
             this.notActivePatients = this.totalPatients - this.activePatients;
             this.loading = false;
+            if (itemId) this.scrollToRow(itemId);
         });
     }
 

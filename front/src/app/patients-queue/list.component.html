@@ -33,7 +33,7 @@
     </div>
 </div>
 <div class="form-inline">
-    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(item, i)"
+    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(item)"
         [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
         popoverTitle="{{item.person.fullName}}" placement="bottom" 
         [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
@@ -73,7 +73,7 @@
         <tbody *ngFor="let item of items; let i = index" 
             [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
                       || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')">
-            <tr (dblclick)="item.expanded=!item.expanded" id="row-{{i}}"
+            <tr (dblclick)="item.expanded=!item.expanded" id="row-{{item.id}}"
                 [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
                 <td [ngStyle]="{'cursor': 'pointer'}" (click)="item.expanded=!item.expanded"><i
                     [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
@@ -112,25 +112,25 @@
                                     <button
                                         title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-success text-white"
-                                        (click)="updateActivityAll(item.id, 'ACTIVE')">
+                                        (click)="updateActivityAll(item, 'ACTIVE')">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.TEMPORARY_NA.text}}"'
                                         class="btn btn-primary text-white"
-                                        (click)="updateActivityAll(item.id, 'TEMPORARY_NA')">
+                                        (click)="updateActivityAll(item, 'TEMPORARY_NA')">
                                         <i class="fa fa-pause"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.NON_ACTIVE.text}}"'
                                         class="btn btn-danger text-white"
-                                        (click)="updateActivityAll(item.id, 'NON_ACTIVE')">
+                                        (click)="updateActivityAll(item, 'NON_ACTIVE')">
                                         <i class="fa fa-stop"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.CANCELED.text}}"'
                                         class="btn btn-secondary text-white"
-                                        (click)="updateActivityAll(item.id, 'CANCELED')">
+                                        (click)="updateActivityAll(item, 'CANCELED')">
                                         <i class="fa fa-ban"></i>
                                     </button>
                                 </div>
@@ -150,27 +150,27 @@
                                     *ngIf="['EXECUTED', 'CANCELED', 'ON_PROCEDURE'].indexOf(talon.activity) < 0">
                                     <button title='Встановити "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-sm btn-success text-white"
-                                        (click)="updateActivity(talon.id, 'ACTIVE')">
+                                        (click)="updateActivity(talon.id, 'ACTIVE', item)">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.TEMPORARY_NA.text}}"'
                                         class="btn btn-sm btn-primary text-white"
-                                        (click)="updateActivity(talon.id, 'TEMPORARY_NA')">
+                                        (click)="updateActivity(talon.id, 'TEMPORARY_NA', item)">
                                         <i class="fa fa-pause"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.NON_ACTIVE.text}}"'
                                         class="btn btn-sm btn-danger text-white"
-                                        (click)="updateActivity(talon.id, 'NON_ACTIVE')">
+                                        (click)="updateActivity(talon.id, 'NON_ACTIVE', item)">
                                         <i class="fa fa-stop"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.CANCELED.text}}"'
                                         class="btn btn-sm btn-secondary text-white"
-                                        (click)="updateActivity(talon.id, 'CANCELED')">
+                                        (click)="updateActivity(talon.id, 'CANCELED', item)">
                                         <i class="fa fa-ban"></i>
                                     </button>
                                     <button title='Поза чергою'
                                         class="btn btn-sm btn-info text-white"
-                                        (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED')">
+                                        (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED', item)">
                                         <i
                                             [ngClass]="{'fa': true, 'fa-arrow-circle-up': talon.activity != 'INVITED', 
                                             'fa-arrow-circle-down': talon.activity == 'INVITED'}"></i>
