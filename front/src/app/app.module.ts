@@ -53,6 +53,8 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
+import { CreatePatientModalComponent } from './patient/create-patient.modal.component';
+
 import { GeneralStatisticFromToComponent } from './statistic/general-statistic-from-to.component';
 import { CashSummaryComponent } from './statistic/cash-summary.component';
 import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
@@ -215,6 +217,7 @@ const appRoutes: Routes = [
         PatientAssignProcedureModalComponent,
         PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent,
+        CreatePatientModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -255,7 +258,8 @@ const appRoutes: Routes = [
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
         PatientAssignProceduresOnDateModalComponent,
-        PatientAssignHotelModalComponent
+        PatientAssignHotelModalComponent,
+        CreatePatientModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
