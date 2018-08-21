@@ -36,7 +36,7 @@ export class CreatePatientModalComponent implements IModalDialog {
         this.service.update(this.data).subscribe(
             data => {
                 this.alertService.success('Пацієнта ' + this.data.person.fullName + ' створено.');
-                options.closeDialogSubject.next();
+                options.closeDialogSubject.next(data.id);
             },
             error => {
                 this.alertService.error(error);
