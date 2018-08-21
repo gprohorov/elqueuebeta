@@ -12,6 +12,7 @@ import { AlertService, PatientsQueueService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 import { PatientAssignProceduresOnDateModalComponent } from '../patient/assign-procedures-on-date.modal.component';
+import { CreatePatientModalComponent } from '../patient/create-patient.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
@@ -70,6 +71,13 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return executed + '/' + total;
     }
 
+    showCreatePatientPopup() {
+        let options = { title: 'Створення пацієнта', childComponent: CreatePatientModalComponent };
+        this.modalService.openDialog(this.viewRef, options);
+        console.log(options);
+        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
+    }
+    
     showAssignProcedurePopup(item: any) {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + item.person.fullName,
@@ -92,7 +100,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProceduresOnDateModalComponent,
-            data: { itemId: item.id, itemName: item.person.fullName }
+            data: { patientId: item.id, patientName: item.person.fullName }
         });
         let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
     }

@@ -12,8 +12,7 @@ export class CreatePatientModalComponent implements IModalDialog {
     
     loading = false;
     
-    data: any;
-    sub: Subscription;
+    data: Patient = new Patient();
 
     @ViewChild('f') myForm;
     constructor(
@@ -28,43 +27,19 @@ export class CreatePatientModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.data = options.data;
-        this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000 + 24*60*60*1000)).toISOString().slice(0, -14);
-        this.data.appointed = 9;
     }
     
-    ngOnInit() {
-    }
-
-    ngOnDestroy() {
-        if (this.sub) this.sub.unsubscribe();
-    }
-
-    load(id: string) {
-        this.loading = true;
-        this.sub = this.service.get(id).subscribe(
-            data => {
-                data.person.gender = data.person.gender.toString();
-                this.data = data
-                this.loading = false;
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            });
-    }
-
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
         
         this.service.update(this.data).subscribe(
             data => {
-                this.alertService.success('Зміни збережено.', true);
+                this.alertService.success('Пацієнта ' + this.data.person.fullName + ' створено.');
+                options.closeDialogSubject.next();
             },
             error => {
                 this.alertService.error(error);
-                this.loading = false;
             });
     }
 }
