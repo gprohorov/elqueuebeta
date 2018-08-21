@@ -375,9 +375,11 @@ public class TalonServiceImpl implements ITalonService {
 
         Talon talon = repository.findById(talonId).orElse(null);
         Procedure procedure = talon.getProcedure();
+
         if (procedure.getId()!=3) return null;
 
         Patient patient = patientService.getPatient(talon.getPatientId());
+        patient.setLastActivity(LocalDateTime.now());
 
         Doctor doctor = doctorService.getAll().get(0);
 

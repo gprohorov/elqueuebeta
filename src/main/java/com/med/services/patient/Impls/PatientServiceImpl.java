@@ -273,7 +273,7 @@ public class PatientServiceImpl implements IPatientService {
 
     // talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date), time)
 
-    ///////////////  assign to date ////////////////////////// Hope1234
+    ///////////////  assign to date //////////////////////////
     //********************************************************
     public List<Talon> assignPatientToDate(String patientId, LocalDate date, int time){
 
@@ -288,8 +288,9 @@ public class PatientServiceImpl implements IPatientService {
 
 
     public Patient patientBye(String patientId){
-
+        logger.info( " patid  "+ patientId);
         Patient patient = this.getPatientWithTalons(patientId);
+        logger.info(patient.toString());
         List<Talon> talons =  patient.getTalons();
 
         talons.stream().forEach(talon -> {
