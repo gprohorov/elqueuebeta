@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -30,15 +30,13 @@ export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-/*
-Hope1234
-    getCount(map: Array) {
+
+    getCount(map: any) {
         if (!map || !map.length) return '';
         return map.reduce((acc, curr, index, arr) => {
           return acc + curr.count;
         }, 0);
     }
-*/
 
     load() {
         this.sub = this.service.getDoctorsCurrentStatistics().subscribe(data => {
