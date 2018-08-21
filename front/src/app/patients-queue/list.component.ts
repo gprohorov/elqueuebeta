@@ -20,14 +20,14 @@ import { CreatePatientModalComponent } from '../patient/create-patient.modal.com
 export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
     loading = false;
-    
+
     sub: Subscription;
     subTemp: Subscription;
     items: any[] = [];
     totalPatients: number;
     activePatients: number;
     notActivePatients: number;
-    date: string = (new Date()).toISOString().split('T')[0]; 
+    date: string = (new Date()).toISOString().split('T')[0];
     filters: any = 'all'; // possible values: 'all', 'active', 'notactive'
     Status = Status;
     Statuses = Object.keys(Status);
@@ -51,14 +51,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     scrollToTop() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
-    
+
     scrollToRow(itemId) {
         let item = this.items.find(x => { return x.id == itemId });
         if (item) {
             item.expanded = true;
-            document.getElementById('row-' + item.id).scrollIntoView();
+            setTimeout(() => {
+                document.getElementById('row-' + item.id).scrollIntoView();
+            }, 100);
         }
     }
 
@@ -72,39 +74,48 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     showCreatePatientPopup() {
-        let options = { title: 'Створення пацієнта', childComponent: CreatePatientModalComponent };
+        let options = {
+            title: 'Створення пацієнта',
+            childComponent: CreatePatientModalComponent,
+            closeDialogSubject: null 
+        };
         this.modalService.openDialog(this.viewRef, options);
-        console.log(options);
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
+        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
     }
-    
+
     showAssignProcedurePopup(item: any) {
-        this.modalService.openDialog(this.viewRef, {
+        let options = { 
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
-            data: { patientId: item.id, patientName: item.person.fullName }
-        });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
+            data: { patientId: item.id, patientName: item.person.fullName },
+            closeDialogSubject: null 
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
     }
 
     showIncomePopup(item: any) {
-        this.modalService.openDialog(this.viewRef, {
+        let options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientIncomeModalComponent,
-            data: item
-        });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
+            data: item,
+            closeDialogSubject: null 
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
     }
-    
+
     showAssignProceduresOnDatePopup(item: any) {
-        this.modalService.openDialog(this.viewRef, {
+        let options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProceduresOnDateModalComponent,
-            data: { patientId: item.id, patientName: item.person.fullName }
-        });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(item.id); alertSub.unsubscribe(); });
+            data: { patientId: item.id, patientName: item.person.fullName },
+            closeDialogSubject: null 
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
     }
-    
+
     updateActivity(id: string, value: string, item: any) {
         if (value === 'CANCELED' && !confirm('Встановити процедурі "' + Activity[value].text + '" ?')) return false;
         this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
@@ -119,7 +130,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             });
         }
     }
-    
+
     updateOutOfTurn(id: string, value: boolean, item: any) {
         this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
             this.load(item.id);
@@ -139,7 +150,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         }
         return out;
     }
-    
+
     getTalonInfo(talon: any) {
         let out = '', start, end, diff, lastDate;
         if (talon.last && talon.last.date) {
@@ -164,14 +175,14 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         }
         return out;
     }
-    
+
     changeDay(days: number) {
         let date = new Date(this.date);
         date.setDate(date.getDate() + days);
         this.date = date.toISOString().split('T')[0];
         this.load();
     }
-    
+
     load(itemId: string = null) {
         this.loading = true;
         this.sub = this.service.getAll(this.date).subscribe(data => {
@@ -189,22 +200,22 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
 var sort_by;
 
-(function() {
+(function () {
     // utility functions
-    var default_cmp = function(a, b) {
-            if (a == b) return 0;
-            return a < b ? -1 : 1;
-        },
-        getCmpFunc = function(primer, reverse) {
+    var default_cmp = function (a, b) {
+        if (a == b) return 0;
+        return a < b ? -1 : 1;
+    },
+        getCmpFunc = function (primer, reverse) {
             var dfc = default_cmp, // closer in scope
                 cmp = default_cmp;
             if (primer) {
-                cmp = function(a, b) {
+                cmp = function (a, b) {
                     return dfc(primer(a), primer(b));
                 };
             }
             if (reverse) {
-                return function(a, b) {
+                return function (a, b) {
                     return -1 * cmp(a, b);
                 };
             }
@@ -212,7 +223,7 @@ var sort_by;
         };
 
     // actual implementation
-    sort_by = function() {
+    sort_by = function () {
         var fields = [],
             n_fields = arguments.length,
             field, name, reverse, cmp;
@@ -235,7 +246,7 @@ var sort_by;
         }
 
         // final comparison function
-        return function(A, B) {
+        return function (A, B) {
             var a, b, name, result;
             for (var i = 0; i < n_fields; i++) {
                 result = 0;
