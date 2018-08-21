@@ -31,7 +31,7 @@ export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    getCount(map: Array) {
+    getCount(map: any) {
         if (!map || !map.length) return '';
         return map.reduce((acc, curr, index, arr) => {
           return acc + curr.count;

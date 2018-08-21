@@ -1,5 +1,5 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+﻿import { Component, ComponentRef, ViewChild } from '@angular/core';
+import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
 import { Subscription } from 'rxjs/Subscription';
 
 import { PatientService, AlertService } from '../_services/index';
@@ -8,23 +8,32 @@ import { Patient } from '../_models/index';
 @Component({
     templateUrl: './create-patient.modal.component.html'
 })
-export class CreatePatientModalComponent implements OnInit, OnDestroy {
+export class CreatePatientModalComponent implements IModalDialog {
     
     loading = false;
     
-    model: Patient = new Patient();
+    data: any;
     sub: Subscription;
 
+    @ViewChild('f') myForm;
     constructor(
-        private route: ActivatedRoute,
-        private router: Router,
         private service: PatientService,
         private alertService: AlertService
     ) { }
 
+    dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+        options.actionButtons = [{
+            text: 'Зберегти',
+            onAction: () => {
+                return this.submit(this.myForm, options);
+            }
+        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
+        this.data = options.data;
+        this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000 + 24*60*60*1000)).toISOString().slice(0, -14);
+        this.data.appointed = 9;
+    }
+    
     ngOnInit() {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id && id != '') this.load(id);
     }
 
     ngOnDestroy() {
@@ -36,7 +45,7 @@ export class CreatePatientModalComponent implements OnInit, OnDestroy {
         this.sub = this.service.get(id).subscribe(
             data => {
                 data.person.gender = data.person.gender.toString();
-                this.model = data
+                this.data = data
                 this.loading = false;
             },
             error => {
@@ -45,12 +54,13 @@ export class CreatePatientModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    submit() {
-        this.loading = true;
-        this.service.update(this.model).subscribe(
+    submit(f, options) {
+        f.submitted = true;
+        if (!f.form.valid) return false;
+        
+        this.service.update(this.data).subscribe(
             data => {
                 this.alertService.success('Зміни збережено.', true);
-                this.router.navigate(['patients']);
             },
             error => {
                 this.alertService.error(error);
