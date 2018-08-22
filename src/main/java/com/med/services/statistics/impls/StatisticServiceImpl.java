@@ -382,11 +382,9 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
                 .collect(Collectors.toList());
 
         DoctorCurrentStatistics statistics = new DoctorCurrentStatistics();
+        statistics.setName(this.getLastName(doctorService.getDoctor(doctorId).getFullName()));
 
         if (!talons.isEmpty()) {
-
-            statistics.setName(this.getLastName(doctorService.getDoctor(doctorId).getFullName()));
-
             LocalDateTime start = talons.stream().map(talon -> talon.getStart())
                     .findFirst().orElse(null);
 
@@ -422,8 +420,9 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
                     .forEach(talon -> {
                 String name = patientService.getPatient(talon.getPatientId()).getPerson().getFullName();
                 names.add(this.getLastName(name));
+
             });
-            statistics.setPatients(names);
+            statistics.setPatients(names.stream().distinct().collect(Collectors.toList()));
 
             List<ProcedureCount> map = new ArrayList<>();
             talons.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
