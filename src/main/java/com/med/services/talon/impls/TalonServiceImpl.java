@@ -1,7 +1,10 @@
 package com.med.services.talon.impls;
 
 import com.med.model.*;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
 import com.med.repository.talon.TalonRepository;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -51,6 +54,9 @@ public class TalonServiceImpl implements ITalonService {
 
     @Autowired
     WorkPlaceServiceImpl workPlaceService;
+
+    @Autowired
+    AccountingServiceImpl accountingService;
 
     private static final Logger logger = LoggerFactory.getLogger(TalonServiceImpl.class);
 
@@ -399,6 +405,18 @@ public class TalonServiceImpl implements ITalonService {
 
         int sum = procedure.isZoned() ? price * talon.getZones() : price;
         talon.setSum(sum);
+
+        // create accounting
+        String descr = procedure.getName() + " x" + talon.getZones();
+        Accounting accounting = new Accounting(doctor.getId()
+                , patient.getId()
+                , LocalDateTime.now()
+                , talon.getId()
+                , (-1* sum)
+                , PaymentType.PROC
+                , descr);
+        accountingService.createAccounting(accounting);
+
 
         return repository.save(talon);
     }
