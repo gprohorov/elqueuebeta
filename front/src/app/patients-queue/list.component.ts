@@ -1,5 +1,4 @@
 ﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { ModalDialogService } from 'ngx-modal-dialog';
@@ -75,7 +74,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
     showCreatePatientPopup() {
         let options = {
-            title: 'Створення пацієнта',
+            title: 'Добавити пацієнта',
             childComponent: CreatePatientModalComponent,
             closeDialogSubject: null 
         };
