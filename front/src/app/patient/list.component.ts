@@ -64,7 +64,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
             childComponent: PatientIncomeModalComponent,
             data: patient
         });
-        let alertSub = this.alertService.subject.subscribe(() => { this.load(); alertSub.unsubscribe(); });
     }
     
     delete(id: number, name: string) {

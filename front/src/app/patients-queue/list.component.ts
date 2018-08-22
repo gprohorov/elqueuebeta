@@ -91,7 +91,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null 
         };
         this.modalService.openDialog(this.viewRef, options);
-        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
+        options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     showIncomePopup(item: any) {
@@ -102,7 +102,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null 
         };
         this.modalService.openDialog(this.viewRef, options);
-        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
+        options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     showAssignProceduresOnDatePopup(item: any) {
@@ -113,7 +113,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null 
         };
         this.modalService.openDialog(this.viewRef, options);
-        options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
+        options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     updateActivity(id: string, value: string, item: any) {
