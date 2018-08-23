@@ -24,23 +24,12 @@
             <tr>
                 <th></th>
                 <th sortable-column="fullName" sort-direction="asc">ПІБ</th>
-                <th>Стать</th>
-                <th>Дата народження</th>
-                <th>Місто / село</th>
-                <th>Баланс</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index">
-            <tr (dblclick)="rows[i]=!rows[i]">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
+            <tr (click)="rows[i]=!rows[i]" [ngStyle]="{'cursor': 'pointer'}">
+                <td><i [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
                 <td>{{item.person.fullName}}</td>
-                <td><i
-                    [ngClass]="{'fa': true, 'fa-mars': item.person.gender, 'fa-venus': !item.person.gender }"
-                    aria-hidden="true"></i></td>
-                <td>{{item.person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
-                <td>{{item.person.town}}</td>
-                <td>{{item.balance}}</td>
             </tr>
             <tr [hidden]="!rows[i]">
                 <td colspan="100">
@@ -67,8 +56,15 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <b>Телефон:</b> {{item.person.cellPhone}}<br /> <b>Адреса:</b>
-                            {{item.person.address}}
+                            <b>Стать:</b> 
+                            <i [ngClass]="{'fa': true, 'fa-mars': item.person.gender, 'fa-venus': !item.person.gender }"
+                            aria-hidden="true"></i> {{item.person.gender ? 'чол.' : 'жін.'}}<br />
+                            <b>Дата народження:</b> {{item.person.dateOfBirth | date:'dd.MM.yyyy'}}<br />
+                            <b>Місто / село:</b> {{item.person.town}}<br />
+                            <b>Телефон:</b> {{item.person.cellPhone}}<br /> 
+                            <b>Адреса:</b> {{item.person.address}}<br />
+                            <br />
+                            <b>Баланс:</b> {{item.balance}} грн.
                         </div>
                     </div>
                 </td>

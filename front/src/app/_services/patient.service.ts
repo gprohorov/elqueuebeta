@@ -13,6 +13,7 @@ export class PatientService {
     private listUrl = config.api_path + '/patient/list/';
     private getUrl = config.api_path + '/patient/get/';
     private saveUrl = config.api_path + '/patient/save/';
+    private createUrl = config.api_path + '/patient/new/';
     private deleteUrl = config.api_path + '/patient/delete/';
     private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private assignProceduresOnDateUrl = config.api_path + '/patient/create/talons/';
@@ -31,6 +32,10 @@ export class PatientService {
 
     update(model: Patient) {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
+    }
+
+    create(model: any) {
+        return this.http.post(this.createUrl, model).pipe(catchError(this.handleError));
     }
 
     delete(id: number) {
