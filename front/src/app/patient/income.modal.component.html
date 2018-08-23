@@ -77,4 +77,9 @@
         </div>
         <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc" #desc="ngModel" />
     </div>
+    <div class="form-group form-check mt-2 ml-2">
+        <input type="checkbox" class="form-check-input" name="closeDay" [(value)]="model.closeDay"
+            [(ngModel)]="model.closeDay" />
+        <label class="form-check-label">Відмінити всі процедури на сьогодні</label>
+    </div>
 </form>
