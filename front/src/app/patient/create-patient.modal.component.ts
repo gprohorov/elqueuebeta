@@ -9,9 +9,9 @@ import { Patient } from '../_models/index';
     templateUrl: './create-patient.modal.component.html'
 })
 export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
-    
+
     loading = false;
-    
+
     data: any = new Patient();
     subPatients: Subscription;
     subProcedures: Subscription;
@@ -19,7 +19,8 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
     patients: any[];
     addProcedure = true;
     creating = false;
-    search: string = ''; 
+    search: string = '';
+    patientId: string = null;
 
     @ViewChild('f') myForm;
     constructor(
@@ -29,7 +30,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
     ) { }
 
     dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
-        
+
         this.subProcedures = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
             this.data.procedureId = this.procedures[0].id;
@@ -38,35 +39,47 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
             this.data.appointed = hours < 8 ? 8 : hours > 16 ? 16 : hours;
             this.data.activate = true;
         });
-        
+
         options.actionButtons = [{
             text: 'Зберегти',
             onAction: () => {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        
+
     }
-    
+
     ngOnDestroy() {
         if (this.subPatients) this.subPatients.unsubscribe();
         if (this.subProcedures) this.subProcedures.unsubscribe();
     }
-    
+
     submit(f, options) {
         f.submitted = true;
-        if (!f.form.valid) return false;
-        
-        this.patientService.update(this.data).subscribe(
-            data => {
-                this.alertService.success('Пацієнта ' + this.data.person.fullName + ' створено.');
-                options.closeDialogSubject.next(data.id);
-            },
-            error => {
-                this.alertService.error(error);
+        if (this.creating) {
+            if (!f.form.valid) return false;
+            this.patientService.update(this.data).subscribe(
+                data => {
+                    this.alertService.success('Пацієнта ' + this.data.person.fullName + ' створено.');
+                    options.closeDialogSubject.next(data.id);
+                },
+                error => {
+                    this.alertService.error(error);
+                });
+        } else if (this.patientId != null) {
+            let patientName = '';
+            let patient = this.patients.find(x => {return x.id == this.patientId});
+            if (patient) patientName = patient.person.fullName;
+            this.patientService.assignProcedure(
+                this.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
+            ).subscribe(() => {
+                this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
+                    + this.procedures.find(x => x.id == this.data.procedureId).name);
+                options.closeDialogSubject.next();
             });
+        }
     }
-    
+
     load() {
         if (this.search.length > 0) {
             this.loading = true;
@@ -76,6 +89,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
             });
         } else {
             this.patients = [];
+            this.patientId = null;
         }
     }
 }
