@@ -82,7 +82,7 @@ public class PatientServiceImpl implements IPatientService {
 
     public Patient registratePatient(PatientRegDTO data) {
 
-        Patient patient = new Patient();
+        Patient patient = new Patient(data.getPerson());
         patient.setRegistration(LocalDateTime.now());
         if (data.isActivate()){
             patient.setStartActivity(LocalDateTime.now());
