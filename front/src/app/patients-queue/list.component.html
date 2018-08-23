@@ -73,10 +73,9 @@
         <tbody *ngFor="let item of items; let i = index" 
             [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
                       || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')">
-            <tr (dblclick)="item.expanded=!item.expanded" id="row-{{item.id}}"
+            <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}"
                 [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="item.expanded=!item.expanded"><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
+                <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
                 </td>
                 <td>{{item.person.fullName}}</td>
                 <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
