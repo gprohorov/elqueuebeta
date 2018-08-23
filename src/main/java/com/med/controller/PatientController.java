@@ -1,9 +1,6 @@
 package com.med.controller;
 
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.Status;
-import com.med.model.Talon;
+import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.hotel.Record;
 import com.med.repository.accounting.AccountingRepository;
@@ -63,14 +60,17 @@ public class PatientController {
     // Save the patient
     @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
-        if (patient.getId() == null) {
-        	service.registratePatient(patient);
-        } else {
-            service.savePatient(patient);
-        }
+        service.savePatient(patient);
         return patient;
     }
-    
+
+    // Save the patient
+    @PostMapping("/new/")
+    public Patient newPatient(@Valid @RequestBody PatientRegDTO patient) {
+        return service.registratePatient(patient);
+
+    }
+
     // DELETE the patient by id
     @GetMapping("/delete/{id}")
     public Patient delPatient(@PathVariable(value = "id") String patientId) {

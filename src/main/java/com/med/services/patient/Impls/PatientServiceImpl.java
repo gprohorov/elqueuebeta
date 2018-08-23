@@ -8,6 +8,7 @@ import com.med.repository.patient.PatientRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.interfaces.IPatientService;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class PatientServiceImpl implements IPatientService {
     @Autowired
     TherapyServiceImpl therapyService;
 
+    @Autowired
+    ProcedureServiceImpl procedureService;
+
     private static final Logger logger = LoggerFactory.getLogger(PatientServiceImpl.class);
 
 /*
@@ -76,14 +80,24 @@ public class PatientServiceImpl implements IPatientService {
 
 
 
-    public Patient registratePatient(Patient patient) {
+    public Patient registratePatient(PatientRegDTO data) {
 
+        Patient patient = new Patient();
         patient.setRegistration(LocalDateTime.now());
-        patient.setStartActivity(LocalDateTime.now());
-        patient.setLastActivity(LocalDateTime.now());
-        patient.setActivity(Activity.ACTIVE);
+        if (data.isActivate()){
+            patient.setStartActivity(LocalDateTime.now());
+            patient.setLastActivity(LocalDateTime.now());
+        }
         repository.save(patient);
-        talonService.createActiveTalon(patient.getId(), 2, LocalDate.now(), 10, true);
+
+        int appointment = (data.getAppointed()!=0)?data.getAppointed():LocalDateTime.now().getHour();
+        int prId = (data.getProcedureId()!=0) ? data.getProcedureId() : 2;
+        boolean actv=false;
+
+        if (data.isActivate()&&LocalDate.parse(data.getDate()).equals(LocalDate.now())){actv=true;}
+
+        talonService.createActiveTalon( patient.getId(), prId, LocalDate.parse(data.getDate())
+                    , appointment, actv);
 
         return patient;
     }
