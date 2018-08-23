@@ -73,7 +73,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
             this.patientService.assignProcedure(
                 this.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
             ).subscribe(() => {
-                this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
+                this.alertService.success('Пацієнта ' + patientName + ' назначено на процедуру '
                     + this.procedures.find(x => x.id == this.data.procedureId).name);
                 options.closeDialogSubject.next();
             });
