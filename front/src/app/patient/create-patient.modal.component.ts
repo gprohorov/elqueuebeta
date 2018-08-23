@@ -58,7 +58,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
         f.submitted = true;
         if (this.creating) {
             if (!f.form.valid) return false;
-            this.patientService.update(this.data).subscribe(
+            this.patientService.create(this.data).subscribe(
                 data => {
                     this.alertService.success('Пацієнта ' + this.data.person.fullName + ' створено.');
                     options.closeDialogSubject.next(data.id);
@@ -75,7 +75,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
             ).subscribe(() => {
                 this.alertService.success('Пацієнта ' + patientName + ' назначено на процедуру '
                     + this.procedures.find(x => x.id == this.data.procedureId).name);
-                options.closeDialogSubject.next();
+                options.closeDialogSubject.next(this.patientId);
             });
         }
     }

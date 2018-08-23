@@ -33,7 +33,7 @@
     </div>
 </div>
 <div class="form-inline">
-    <button *ngFor="let item of items; let i = index" [style.width.px]="360" (click)="scrollToRow(item.id)"
+    <button *ngFor="let item of items; let i = index" [style.width.px]="269" (click)="scrollToRow(item.id)"
         [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
         popoverTitle="{{item.person.fullName}}" placement="bottom" 
         [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
