@@ -7,7 +7,7 @@
         <button [ngClass]="{ 'dropdown-item': true, 'active': creating }" (click)="creating = true">Створити</button>
     </div>
 </div>
-<div [hidden]="creating" [style.height.px]="288">
+<div [hidden]="creating" [style.height.px]="288" style="overflow-y:scroll;">
     <div class="input-group">
         <div class="input-group-prepend">
             <div class="input-group-text">Пошук</div>
@@ -17,7 +17,8 @@
     <div class="content table-responsive table-full-width">
         <table class="table table-sm">
             <tr *ngFor="let item of patients">
-                <td
+                <td [ngClass]="{'bg-primary': item.id == patientId}"
+                    (click)="patientId = item.id"
                     title="
                         {{item.person.gender ? 'ч.' : 'ж.'}}, 
                         {{item.person.dateOfBirth | date:'dd.MM.yyyy'}}, 
