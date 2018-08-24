@@ -2,7 +2,6 @@ package com.med.services.accounting.impls;
 
 import com.med.model.Activity;
 import com.med.model.Patient;
-import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
@@ -112,11 +111,18 @@ public class AccountingServiceImpl implements IAccountingService {
                 .sum();
         report.setExecuted(executed);
 
-        List<Talon> talonsforToday = talonService.getTalonsForDate(LocalDate.now());
+/*        List<Talon> talonsforToday = talonService.getTalonsForDate(LocalDate.now());
         int assigned = talonsforToday.size();
         int done = (int) talonsforToday.stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .count();
         int part =  (100* done)/assigned;
+        */
+        int people = patientService.getAllForToday().size();
+        long gameover =  patientService.getAllForToday().stream()
+                .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
+                .count();
+
+        int part = (int) (gameover*100)/people;
 
         report.setPercentage(part);
 
