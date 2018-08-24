@@ -87,7 +87,7 @@
         <div class="card mt-3">
             <div class="card-header pl-2">
                 <input type="checkbox" class="form-check-input ml-2" name="addProcedure"
-                    [(value)]="addProcedure" [(ngModel)]="addProcedure" />
+                    [(value)]="addProcedure" [(ngModel)]="addProcedure" (change)="clearProcedure()" />
                 <label class="form-check-label ml-4">Призначити процедуру</label>
             </div>
             <div class="card-body" [hidden]="!addProcedure">
@@ -98,17 +98,15 @@
                                 <div class="input-group-text">Дата</div>
                             </div>
                             <input type="date" class="form-control" name="date"
-                                [(ngModel)]="data.date" #date="ngModel" required />
+                                [(ngModel)]="data.date" #date="ngModel" />
                         </div>
-                        <div *ngIf="f.submitted && !date.valid" class="help-block text-danger">Поле
-                            обов`язкове</div>
                     </div>
                     <div class="col-auto ml-2">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Час</div>
                                 <select class="form-control" name="appointed"
-                                    [(ngModel)]="data.appointed" #appointed="ngModel" required>
+                                    [(ngModel)]="data.appointed" #appointed="ngModel">
                                     <option [ngValue]="8">08:00</option>
                                     <option [ngValue]="9">09:00</option>
                                     <option [ngValue]="10">10:00</option>
@@ -122,21 +120,17 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="f.submitted && !appointed.valid" class="help-block text-danger">Поле
-                        обов`язкове</div>
                 </div>
                 <div class="input-group mt-2">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Процедура</div>
                     </div>
                     <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
-                        #procedureId="ngModel" required>
+                        #procedureId="ngModel">
                         <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
                             {{procedure.name}}</option>
                     </select>
                 </div>
-                <div *ngIf="f.submitted && !procedureId.valid" class="help-block text-danger">Поле
-                    обов`язкове</div>
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" name="activate"
                         [(value)]="data.activate" [(ngModel)]="data.activate" />
