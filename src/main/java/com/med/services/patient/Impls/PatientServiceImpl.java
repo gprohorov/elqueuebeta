@@ -281,9 +281,9 @@ public class PatientServiceImpl implements IPatientService {
 	}
 
 	public Patient patientBye(String patientId) {
-		logger.info(" patid  " + patientId);
+	//	logger.info(" patid  " + patientId);
 		Patient patient = this.getPatientWithTalons(patientId);
-		logger.info(patient.toString());
+	//	logger.info(patient.toString());
 		List<Talon> talons = patient.getTalons();
 
 		talons.stream().forEach(talon -> {
