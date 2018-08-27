@@ -176,10 +176,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     isHiddenRow(item: any) {
-        return ((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE' && item.activity != 'INVITED') 
-                && this.filters == 'active') 
-            || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE' || item.activity == 'INVITED') 
-                && this.filters == 'notactive');
+        return ((item.activity != 'ACTIVE' 
+              && item.activity != 'ON_PROCEDURE' 
+              && item.activity != 'INVITED'
+              && item.activity != 'STUCK'
+            ) && this.filters == 'active') 
+            || ((item.activity == 'ACTIVE' 
+              || item.activity == 'ON_PROCEDURE' 
+              || item.activity == 'INVITED'
+              || item.activity == 'STUCK'
+            ) && this.filters == 'notactive');
     }
     
     changeDay(days: number) {
@@ -195,8 +201,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data.forEach(x => { x.fullName = x.person.fullName });
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.totalPatients = data.length;
-            this.activePatients = data.filter(
-                x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE' || x.activity == 'INVITED').length;
+            this.activePatients = data.filter( x => 
+                   x.activity == 'ACTIVE' 
+                || x.activity == 'ON_PROCEDURE' 
+                || x.activity == 'INVITED'
+                || x.activity == 'STUCK' ).length;
             this.notActivePatients = this.totalPatients - this.activePatients;
             this.loading = false;
             if (itemId) this.scrollToRow(itemId);
