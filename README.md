@@ -37,3 +37,11 @@
   ... to stop it:
 
     `npm stop`
+
+## To make DB dump:
+
+	`mongodump -d mednean`
+
+## To restore DB dump:
+
+	`mongorestore --drop`
