@@ -1,4 +1,4 @@
-﻿<div class="row mb-3">
+﻿<div class="row mb-2">
     <div class="col">
         <button [ngClass]="{ 'dropdown-item': true, 'active': !creating }"
             (click)="creating = false">Знайти</button>
@@ -17,8 +17,9 @@
     <div class="content table-responsive table-full-width">
         <table class="table table-sm">
             <tr *ngFor="let item of patients">
-                <td [ngClass]="{'bg-primary text-white': item.id == patientId}" 
-                    [ngStyle]="{'cursor': 'pointer'}" (click)="patientId = item.id" title="
+                <td [ngClass]="{'bg-primary text-white': item.id == patientId}"
+                    [ngStyle]="{'cursor': 'pointer'}" (click)="patientId = item.id"
+                    title="
                         {{item.person.gender ? 'ч.' : 'ж.'}}, 
                         {{item.person.dateOfBirth | date:'dd.MM.yyyy'}}, 
                         {{item.person.town}},
@@ -85,58 +86,54 @@
                 [(ngModel)]="data?.person.address" #address="ngModel" />
         </div>
     </div>
-    <div class="card mt-3">
-        <div class="card-header pl-2">
-            <input type="checkbox" class="form-check-input ml-2" name="addProcedure"
-                [(value)]="addProcedure" [(ngModel)]="addProcedure" (change)="clearProcedure()" />
-            <label class="form-check-label ml-4">Призначити процедуру</label>
+    <input type="checkbox" class="form-check-input ml-2 mt-2" name="addProcedure"
+        [(value)]="addProcedure" [(ngModel)]="addProcedure" (change)="clearProcedure()" />
+    <label class="form-check-label ml-4">Призначити процедуру</label>
+    <div [hidden]="!addProcedure">
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Дата</div>
+                    </div>
+                    <input type="date" class="form-control" name="date" [(ngModel)]="data.date"
+                        #date="ngModel" />
+                </div>
+            </div>
+            <div class="col-auto ml-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Час</div>
+                        <select class="form-control" name="appointed" [(ngModel)]="data.appointed"
+                            #appointed="ngModel">
+                            <option [ngValue]="8">08:00</option>
+                            <option [ngValue]="9">09:00</option>
+                            <option [ngValue]="10">10:00</option>
+                            <option [ngValue]="11">11:00</option>
+                            <option [ngValue]="12">12:00</option>
+                            <option [ngValue]="13">13:00</option>
+                            <option [ngValue]="14">14:00</option>
+                            <option [ngValue]="15">15:00</option>
+                            <option [ngValue]="16">16:00</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body" [hidden]="!addProcedure">
-            <div class="row">
-                <div class="col-auto">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Дата</div>
-                        </div>
-                        <input type="date" class="form-control" name="date" [(ngModel)]="data.date"
-                            #date="ngModel" />
-                    </div>
-                </div>
-                <div class="col-auto ml-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Час</div>
-                            <select class="form-control" name="appointed"
-                                [(ngModel)]="data.appointed" #appointed="ngModel">
-                                <option [ngValue]="8">08:00</option>
-                                <option [ngValue]="9">09:00</option>
-                                <option [ngValue]="10">10:00</option>
-                                <option [ngValue]="11">11:00</option>
-                                <option [ngValue]="12">12:00</option>
-                                <option [ngValue]="13">13:00</option>
-                                <option [ngValue]="14">14:00</option>
-                                <option [ngValue]="15">15:00</option>
-                                <option [ngValue]="16">16:00</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Процедура</div>
             </div>
-            <div class="input-group mt-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">Процедура</div>
-                </div>
-                <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
-                    #procedureId="ngModel">
-                    <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
-                        {{procedure.name}}</option>
-                </select>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" name="activate"
-                    [(value)]="data.activate" [(ngModel)]="data.activate" />
-                <label class="form-check-label">Зробити активною</label>
-            </div>
+            <select class="form-control" name="procedureId" [(ngModel)]="data.procedureId"
+                #procedureId="ngModel">
+                <option *ngFor="let procedure of procedures" [ngValue]="procedure.id">
+                    {{procedure.name}}</option>
+            </select>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" name="activate"
+                [(value)]="data.activate" [(ngModel)]="data.activate" />
+            <label class="form-check-label">Зробити активною</label>
         </div>
     </div>
 </form>
