@@ -45,10 +45,11 @@
             triggers="mouseenter:mouseleave" popoverTitle="{{item.person.fullName}}"
             placement="bottom" [hidden]="isHiddenRow(item)"
             [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
-            <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
-            <span class="pull-right"> <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta
-                    != null ? item.delta + ' хв.' : ''}}</span> {{item.appointed}}:00
-            </span>
+            <span class="badge badge-{{Activity[item.activity]?.cssClass}}" 
+                [ngStyle]="{'max-width': '170px', 'margin-top': '5px', 'overflow-x': 'hidden', 'text-overflow': 'ellipsis'}"
+                >{{item.person.fullName}}</span>
+            <span class="pull-right"> <span class="text-{{getTimeDiffClass(item.delta)}}"
+                >{{item.delta != null ? item.delta + ' хв.' : ''}}</span> {{item.appointed}}:00</span>
             <ng-template #popContent> Активність: <span
                 class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
             <br />
