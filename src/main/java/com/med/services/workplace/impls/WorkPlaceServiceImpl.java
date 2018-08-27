@@ -389,7 +389,10 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Integer> proceduresToClose = cardService
                 .getCardByProcedureId(procedure.getId()).getCloseAfter();
      */
-        List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
+
+      //  List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
+        List<Integer> proceduresToClose = procedureService.getProcedure(procedure.getId())
+                .getCard().getCloseAfter();
 
         patientService.getPatientWithTalons(patientId).getTalons().stream()
                 .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED))
@@ -405,7 +408,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId){
 
-        List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+       // List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+        List<Integer> proceduresToActivate = procedureService.getProcedure(procedure.getId())
+                .getCard().getActivateAfter();
 
         List<Talon> talons = patientService
                 .getPatientWithTalons(patientId).getTalons().stream()

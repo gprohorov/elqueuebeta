@@ -195,7 +195,7 @@ public class DataStorageTest {
     public void reset(){
 
         List<Talon> talons = talonRepository
-                .findByDateBetween(LocalDate.now(), LocalDate.now().plusDays(10));
+                .findByDateBetween(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
         talonRepository.deleteAll(talons);
 
 
@@ -208,7 +208,7 @@ public class DataStorageTest {
 
 
 
-      talonRepository.findByDate(LocalDate.now()); Hope1234
+      talonRepository.findByDate(LocalDate.now());
 
 
       talons.stream()
