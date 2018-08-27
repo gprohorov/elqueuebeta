@@ -43,8 +43,7 @@
     <div *ngFor="let item of items; let i = index">
         <button [style.width.px]="269" (click)="scrollToRow(item.id)" [ngbPopover]="popContent"
             triggers="mouseenter:mouseleave" popoverTitle="{{item.person.fullName}}"
-            placement="bottom" [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
-                  || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')"
+            placement="bottom" [hidden]="isHiddenRow(item)"
             [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
             <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
             <span class="pull-right"> <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta
@@ -79,10 +78,9 @@
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index" 
-            [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
-                      || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')">
+            [hidden]="isHiddenRow(item)">
             <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}"
-                [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
+                [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
                 <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
                 </td>
                 <td>{{item.person.fullName}}</td>
