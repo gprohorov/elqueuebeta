@@ -47,6 +47,7 @@ public class AccountingController {
         String desc = jsonObj.getString("desc");
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
+        boolean closeDay = jsonObj.getBoolean("closeDay");
       //  int doctorId = userService.getCurrentUserInfo().getId();
         int doctorId = 1;
 
@@ -56,6 +57,10 @@ public class AccountingController {
 
         if (discount != 0) {
             service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
+        }
+        
+        if (closeDay) {
+        	
         }
 
         return JSONObject.quote("OK");

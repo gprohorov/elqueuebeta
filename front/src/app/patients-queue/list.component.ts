@@ -175,6 +175,13 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         return out;
     }
 
+    isHiddenRow(item: any) {
+        return ((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE' && item.activity != 'INVITED') 
+                && this.filters == 'active') 
+            || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE' || item.activity == 'INVITED') 
+                && this.filters == 'notactive');
+    }
+    
     changeDay(days: number) {
         let date = new Date(this.date);
         date.setDate(date.getDate() + days);
@@ -188,7 +195,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data.forEach(x => { x.fullName = x.person.fullName });
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.totalPatients = data.length;
-            this.activePatients = data.filter(x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE').length;
+            this.activePatients = data.filter(
+                x => x.activity == 'ACTIVE' || x.activity == 'ON_PROCEDURE' || x.activity == 'INVITED').length;
             this.notActivePatients = this.totalPatients - this.activePatients;
             this.loading = false;
             if (itemId) this.scrollToRow(itemId);

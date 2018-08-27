@@ -1,6 +1,6 @@
 ﻿<div class="position-fixed" [style.right.px]="50">
-    <button class="fa fa-eject text-success btn btn-light mb-3"
-        title="Наверх" (click)="scrollToTop()"></button>
+    <button class="fa fa-eject text-success btn btn-light mb-3" title="Наверх"
+        (click)="scrollToTop()"></button>
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
@@ -9,17 +9,24 @@
         <div class="btn-group mb-3" role="group">
             <button type="button" class="btn btn-secondary"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
-                (click)="filters = 'active'">Активні <span class="badge badge-light ml-3">{{activePatients}}</span></button>
+                (click)="filters = 'active'">
+                Активні <span class="badge badge-light ml-3">{{activePatients}}</span>
+            </button>
             <button type="button"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
-                (click)="filters = 'all'">Усі <span class="badge badge-light ml-3">{{totalPatients}}</span></button>
+                (click)="filters = 'all'">
+                Усі <span class="badge badge-light ml-3">{{totalPatients}}</span>
+            </button>
             <button type="button" class="btn btn-secondary"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'notactive', 'btn-secondary': filters != 'notactive'}"
-                (click)="filters = 'notactive'">Не активні <span class="badge badge-light ml-3">{{notActivePatients}}</span></button>
+                (click)="filters = 'notactive'">
+                Не активні <span class="badge badge-light ml-3">{{notActivePatients}}</span>
+            </button>
         </div>
     </div>
     <div class="col">
-        <button class="btn btn-success" (click)="showCreatePatientPopup()">Добавити пацієнта</button>
+        <button class="btn btn-success" (click)="showCreatePatientPopup()">Добавити
+            пацієнта</button>
     </div>
     <div class="col-auto form-inline">
         <button class="btn btn-success" (click)="changeDay(-1)">
@@ -33,27 +40,27 @@
     </div>
 </div>
 <div class="form-inline">
-    <button *ngFor="let item of items; let i = index" [style.width.px]="269" (click)="scrollToRow(item.id)"
-        [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
-        popoverTitle="{{item.person.fullName}}" placement="bottom" 
-        [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
-                  || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')"
-        [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
-        <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
-        <span class="pull-right">
-            <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
-            {{item.appointed}}:00
-        </span>
-        <ng-template #popContent>
-            Активність: <span class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
-            <br/>Статус: <strong>{{Status[item.status].text}}</strong>
-            <br/>Баланс: <strong>{{item.balance}} грн.</strong>
-            <br/>Прогрес: <strong>{{getProgress(item.talons)}}</strong>
-            <br/>Назначено: <strong>{{item.appointed}}:00</strong>
-            <br/>Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong>
-            <br/>Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null ? item.delta + ' хв.' : ''}}</span>
-        </ng-template>
-    </button>
+    <div *ngFor="let item of items; let i = index">
+        <button [style.width.px]="269" (click)="scrollToRow(item.id)" [ngbPopover]="popContent"
+            triggers="mouseenter:mouseleave" popoverTitle="{{item.person.fullName}}"
+            placement="bottom" [hidden]="isHiddenRow(item)"
+            [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
+            <span class="badge badge-{{Activity[item.activity]?.cssClass}}">{{item.person.fullName}}</span>
+            <span class="pull-right"> <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta
+                    != null ? item.delta + ' хв.' : ''}}</span> {{item.appointed}}:00
+            </span>
+            <ng-template #popContent> Активність: <span
+                class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
+            <br />
+            Статус: <strong>{{Status[item.status].text}}</strong> <br />
+            Баланс: <strong>{{item.balance}} грн.</strong> <br />
+            Прогрес: <strong>{{getProgress(item.talons)}}</strong> <br />
+            Назначено: <strong>{{item.appointed}}:00</strong> <br />
+            Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong> <br />
+            Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta !=
+                null ? item.delta + ' хв.' : ''}}</span> </ng-template>
+        </button>
+    </div>
 </div>
 <div class="mt-2 content table-responsive table-full-width">
     <table class="table table-sm">
@@ -71,10 +78,9 @@
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index" 
-            [hidden]="((item.activity != 'ACTIVE' && item.activity != 'ON_PROCEDURE') && filters == 'active') 
-                      || ((item.activity == 'ACTIVE' || item.activity == 'ON_PROCEDURE') && filters == 'notactive')">
+            [hidden]="isHiddenRow(item)">
             <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}"
-                [ngClass]="{'table-secondary': item.appointed % 2 == 0}">
+                [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
                 <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
                 </td>
                 <td>{{item.person.fullName}}</td>

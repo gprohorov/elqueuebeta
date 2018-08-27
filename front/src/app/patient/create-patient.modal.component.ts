@@ -54,6 +54,15 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
         if (this.subProcedures) this.subProcedures.unsubscribe();
     }
 
+    clearProcedure() {
+        if (!this.addProcedure) {
+            this.data.procedureId = null;
+            this.data.date = null;
+            this.data.appointed = null;
+            this.data.activate = false;
+        }
+    }
+
     submit(f, options) {
         f.submitted = true;
         if (this.creating) {
@@ -68,7 +77,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
                 });
         } else if (this.patientId != null) {
             let patientName = '';
-            let patient = this.patients.find(x => {return x.id == this.patientId});
+            let patient = this.patients.find(x => { return x.id == this.patientId });
             if (patient) patientName = patient.person.fullName;
             this.patientService.assignProcedure(
                 this.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
