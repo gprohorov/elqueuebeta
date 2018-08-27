@@ -76,6 +76,7 @@
                 <th>Очікування</th>
                 <th>Початок</th>
                 <th>Назначено</th>
+                <th>День</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of items; let i = index" 
@@ -94,6 +95,7 @@
                         ? item.delta + ' хв.' : ''}}</span></td>
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
                 <td>{{item.appointed}}:00</td>
+                <td>{{item?.dayOfCure}}</td>
             </tr>
             <tr [hidden]="!item.expanded">
                 <td colspan="100">
