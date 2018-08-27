@@ -52,7 +52,7 @@ public class AccountingController {
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
         boolean closeDay = jsonObj.getBoolean("closeDay");
-      //  int doctorId = userService.getCurrentUserInfo().getId();
+      
         int doctorId = 1;
 
         if (sum != 0) {
