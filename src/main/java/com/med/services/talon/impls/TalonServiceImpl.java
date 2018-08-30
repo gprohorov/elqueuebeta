@@ -3,6 +3,8 @@ package com.med.services.talon.impls;
 import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
+import com.med.model.balance.Receipt;
+import com.med.model.statistics.dto.procedure.ProcedureReceipt;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.card.impls.CardServiceImpl;
@@ -463,4 +465,34 @@ public class TalonServiceImpl implements ITalonService {
         return new LastTalonInfo(tln.getDate(), tln.getZones(), tln.getDoctor());
     }
 
+
+    // 27 aug
+    public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
+        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(1));
+        List<ProcedureReceipt> list = new ArrayList<>();
+        Receipt receipt = new Receipt();
+        talons.stream().collect(Collectors.groupingBy(Talon::getProcedure))
+                .forEach((key, value) ->{
+                    ProcedureReceipt procedureReceipt = new ProcedureReceipt();
+                    procedureReceipt.setName(key.getName());
+                    procedureReceipt.setPrice(key.getSOCIAL()); // kostil
+                    int zones = value.stream().mapToInt(Talon::getZones).sum();
+                    procedureReceipt.setZones(zones);
+                    long sum = value.stream().mapToLong(Talon::getSum).sum();
+                    procedureReceipt.setSum(sum);
+                    list.add(procedureReceipt);
+            }
+        );
+        receipt.setList(list);
+        int sumForProcedures = (int)  list.stream().mapToLong(ProcedureReceipt::getSum).sum();
+        receipt.setSum(sumForProcedures);
+
+     //   List<Accounting> accountings = accountingService.
+
+
+
+
+
+        return receipt;
+    }
 }

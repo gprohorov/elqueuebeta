@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.*;
 import com.med.model.balance.Accounting;
+import com.med.model.balance.Receipt;
 import com.med.model.hotel.Record;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
@@ -133,6 +134,18 @@ public class PatientController {
         // today  plus 0
 
         return talonService.createTalon(patientId, 1, 0);
+    }
+
+    // 27 aug
+    // create check to today for patient on registration
+    @GetMapping("/create/receipt/{patientId}/{from}/{to}")
+    public Receipt createReceiptFromTo(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to
+            )
+    {
+        return talonService.createReceipt(patientId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
 /////////////////////////////////////////////////////////////////////////
