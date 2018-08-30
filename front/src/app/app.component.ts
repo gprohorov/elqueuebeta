@@ -8,8 +8,14 @@ import { NgxPermissionsService } from 'ngx-permissions';
 })
 export class AppComponent implements OnInit {
 
-    constructor(private permissionsService: NgxPermissionsService, public authService: AuthService) { }
+    constructor(private permissionsService: NgxPermissionsService, public authService: AuthService) {
+        sessionStorage.setItem('showMenu', 'true');
+    }
 
+    showMenu():boolean {
+        return sessionStorage.getItem('showMenu') == 'false' ? false : true;
+    }
+    
     ngOnInit(): void {
         const user: any = this.authService.getUserInfo();
         if (user && user.authorities) {

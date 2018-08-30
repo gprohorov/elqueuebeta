@@ -1,0 +1,25 @@
+﻿<h4>Виписка</h4>
+<h1>ПІБ: <strong>{{data?.name}}</strong></h1>
+<h1>Готель: <strong>{{data?.hotel}}</strong> грн.</h1>
+<h1>Знижка: <strong>{{data?.discount}}</strong> грн.</h1>
+<h1>Внески: <strong>{{data?.tips}}</strong> грн.</h1>
+<h1>Сума: <strong>{{data?.sum}}</strong> грн.</h1>
+<h4>Процедури</h4>
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Назва</th>
+            <th>Кількість зон</th>
+            <th>Ціна</th>
+            <th>Сума</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of data.list;">
+            <td>{{item.name}}</td>
+            <td>{{item.zones}}</td>
+            <td>{{item.price}} грн.</td>
+            <td>{{item.sum}} грн.</td>
+        </tr>
+    </tbody>
+</table>
