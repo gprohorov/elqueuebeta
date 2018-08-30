@@ -59,7 +59,8 @@
             Назначено: <strong>{{item.appointed}}:00</strong> <br />
             Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong> <br />
             Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta !=
-                null ? item.delta + ' хв.' : ''}}</span> </ng-template>
+                null ? item.delta + ' хв.' : ''}}</span> <br />
+            День лікування: <strong>{{item?.dayOfCure}}</strong> </ng-template>
         </button>
     </div>
 </div>
