@@ -210,7 +210,7 @@ const appRoutes: Routes = [
         NgbModule.forRoot(),
         NgxPermissionsModule.forRoot(),
         ModalDialogModule.forRoot(),
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes, {useHash: true})
     ],
     declarations: [
         AppComponent,
