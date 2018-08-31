@@ -14,12 +14,17 @@ import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.comparator.Comparators;
 
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -129,20 +134,11 @@ public class PatientServiceImpl implements IPatientService {
 
 	@Override
 	public List<Patient> getAll(String fullName) {
-
-		List<Patient> patients;
-
-		if (fullName.equals("") || fullName == null) {
-			patients = repository.findAll();
-		} else {
-			// TODO: make human-way query !!!
-			// TODO: make sorting, paging, filtering
-			patients = repository.findAll().stream()
-					.filter(patient -> patient.getPerson().getFullName().toLowerCase().contains(fullName.toLowerCase()))
-					.collect(Collectors.toList());
-		}
-
-		return patients;
+		Collator ukrCollator = Collator.getInstance(new Locale("uk", "UA"));
+	    ukrCollator.setStrength(Collator.PRIMARY);
+		return repository.findByThePersonFullName(fullName).stream().sorted((o1, o2) -> 
+			ukrCollator.compare(o1.getPerson().getFullName(), o2.getPerson().getFullName())
+		).limit(30).collect(Collectors.toList());
 	}
 
 	@Override

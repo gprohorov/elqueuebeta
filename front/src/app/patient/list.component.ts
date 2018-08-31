@@ -75,7 +75,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     load(search: string = '') {
         this.loading = true;
         this.sub = this.patientService.getAll(search).subscribe(data => {
-            this.items = this.patientService.sortBy({ sortColumn: 'fullName', sortDirection: 'asc' }, data);
+            this.items = data;
             this.loading = false;
         });
     }

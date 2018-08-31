@@ -20,7 +20,12 @@ ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;exit'
 
 echo ''
 echo ''
-echo 'Copying app to destinaation server...'
+echo 'Truncating log file...'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo truncate /home/bvh/elqueue.out --size 0;exit'
+
+echo ''
+echo ''
+echo 'Copying app to destination server...'
 echo ''
 echo ''
 scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:/home/bvh/elqueue
