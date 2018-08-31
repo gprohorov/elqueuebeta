@@ -468,9 +468,13 @@ public class TalonServiceImpl implements ITalonService {
 
     // 27 aug
     public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
-        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(1));
+        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(1))
+                .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
         List<ProcedureReceipt> list = new ArrayList<>();
         Receipt receipt = new Receipt();
+        receipt.setPatient(patientService.getPatient(patientId));
+
         talons.stream().collect(Collectors.groupingBy(Talon::getProcedure))
                 .forEach((key, value) ->{
                     ProcedureReceipt procedureReceipt = new ProcedureReceipt();
@@ -487,7 +491,11 @@ public class TalonServiceImpl implements ITalonService {
         int sumForProcedures = (int)  list.stream().mapToLong(ProcedureReceipt::getSum).sum();
         receipt.setSum(sumForProcedures);
 
-     //   List<Accounting> accountings = accountingService.
+       List<Accounting> accountings = accountingService
+               .getAllIncomesForPatientFromTo(patientId,from,to);
+       int discount = accountings.stream().filter(ac->ac.getPayment().equals(PaymentType.DISCOUNT))
+               .mapToInt(Accounting::getSum).sum();
+       receipt.setDiscount(discount);
 
 
 

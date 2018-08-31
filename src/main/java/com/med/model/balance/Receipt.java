@@ -1,5 +1,6 @@
 package com.med.model.balance;
 
+import com.med.model.Patient;
 import com.med.model.statistics.dto.procedure.ProcedureReceipt;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Receipt {
     String number;
-    String name;
+    Patient patient;
     LocalDate start;
     LocalDate finish;
 
@@ -39,6 +40,14 @@ public class Receipt {
     public Receipt() {
     }
 
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
     public LocalDate getStart() {
         return start;
     }
@@ -63,13 +72,7 @@ public class Receipt {
         this.number = number;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<ProcedureReceipt> getList() {
         return list;
