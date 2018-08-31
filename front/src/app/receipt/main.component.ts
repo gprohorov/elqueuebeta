@@ -19,6 +19,8 @@ export class ReceiptComponent implements OnInit, OnDestroy {
     start: string;
     finish: string;
     
+    date = new Date();
+    
     constructor(
         private service: PatientService,
         private alertService: AlertService,

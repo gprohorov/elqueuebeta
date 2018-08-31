@@ -11,6 +11,7 @@ import { AuthService, UtilService, AlertService } from '../_services/index';
 export class NavComponent implements OnInit, OnDestroy {
 
     user: any;
+    navbarOpen = false;
     sub: Subscription;
 
     constructor(
@@ -28,6 +29,10 @@ export class NavComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+    }
+   
+    toggleNavbar() {
+      this.navbarOpen = !this.navbarOpen;
     }
 
     resetDB() {
