@@ -16,12 +16,7 @@ mvn clean package
 echo ''
 echo ''
 echo 'Enter password for remotely STOP Backend on server'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;exit'
-
-echo ''
-echo ''
-echo 'Truncating log file...'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo truncate /home/bvh/elqueue.out --size 0;exit'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo truncate /home/bvh/elqueue.out --size 0;exit'
 
 echo ''
 echo ''
