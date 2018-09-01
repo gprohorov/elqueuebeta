@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
-import { AlertService, PatientService, PatientSearchCriteria } from '../_services/index';
+import { AlertService, PatientService, PatientsQueueService, PatientSearchCriteria } from '../_services/index';
 
 import { PatientIncomeModalComponent } from './income.modal.component';
 import { PatientAssignHotelModalComponent } from './assign-hotel.modal.component';
@@ -15,8 +15,11 @@ import { PatientAssignProcedureModalComponent } from './assign-procedure.modal.c
 export class PatientListComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    subToday: Subscription;
     subDelete: Subscription;
+    date: string = (new Date()).toISOString().split('T')[0];
     items: Patient[];
+    todayItems: any[] = [];
     loading = false;
     rows = [];
 
@@ -24,6 +27,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
         private patientService: PatientService,
+        private patientsQueueService: PatientsQueueService,
         private alertService: AlertService
     ) { }
 
@@ -33,6 +37,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+        if (this.subToday) this.subToday.unsubscribe();
         if (this.subDelete) this.subDelete.unsubscribe();
     }
 
@@ -74,6 +79,17 @@ export class PatientListComponent implements OnInit, OnDestroy {
     
     load(search: string = '') {
         this.loading = true;
+        this.subToday = this.patientsQueueService.getAll(this.date).subscribe(data => {
+            this.todayItems = data.filter(x => {
+                return x.person.fullName.toLowerCase().indexOf(search) > -1; 
+            }).sort((a, b) => {
+                let x = a.person.fullName, y = b.person.fullName;
+                if (x < y) return -1;
+                if (x > y) return 1;
+                return 0;
+            });
+            this.loading = false;
+        });
         this.sub = this.patientService.getAll(search).subscribe(data => {
             this.items = data;
             this.loading = false;

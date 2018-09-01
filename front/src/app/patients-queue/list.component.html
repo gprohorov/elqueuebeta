@@ -80,12 +80,11 @@
                 <th>День</th>
             </tr>
         </thead>
-        <tbody *ngFor="let item of items; let i = index" 
+        <tbody *ngFor="let item of items" 
             [hidden]="isHiddenRow(item)">
             <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}"
                 [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
-                <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i>
-                </td>
+                <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i></td>
                 <td>{{item.person.fullName}}</td>
                 <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
                         {{Activity[item.activity]?.text}}</span></td>
