@@ -468,7 +468,7 @@ public class TalonServiceImpl implements ITalonService {
 
     // 27 aug
     public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
-        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(1))
+        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(15))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
         List<ProcedureReceipt> list = new ArrayList<>();

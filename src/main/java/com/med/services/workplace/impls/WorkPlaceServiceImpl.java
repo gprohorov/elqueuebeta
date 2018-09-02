@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -158,6 +159,15 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
  /////////////////  cancelling and activating approp. talons
         this.cancelTalonsByCard(procedure,patient.getId());
         this.activateTalonsByCard(procedure,patient.getId());
+
+
+////////////////////// if YXT   -  comment to therapy
+        if (procedure.getId()==9){
+            Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
+            therapy.setNotes( therapy.getNotes() + " : YXT " + LocalDate.now() + " " + zones + "zn.");
+            therapyService.saveTherapy(therapy);
+
+        }
 
         return null;
     }
