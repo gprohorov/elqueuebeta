@@ -164,7 +164,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 ////////////////////// if YXT   -  comment to therapy
         if (procedure.getId()==9){
             Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
-            therapy.setNotes( therapy.getNotes() + " : YXT " + LocalDate.now() + " " + zones + "zn.");
+            therapy.setNotes( therapy.getNotes() +"<br>" + " : YXT " + LocalDate.now() + " " + zones + "zn.");
             therapyService.saveTherapy(therapy);
 
         }
