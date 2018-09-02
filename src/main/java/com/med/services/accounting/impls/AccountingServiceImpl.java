@@ -140,6 +140,7 @@ public class AccountingServiceImpl implements IAccountingService {
         return this.getAll().stream()
                 .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(date))
                 .collect(Collectors.toList());
+        //TODO Better to replace it by method in repository findByDateTimeAfter(LocalDate date)
     }
 
     public Integer getSumlFrom(LocalDate date){

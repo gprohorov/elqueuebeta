@@ -114,6 +114,7 @@ public class PatientServiceImpl implements IPatientService {
 		Patient patient = repository.findById(patientId).orElse(null);
 		Therapy therapy = therapyService.findTheLastTherapy(patientId);
 		if (therapy != null)
+			//NPE Can be thrown here because patient can be NULL
 			patient.setTherapy(therapy);
 		return patient;
 	}

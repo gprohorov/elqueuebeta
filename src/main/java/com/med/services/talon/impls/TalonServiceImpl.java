@@ -238,6 +238,7 @@ public class TalonServiceImpl implements ITalonService {
                 patientService.savePatient(patient);
             }
         }
+        //talon can be null. Saving of null can throw IllegalArguementExeption
         return repository.save(talon);
     }
 
