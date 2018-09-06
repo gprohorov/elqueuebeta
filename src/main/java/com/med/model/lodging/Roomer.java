@@ -1,7 +1,5 @@
 package com.med.model.lodging;
 
-import com.med.model.Person;
-
 import java.time.LocalDateTime;
 
 /**
@@ -9,8 +7,8 @@ import java.time.LocalDateTime;
  */
 public class Roomer {
 
-    private  String id;
-    private Person person;
+    private  String patientId;
+    private int roomId;
     LocalDateTime start;
     LocalDateTime finish;
 
