@@ -23,6 +23,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     sub: Subscription;
     subTemp: Subscription;
     items: any[] = [];
+    appointments: any = [];
     totalPatients: number;
     activePatients: number;
     notActivePatients: number;
@@ -200,6 +201,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.sub = this.service.getAll(this.date).subscribe(data => {
             data.forEach(x => { x.fullName = x.person.fullName });
             this.items = data.sort(sort_by('appointed', 'fullName'));
+            this.appointments = [];
+            let appointmentsObj = {}, i = 0;
+            data.forEach(x => {
+                if (appointmentsObj[x.appointed] == undefined) appointmentsObj[x.appointed] = []; 
+                appointmentsObj[x.appointed].push(i); 
+                i++; 
+            });
+            for (var prop in appointmentsObj) {
+                this.appointments.push({ appointment: parseInt(prop), items: appointmentsObj[prop] });
+            }
             this.totalPatients = data.length;
             this.activePatients = data.filter( x => 
                    x.activity == 'ACTIVE' 
