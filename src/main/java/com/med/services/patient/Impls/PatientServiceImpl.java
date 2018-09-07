@@ -14,15 +14,12 @@ import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.comparator.Comparators;
 
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -217,7 +214,7 @@ public class PatientServiceImpl implements IPatientService {
 
 	public List<Accounting> getUltimateBalanceToday(String patientId) {
 		LocalDate start = therapyService.findTheLastTherapy(patientId).getStart().toLocalDate();
-
+        if (start==null) start=LocalDate.now().minusDays(100); // kostil
 		return this.getUltimateBalance(patientId, start.minusDays(1), LocalDate.now().plusDays(1));
 	}
 
