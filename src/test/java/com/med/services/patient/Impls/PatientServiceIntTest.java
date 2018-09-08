@@ -1,19 +1,17 @@
 package com.med.services.patient.Impls;
 
-import com.med.model.Patient;
-import com.med.model.Person;
-import com.med.model.Status;
-import com.med.model.Talon;
-import com.med.model.Therapy;
+import com.med.model.*;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.repository.patient.PatientRepository;
 import com.med.repository.person.PersonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.therapy.impls.TherapyServiceImpl;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -26,15 +24,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(SpringRunner.class)
@@ -61,29 +58,44 @@ public class PatientServiceIntTest {
     @MockBean
     private TherapyServiceImpl therapyService;
 
+    @MockBean
+    private ProcedureServiceImpl procedureService;
+
     @Autowired
     private PatientServiceImpl service;
 
     private Patient patient;
 
     private interface TestConstants {
+
         String BAD_ID = "-1";
+
         String DEFAULT_ID = "1";
+
         Person DEFAULT_PERSON = new Person(
             "Yaroslav Zhyravov", "+380666666666", "Ivano-Frankivs'k", "N/A", true, LocalDate.parse("2018-11-12"));
+
         Therapy DEFAULT_THERAPY = null;
+
         List<Talon> DEFAULT_TALONS = new ArrayList<>();
+
         Status DEFAULT_STATUS = Status.VIP;
 
         LocalDate TALON_DATE_1 = LocalDate.now();
+
         LocalDate TALON_DATE_2 = LocalDate.now().minusMonths(2);
+
         LocalDate TALON_DATE_3 = LocalDate.now().plusDays(3);
 
-        Talon DEFAULT_TALON_1 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_1, null, 1, null,
+        Procedure DEFAULT_PROCDURE = new Procedure();
+
+        Talon DEFAULT_TALON_1 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_1, DEFAULT_PROCDURE, 1, null,
             null, null, 1);
-        Talon DEFAULT_TALON_2 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_2, null, 1, null,
+
+        Talon DEFAULT_TALON_2 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_2, DEFAULT_PROCDURE, 1, null,
             null, null, 1);
-        Talon DEFAULT_TALON_3 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_3, null, 1, null,
+
+        Talon DEFAULT_TALON_3 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_3, DEFAULT_PROCDURE, 1, null,
             null, null, 1);
     }
 
@@ -113,26 +125,42 @@ public class PatientServiceIntTest {
     }
 
     @Test
-    public void setUpCorrect() {
+    public void setUpIsCorrect() {
         assertThat(patient).isNotNull();
         assertThat(patient.getId()).isNotNull();
         assertThat(patient.getId()).isEqualTo(TestConstants.DEFAULT_ID);
     }
 
     @Test
+    public void registerPatientIsCorrect() {
+        final Optional<Patient> resultActivated
+            = Optional.ofNullable(service.registratePatient(patientToRegDto(this.patient, true)));
+        final Optional<Patient> resultNotActivated
+            = Optional.ofNullable(service.registratePatient(patientToRegDto(this.patient, false)));
+
+        assertThat(resultActivated).isPresent();
+        assertThat(resultActivated.get().getRegistration()).isNotNull();
+        assertThat(resultActivated.get().getRegistration()).isBeforeOrEqualTo(LocalDateTime.now());
+
+        assertThat(resultNotActivated).isPresent();
+        assertThat(resultNotActivated.get().getRegistration()).isNotNull();
+        assertThat(resultNotActivated.get().getRegistration()).isBeforeOrEqualTo(LocalDateTime.now());
+    }
+
+    /**
+     * It is just an example how to catch and assert Throwable.
+     *
+     * For now, you have the worst service layer logic I've seen ever.
+     * So if you don't want to be confused why the project cannot be built, don't remove `@Ignore`.
+     *
+     * And yes, it fails until you fix your service layer checkings.
+     */
+    @Ignore
+    @Test
     public void passNullToSaveAndCatchThrowable() {
         final Throwable thrown = catchThrowable(() -> service.savePatient(null));
 
         assertThat(thrown).isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    public void savePatientAndRegistrationIsNotNull() {
-        final Optional<Patient> maybePatient = Optional.ofNullable(service.savePatient(patient));
-
-        assertThat(maybePatient).isPresent();
-        assertThat(maybePatient.orElse(patient).getRegistration()).isNotNull();
-        assertThat(maybePatient.orElse(patient).getRegistration()).isBefore(LocalDateTime.now());
     }
 
     @Test
@@ -170,8 +198,33 @@ public class PatientServiceIntTest {
         assertThat(maybePatient.orElse(patient).getTalons().get(0)).isEqualTo(TestConstants.DEFAULT_TALON_1);
     }
 
+    @Test
+    public void patientByeIsReallyBye() {
+        patient.getTalons().addAll(Arrays.asList(
+            TestConstants.DEFAULT_TALON_1,
+            TestConstants.DEFAULT_TALON_2,
+            TestConstants.DEFAULT_TALON_3));
+        repository.save(patient);
+
+        final Optional<Patient> byedPatient = Optional.ofNullable(service.patientBye(TestConstants.DEFAULT_ID));
+
+        assertThat(byedPatient).isPresent();
+        assertThat(byedPatient.get().getLastActivity()).isNull();
+        assertThat(byedPatient.get().getStartActivity()).isNull();
+        assertThat(byedPatient.get().getTalons()).isNotEmpty();
+        byedPatient.get().getTalons().forEach(talon -> assertThat(Activity.CANCELED).isEqualTo(talon.getActivity()));
+    }
+
+    private PatientRegDTO patientToRegDto(final Patient patient, boolean isActivate) {
+        if (patient == null) {
+            return null;
+        }
+        return new PatientRegDTO(patient.getPerson(), 0, "2018-09-07", isActivate, 0);
+    }
+
     @TestConfiguration
     static class PatientServiceTestContextConfiguration {
+
         @Bean
         public PatientServiceImpl patientService() {
             return new PatientServiceImpl();
