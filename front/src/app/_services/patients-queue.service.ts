@@ -8,7 +8,7 @@ import { config } from '../../config';
 @Injectable()
 export class PatientsQueueService {
     // Define the routes we are going to interact with
-    private listUrl = config.api_path + '/patient/list/today';
+    private listUrl = config.api_path + '/patient/list/date/';
     private tailsUrl = config.api_path + '/tail/list';
     private listByProcedureUrl = config.api_path + '/patient/list/procedure/';
     private deleteUrl = config.api_path + '/patient/delete/';
@@ -17,11 +17,12 @@ export class PatientsQueueService {
     private updateOutOfTurnUrl = config.api_path + '/patient/talon/set/outofturn/';
     private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
+    private executeProcedureUrl = config.api_path + '/talon/execute/';
 
     constructor(private http: HttpClient) { }
 
-    getAll(search: string = '') {
-        return this.http.get<any[]>(this.listUrl + search).pipe(catchError(this.handleError));
+    getAll(date: string) {
+        return this.http.get<any[]>(this.listUrl + date).pipe(catchError(this.handleError));
     }
 
     getTails() {
@@ -50,6 +51,10 @@ export class PatientsQueueService {
 
     updateBalance(id: string, value: string) {
         return this.http.get(this.updateBalanceUrl + id + '/' + value).pipe(catchError(this.handleError));
+    }
+    
+    executeProcedure(talonId: string) {
+        return this.http.get(this.executeProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
 
     delete(id: string) {

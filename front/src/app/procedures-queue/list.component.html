@@ -19,19 +19,19 @@
     <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
         <div *ngFor="let item of group.patients">
             <button title='{{ item?.outOfTurn ? "Зняти" : "Встановити"}} "Поза чергою"'
-                [ngClass]="{'btn': true, 'text-white': true, 'btn-sm': true, 'masonry-list-icon': true, 
-                    'btn-info': true }" [disabled]="item.activity == 'ON_PROCEDURE'"
-                (click)="updateOutOfTurn(item?.talon.id, item.activity != 'INVITED')">
-                <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED', 
-                    'fa-arrow-circle-down': item.activity == 'INVITED'}"></i>
+                class="btn btn-sm btn-info masonry-list-icon text-white"
+                [disabled]="item.activity == 'ON_PROCEDURE'"
+                (click)="updateOutOfTurn(item?.talon.id, item.activity != 'INVITED', item.person.fullName, group.procedureName)">
+                <i
+                    [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED', 
+                            'fa-arrow-circle-down': item.activity == 'INVITED'}"></i>
             </button>
             <span class="masonry-list-item badge badge-{{Activity[item.activity].cssClass}}"
-                title="{{item.person.fullName}} ({{Status[item.status].text}})">
-                    {{item.person.fullName}}
-            </span>
-            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null ?
-                item.delta + ' хв.' : ''}}</span> 
+                title="{{item.person.fullName}} ({{Status[item.status].text}})"
+                [ngStyle]="{'cursor': 'pointer'}" (click)="executeProcedure(item.talon.id, item.person.fullName, group.procedureName)">
+                {{item.person.fullName}} </span> <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta
+                != null ? item.delta + ' хв.' : ''}}</span>
         </div>
     </div>
-    </ngx-masonry-item></ngx-masonry>
+    </ngx-masonry-item> </ngx-masonry>
 </div>

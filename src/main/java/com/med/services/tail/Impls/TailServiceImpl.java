@@ -103,11 +103,13 @@ public class TailServiceImpl implements ITailService {
                 talon.getActivity().equals(Activity.INVITED)
             )
             .collect(Collectors.groupingBy(Talon::getProcedure)).entrySet().stream()
-            .map(tail -> new Tail(
+            .filter(tail -> tail.getKey()!=null)
+                .map(tail -> new Tail(
                 tail.getKey().getId(),
                 tail.getKey().getName(),
                 tail.getKey().getProcedureType(),
                 talonService.toPatientList(tail.getValue()).stream()
+     /*kostil*/         .filter(patient -> patient.getDelta()!=null)
                  //   .map(patient -> patient.setTherapy(null))
 //                        .filter(patient ->
 //                    patient.getActivity().equals(Activity.ACTIVE)

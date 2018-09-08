@@ -53,12 +53,17 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
+import { CreatePatientModalComponent } from './patient/create-patient.modal.component';
+
 import { GeneralStatisticFromToComponent } from './statistic/general-statistic-from-to.component';
 import { CashSummaryComponent } from './statistic/cash-summary.component';
 import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
 import { ProceduresStatisticsComponent } from './statistic/procedures-statistics.component';
 import { PatientsDebetorsComponent } from './statistic/patients-debetors.component';
 import { PatientStatisticsComponent } from './statistic/patient-statistics.component';
+import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.component';
+
+import { ReceiptComponent } from './receipt/main.component';
 
 import {
     WorkplaceMainComponent,
@@ -165,6 +170,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
+    {
+        path: 'statistic/doctors', component: DoctorsStatisticsComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -181,6 +191,12 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
+    
+    {
+        path: 'receipt/:patientId', component: ReceiptComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     { path: '**', redirectTo: '' }
 ];
@@ -194,7 +210,7 @@ const appRoutes: Routes = [
         NgbModule.forRoot(),
         NgxPermissionsModule.forRoot(),
         ModalDialogModule.forRoot(),
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes, {useHash: true})
     ],
     declarations: [
         AppComponent,
@@ -209,6 +225,7 @@ const appRoutes: Routes = [
         PatientAssignProcedureModalComponent,
         PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent,
+        CreatePatientModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
@@ -220,6 +237,8 @@ const appRoutes: Routes = [
         ProceduresStatisticsComponent,
         PatientsDebetorsComponent,
         PatientStatisticsComponent,
+        DoctorsStatisticsComponent,
+        ReceiptComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent
@@ -248,7 +267,8 @@ const appRoutes: Routes = [
         PatientIncomeModalComponent,
         PatientAssignProcedureModalComponent,
         PatientAssignProceduresOnDateModalComponent,
-        PatientAssignHotelModalComponent
+        PatientAssignHotelModalComponent,
+        CreatePatientModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

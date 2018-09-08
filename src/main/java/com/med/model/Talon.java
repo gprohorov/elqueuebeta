@@ -2,6 +2,7 @@ package com.med.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,11 +21,15 @@ public class Talon {
     private Procedure procedure;
     private int zones = 1;
     private String desc;
+    private int appointed;
     private LocalDateTime start;
     private LocalDateTime executionTime;
+    @Nullable
     private Doctor doctor;
     private Status status = Status.SOCIAL;
     private int sum;
+    @Nullable
+    private LastTalonInfo last = null;
     /////////
     private Activity activity = Activity.NON_ACTIVE;
 
@@ -37,7 +42,13 @@ public class Talon {
         this.activity = activity;
     }
 
+    public LastTalonInfo getLast() {
+        return last;
+    }
 
+    public void setLast(LastTalonInfo last) {
+        this.last = last;
+    }
 
     public Talon() {
     }
@@ -87,6 +98,20 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
+        this.appointed = 9;
+
+    }
+
+    public Talon(String patientId, Procedure procedure, LocalDate date, int appointed) {
+        this.patientId = patientId;
+        this.date = date;
+        this.procedure = procedure;
+        this.zones = 1;
+        this.desc = "";
+        this.executionTime = null;
+        this.doctor = null;
+        this.sum = 0;
+        this.appointed = appointed;
 
     }
     public Talon(String patientId, Procedure procedure, int days) {
@@ -99,6 +124,14 @@ public class Talon {
         this.doctor = null;
         this.sum = 0;
 
+    }
+
+    public int getAppointed() {
+        return appointed;
+    }
+
+    public void setAppointed(int appointed) {
+        this.appointed = appointed;
     }
 
     public Status getStatus() {

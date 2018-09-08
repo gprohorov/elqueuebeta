@@ -1,25 +1,72 @@
 ﻿<div class="position-fixed" [style.right.px]="50">
+    <button class="fa fa-eject text-success btn btn-light mb-3" title="Наверх"
+        (click)="scrollToTop()"></button>
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
 <div class="row">
     <div class="col">
         <div class="btn-group mb-3" role="group">
-            <button type="button"
-                [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
-                (click)="filters = 'all'">усі</button>
             <button type="button" class="btn btn-secondary"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
-                (click)="filters = 'active'">активні</button>
+                (click)="filters = 'active'">
+                Активні <span class="badge badge-light ml-3">{{activePatients}}</span>
+            </button>
+            <button type="button"
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
+                (click)="filters = 'all'">
+                Усі <span class="badge badge-light ml-3">{{totalPatients}}</span>
+            </button>
+            <button type="button" class="btn btn-secondary"
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'notactive', 'btn-secondary': filters != 'notactive'}"
+                (click)="filters = 'notactive'">
+                Не активні <span class="badge badge-light ml-3">{{notActivePatients}}</span>
+            </button>
         </div>
     </div>
-    <div class="col-auto">
-        <input type="date" class="form-control" name="date" [(ngModel)]="date" [(ngValue)]="date" />
+    <div class="col">
+        <button class="btn btn-success" (click)="showCreatePatientPopup()">Добавити
+            пацієнта</button>
+    </div>
+    <div class="col-auto form-inline">
+        <button class="btn btn-success" (click)="changeDay(-1)">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <input type="date" class="form-control ml-2 mr-2" name="date" [(ngModel)]="date"
+            [(ngValue)]="date" (change)="load()" format="yyyy-m-d" />
+        <button class="btn btn-success" (click)="changeDay(1)">
+            <i class="fa fa-arrow-right"></i>
+        </button>
     </div>
 </div>
-<div class="content table-responsive table-full-width">
+<div class="form-inline">
+    <div *ngFor="let item of items; let i = index">
+        <button [style.width.px]="269" (click)="scrollToRow(item.id)" [ngbPopover]="popContent"
+            triggers="mouseenter:mouseleave" popoverTitle="{{item.person.fullName}}"
+            placement="bottom" [hidden]="isHiddenRow(item)"
+            [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}">
+            <span class="badge badge-{{Activity[item.activity]?.cssClass}}" 
+                [ngStyle]="{'max-width': '170px', 'margin-top': '5px', 'overflow-x': 'hidden', 'text-overflow': 'ellipsis'}"
+                >{{item.person.fullName}}</span>
+            <span class="pull-right"> <span class="text-{{getTimeDiffClass(item.delta)}}"
+                >{{item.delta != null ? item.delta + ' хв.' : ''}}</span> {{item.appointed}}:00</span>
+            <ng-template #popContent> Активність: <span
+                class="badge badge-{{Activity[item.activity].cssClass}}">{{Activity[item.activity].text}}</span>
+            <br />
+            Статус: <strong>{{Status[item.status].text}}</strong> <br />
+            Баланс: <strong>{{item.balance}} грн.</strong> <br />
+            Прогрес: <strong>{{getProgress(item.talons)}}</strong> <br />
+            Назначено: <strong>{{item.appointed}}:00</strong> <br />
+            Початок: <strong>{{item.startActivity | date: 'HH:mm'}}</strong> <br />
+            Очікування: <span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta !=
+                null ? item.delta + ' хв.' : ''}}</span> <br />
+            День лікування: <strong>{{item?.dayOfCure}}</strong> </ng-template>
+        </button>
+    </div>
+</div>
+<div class="mt-2 content table-responsive table-full-width">
     <table class="table table-sm">
-        <thead class="thead-light">
+        <thead class="thead-dark">
             <tr>
                 <th></th>
                 <th [style.min-width.px]="300">ПІБ</th>
@@ -27,28 +74,30 @@
                 <th>Статус</th>
                 <th>Баланс</th>
                 <th>Прогрес</th>
-                <th>Час очікування</th>
+                <th>Очікування</th>
                 <th>Початок</th>
+                <th>Назначено</th>
+                <th>День</th>
             </tr>
         </thead>
-        <tbody *ngFor="let item of items; let i = index">
-            <tr (dblclick)="rows[i]=!rows[i]"
-                [hidden]="(item.activity != 'ACTIVE' 
-                    && item.activity != 'ON_PROCEDURE') && filters == 'active'">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': (!rows[i]), 'fa-caret-down': (rows[i]) }"></i>
-                </td>
+        <tbody *ngFor="let item of items" 
+            [hidden]="isHiddenRow(item)">
+            <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}"
+                [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
+                <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i></td>
                 <td>{{item.person.fullName}}</td>
                 <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
                         {{Activity[item.activity]?.text}}</span></td>
                 <td>{{Status[item.status].text}}</td>
                 <td>{{item.balance}}</td>
                 <td>{{getProgress(item.talons)}}</td>
-                <td><span class="{{getTimeDiffClass(item.delta)}}">{{item.delta != null
+                <td><span class="text-{{getTimeDiffClass(item.delta)}}">{{item.delta != null
                         ? item.delta + ' хв.' : ''}}</span></td>
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
+                <td>{{item.appointed}}:00</td>
+                <td>{{item?.dayOfCure}}</td>
             </tr>
-            <tr [hidden]="!rows[i]">
+            <tr [hidden]="!item.expanded">
                 <td colspan="100">
                     <div class="card">
                         <div class="card-header">
@@ -64,31 +113,38 @@
                                 </div>
                                 <div class="col-auto">
                                     <button class="btn btn-info"
-                                        (click)="showAssignProceduresOnDatePopup(item)">Наступна дата</button>
+                                        (click)="showAssignProceduresOnDatePopup(item)">Наступна
+                                        дата</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-warning">Чек</button>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="btn btn-info" target="_blank" routerLink="/receipt/{{item.id}}">Виписка</a>
                                 </div>
                                 <div class="col-auto ml-auto">
                                     <button
                                         title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-success text-white"
-                                        (click)="updateActivityAll(item.id, 'ACTIVE')">
+                                        (click)="updateActivityAll(item, 'ACTIVE')">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.TEMPORARY_NA.text}}"'
                                         class="btn btn-primary text-white"
-                                        (click)="updateActivityAll(item.id, 'TEMPORARY_NA')">
+                                        (click)="updateActivityAll(item, 'TEMPORARY_NA')">
                                         <i class="fa fa-pause"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.NON_ACTIVE.text}}"'
                                         class="btn btn-danger text-white"
-                                        (click)="updateActivityAll(item.id, 'NON_ACTIVE')">
+                                        (click)="updateActivityAll(item, 'NON_ACTIVE')">
                                         <i class="fa fa-stop"></i>
                                     </button>
                                     <button
                                         title='Встановити всім процедурам "{{Activity.CANCELED.text}}"'
                                         class="btn btn-secondary text-white"
-                                        (click)="updateActivityAll(item.id, 'CANCELED')">
+                                        (click)="updateActivityAll(item, 'CANCELED')">
                                         <i class="fa fa-ban"></i>
                                     </button>
                                 </div>
@@ -97,7 +153,7 @@
                         <div class="card-body">
                             <div class="row" *ngFor="let talon of item.talons">
                                 <div class="col-auto mr-auto">
-                                    <p title="{{Activity[talon.activity].text}}">
+                                    <p title="{{getTalonTitle(talon)}}">
                                         <span
                                             [ngClass]="{'fa fa-arrow-circle-up': talon.outOfTurn }"
                                             class="btn btn-{{Activity[talon.activity].cssClass}}">
@@ -108,27 +164,27 @@
                                     *ngIf="['EXECUTED', 'CANCELED', 'ON_PROCEDURE'].indexOf(talon.activity) < 0">
                                     <button title='Встановити "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-sm btn-success text-white"
-                                        (click)="updateActivity(talon.id, 'ACTIVE')">
+                                        (click)="updateActivity(talon.id, 'ACTIVE', item)">
                                         <i class="fa fa-play"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.TEMPORARY_NA.text}}"'
                                         class="btn btn-sm btn-primary text-white"
-                                        (click)="updateActivity(talon.id, 'TEMPORARY_NA')">
+                                        (click)="updateActivity(talon.id, 'TEMPORARY_NA', item)">
                                         <i class="fa fa-pause"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.NON_ACTIVE.text}}"'
                                         class="btn btn-sm btn-danger text-white"
-                                        (click)="updateActivity(talon.id, 'NON_ACTIVE')">
+                                        (click)="updateActivity(talon.id, 'NON_ACTIVE', item)">
                                         <i class="fa fa-stop"></i>
                                     </button>
                                     <button title='Встановити "{{Activity.CANCELED.text}}"'
                                         class="btn btn-sm btn-secondary text-white"
-                                        (click)="updateActivity(talon.id, 'CANCELED')">
+                                        (click)="updateActivity(talon.id, 'CANCELED', item)">
                                         <i class="fa fa-ban"></i>
                                     </button>
                                     <button title='Поза чергою'
                                         class="btn btn-sm btn-info text-white"
-                                        (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED')">
+                                        (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED', item)">
                                         <i
                                             [ngClass]="{'fa': true, 'fa-arrow-circle-up': talon.activity != 'INVITED', 
                                             'fa-arrow-circle-down': talon.activity == 'INVITED'}"></i>

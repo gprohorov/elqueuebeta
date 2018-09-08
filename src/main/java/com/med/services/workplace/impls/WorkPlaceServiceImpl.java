@@ -300,7 +300,7 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
         return tails;
     }
-////////////////////////////getTailsForDoctor  - the end
+////////////////////////////getTailsForDoctor  - the end Hope1234
 
 
 
@@ -394,13 +394,17 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         List<Integer> proceduresToClose = cardService
                 .getCardByProcedureId(procedure.getId()).getCloseAfter();
      */
-        List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
+
+      //  List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
+        List<Integer> proceduresToClose = procedureService.getProcedure(procedure.getId())
+                .getCard().getCloseAfter();
 
         patientService.getPatientWithTalons(patientId).getTalons().stream()
                 .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED))
                 .forEach(talon -> {
             if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
                 talon.setActivity(Activity.CANCELED);
+                logger.info("procedure " + procedure.getName() + " cancelled by card");
                 talonService.saveTalon(talon);
             }
         });
@@ -409,7 +413,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId){
 
-        List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+       // List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();
+        List<Integer> proceduresToActivate = procedureService.getProcedure(procedure.getId())
+                .getCard().getActivateAfter();
 
         List<Talon> talons = patientService
                 .getPatientWithTalons(patientId).getTalons().stream()

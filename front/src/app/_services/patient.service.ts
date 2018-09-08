@@ -12,12 +12,14 @@ export class PatientService {
     // Define the routes we are going to interact with
     private listUrl = config.api_path + '/patient/list/';
     private getUrl = config.api_path + '/patient/get/';
-    private deleteUrl = config.api_path + '/patient/delete/';
     private saveUrl = config.api_path + '/patient/save/';
+    private createUrl = config.api_path + '/patient/new/';
+    private deleteUrl = config.api_path + '/patient/delete/';
     private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private assignProceduresOnDateUrl = config.api_path + '/patient/create/talons/';
     private incomeUrl = config.api_path + '/income/create';
     private getBalanceUrl = config.api_path + '/patient/balance/today/';
+    private receiptUrl = config.api_path + '/patient/create/receipt/';
 
     constructor(private http: HttpClient) { }
 
@@ -29,21 +31,27 @@ export class PatientService {
         return this.http.get<Patient>(this.getUrl + id).pipe(catchError(this.handleError));
     }
 
-    delete(id: string) {
-        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
-    }
-
     update(model: Patient) {
         return this.http.post(this.saveUrl, model).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string, activate: boolean) {
-        return this.http.get(this.assignProcedureUrl
-            + [patientId, procedureId, date, activate || false].join('/')).pipe(catchError(this.handleError));
+    create(model: any) {
+        return this.http.post(this.createUrl, model).pipe(catchError(this.handleError));
     }
-    
-    assignProceduresOnDate(patientId: string, date: string) {
-        return this.http.get(this.assignProceduresOnDateUrl + patientId + '/' + date).pipe(catchError(this.handleError));
+
+    delete(id: number) {
+        return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
+    }
+
+    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number, activate: boolean) {
+        return this.http.get(this.assignProcedureUrl
+            + [patientId, procedureId, date, appointed, activate || false].join('/'))
+            .pipe(catchError(this.handleError));
+    }
+
+    assignProceduresOnDate(patientId: string, date: string, appointed: number) {
+        return this.http.get(this.assignProceduresOnDateUrl + patientId + '/' + date + '/' + appointed)
+            .pipe(catchError(this.handleError));
     }
 
     income(data: any) {
@@ -54,6 +62,11 @@ export class PatientService {
         return this.http.get(this.getBalanceUrl + patientId).pipe(catchError(this.handleError));
     }
 
+    getReceipt(patientId: string, from: string, to: string) {
+        return this.http.get(this.receiptUrl + patientId + '/' + from + '/' + to)
+        .pipe(catchError(this.handleError));
+    }
+    
     sortBy(criteria: PatientSearchCriteria, list) {
         return list.sort((a, b) => {
             let x = a.person[criteria.sortColumn], y = b.person[criteria.sortColumn];

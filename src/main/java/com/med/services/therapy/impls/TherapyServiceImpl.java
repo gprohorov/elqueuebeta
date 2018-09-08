@@ -223,7 +223,7 @@ public class TherapyServiceImpl implements ITherapyService {
 	//////////// 02.07.18 ///////////////////////////
 	public List<Talon> generateTalonsByTherapy(Therapy therapy) {
 
-		int days = therapy.getDays();
+		int days = 1;
 
 		List<Procedure> procedures = new ArrayList<>();
 		List<Talon> talons = new ArrayList<>();
@@ -243,6 +243,7 @@ public class TherapyServiceImpl implements ITherapyService {
                 }
 			}
 		}
+
 		//////////////////////  kostil'
 		Talon manualToday = talons.stream()
                 .filter(talon -> talon.getProcedure().getId()==3)
@@ -255,10 +256,42 @@ public class TherapyServiceImpl implements ITherapyService {
 		    talons.remove(manualToday);
         }
 
+ 		talons.stream().forEach(talon -> {
+
+ 		if (talon.getProcedure().getCard().isAnytime()){
+ 			talon.setActivity(Activity.ACTIVE);
+		}
+
+		 });
 
 
 		return talons;
 	}
 
+
+	//////////    13.08 18
+	public List<Talon> generateTalonsByTherapyToDate(Therapy therapy, LocalDate date) {
+
+
+
+		List<Procedure> procedures = new ArrayList<>();
+		List<Talon> talons = new ArrayList<>();
+
+		therapy.getAssignments().stream().forEach(ass ->
+
+		{
+			Procedure procedure = procedureService.getProcedure(ass.getProcedureId());
+			procedures.add(procedure);
+		});
+
+		procedures.stream().forEach(procedure -> {
+			Talon talon = new Talon(therapy.getPatientId(), procedure, date);
+			if (procedure.getCard().isAnytime() && date.equals(LocalDate.now())) {
+				talon.setActivity(Activity.ACTIVE);}
+			talons.add(talon);
+		});
+
+		return talons;
+	}
 
 }

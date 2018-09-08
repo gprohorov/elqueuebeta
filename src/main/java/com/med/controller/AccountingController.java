@@ -3,6 +3,7 @@ package com.med.controller;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.user.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class AccountingController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PatientServiceImpl patientService;
+
 
     @RequestMapping("/list")
     public List<Accounting> showAll(){
@@ -47,7 +51,8 @@ public class AccountingController {
         String desc = jsonObj.getString("desc");
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
-      //  int doctorId = userService.getCurrentUserInfo().getId();
+        boolean closeDay = jsonObj.getBoolean("closeDay");
+      
         int doctorId = 1;
 
         if (sum != 0) {
@@ -57,6 +62,10 @@ public class AccountingController {
         if (discount != 0) {
             service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
         }
+        
+      if (closeDay) {
+            patientService.patientBye(patientId);
+      }
 
         return JSONObject.quote("OK");
     }

@@ -26,6 +26,8 @@ public class Patient { // implements Comparable<Patient> {
     @Transient
     private Activity activity = Activity.NON_ACTIVE;
     @Transient
+    private int appointed = 10;
+    @Transient
     private List<Talon> talons = new ArrayList<>();
     private LocalDateTime lastActivity;
     private LocalDateTime startActivity;
@@ -156,14 +158,28 @@ public class Patient { // implements Comparable<Patient> {
                delta = ChronoUnit.MINUTES.between(this.getLastActivity()
                      , LocalDateTime.now());
            }
-/*
-           if (delta!=null && delta >300){
+/*           if (delta > 300) {
                this.setLastActivity(null);
-               delta=300L;
+               this.setStartActivity(null);
+               delta = null;
            }
-*/
-
+           */
         return delta;
+    }
+
+    public int getAppointed() {
+
+
+        if (this.getTalons().isEmpty()) {
+            return this.appointed;
+        } else {
+            return this.getTalons().get(0).getAppointed();
+        }
+
+    }
+
+    public void setAppointed(int appointed) {
+        this.appointed = appointed;
     }
 
     public void setActivity(Activity activity) {
@@ -178,53 +194,78 @@ public class Patient { // implements Comparable<Patient> {
 
         Activity activity = Activity.NULL;
 
+
         if (this.getTalons().isEmpty()) {
             return activity;
         }
 
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.INVITED))) {
+                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.INVITED))) {
             activity = Activity.INVITED;
             return activity;
         }
 
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ON_PROCEDURE))) {
+                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.ON_PROCEDURE))) {
             activity = Activity.ON_PROCEDURE;
             return activity;
         }
 
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.ACTIVE))) {
+                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.ACTIVE))) {
             activity = Activity.ACTIVE;
             return activity;
         }
 
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.NON_ACTIVE))) {
+                .map(talon -> talon.getActivity()).allMatch(ac -> ac.equals(Activity.NON_ACTIVE))) {
             activity = Activity.NON_ACTIVE;
             return activity;
         }
 
+
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).allMatch(ac-> ac.equals(Activity.TEMPORARY_NA))) {
+                .map(talon -> talon.getActivity()).allMatch(ac -> ac.equals(Activity.TEMPORARY_NA))) {
             activity = Activity.TEMPORARY_NA;
             return activity;
         }
 
 
         if (this.getTalons().stream()
-                .map(talon -> talon.getActivity()).anyMatch(ac-> ac.equals(Activity.TEMPORARY_NA))
+                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.TEMPORARY_NA))
                 &&
                 this.getTalons().stream()
-                        .map(talon -> talon.getActivity()).noneMatch(ac-> ac.equals(Activity.ACTIVE))
+                        .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))
                 ) {
             activity = Activity.TEMPORARY_NA;
             return activity;
         }
 
+        if (this.getTalons().stream()
+                .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED)                )
+                .filter(talon -> !talon.getActivity().equals(Activity.CANCELED))
+                .count() == 0
+                ) {
+            activity = Activity.GAMEOVER;
+            return activity;
+        }
+
+        if (
+                this.getTalons().stream()
+                        .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))
+                        &&
+                        this.getTalons().stream()
+                                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.NON_ACTIVE))
+
+                ){
+        activity = Activity.STUCK;
         return activity;
-    }
+        }
+
+
+
+        return activity;
+    }  // end of calculate activity
 
     public int getActivityLevel() {
         return this.getActivity().getLevel();

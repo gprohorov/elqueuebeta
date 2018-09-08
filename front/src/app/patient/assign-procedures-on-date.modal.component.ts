@@ -10,7 +10,6 @@ import { PatientService, AlertService } from '../_services/index';
 export class PatientAssignProceduresOnDateModalComponent implements IModalDialog {
 
     data: any;
-    sub: Subscription;
 
     @ViewChild('f') myForm;
     constructor(
@@ -27,7 +26,7 @@ export class PatientAssignProceduresOnDateModalComponent implements IModalDialog
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
         this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000 + 24*60*60*1000)).toISOString().slice(0, -14);
-        this.data.time = 9;
+        this.data.appointed = 9;
     }
 
     submit(f, options) {
@@ -35,7 +34,7 @@ export class PatientAssignProceduresOnDateModalComponent implements IModalDialog
         if (!f.form.valid) return false;
 
         this.patientService.assignProceduresOnDate(
-            this.data.patientId, this.data.date
+            this.data.patientId, this.data.date, this.data.appointed
         ).subscribe(() => {
             this.alertService.success('Пацієнта ' + this.data.patientName
                 + ' назначено на процедури на наступну дату.');
@@ -44,6 +43,5 @@ export class PatientAssignProceduresOnDateModalComponent implements IModalDialog
     }
 
     ngOnDestroy() {
-        if (this.sub) this.sub.unsubscribe();
     }
 }

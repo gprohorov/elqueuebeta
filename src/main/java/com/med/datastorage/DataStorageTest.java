@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by george on 3/9/18.
@@ -195,15 +194,21 @@ public class DataStorageTest {
 
     public void reset(){
 
+        List<Talon> talons = talonRepository
+                .findByDateBetween(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
+        talonRepository.deleteAll(talons);
 
-        List<Talon> talons= talonRepository.findAll().stream()
-                .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
+
+     /*     List<Talon> talons= talonRepository.findAll().stream()
+             //   .filter(talon -> talon.getDate().isAfter(LocalDate.now()))
+                .filter(talon -> talon.getDate().equals(LocalDate.now()))
+                .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
                 .collect(Collectors.toList());
         talonRepository.deleteAll(talons);
 
 
 
- /*       talonRepository.findByDate(LocalDate.now()); Hope1234
+      talonRepository.findByDate(LocalDate.now());
 
 
       talons.stream()

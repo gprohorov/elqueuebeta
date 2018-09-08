@@ -18,64 +18,46 @@
             [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
     </div>
 </div>
-<div class="content table-responsive table-full-width" sortable-table (sorted)="onSorted($event)">
+<div class="content table-responsive table-full-width">
     <table class="table table-sm">
-        <thead class="thead-light">
-            <tr>
-                <th></th>
-                <th sortable-column="fullName" sort-direction="asc">ПІБ</th>
-                <th>Стать</th>
-                <th>Дата народження</th>
-                <th>Місто / село</th>
-                <th>Баланс</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let item of items; let i = index">
-            <tr (dblclick)="rows[i]=!rows[i]">
-                <td [ngStyle]="{'cursor': 'pointer'}" (click)="rows[i]=!rows[i]"><i
-                    [ngClass]="{'fa': true, 'fa-caret-right': !rows[i], 'fa-caret-down': rows[i] }"></i></td>
-                <td>{{item.person.fullName}}</td>
-                <td><i
-                    [ngClass]="{'fa': true, 'fa-mars': item.person.gender, 'fa-venus': !item.person.gender }"
-                    aria-hidden="true"></i></td>
-                <td>{{item.person.dateOfBirth | date:'dd.MM.yyyy'}}</td>
-                <td>{{item.person.town}}</td>
-                <td>{{item.balance}}</td>
-            </tr>
-            <tr [hidden]="!rows[i]">
-                <td colspan="100">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <h4 class="col-auto mr-auto">Інформація про паціента</h4>
-                                <div class="col-auto">
-                                    <button class="btn btn-primary"
-                                        [routerLink]="['/patient-form', { id: item.id }]">
-                                        Редагувати</button>
-                                    <button class="btn btn-danger"
-                                        (click)="delete(item.id, item.person.fullName)">
-                                        Видалити</button>
-                                    <button class="btn btn-info"
-                                        (click)="showAssignProcedurePopup(item.id)">
-                                        Призначити процедуру</button>
-                                    <button class="btn btn-success"
-                                        (click)="showAssignHotelPopup(item.id)">Поселити у
-                                        готель</button>
-                                    <button class="btn btn-warning" (click)="showIncomePopup(item)">
-                                        Розрахувати</button>
-                                    <a routerLink="/statistic/patient/{{item.id}}" target="_blank" *ngxPermissionsOnly="['ROLE_HEAD']">
-                                        <button class="btn btn-secondary">Статистика</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <b>Телефон:</b> {{item.person.cellPhone}}<br /> <b>Адреса:</b>
-                            {{item.person.address}}
-                        </div>
-                    </div>
-                </td>
-            </tr>
+        <tbody class="bg-secondary text-white"><tr><td colspan="2">На сьогодні:</td></tr></tbody>
+        <tbody *ngFor="let item of todayItems" class="bg-secondary text-white">
+            <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: item}"></ng-container>
+        </tbody>
+        <tbody><tr><td colspan="2">Загальний:</td></tr></tbody>
+        <tbody *ngFor="let item of items">
+            <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: item}"></ng-container>
         </tbody>
     </table>
 </div>
+<ng-template #templateRef let-item>
+    <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}">
+        <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i></td>
+        <td>{{item?.person.fullName}}</td>
+    </tr>
+    <tr [hidden]="!item.expanded">
+        <td colspan="2">
+            <div class="m-3">
+                <b>Стать:</b> <i
+                    [ngClass]="{'fa': true, 'fa-mars': item?.person.gender, 'fa-venus': !item?.person.gender }"
+                    aria-hidden="true"></i> {{item?.person.gender ? 'чол.' : 'жін.'}}<br /> <b>Дата
+                    народження:</b> {{item?.person.dateOfBirth | date:'dd.MM.yyyy'}}<br /> <b>Місто /
+                    село:</b> {{item?.person.town}}<br /> <b>Телефон:</b> {{item?.person.cellPhone}}<br /> <b>Адреса:</b>
+                {{item?.person.address}}<br /> <br /> <b>Баланс:</b> {{item?.balance}} грн.
+            </div>
+            <div class="m-3">
+                <button class="btn btn-primary m-1" [routerLink]="['/patient-form', { id: item?.id }]">Редагувати</button>
+                <button class="btn btn-danger m-1" (click)="delete(item?.id, item?.person.fullName)">Видалити</button>
+                <button class="btn btn-info m-1" (click)="showAssignProcedurePopup(item?.id)">
+                    Призначити процедуру</button>
+                <button class="btn btn-success m-1" (click)="showAssignHotelPopup(item?.id)">Поселити
+                    у готель</button>
+                <button class="btn btn-warning m-1" (click)="showIncomePopup(item)">
+                    Розрахувати</button>
+                <a routerLink="/statistic/patient/{{item?.id}}" *ngxPermissionsOnly="['ROLE_HEAD']">
+                    <button class="btn btn-secondary m-1">Статистика</button>
+                </a>
+            </div>
+        </td>
+    </tr>
+</ng-template>

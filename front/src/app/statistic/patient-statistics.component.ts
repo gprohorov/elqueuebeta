@@ -33,7 +33,6 @@ export class PatientStatisticsComponent implements OnInit, OnDestroy {
     
     load() {
         this.sub = this.service.getPatientStatistics(this.patientId).subscribe(data => { 
-            console.log(data);
             this.data = data;
         });
     }
