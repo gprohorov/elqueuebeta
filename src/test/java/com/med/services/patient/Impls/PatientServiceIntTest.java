@@ -87,15 +87,15 @@ public class PatientServiceIntTest {
 
         LocalDate TALON_DATE_3 = LocalDate.now().plusDays(3);
 
-        Procedure DEFAULT_PROCDURE = new Procedure();
+        Procedure DEFAULT_PROCEDURE = new Procedure();
 
-        Talon DEFAULT_TALON_1 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_1, DEFAULT_PROCDURE, 1, null,
+        Talon DEFAULT_TALON_1 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_1, DEFAULT_PROCEDURE, 1, null,
             null, null, 1);
 
-        Talon DEFAULT_TALON_2 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_2, DEFAULT_PROCDURE, 1, null,
+        Talon DEFAULT_TALON_2 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_2, DEFAULT_PROCEDURE, 1, null,
             null, null, 1);
 
-        Talon DEFAULT_TALON_3 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_3, DEFAULT_PROCDURE, 1, null,
+        Talon DEFAULT_TALON_3 = new Talon(null, TestConstants.DEFAULT_ID, TALON_DATE_3, DEFAULT_PROCEDURE, 1, null,
             null, null, 1);
     }
 
