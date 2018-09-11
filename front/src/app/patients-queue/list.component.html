@@ -80,7 +80,7 @@
                         ? item.delta + ' хв.' : ''}}</span></td>
                 <td>{{item.startActivity | date: 'HH:mm'}}</td>
                 <td>{{item.appointed}}:00</td>
-                <td>{{item?.dayOfCure}}</td>
+                <td>{{item?.days}}</td>
             </tr>
             <tr [hidden]="!item.expanded">
                 <td colspan="100">
