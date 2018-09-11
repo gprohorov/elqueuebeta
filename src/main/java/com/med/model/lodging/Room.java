@@ -1,7 +1,5 @@
 package com.med.model.lodging;
 
-import java.util.List;
-
 /**
  * Created by george on 26.08.18.
  */
@@ -9,17 +7,16 @@ public class Room {
     private int id;
     private  String name;
     private String desc;
-    private List<Roomer> roomers;
     private int price;
 
     public Room() {
     }
 
-    public Room(int id, String name, String desc, List<Roomer> roomers, int price) {
+    public Room(int id, String name, String desc, int price) {
         this.id = id;
         this.name = name;
         this.desc = desc;
-        this.roomers = roomers;
+
         this.price = price;
     }
 
@@ -45,14 +42,6 @@ public class Room {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public List<Roomer> getRoomers() {
-        return roomers;
-    }
-
-    public void setRoomers(List<Roomer> roomers) {
-        this.roomers = roomers;
     }
 
     public int getPrice() {

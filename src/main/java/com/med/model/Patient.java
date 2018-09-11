@@ -34,6 +34,7 @@ public class Patient { // implements Comparable<Patient> {
     private Status status = Status.SOCIAL;
     private int balance;
     private LocalDateTime registration;
+    private int days=0;
     @Transient
     private Talon talon;
 
@@ -66,6 +67,14 @@ public class Patient { // implements Comparable<Patient> {
         this.talons = new ArrayList<>();
         this.person = person;
         this.registration = LocalDateTime.now();
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 
     public Talon getTalon() {

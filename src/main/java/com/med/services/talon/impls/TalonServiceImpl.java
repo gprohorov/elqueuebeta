@@ -212,6 +212,8 @@ public class TalonServiceImpl implements ITalonService {
                     patient.setStartActivity(LocalDateTime.now());
                     patient.setLastActivity(LocalDateTime.now());
                 }
+                int days = this.calculateDays(talon.getPatientId());
+                 patient.setDays(days);
                 patientService.savePatient(patient);
             }
         }
@@ -497,10 +499,16 @@ public class TalonServiceImpl implements ITalonService {
                .mapToInt(Accounting::getSum).sum();
        receipt.setDiscount(discount);
 
-
-
-
-
         return receipt;
+    }
+
+    private int  calculateDays(String patientId){
+
+        List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo
+               (patientId, LocalDate.now().minusDays(21), LocalDate.now());
+        int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
+
+
+        return days;
     }
 }
