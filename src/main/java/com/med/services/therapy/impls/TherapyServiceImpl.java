@@ -190,7 +190,11 @@ public class TherapyServiceImpl implements ITherapyService {
 			
 			manualTherapyTalon.setProcedure(manual);
 			manualTherapyTalon.setPatientId(patient.getId());
-			manualTherapyTalon.setSum(manual.getSOCIAL());
+
+			int sum = this.getPrice(patient.getStatus());
+
+			manualTherapyTalon.setSum(sum);
+
 			manualTherapyTalon.setDate(LocalDate.now());
 			manualTherapyTalon.setZones(1);
 			manualTherapyTalon.setDoctor(talon.getDoctor());
@@ -291,5 +295,34 @@ public class TherapyServiceImpl implements ITherapyService {
 
 		return talons;
 	}
+
+
+	private int getPrice(Status status){
+		int price ;
+		Procedure procedure = procedureService.getProcedure(3);
+		switch (status){
+
+			case SOCIAL: price= procedure.getSOCIAL();
+				break;
+
+			case VIP: price= procedure.getVIP();
+				break;
+
+			case ALL_INCLUSIVE: price= procedure.getALL_INCLUSIVE();
+				break;
+
+			case BUSINESS: price= procedure.getBUSINESS();
+				break;
+
+			case FOREIGN:    price=procedure.getFOREIGN();
+				break;
+
+			default:price=procedure.getSOCIAL();
+				break;
+		}
+		return price;
+	}
+
+
 
 }

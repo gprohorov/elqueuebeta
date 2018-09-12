@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -212,8 +212,6 @@ public class TalonServiceImpl implements ITalonService {
                     patient.setStartActivity(LocalDateTime.now());
                     patient.setLastActivity(LocalDateTime.now());
                 }
-                int days = this.calculateDays(talon.getPatientId());
-                 patient.setDays(days);
                 patientService.savePatient(patient);
             }
         }
@@ -237,6 +235,11 @@ public class TalonServiceImpl implements ITalonService {
               this.setActivity(talon.getId(), Activity.ACTIVE);
           }
           );
+          int days = this.calculateDays(patientId);
+          Patient patient = patientService.getPatient(patientId);
+          patient.setDays(days);
+          patientService.savePatient(patient);
+
       }else talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
 
       if (activity.equals(Activity.NON_ACTIVE)){
@@ -246,7 +249,7 @@ public class TalonServiceImpl implements ITalonService {
           patientService.savePatient(patient);
       }
 
-      logger.info(">>>> activate talons >>>>>>    " + ChronoUnit.MILLIS.between( start, LocalDateTime.now()) + "ms");
+    //  logger.info(">>>> activate talons >>>>>>    " + ChronoUnit.MILLIS.between( start, LocalDateTime.now()) + "ms");
     }
 
 
@@ -502,13 +505,20 @@ public class TalonServiceImpl implements ITalonService {
         return receipt;
     }
 
+
+    //// 11 Sept
     private int  calculateDays(String patientId){
 
         List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo
                (patientId, LocalDate.now().minusDays(21), LocalDate.now());
-        int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
 
 
-        return days;
+        LocalDate start = talons.stream()
+                .filter(talon -> talon.getProcedure().getId()!=2)
+                .map(talon -> talon.getDate())
+                .sorted().findFirst().orElse(LocalDate.now());
+        int days = Period.between(start, LocalDate.now()).getDays();
+
+        return days+1;
     }
 }
