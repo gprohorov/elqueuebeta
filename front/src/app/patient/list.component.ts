@@ -46,7 +46,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     showAssignProcedurePopup(patientId: string) {
-        const patient = this.items.filter(x => patientId == x.id)[0];
+        let patient = this.items.filter(x => patientId == x.id)[0];
+        if (!patient) patient = this.todayItems.filter(x => patientId == x.id)[0];
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
@@ -55,7 +56,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     showAssignHotelPopup(patientId: string) {
-        const patient = this.items.filter(x => patientId == x.id)[0];
+        let patient = this.items.filter(x => patientId == x.id)[0];
+        if (!patient) patient = this.todayItems.filter(x => patientId == x.id)[0];
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignHotelModalComponent,
