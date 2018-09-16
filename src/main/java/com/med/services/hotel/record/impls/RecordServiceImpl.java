@@ -72,6 +72,10 @@ public class RecordServiceImpl implements IRecordService {
         accounting.setDesc("готель :  поселення + 1 доба"  + " - " + record.getPrice());
         accountingService.createAccounting(accounting);
 
+        Patient patient = patientService.getPatient(recordDto.getPatientId());
+        patient.setHotel(true);
+        patientService.savePatient(patient);
+
 
         return this.createRecord(record);
     }
