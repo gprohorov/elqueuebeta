@@ -63,14 +63,7 @@ public class RecordServiceImpl implements IRecordService {
         record.setPrice(recordDto.getPrice());
         record.setState(recordDto.getState());
 
-        Accounting accounting = new Accounting();
-        accounting.setPayment(PaymentType.HOTEL);
-        accounting.setDate(LocalDate.now());
-        accounting.setDateTime(LocalDateTime.now());
-        accounting.setPatientId(record.getPatientId());
-        accounting.setKoikaId(record.getKoika().getId());
-        accounting.setSum(-1*record.getPrice());
-        accounting.setDesc("готель :  поселення + 1 доба"  + " - " + record.getPrice());
+        Accounting accounting = this.createAccounting(record, LocalDate.now());
         accountingService.createAccounting(accounting);
 
         Patient patient = patientService.getPatient(recordDto.getPatientId());
@@ -253,7 +246,6 @@ public class RecordServiceImpl implements IRecordService {
         List<KoikaRecord> map = new ArrayList<>();
 
         koikaService.getAll().stream().forEach(koika -> {
-
             KoikaRecord koikaRecord = new KoikaRecord();
             List<Record> list = repository.findByKoika(koika).stream()
                     .filter(record -> record.getFinish().isAfter(LocalDateTime.now().minusDays(1)))
@@ -273,7 +265,8 @@ public class RecordServiceImpl implements IRecordService {
 
         return map;
     }
-// 12 Sept
+    
+    // 12 Sept
     public void recalculate() {
         System.out.println("Recalculate was called ---------------------");
         int days = Period.between(this.getTheDateOfTheLastMonitoring(), LocalDate.now()).getDays();
@@ -283,11 +276,9 @@ public class RecordServiceImpl implements IRecordService {
              accountings = this.generateAllHotelBillsForDate(LocalDate.now().minusDays(i));
              accountingService.saveAll(accountings);
         }
-
     }
 
     private LocalDate getTheDateOfTheLastMonitoring(){
-
         LocalDate lastDate = accountingService.getAllFrom(LocalDate.now().minusDays(4)).stream()
                 .filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
                 .map(Accounting::getDate)
@@ -303,20 +294,25 @@ public class RecordServiceImpl implements IRecordService {
         repository.findByFinishGreaterThan(date.atTime(8,0).minusDays(1)).stream()
                 .filter(record -> record.getState().equals(State.OCCUP))
                 .forEach(record -> {
-                    System.out.println(record.getId());
-                    Accounting accounting = new Accounting();
-                    accounting.setPayment(PaymentType.HOTEL);
-                    accounting.setDate(date);
-                    accounting.setDateTime(date.atTime(8,0));
-                   // accounting.setDoctorId(0);
-                    accounting.setPatientId(record.getPatientId());
-                    accounting.setKoikaId(record.getKoika().getId());
-                    accounting.setSum(-1*record.getPrice());
-                    accounting.setDesc("Проживання у готелі за " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                	Accounting accounting = this.createAccounting(record, date);
                     list.add(accounting);
                 });
 
         return list;
     }
+    
+    private Accounting createAccounting(Record record, LocalDate date) {
+    	System.out.println(record.getId());
+        Accounting accounting = new Accounting();
+        accounting.setPayment(PaymentType.HOTEL);
+        accounting.setDate(date);
+        accounting.setDateTime(date.atTime(8,0));
+       // accounting.setDoctorId(0);
+        accounting.setPatientId(record.getPatientId());
+        accounting.setKoikaId(record.getKoika().getId());
+        accounting.setSum(-1*record.getPrice());
+        accounting.setDesc("Проживання у готелі за " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		return accounting;
+	}
 
 }
