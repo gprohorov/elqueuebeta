@@ -62,6 +62,17 @@ public class RecordServiceImpl implements IRecordService {
         record.setPrice(recordDto.getPrice());
         record.setState(recordDto.getState());
 
+        Accounting accounting = new Accounting();
+        accounting.setPayment(PaymentType.HOTEL);
+        accounting.setDate(LocalDate.now());
+        accounting.setDateTime(LocalDateTime.now());
+        accounting.setPatientId(record.getPatientId());
+        accounting.setKoikaId(record.getKoika().getId());
+        accounting.setSum(-1*record.getPrice());
+        accounting.setDesc("готель :  поселення + 1 доба"  + " - " + record.getPrice());
+        accountingService.createAccounting(accounting);
+
+
         return this.createRecord(record);
     }
 
@@ -259,13 +270,13 @@ public class RecordServiceImpl implements IRecordService {
     }
 // 12 Sept
     public void recalculate() {
-
-        int days = Period.between(LocalDate.now(),this.getTheDateOfTheLastMonitoring()).getDays();
+        System.out.println("Recalculate was called ---------------------");
+        int days = Period.between(this.getTheDateOfTheLastMonitoring(), LocalDate.now()).getDays();
+        System.out.println(days);
         List<Accounting> accountings = new ArrayList<>();
         for (int i =0; i<days; i++ ){
-             accountings = this.generateAllHotelBillsForDate(LocalDate.now());
+             accountings = this.generateAllHotelBillsForDate(LocalDate.now().minusDays(i));
              accountingService.saveAll(accountings);
-
         }
 
     }
@@ -282,19 +293,22 @@ public class RecordServiceImpl implements IRecordService {
 
     private List<Accounting> generateAllHotelBillsForDate(LocalDate date){
         List<Accounting> list = new ArrayList<>();
+        System.out.println("generate bills for the date : " + date.toString());
 
         repository.findAll().stream()
                 .filter(record -> record.getState().equals(State.OCCUP))
                 .forEach(record -> {
+                    System.out.println(record.getId());
                     Accounting accounting = new Accounting();
                     accounting.setPayment(PaymentType.HOTEL);
-                    accounting.setDate(LocalDate.now());
-                    accounting.setDateTime(LocalDateTime.now());
+                    accounting.setDate(date);
+                    accounting.setDateTime(date.atTime(8,0));
                    // accounting.setDoctorId(0);
                     accounting.setPatientId(record.getPatientId());
                     accounting.setKoikaId(record.getKoika().getId());
-                    accounting.setSum(record.getPrice());
-                    accounting.setDesc("hotel : " + LocalDate.now() + " - " + record.getPrice());
+                    accounting.setSum(-1*record.getPrice());
+                    accounting.setDesc("готель 1 доба : " + " - " + record.getPrice());
+                    list.add(accounting);
                 });
 
         return list;

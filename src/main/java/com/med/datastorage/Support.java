@@ -21,7 +21,7 @@ public class Support {
 
 
     public void check() {
-        System.out.println("-------------------------Checking was called");
+        System.out.println("-----------------Checking was called");
         System.out.println(this.getLastMonitoring());
         if (this.getLastMonitoring() == null
                 || this.getLastMonitoring().isBefore(LocalDate.now())) {
@@ -31,14 +31,12 @@ public class Support {
 
     private void run() {
         // Your tasks here
-      //  recordService.recalculate();
-        System.out.println("--------------Runing");
-
+        recordService.recalculate();
         this.setLastMonitoring(LocalDate.now());
     }
 
     public LocalDate getLastMonitoring() {
-        return lastMonitoring;
+        return this.lastMonitoring;
     }
 
     public void setLastMonitoring(LocalDate lastMonitoring) {

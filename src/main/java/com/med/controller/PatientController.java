@@ -213,7 +213,7 @@ public class PatientController {
     	return null;
     }
 
-    @PostMapping("/hotel/record/create")
+    @PostMapping("/hotel/record/")
     public Record createRecord(@Valid @RequestBody Record record) {
     	return recordService.createRecord(record);
     }
