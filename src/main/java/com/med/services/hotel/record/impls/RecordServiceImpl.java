@@ -256,4 +256,23 @@ public class RecordServiceImpl implements IRecordService {
 
         return map;
     }
+// 12 Sept
+    public void recalculate() {
+        List<Record> records = repository
+                .findByStartGreaterThan(LocalDateTime.now().minusDays(30));
+        List<Accounting> accountings = accountingService
+                .getAllFrom(LocalDate.now().minusDays(30))
+                .stream().filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
+                .collect(Collectors.toList());
+    }
+
+    private LocalDate getTheDateOfTheLastMonitoring(){
+/*
+        LocalDate lastDate = accountingService.getAllFrom(LocalDate.now().minusDays(4))
+                .stream().map(Accounting::getDate).max();
+*/
+
+        return null;
+    }
+
 }

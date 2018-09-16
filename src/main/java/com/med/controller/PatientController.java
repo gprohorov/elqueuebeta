@@ -213,10 +213,24 @@ public class PatientController {
     	return null;
     }
 
-    @PostMapping("/hotel/record/")
+    @PostMapping("/hotel/record/create")
     public Record createRecord(@Valid @RequestBody Record record) {
     	return recordService.createRecord(record);
     }
+
+    @GetMapping("/hotel/record/get/{recordId}")
+    public Record getRecord(@PathVariable(value = "recordId") String recordId) {
+    	return recordService.getRecord(recordId);
+    }
+
+
+    @PostMapping("/hotel/record/update/")
+    public Record updateRecord(@Valid @RequestBody Record record) {
+    	return recordService.updateRecord(record);
+    }
+
+
+
 
     @GetMapping("/bye/{patientId}")
     public Patient bye(

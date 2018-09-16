@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.config.JwtTokenUtil;
+import com.med.datastorage.Support;
 import com.med.model.Doctor;
 import com.med.model.LoginUser;
 import com.med.model.User;
@@ -32,8 +33,13 @@ public class AuthenticationController {
     @Autowired
     private DoctorServiceImpl doctorService;
 
+    @Autowired
+    private Support supportBean;
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+
+        supportBean.check();
 
      //   BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
       //  System.out.println(encoder.encode("massage"));

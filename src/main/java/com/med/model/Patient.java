@@ -35,6 +35,7 @@ public class Patient { // implements Comparable<Patient> {
     private int balance;
     private LocalDateTime registration;
     private int days=0;
+    private boolean isHotel;
     @Transient
     private Talon talon;
 
@@ -67,6 +68,14 @@ public class Patient { // implements Comparable<Patient> {
         this.talons = new ArrayList<>();
         this.person = person;
         this.registration = LocalDateTime.now();
+    }
+
+    public boolean isHotel() {
+        return isHotel;
+    }
+
+    public void setHotel(boolean hotel) {
+        isHotel = hotel;
     }
 
     public int getDays() {
