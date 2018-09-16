@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -278,7 +279,7 @@ public class RecordServiceImpl implements IRecordService {
         int days = Period.between(this.getTheDateOfTheLastMonitoring(), LocalDate.now()).getDays();
         System.out.println(days);
         List<Accounting> accountings = new ArrayList<>();
-        for (int i =0; i<days; i++ ){
+        for (int i = 0; i < days; i++ ){
              accountings = this.generateAllHotelBillsForDate(LocalDate.now().minusDays(i));
              accountingService.saveAll(accountings);
         }
@@ -297,9 +298,9 @@ public class RecordServiceImpl implements IRecordService {
 
     private List<Accounting> generateAllHotelBillsForDate(LocalDate date){
         List<Accounting> list = new ArrayList<>();
-        System.out.println("generate bills for the date : " + date.toString());
+        System.out.println("generate bills for " + date.toString());
 
-        repository.findAll().stream()
+        repository.findByFinishGreaterThan(date.atTime(8,0).minusDays(1)).stream()
                 .filter(record -> record.getState().equals(State.OCCUP))
                 .forEach(record -> {
                     System.out.println(record.getId());
@@ -311,7 +312,7 @@ public class RecordServiceImpl implements IRecordService {
                     accounting.setPatientId(record.getPatientId());
                     accounting.setKoikaId(record.getKoika().getId());
                     accounting.setSum(-1*record.getPrice());
-                    accounting.setDesc("готель 1 доба : " + " - " + record.getPrice());
+                    accounting.setDesc("Проживання у готелі за " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
                     list.add(accounting);
                 });
 

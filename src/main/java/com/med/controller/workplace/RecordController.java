@@ -51,7 +51,6 @@ public class RecordController {
 
     // CREATE a new Record
     @PostMapping("/record/create")
-
     public Record createRecord(@Valid @RequestBody RecordDto recordDto) {
         return service.createRecordFromDto(recordDto);
     }

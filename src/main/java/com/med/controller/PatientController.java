@@ -4,6 +4,7 @@ import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
 import com.med.model.hotel.Record;
+import com.med.model.hotel.dto.RecordDto;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -213,9 +214,9 @@ public class PatientController {
     	return null;
     }
 
-    @PostMapping("/hotel/record/")
-    public Record createRecord(@Valid @RequestBody Record record) {
-    	return recordService.createRecord(record);
+    @PostMapping("/hotel/record/create/")
+    public Record createRecord(@Valid @RequestBody RecordDto record) {
+    	return recordService.createRecordFromDto(record);
     }
 
     @GetMapping("/hotel/record/get/{recordId}")

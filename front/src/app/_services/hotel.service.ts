@@ -12,7 +12,7 @@ export class HotelService {
     private bookingUrl = config.api_path + '/workplace/hotel/booking/';
     private koikaMapUrl = config.api_path + '/workplace/hotel/koika/map/';
     private koikaListUrl = config.api_path + '/workplace/hotel/koika/list/';
-    private createRecordUrl = config.api_path + '/workplace/hotel/record/create/';
+    private createRecordUrl = config.api_path + '/patient/hotel/record/create/';
 
     constructor(private http: HttpClient) { }
 
