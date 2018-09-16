@@ -36,13 +36,15 @@ public class AccountingServiceImpl implements IAccountingService {
         repository.save(accounting);
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
-        //patientService.patientBye(patient.getId());
         patientService.savePatient(patient);
         return accounting ;
     }
 
     public List<Accounting> saveAll(List<Accounting> accountings){
-        return repository.saveAll(accountings);
+        for (Accounting accounting:accountings){
+            this.createAccounting(accounting);
+        }
+        return accountings;
     }
 
     @Override

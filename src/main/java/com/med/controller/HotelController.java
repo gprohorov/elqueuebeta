@@ -1,24 +1,23 @@
 package com.med.controller;
 
-import com.med.model.hotel.Record;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by george on 3/9/18.
  */
 @RestController
-@RequestMapping("/api/hotel")
+@RequestMapping("/api")
 @CrossOrigin("*")
-public class RecordController {
+public class HotelController {
 
     @Autowired
     RecordServiceImpl service;
 
-    @PostMapping("/record/create")
+  /*  @PostMapping("/record/create")
     public Record createRecord(@Valid @RequestBody Record record) {
         return service.createRecord(record);
     }
@@ -33,6 +32,6 @@ public class RecordController {
     public Record updateRecord(@Valid @RequestBody Record record) {
         return service.updateRecord(record);
     }
-
+*/
 
 }

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -258,21 +259,45 @@ public class RecordServiceImpl implements IRecordService {
     }
 // 12 Sept
     public void recalculate() {
-        List<Record> records = repository
-                .findByStartGreaterThan(LocalDateTime.now().minusDays(30));
-        List<Accounting> accountings = accountingService
-                .getAllFrom(LocalDate.now().minusDays(30))
-                .stream().filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
-                .collect(Collectors.toList());
+
+        int days = Period.between(LocalDate.now(),this.getTheDateOfTheLastMonitoring()).getDays();
+        List<Accounting> accountings = new ArrayList<>();
+        for (int i =0; i<days; i++ ){
+             accountings = this.generateAllHotelBillsForDate(LocalDate.now());
+             accountingService.saveAll(accountings);
+
+        }
+
     }
 
     private LocalDate getTheDateOfTheLastMonitoring(){
-/*
-        LocalDate lastDate = accountingService.getAllFrom(LocalDate.now().minusDays(4))
-                .stream().map(Accounting::getDate).max();
-*/
 
-        return null;
+        LocalDate lastDate = accountingService.getAllFrom(LocalDate.now().minusDays(4)).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
+                .map(Accounting::getDate)
+                .max(Comparator.comparing(LocalDate::toEpochDay))
+                .orElse(LocalDate.now());
+        return lastDate;
+    }
+
+    private List<Accounting> generateAllHotelBillsForDate(LocalDate date){
+        List<Accounting> list = new ArrayList<>();
+
+        repository.findAll().stream()
+                .filter(record -> record.getState().equals(State.OCCUP))
+                .forEach(record -> {
+                    Accounting accounting = new Accounting();
+                    accounting.setPayment(PaymentType.HOTEL);
+                    accounting.setDate(LocalDate.now());
+                    accounting.setDateTime(LocalDateTime.now());
+                   // accounting.setDoctorId(0);
+                    accounting.setPatientId(record.getPatientId());
+                    accounting.setKoikaId(record.getKoika().getId());
+                    accounting.setSum(record.getPrice());
+                    accounting.setDesc("hotel : " + LocalDate.now() + " - " + record.getPrice());
+                });
+
+        return list;
     }
 
 }
