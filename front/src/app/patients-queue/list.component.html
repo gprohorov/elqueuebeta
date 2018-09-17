@@ -7,20 +7,25 @@
 <div class="row">
     <div class="col">
         <div class="btn-group mb-3" role="group">
-            <button type="button" class="btn btn-secondary"
-                [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
-                (click)="filters = 'active'">
-                Активні <span class="badge badge-light ml-3">{{activePatients}}</span>
-            </button>
             <button type="button"
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
                 (click)="filters = 'all'">
                 Усі <span class="badge badge-light ml-3">{{totalPatients}}</span>
             </button>
-            <button type="button" class="btn btn-secondary"
+            <button type="button" 
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'active', 'btn-secondary': filters != 'active'}"
+                (click)="filters = 'active'">
+                Активні <span class="badge badge-light ml-3">{{activePatients}}</span>
+            </button>
+            <button type="button" 
                 [ngClass]="{'btn': true, 'btn-primary': filters == 'notactive', 'btn-secondary': filters != 'notactive'}"
                 (click)="filters = 'notactive'">
                 Не активні <span class="badge badge-light ml-3">{{notActivePatients}}</span>
+            </button>
+            <button type="button" 
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'hotel', 'btn-secondary': filters != 'hotel'}"
+                (click)="filters = 'hotel'">
+                Готельні <span class="badge badge-light ml-3">{{hotelPatients}}</span>
             </button>
         </div>
     </div>

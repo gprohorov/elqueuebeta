@@ -324,7 +324,7 @@ public class RecordServiceImpl implements IRecordService {
         accounting.setPatientId(record.getPatientId());
         accounting.setKoikaId(record.getKoika().getId());
         accounting.setSum(-1*record.getPrice());
-        accounting.setDesc("Проживання у готелі за " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        accounting.setDesc("Проживання у готелі");
 		return accounting;
 	}
 
