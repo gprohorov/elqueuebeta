@@ -1,5 +1,7 @@
 package com.med.model.hotel.dto;
 
+import java.time.LocalDate;
+
 import com.med.model.hotel.State;
 
 /**
@@ -63,6 +65,10 @@ public class RecordDto {
     public String getStart() {
         return start;
     }
+    
+    public LocalDate getStartDate() {
+        return LocalDate.parse(start);
+    }
 
     public void setStart(String start) {
     	this.start = start;
@@ -74,6 +80,10 @@ public class RecordDto {
     
     public void setFinish(String finish) {
     	this.finish = finish;
+    }
+    
+    public LocalDate getFinishDate() {
+        return LocalDate.parse(finish);
     }
 
     public State getState() {

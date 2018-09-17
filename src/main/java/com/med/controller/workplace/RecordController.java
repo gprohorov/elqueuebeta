@@ -54,4 +54,10 @@ public class RecordController {
     public Record createRecord(@Valid @RequestBody RecordDto recordDto) {
         return service.createRecordFromDto(recordDto);
     }
+    
+    @GetMapping("/record/cancel/{recordId}")
+    public String cancelRecord(@PathVariable(value = "recordId") String recordId) {
+    	service.cancelRecord(recordId);
+    	return null;
+    }
 }

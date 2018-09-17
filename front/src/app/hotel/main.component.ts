@@ -12,6 +12,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     loading = false;
     sub: Subscription;
+    subDel: Subscription;
     items: any[] = [];
     dates: any[] = [];
     HotelState = HotelState;
@@ -28,6 +29,13 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+        if (this.subDel) this.subDel.unsubscribe();
+    }
+    
+    cancel(recordId) {
+        if (confirm('Видалити запис?')) {
+            this.subDel = this.service.cancelRecord(recordId).subscribe(data => { this.load(); });
+        }
     }
     
     load() {
@@ -50,12 +58,13 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                     let start:any = new Date(record.start);
                     let finish:any = new Date(record.finish);
                     let delta:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
-                    console.log(start, finish, delta);
+                    // console.log(start, finish, delta);
                     let currentDay = null;
                     for (let i = 0; i < 30; i++) {
                         currentDay = this.dates[i].date;
                         if (line[i] == undefined) line[i] = {state: 'FREE', name: '&nbsp;'};
                         if (start <= currentDay && finish >= currentDay) {
+                            line[i].id = record.id;
                             line[i].state = record.state;
                             line[i].name = record.koika.patient.person.fullName;
                         }

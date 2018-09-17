@@ -13,6 +13,7 @@ export class HotelService {
     private koikaMapUrl = config.api_path + '/workplace/hotel/koika/map/';
     private koikaListUrl = config.api_path + '/workplace/hotel/koika/list/';
     private createRecordUrl = config.api_path + '/patient/hotel/record/create/';
+    private cancelRecordUrl = config.api_path + '/workplace/hotel/record/cancel/';
 
     constructor(private http: HttpClient) { }
 
@@ -30,6 +31,10 @@ export class HotelService {
 
     createRecord(record: any) {
         return this.http.post(this.createRecordUrl, record).pipe(catchError(this.handleError));
+    }
+    
+    cancelRecord(recordId: string) {
+        return this.http.get(this.cancelRecordUrl + recordId).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

@@ -51,7 +51,10 @@ public class RecordServiceImpl implements IRecordService {
     public Record createRecord(Record record) {
         return repository.save(record);
     }
-
+    
+    public void cancelRecord(String recordId) {
+    	repository.deleteById(recordId);
+    }
 
     public Record createRecordFromDto(@Valid RecordDto recordDto) {
         Record record = new Record();
@@ -67,7 +70,12 @@ public class RecordServiceImpl implements IRecordService {
         accountingService.createAccounting(accounting);
 
         Patient patient = patientService.getPatient(recordDto.getPatientId());
-        patient.setHotel(true);
+        if (recordDto.getState().equals(State.OCCUP) 
+    		&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1)) 
+    		&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
+    		) {
+        	patient.setHotel(true);
+        }
         patientService.savePatient(patient);
 
 

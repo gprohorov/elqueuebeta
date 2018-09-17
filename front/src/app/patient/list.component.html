@@ -33,7 +33,7 @@
 <ng-template #templateRef let-item>
     <tr (click)="item.expanded=!item.expanded" id="row-{{item.id}}" [ngStyle]="{'cursor': 'pointer'}">
         <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i></td>
-        <td>{{item?.person.fullName}}</td>
+        <td>{{item?.person.fullName}}&nbsp;<i *ngIf="item?.hotel" class="fa fa-bed text-success" aria-hidden="true"></i></td>
     </tr>
     <tr [hidden]="!item.expanded">
         <td colspan="2">
@@ -50,10 +50,8 @@
                 <button class="btn btn-danger m-1" (click)="delete(item?.id, item?.person.fullName)">Видалити</button>
                 <button class="btn btn-info m-1" (click)="showAssignProcedurePopup(item?.id)">
                     Призначити процедуру</button>
-                <button class="btn btn-success m-1" (click)="showAssignHotelPopup(item.id)">Поселити
-                    у готель</button>
-                <button class="btn btn-warning m-1" (click)="showIncomePopup(item)">
-                    Розрахувати</button>
+                <button class="btn btn-success m-1" (click)="showAssignHotelPopup(item.id)">Поселити у готель</button>
+                <button class="btn btn-warning m-1" (click)="showIncomePopup(item)">Розрахувати</button>
                 <a routerLink="/statistic/patient/{{item?.id}}" *ngxPermissionsOnly="['ROLE_HEAD']">
                     <button class="btn btn-secondary m-1">Статистика</button>
                 </a>

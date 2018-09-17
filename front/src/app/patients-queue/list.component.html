@@ -55,6 +55,7 @@
             <tr>
                 <th></th>
                 <th [style.min-width.px]="300">ПІБ</th>
+                <th>Готель</th>
                 <th>Активність</th>
                 <th>Статус</th>
                 <th>Баланс</th>
@@ -71,6 +72,7 @@
                 [ngClass]="{'table-secondary': item.appointed % 2 != 0}">
                 <td><i [ngClass]="{'fa': true, 'fa-caret-right': !item.expanded, 'fa-caret-down': item.expanded }"></i></td>
                 <td>{{item.person.fullName}}</td>
+                <td><i *ngIf="item?.hotel" class="fa fa-bed text-success" aria-hidden="true"></i></td>
                 <td><span class="badge badge-{{Activity[item.activity]?.cssClass}}">
                         {{Activity[item.activity]?.text}}</span></td>
                 <td>{{Status[item.status].text}}</td>
@@ -86,7 +88,7 @@
                 <td colspan="100">
                     <div class="card">
                         <div class="card-header">
-                            <div class="row">
+                            <div class="row form-inline">
                                 <h4 class="col-auto">Процедури</h4>
                                 <div class="col-auto">
                                     <button class="btn btn-info"
@@ -97,9 +99,10 @@
                                     <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
                                 </div>
                                 <div class="col-auto">
-                                    <button class="btn btn-info"
-                                        (click)="showAssignProceduresOnDatePopup(item)">Наступна
-                                        дата</button>
+                                    <button class="btn btn-info" (click)="showAssignProceduresOnDatePopup(item)">Наступна дата</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-success" (click)="showAssignHotelPopup(item)">Поселити у готель</button>
                                 </div>
                                 <div class="col-auto">
                                     <button class="btn btn-warning">Чек</button>
@@ -107,7 +110,7 @@
                                 <div class="col-auto">
                                     <a class="btn btn-info" target="_blank" routerLink="/receipt/{{item.id}}">Виписка</a>
                                 </div>
-                                <div class="col-auto ml-auto">
+                                <div class="col-auto ml-auto mt-3">
                                     <button
                                         title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-success text-white"

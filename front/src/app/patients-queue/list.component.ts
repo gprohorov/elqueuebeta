@@ -11,6 +11,7 @@ import { AlertService, PatientsQueueService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
 import { PatientAssignProceduresOnDateModalComponent } from '../patient/assign-procedures-on-date.modal.component';
+import { PatientAssignHotelModalComponent } from '../patient/assign-hotel.modal.component';
 import { CreatePatientModalComponent } from '../patient/create-patient.modal.component';
 
 @Component({
@@ -112,6 +113,17 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data: { patientId: item.id, patientName: item.person.fullName },
             closeDialogSubject: null 
         };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(item.id); });
+    }
+    
+    showAssignHotelPopup(item: any) {
+        let options = {
+            title: 'Пацієнт: ' + item.person.fullName,
+            childComponent: PatientAssignHotelModalComponent,
+            data: { patientId: item.id, patientName: item.person.fullName },
+            closeDialogSubject: null 
+        }
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }

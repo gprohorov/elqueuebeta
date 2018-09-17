@@ -22,7 +22,10 @@
                     [style.width.em]="4">{{item.koika.name}}</th>
                 <td *ngFor="let date of item.line"
                     class="text-light bg-{{HotelState[date.state].cssClass}}"
-                    title="{{HotelState[date.state].text}}">{{date.name}}</td>
+                    title="{{HotelState[date.state].text}}">
+                    <button class="btn btn-light btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
+                        title="Видалити запис"><i class="fa fa-trash fa-lg text-danger"></i></button>
+                    {{date.name}}</td>
             </tr>
         </tbody>
     </table>
