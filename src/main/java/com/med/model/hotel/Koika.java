@@ -30,6 +30,13 @@ public class Koika {
         this.patient = patient;
     }
 
+    public Koika(int id, String name, Chamber chamber, int price) {
+        this.id = id;
+        this.name = name;
+        this.chamber = chamber;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }

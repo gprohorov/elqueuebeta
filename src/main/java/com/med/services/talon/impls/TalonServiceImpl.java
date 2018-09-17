@@ -510,15 +510,17 @@ public class TalonServiceImpl implements ITalonService {
     private int  calculateDays(String patientId){
 
         List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo
-               (patientId, LocalDate.now().minusDays(21), LocalDate.now());
-
+               (patientId, LocalDate.now().minusDays(21), LocalDate.now())
+                .stream().filter(talon -> talon.getProcedure().getId()!=2)
+                .collect(Collectors.toList());
+        if (talons.isEmpty()) return 0;
 
         LocalDate start = talons.stream()
-                .filter(talon -> talon.getProcedure().getId()!=2)
-                .map(talon -> talon.getDate())
-                .sorted().findFirst().orElse(LocalDate.now());
+                .min(Comparator.comparing(Talon::getDate))
+                .get().getDate();
+
         int days = Period.between(start, LocalDate.now()).getDays();
 
-        return days+1;
+        return days;
     }
 }

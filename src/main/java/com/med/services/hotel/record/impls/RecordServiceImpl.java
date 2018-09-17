@@ -3,11 +3,11 @@ package com.med.services.hotel.record.impls;
 import com.med.model.Patient;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.model.hotel.dto.HotelDay;
-import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.State;
+import com.med.model.hotel.dto.HotelDay;
+import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
 import com.med.repository.hotel.RecordRepository;
@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,8 +75,8 @@ public class RecordServiceImpl implements IRecordService {
 
         Patient patient = patientService.getPatient(recordDto.getPatientId());
         if (recordDto.getState().equals(State.OCCUP) 
-    		&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1)) 
-    		&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
+    	//	&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1))
+    	//	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
     		) {
         	patient.setHotel(true);
         }
@@ -103,6 +102,11 @@ public class RecordServiceImpl implements IRecordService {
                 getSum(record), paymentType, record.getKoika().getId(), record.getDesc()));
        return repository.save(record);
     }
+
+    public void deleteAll(){
+        repository.deleteAll();
+    }
+
 
     private int getSum(Record record){
         int days = (int)ChronoUnit.DAYS.between(record.getStart(), record.getFinish());

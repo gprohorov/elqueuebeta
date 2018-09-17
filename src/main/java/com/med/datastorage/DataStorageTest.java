@@ -1,6 +1,5 @@
 package com.med.datastorage;
 
-import com.med.model.Talon;
 import com.med.repository.talon.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
@@ -11,8 +10,7 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-import java.util.List;
+import javax.annotation.PostConstruct;
 
 /**
  * Created by george on 3/9/18.
@@ -41,94 +39,13 @@ public class DataStorageTest {
     @Autowired
     ProcedureServiceImpl procedureService;
 
-//    @PostConstruct
-//    void init(){
+   @PostConstruct
+    void init(){
 
-//       List<Record> records = new ArrayList<>(
-//               Arrays.asList(
-//                       new Record(patientService.getAll("").get(0).getId(),
-//                               "",
-//                               koikaService.getAll().get(0),
-//                               100,
-//                               LocalDateTime.now(),
-//                               LocalDateTime.now().plusDays(5),
-//                               State.OCCUP)
-//                                               ,
-//                       new Record(patientService.getAll("").get(1).getId(),
-//                               "",
-//                               koikaService.getAll().get(0),
-//                               90,
-//                               LocalDateTime.now().plusDays(6),
-//                               LocalDateTime.now().plusDays(9),
-//                               State.BOOK)
-//                                              ,
-//                       new Record(patientService.getAll("").get(2).getId(),
-//                               "",
-//                               koikaService.getAll().get(1),
-//                               150,
-//                               LocalDateTime.now().plusDays(3),
-//                               LocalDateTime.now().plusDays(8),
-//                               State.BOOK)
-//                                              ,
-//                       new Record(patientService.getAll("").get(3).getId(),
-//                               "",
-//                               koikaService.getAll().get(3),
-//                               85,
-//                               LocalDateTime.now(),
-//                               LocalDateTime.now().plusDays(4),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(8).getId(),
-//                               "",
-//                               koikaService.getAll().get(12),
-//                               70,
-//                               LocalDateTime.now(),
-//                               LocalDateTime.now().plusDays(1),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(6).getId(),
-//                               "",
-//                               koikaService.getAll().get(11),
-//                               75,
-//                               LocalDateTime.now().plusDays(2),
-//                               LocalDateTime.now().plusDays(4),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(7).getId(),
-//                               "",
-//                               koikaService.getAll().get(10),
-//                               85,
-//                               LocalDateTime.now(),
-//                               LocalDateTime.now().plusDays(1),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(5).getId(),
-//                               "",
-//                               koikaService.getAll().get(9),
-//                               55,
-//                               LocalDateTime.now().plusDays(7),
-//                               LocalDateTime.now().plusDays(8),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(4).getId(),
-//                               "",
-//                               koikaService.getAll().get(8),
-//                               100,
-//                               LocalDateTime.now().minusDays(4),
-//                               LocalDateTime.now().plusDays(5),
-//                               State.OCCUP),
-//                       new Record(patientService.getAll("").get(4).getId(),
-//                               "",
-//                               koikaService.getAll().get(8),
-//                               0,
-//                               LocalDateTime.now().minusDays(1),
-//                               LocalDateTime.now().plusDays(2),
-//                               State.PAUSED),
-//                       new Record(patientService.getAll("").get(10).getId(),
-//                               "",
-//                               koikaService.getAll().get(7),
-//                               70,
-//                               LocalDateTime.now(),
-//                               LocalDateTime.now().plusDays(3),
-//                               State.OCCUP)
-//               )
-//       );
-//        recordService.saveAll(records);
+
+
+   }
+
 
 //        recordService.closeRecord(patientService.getAll("").get(4).getId(), PaymentType.CARD);
 
@@ -194,9 +111,7 @@ public class DataStorageTest {
 
     public void reset(){
 
-        List<Talon> talons = talonRepository
-                .findByDateBetween(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
-        talonRepository.deleteAll(talons);
+        recordService.deleteAll();
 
 
      /*     List<Talon> talons= talonRepository.findAll().stream()

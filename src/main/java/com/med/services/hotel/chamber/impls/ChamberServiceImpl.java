@@ -1,5 +1,6 @@
 package com.med.services.hotel.chamber.impls;
 
+import com.med.model.Category;
 import com.med.model.hotel.Chamber;
 import com.med.repository.hotel.ChamberRepository;
 import com.med.services.hotel.chamber.interfaces.IChamberService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,37 +25,38 @@ public class ChamberServiceImpl implements IChamberService{
 
     @PostConstruct
     void init(){
-/*
+     repository.deleteAll();
         chambers = new ArrayList<>(
 
                 Arrays.asList(
 
-                       new Chamber(1, "1", Category.SOC,"",2)
-                     , new Chamber(2, "2", Category.SOC,"",2)
-                     , new Chamber(3, "3", Category.SOC,"",2)
-                     , new Chamber(4, "4", Category.SOC,"",2)
-                     , new Chamber(5, "5", Category.SOC,"",2)
-                     , new Chamber(6, "6", Category.SOC,"",2)
-                     , new Chamber(7, "7", Category.SOC,"",2)
-                     , new Chamber(8, "8", Category.SOC,"",2)
-                     , new Chamber(9, "9", Category.SOC,"",2)
+                new Chamber(21,"21", Category.SOC, 2, "", 2),
+                new Chamber(22,"22", Category.SOC, 2, "", 2),
+                new Chamber(23,"23", Category.SOC, 2, "", 2),
+                new Chamber(24,"24", Category.SOC, 2, "", 2),
 
-
-
+                new Chamber(31,"31", Category.LUX, 3, "", 2),
+                new Chamber(32,"32", Category.SOC, 3, "", 2),
+                new Chamber(33,"33", Category.SEMILUX, 3, "", 2),
+                new Chamber(34,"34", Category.SOC, 3, "", 2),
+                new Chamber(35,"35", Category.SOC, 3, "", 2),
+                new Chamber(36,"36", Category.SOC, 3, "", 2),
+                new Chamber(37,"37", Category.SOC, 3, "", 2),
+                new Chamber(39,"39", Category.LUX, 3, "", 2)
                 )
 
 
 
         );
 
-        repository.saveAll(chambers);
-        */
+       repository.saveAll(chambers);
+
 
     }
 
     @Override
     public Chamber createChamber(Chamber chamber) {
-      //  chambers.add(chamber);
+      //  chambers.add(chamber); 066 8 55 00 35
         return repository.save(chamber);
     }
 
