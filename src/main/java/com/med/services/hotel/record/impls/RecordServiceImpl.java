@@ -55,7 +55,7 @@ public class RecordServiceImpl implements IRecordService {
         Record record = this.getRecord(recordId);
         String patientId = record.getPatientId();
         Patient patient = patientService.getPatient(patientId);
-        patient.setHotel(false);
+        if (record.getState().equals(State.OCCUP))patient.setHotel(false);
         patientService.savePatient(patient);
     	repository.deleteById(recordId);
     }
