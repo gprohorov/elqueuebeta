@@ -35,17 +35,17 @@
             <tr *ngFor="let item of items">
                 <td>{{item.koika.name}}</td>
                 <ng-container *ngFor="let date of item.line">
-                    <td *ngIf="date"
+                    <td *ngIf="date.state" 
                         class="{{date.id ? 'text-light bg-' + HotelState[date.state].cssClass : ''}}"
                         title="{{HotelState[date.state].text}}" [attr.colspan]="date.duration">
-                        <ng-container *ngIf="date.id">
-                            <button class="btn btn-light btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
+                        <div [ngStyle]="{'width': 70 * date.duration + 'px', 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}" *ngIf="date.id">
+                            <button class="btn btn-danger" (click)="cancel(date.id)" *ngIf="date.id"
                                 title="Видалити запис">
-                                <i class="fa fa-trash fa-lg text-danger"></i>
+                                <i class="fa fa-trash"></i>
                             </button> {{date.name}} 
                             ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) 
                             - {{date.price}} грн.
-                        </ng-container>
+                        </div>
                     </td>
                 </ng-container>
             </tr>

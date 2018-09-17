@@ -41,43 +41,43 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     load() {
         this.loading = true;
         this.dates = [];
-        let currentDay = new Date();
-        currentDay.setDate(currentDay.getDate() - 1);
-        currentDay.setHours(0, 0, 0, 0);
+        let currDay = new Date();
+        currDay.setDate(currDay.getDate() - 1);
+        currDay.setHours(0, 0, 0, 0);
         for (let i = 0; i < 14; i++) {
-            let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
+            let date = new Date(currDay.setDate(currDay.getDate() + 1));
             let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
             this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()), 
-                today: (date.toDateString() == (new Date()).toDateString() ) });
+                today: ( date.toDateString() == (new Date()).toDateString() ) });
         }
         this.sub = this.service.getKoikaMap().subscribe(data => {
             this.loading = false;
             this.items = data;
             this.items.forEach(item => {
-                let line = [];
+                item.line = new Array(14).fill({state: 'FREE', name: ''});
                 item.records.forEach(record => {
                     let start:any = new Date(record.start);
                     let finish:any = new Date(record.finish);
-                    let duration:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
-                    // console.log(start, finish, delta);
-                    let currentDay = null;
                     for (let i = 0; i < 14; i++) {
-                        currentDay = this.dates[i].date;
-                        if (line[i] == undefined) line[i] = {state: 'FREE', name: ''};
+                        let currentDay = this.dates[i].date;
                         if (start <= currentDay && finish >= currentDay) {
-                            line[i].duration = (finish - currentDay) / (1000 * 60 * 60 * 24) + 1;
-                            line[i].id = record.id;
-                            line[i].price = record.price;
-                            line[i].state = record.state;
-                            line[i].start = record.start;
-                            line[i].finish = record.finish;
-                            line[i].name = record.koika.patient.person.fullName;
-                            i = i + line[i].duration - 1;
+                            let duration = (finish - currentDay) / (1000 * 60 * 60 * 24) + 1;
+                            item.line[i] = {
+                                duration: duration,
+                                id: record.id,
+                                price: record.price,
+                                state: record.state,
+                                start: record.start,
+                                finish: record.finish,
+                                name: record.koika.patient.person.fullName
+                            }
+                            for (let c = i + 1; c < duration + i; c++) item.line[c] = {};
+                            i = i - 1 + duration;
                         }
                     }
                 });
-                item.line = line.length > 0 ? line : new Array(14).fill({state: 'FREE', name: '&nbsp;'});
             });
+            console.log(this.items);
         });
     }
 }
