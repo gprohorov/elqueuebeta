@@ -24,12 +24,11 @@ public class ChamberServiceImpl implements IChamberService{
     ChamberRepository repository;
 
     @PostConstruct
-    void init(){
-     repository.deleteAll();
-        chambers = new ArrayList<>(
-
+    void init() {
+    /*
+		repository.deleteAll();
+        	chambers = new ArrayList<>(
                 Arrays.asList(
-
                 new Chamber(21,"21", Category.SOC, 2, "", 2),
                 new Chamber(22,"22", Category.SOC, 2, "", 2),
                 new Chamber(23,"23", Category.SOC, 2, "", 2),
@@ -44,14 +43,9 @@ public class ChamberServiceImpl implements IChamberService{
                 new Chamber(37,"37", Category.SOC, 3, "", 2),
                 new Chamber(39,"39", Category.LUX, 3, "", 2)
                 )
-
-
-
         );
-
        repository.saveAll(chambers);
-
-
+    */
     }
 
     @Override
