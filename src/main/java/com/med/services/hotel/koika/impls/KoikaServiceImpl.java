@@ -28,7 +28,8 @@ public class KoikaServiceImpl implements IKoikaService {
 
 
     @PostConstruct
-    void init(){
+    void init() {
+    	/*
         repository.deleteAll();
 
         koikas = new ArrayList<>(
@@ -67,6 +68,7 @@ public class KoikaServiceImpl implements IKoikaService {
         );
 
        repository.saveAll(koikas);
+       */
     }
 
 
