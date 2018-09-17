@@ -9,11 +9,12 @@
 </div>
 <div class="table-responsive" *ngIf="items">
     <table class="table table-bordered table-sm table-striped">
-        <thead class="thead-dark">
+        <thead class="thead-light">
             <tr [style.font-size.rem]=".9">
                 <th scope="col" class="text-nowrap">№</th>
-                <th scope="col" *ngFor="let date of dates" 
-                    [ngClass]="{'text-nowrap': true, 'bg-danger':date.we, 'bg-dark':!date.we }">{{date.str}}</th>
+                <th scope="col" *ngFor="let date of dates" [ngClass]="{'text-nowrap': true, 'text-light': true,
+                    'bg-danger': date.we && !date.today, 'bg-secondary': !date.we && !date.today, 
+                    'bg-success': date.today}">{{date.str}}</th>
             </tr>
         </thead>
         <tbody>
