@@ -18,15 +18,19 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of items">
-                <th scope="row">{{item.koika.name}}</th>
+                <td>{{item.koika.name}}</td>
                 <ng-container *ngFor="let date of item.line">
                     <td *ngIf="date"
-                        class="text-light bg-{{HotelState[date.state].cssClass}}"
+                        class="{{date.id ? 'text-light bg-' + HotelState[date.state].cssClass : ''}}"
                         title="{{HotelState[date.state].text}}" [attr.colspan]="date.duration">
-                        <button class="btn btn-light btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
-                            title="Видалити запис">
-                            <i class="fa fa-trash fa-lg text-danger"></i>
-                        </button> {{date.name}} ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) - {{date.price}} грн.
+                        <ng-container *ngIf="date.id">
+                            <button class="btn btn-light btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
+                                title="Видалити запис">
+                                <i class="fa fa-trash fa-lg text-danger"></i>
+                            </button> {{date.name}} 
+                            ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) 
+                            - {{date.price}} грн.
+                        </ng-container>
                     </td>
                 </ng-container>
             </tr>
