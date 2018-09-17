@@ -26,10 +26,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     items: any[] = [];
     appointments: any = [];
     totalPatients: number;
+    hotelPatients: number;
     activePatients: number;
     notActivePatients: number;
     date: string = (new Date()).toISOString().split('T')[0];
-    filters: any = 'all'; // possible values: 'all', 'active', 'notactive'
+    filters: any = 'all'; // possible values: 'all', 'active', 'notactive', 'hotel'
     Status = Status;
     Statuses = Object.keys(Status);
     Activity = Activity;
@@ -198,7 +199,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
               || item.activity == 'ON_PROCEDURE' 
               || item.activity == 'INVITED'
               || item.activity == 'STUCK'
-            ) && this.filters == 'notactive');
+            ) && this.filters == 'notactive')
+            || (item.hotel == false && this.filters == 'hotel');
     }
     
     changeDay(days: number) {
@@ -224,6 +226,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
                 this.appointments.push({ appointment: parseInt(prop), items: appointmentsObj[prop] });
             }
             this.totalPatients = data.length;
+            this.hotelPatients = data.filter( x => x.hotel ).length;
             this.activePatients = data.filter( x => 
                    x.activity == 'ACTIVE' 
                 || x.activity == 'ON_PROCEDURE' 
