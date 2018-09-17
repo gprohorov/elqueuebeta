@@ -44,10 +44,11 @@ export class HotelMainComponent implements OnInit, OnDestroy {
         let currentDay = new Date();
         currentDay.setDate(currentDay.getDate() - 1);
         currentDay.setHours(0, 0, 0, 0);
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 14; i++) {
             let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
             let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
-            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });
+            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()), 
+                today: (date.toDateString() == (new Date()).toDateString() ) });
         }
         this.sub = this.service.getKoikaMap().subscribe(data => {
             this.loading = false;
@@ -60,7 +61,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                     let duration:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
                     // console.log(start, finish, delta);
                     let currentDay = null;
-                    for (let i = 0; i < 30; i++) {
+                    for (let i = 0; i < 14; i++) {
                         currentDay = this.dates[i].date;
                         if (line[i] == undefined) line[i] = {state: 'FREE', name: ''};
                         if (start <= currentDay && finish >= currentDay) {
@@ -75,7 +76,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                         }
                     }
                 });
-                item.line = line.length > 0 ? line : new Array(30).fill({state: 'FREE', name: '&nbsp;'});
+                item.line = line.length > 0 ? line : new Array(14).fill({state: 'FREE', name: '&nbsp;'});
             });
         });
     }

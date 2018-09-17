@@ -30,7 +30,7 @@ public class RecordController {
     
     @RequestMapping("/booking")
     public List<KoikaLine> showAllKoikasForDays() {
-        return service.getLines(30);
+        return service.getLines(14);
     }
 
     @RequestMapping("/koika/map")
