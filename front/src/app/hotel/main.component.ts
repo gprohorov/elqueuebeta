@@ -44,7 +44,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
         let currentDay = new Date();
         currentDay.setDate(currentDay.getDate() - 1);
         currentDay.setHours(0, 0, 0, 0);
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 14; i++) {
             let date = new Date(currentDay.setDate(currentDay.getDate() + 1));
             let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
             this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()) });

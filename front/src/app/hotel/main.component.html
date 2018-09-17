@@ -10,9 +10,9 @@
 <div class="table-responsive" *ngIf="items">
     <table class="table table-bordered table-sm table-striped">
         <thead class="thead-dark">
-            <tr>
+            <tr [style.font-size.rem]=".9">
                 <th scope="col" class="text-nowrap">№</th>
-                <th scope="col" *ngFor="let date of dates"
+                <th scope="col" *ngFor="let date of dates" 
                     [ngClass]="{'text-nowrap': true, 'bg-danger':date.we, 'bg-dark':!date.we }">{{date.str}}</th>
             </tr>
         </thead>
