@@ -53,6 +53,11 @@ public class RecordServiceImpl implements IRecordService {
     }
     
     public void cancelRecord(String recordId) {
+        Record record = this.getRecord(recordId);
+        String patientId = record.getPatientId();
+        Patient patient = patientService.getPatient(patientId);
+        patient.setHotel(false);
+        patientService.savePatient(patient);
     	repository.deleteById(recordId);
     }
 
