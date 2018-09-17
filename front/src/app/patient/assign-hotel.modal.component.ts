@@ -29,7 +29,7 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
         this.data = options.data;
         this.data.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.data.finish = this.data.start;
-        this.data.state = "BOOK";
+        this.data.state = "OCCUP";
         this.sub = this.hotelService.getKoikaList().subscribe(data => {
             this.koikas = data;
         });

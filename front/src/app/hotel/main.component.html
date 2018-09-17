@@ -26,7 +26,7 @@
                         <button class="btn btn-light btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
                             title="Видалити запис">
                             <i class="fa fa-trash fa-lg text-danger"></i>
-                        </button> {{date.name}}
+                        </button> {{date.name}} ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) - {{date.price}} грн.
                     </td>
                 </ng-container>
             </tr>

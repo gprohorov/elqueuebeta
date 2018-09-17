@@ -66,7 +66,10 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                         if (start <= currentDay && finish >= currentDay) {
                             line[i].duration = (finish - currentDay) / (1000 * 60 * 60 * 24) + 1;
                             line[i].id = record.id;
+                            line[i].price = record.price;
                             line[i].state = record.state;
+                            line[i].start = record.start;
+                            line[i].finish = record.finish;
                             line[i].name = record.koika.patient.person.fullName;
                             i = i + line[i].duration - 1;
                         }
