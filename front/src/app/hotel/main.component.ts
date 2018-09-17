@@ -57,16 +57,18 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                 item.records.forEach(record => {
                     let start:any = new Date(record.start);
                     let finish:any = new Date(record.finish);
-                    let delta:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
+                    let duration:any = (finish - start) / (1000 * 60 * 60 * 24) + 1;
                     // console.log(start, finish, delta);
                     let currentDay = null;
                     for (let i = 0; i < 30; i++) {
                         currentDay = this.dates[i].date;
                         if (line[i] == undefined) line[i] = {state: 'FREE', name: '&nbsp;'};
                         if (start <= currentDay && finish >= currentDay) {
+                            line[i].duration = (finish - currentDay) / (1000 * 60 * 60 * 24) + 1;
                             line[i].id = record.id;
                             line[i].state = record.state;
                             line[i].name = record.koika.patient.person.fullName;
+                            i = i + line[i].duration - 1;
                         }
                     }
                 });
