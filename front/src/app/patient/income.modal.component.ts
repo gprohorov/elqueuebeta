@@ -76,6 +76,14 @@ export class PatientIncomeModalComponent implements IModalDialog {
         return sum;
     }
     
+    getSumHotel() {
+        let sum = 0;
+        this.details.forEach( (item) => {
+            if (item.payment == 'HOTEL') sum += item.sum;
+        });
+        return sum * -1;
+    }
+    
     getDesc(item) {
         if (item.payment == 'DISCOUNT') return 'Знижка' + (item.desc == '' ? '' : ' (' + item.desc + ')');
         if (item.payment == 'CASH') return 'Внесення готівки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
