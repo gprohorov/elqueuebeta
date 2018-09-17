@@ -11,16 +11,14 @@
     <table class="table table-bordered table-sm">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="text-nowrap position-fixed" [style.margin-left.em]="-4"
-                    [style.width.em]="4">№</th>
+                <th scope="col" class="text-nowrap">№</th>
                 <th scope="col" *ngFor="let date of dates"
                     [ngClass]="{'text-nowrap': true, 'bg-danger':date.we, 'bg-dark':!date.we }">{{date.str}}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of items">
-                <th scope="row" class="position-fixed" [style.margin-left.em]="-4"
-                    [style.width.em]="4">{{item.koika.name}}</th>
+                <th scope="row">{{item.koika.name}}</th>
                 <ng-container *ngFor="let date of item.line">
                     <td *ngIf="date"
                         class="text-light bg-{{HotelState[date.state].cssClass}}"
