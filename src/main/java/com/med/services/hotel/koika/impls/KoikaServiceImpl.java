@@ -33,35 +33,35 @@ public class KoikaServiceImpl implements IKoikaService {
 
         koikas = new ArrayList<>(
              Arrays.asList(
-                 new Koika(211, "211", chamberService.getChamber(21), 300),
-                 new Koika(212, "212", chamberService.getChamber(21), 300),
-                 new Koika(221, "221", chamberService.getChamber(22), 300),
-                 new Koika(222, "222", chamberService.getChamber(22), 300),
-                 new Koika(231, "231", chamberService.getChamber(23), 300),
-                 new Koika(232, "232", chamberService.getChamber(23), 300),
-                 new Koika(241, "241", chamberService.getChamber(24), 300),
-                 new Koika(242, "242", chamberService.getChamber(24), 300),
+                 new Koika(211, "21.1", chamberService.getChamber(21), 300),
+                 new Koika(212, "21.2", chamberService.getChamber(21), 300),
+                 new Koika(221, "22.1", chamberService.getChamber(22), 300),
+                 new Koika(222, "22.2", chamberService.getChamber(22), 300),
+                 new Koika(231, "23.1", chamberService.getChamber(23), 300),
+                 new Koika(232, "23.2", chamberService.getChamber(23), 300),
+                 new Koika(241, "24.1", chamberService.getChamber(24), 300),
+                 new Koika(242, "24.2", chamberService.getChamber(24), 300),
 
-                 new Koika(311, "311", chamberService.getChamber(31), 450),
-                 new Koika(312, "312", chamberService.getChamber(31), 450),
+                 new Koika(311, "31.1", chamberService.getChamber(31), 450),
+                 new Koika(312, "31.2", chamberService.getChamber(31), 450),
 
-                 new Koika(321, "321", chamberService.getChamber(32), 300),
-                 new Koika(322, "322", chamberService.getChamber(32), 300),
+                 new Koika(321, "32.1", chamberService.getChamber(32), 300),
+                 new Koika(322, "32.2", chamberService.getChamber(32), 300),
 
-                 new Koika(331, "331", chamberService.getChamber(33), 350),
-                 new Koika(332, "332", chamberService.getChamber(33), 350),
+                 new Koika(331, "33.1", chamberService.getChamber(33), 350),
+                 new Koika(332, "33.2", chamberService.getChamber(33), 350),
 
-                 new Koika(341, "341", chamberService.getChamber(34), 300),
-                 new Koika(342, "342", chamberService.getChamber(34), 300),
-                 new Koika(351, "351", chamberService.getChamber(35), 300),
-                 new Koika(352, "352", chamberService.getChamber(35), 300),
-                 new Koika(361, "361", chamberService.getChamber(36), 300),
-                 new Koika(362, "362", chamberService.getChamber(36), 300),
-                 new Koika(371, "371", chamberService.getChamber(37), 300),
-                 new Koika(372, "372", chamberService.getChamber(37), 300),
+                 new Koika(341, "34.1", chamberService.getChamber(34), 300),
+                 new Koika(342, "34.2", chamberService.getChamber(34), 300),
+                 new Koika(351, "35.1", chamberService.getChamber(35), 300),
+                 new Koika(352, "35.2", chamberService.getChamber(35), 300),
+                 new Koika(361, "36.1", chamberService.getChamber(36), 300),
+                 new Koika(362, "36.2", chamberService.getChamber(36), 300),
+                 new Koika(371, "37.1", chamberService.getChamber(37), 300),
+                 new Koika(372, "37.2", chamberService.getChamber(37), 300),
 
-                 new Koika(391, "391", chamberService.getChamber(31), 450),
-                 new Koika(392, "392", chamberService.getChamber(31), 450)
+                 new Koika(391, "39.1", chamberService.getChamber(31), 450),
+                 new Koika(392, "39.2", chamberService.getChamber(31), 450)
 
                 )
         );
