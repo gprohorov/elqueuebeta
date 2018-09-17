@@ -111,7 +111,7 @@ public class DataStorageTest {
 
     public void reset(){
 
-        recordService.deleteAll();
+     //   recordService.deleteAll();
 
 
      /*     List<Talon> talons= talonRepository.findAll().stream()

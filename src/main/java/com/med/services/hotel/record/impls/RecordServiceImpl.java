@@ -67,11 +67,10 @@ public class RecordServiceImpl implements IRecordService {
         record.setDesc(recordDto.getDesc());
         record.setStringStart(recordDto.getStart());
         record.setStringFinish(recordDto.getFinish());
-
         record.setState(recordDto.getState());
+        record.setPrice(recordDto.getPrice());
 
-        Accounting accounting = this.createAccounting(record, LocalDate.now());
-        accountingService.createAccounting(accounting);
+
 
         Patient patient = patientService.getPatient(recordDto.getPatientId());
         if (recordDto.getState().equals(State.OCCUP) 
@@ -79,9 +78,11 @@ public class RecordServiceImpl implements IRecordService {
     	//	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
     		) {
         	patient.setHotel(true);
-        	record.setPrice(recordDto.getPrice());
 
         }
+
+        Accounting accounting = this.createAccounting(record, LocalDate.now());
+        accountingService.createAccounting(accounting);
         patientService.savePatient(patient);
 
 
