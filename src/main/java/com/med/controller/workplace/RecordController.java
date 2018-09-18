@@ -60,4 +60,13 @@ public class RecordController {
     	service.cancelRecord(recordId);
     	return null;
     }
+
+    @GetMapping("/record/get/{recordId}")
+    public Record getRecord(@PathVariable(value = "recordId") String recordId) {
+
+    	return service.getRecord(recordId);
+    }
+
+
+
 }
