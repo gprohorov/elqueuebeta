@@ -214,12 +214,12 @@ public class PatientServiceImpl implements IPatientService {
 
 	public List<Accounting> getUltimateBalanceToday(String patientId) {
 		Therapy therapy = therapyService.findTheLastTherapy(patientId);
-		LocalDate start =null;
-		if (therapy!=null ){
-			start = therapy.getStart().toLocalDate();
-		}else {
-			start=LocalDate.now().minusDays(100);
-		}// kostil
+		LocalDate start = LocalDate.now().minusDays(100);
+//		if (therapy!=null ){
+//			start = therapy.getStart().toLocalDate();
+//		}else {
+//			start=LocalDate.now().minusDays(100);
+//		}// kostil
 		return this.getUltimateBalance(patientId, start.minusDays(1), LocalDate.now().plusDays(1));
 	}
 

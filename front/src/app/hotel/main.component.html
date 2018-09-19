@@ -42,8 +42,12 @@
                             <button class="btn btn-danger" (click)="cancel(date.id)" *ngIf="date.id"
                                 title="Видалити запис">
                                 <i class="fa fa-trash"></i>
-                            </button> {{date.name}} 
-                            ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) 
+                            </button>
+                            <!-- <button class="btn btn-info" (click)="update(date)" *ngIf="date.id"
+                                title="Редагувати запис">
+                                <i class="fa fa-pencil"></i>
+                            </button>  -->
+                            {{date.name}} ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) 
                             - {{date.price}} грн.
                         </div>
                     </td>

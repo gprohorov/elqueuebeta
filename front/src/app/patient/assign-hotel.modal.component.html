@@ -2,7 +2,7 @@
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
         <div class="row">
             <div class="col">
-                <input type="radio" value="BOOK" name="state" [(ngModel)]="data.state">
+                <input type="radio" value="BOOK" name="state" [(ngModel)]="data.state" [disabled]="data.disableBook">
                 Бронювати
                 <input type="radio" class="ml-2" value="OCCUP" name="state" [(ngModel)]="data.state">
                 Поселити

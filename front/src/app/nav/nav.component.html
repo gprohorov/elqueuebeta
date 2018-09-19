@@ -40,8 +40,8 @@
         <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
             <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Процедури</a>
             <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти</a>
-            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База
-                пацієнтів</a>
+            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База пацієнтів</a>
+            <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
             <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
                 <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -55,7 +55,6 @@
                         DB</a>
                 </div>
             </div>
-            <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
         </div>
         <!-- Administrator interface section END -->
         <div class="navbar-nav">

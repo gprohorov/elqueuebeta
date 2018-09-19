@@ -1,13 +1,14 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { HotelState } from '../_storage/index';
 import { AlertService, HotelService } from '../_services/index';
+import { PatientAssignHotelModalComponent } from '../patient/assign-hotel.modal.component';
 
 @Component({
     templateUrl: './main.component.html',
 })
-
 export class HotelMainComponent implements OnInit, OnDestroy {
     
     loading = false;
@@ -19,7 +20,9 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     HotelStates = Object.keys(HotelState);
     
     constructor(
+        private viewRef: ViewContainerRef,
         private alertService: AlertService,
+        private modalService: ModalDialogService,
         private service: HotelService
     ) { }
     
@@ -36,6 +39,17 @@ export class HotelMainComponent implements OnInit, OnDestroy {
         if (confirm('Видалити запис?')) {
             this.subDel = this.service.cancelRecord(recordId).subscribe(data => { this.load(); });
         }
+    }
+    
+    update(record) {
+        let options = {
+            title: 'Пацієнт: ' + record.name,
+            childComponent: PatientAssignHotelModalComponent,
+            data: { id: record.id, patientName: record.name },
+            closeDialogSubject: null 
+        }
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(); });
     }
     
     load() {
@@ -77,7 +91,6 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                     }
                 });
             });
-            console.log(this.items);
         });
     }
 }

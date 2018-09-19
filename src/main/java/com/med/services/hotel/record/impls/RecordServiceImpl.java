@@ -1,6 +1,7 @@
 package com.med.services.hotel.record.impls;
 
 import com.med.model.Patient;
+import com.med.model.Response;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.hotel.Koika;
@@ -69,9 +70,6 @@ public class RecordServiceImpl implements IRecordService {
         record.setStringFinish(recordDto.getFinish());
         record.setState(recordDto.getState());
         record.setPrice(recordDto.getPrice());
-        if (recordDto.getState().equals(State.BOOK)) record.setPrice(0);
-
-
 
         Patient patient = patientService.getPatient(recordDto.getPatientId());
         if (recordDto.getState().equals(State.OCCUP) 
@@ -85,14 +83,16 @@ public class RecordServiceImpl implements IRecordService {
         Accounting accounting = this.createAccounting(record, LocalDate.now());
         accountingService.createAccounting(accounting);
 
-
-
         return this.createRecord(record);
     }
 
     @Override
     public Record updateRecord(Record record) {
        return repository.save(record);
+    }
+    
+    public Response updateRecordById(String recordId) {
+    	return new Response(true, "OK");
     }
 
     public Record closeRecord(String patientId, PaymentType paymentType) {

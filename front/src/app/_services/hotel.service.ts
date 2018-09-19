@@ -12,6 +12,7 @@ export class HotelService {
     private bookingUrl = config.api_path + '/workplace/hotel/booking/';
     private koikaMapUrl = config.api_path + '/workplace/hotel/koika/map/';
     private koikaListUrl = config.api_path + '/workplace/hotel/koika/list/';
+    private getRecordUrl = config.api_path + '/workplace/hotel/record/get/';
     private createRecordUrl = config.api_path + '/patient/hotel/record/create/';
     private cancelRecordUrl = config.api_path + '/workplace/hotel/record/cancel/';
 
@@ -27,6 +28,10 @@ export class HotelService {
 
     getKoikaList() {
         return this.http.get(this.koikaListUrl).pipe(catchError(this.handleError));
+    }
+
+    getRecord(recordId: string) {
+        return this.http.get(this.getRecordUrl + recordId).pipe(catchError(this.handleError));
     }
 
     createRecord(record: any) {

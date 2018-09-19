@@ -12,6 +12,7 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
     data: any;
     koikas: any[];
     sub: Subscription;
+    subLoad: Subscription;
 
     @ViewChild('f') myForm;
     constructor(
@@ -26,15 +27,31 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
+        this.sub = this.hotelService.getKoikaList().subscribe(data => {
+            this.koikas = data;
+        });
         this.data = options.data;
         this.data.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.data.finish = this.data.start;
         this.data.state = "OCCUP";
-        this.sub = this.hotelService.getKoikaList().subscribe(data => {
-            this.koikas = data;
-        });
+        
+        if (this.data.id) {
+            this.load(this.data.id);
+        }
     }
 
+    load(id) {
+        this.hotelService.getRecord(id).subscribe((data) => {
+            this.data = data;
+            this.data.start = data.start.slice(0, -9);
+            this.data.finish = data.finish.slice(0, -9);
+            this.data.koikaId = data.koika.id;
+            if (data.state == 'OCCUP') {
+                this.data.disableBook = true;
+            }
+        });
+    }
+    
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
@@ -54,7 +71,8 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subLoad) this.subLoad.unsubscribe();
     }
     
     updatePrice(koikaId) {
