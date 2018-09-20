@@ -34,10 +34,10 @@ public class AccountingServiceImpl implements IAccountingService {
     @Override
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
-        System.out.println("------ accounting sum  "+accounting.getSum());
+     //   System.out.println("------ accounting sum  "+accounting.getSum());
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
-        System.out.println( "-----balance------- " + patient.getBalance());
+      //  System.out.println( "-----balance------- " + patient.getBalance());
         patientService.savePatient(patient);
         return accounting ;
     }
@@ -48,6 +48,7 @@ public class AccountingServiceImpl implements IAccountingService {
         }
         return accountings;
     }
+
 
     @Override
     public Accounting getAccounting(String accountingId) {

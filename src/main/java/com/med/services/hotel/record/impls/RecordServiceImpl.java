@@ -86,6 +86,20 @@ public class RecordServiceImpl implements IRecordService {
         return this.createRecord(record);
     }
 
+    private boolean checking(RecordDto recordDto){
+
+        int koikaId = recordDto.getKoikaId();
+        Koika koika = koikaService.getKoika(koikaId);
+        List<Record> records = this.repository.findByKoika(koika);
+        List<LocalDate> wantedDays = new ArrayList<>();
+        int  interval = Period.between(recordDto.getStartDate(), recordDto.getFinishDate())
+                .getDays();
+
+
+
+        return true;
+    }
+
     @Override
     public Record updateRecord(Record record) {
        return repository.save(record);
