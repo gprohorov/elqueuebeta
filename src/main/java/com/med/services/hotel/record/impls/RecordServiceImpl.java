@@ -98,8 +98,9 @@ public class RecordServiceImpl implements IRecordService {
 
         int koikaId = recordDto.getKoikaId();
         Koika koika = koikaService.getKoika(koikaId);
-        List<Record> records = this.repository.findByKoika(koika);
-
+        List<Record> records = this.repository.findByKoika(koika).stream()
+                .filter(record -> record.getFinish().toLocalDate().isAfter(LocalDate.now().minusDays(1)))
+                .collect(Collectors.toList());
         if (records.size()==0) response = ok;
 
         if (records.size()==2) {
