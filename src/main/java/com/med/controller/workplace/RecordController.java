@@ -1,5 +1,6 @@
 package com.med.controller.workplace;
 
+import com.med.model.Response;
 import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
@@ -51,13 +52,13 @@ public class RecordController {
 
     // CREATE a new Record
     @PostMapping("/record/create")
-    public Record createRecord(@Valid @RequestBody RecordDto recordDto) {
+    public Response createRecord(@Valid @RequestBody RecordDto recordDto) {
         return service.createRecordFromDto(recordDto);
     }
     
     // UPDATE the Record
     @PostMapping("/record/update")
-    public Record updateRecord(@Valid @RequestBody RecordDto recordDto) {
+    public Response updateRecord(@Valid @RequestBody RecordDto recordDto) {
     	return service.createRecordFromDto(recordDto);
     }
     

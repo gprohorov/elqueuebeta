@@ -61,7 +61,11 @@ public class RecordServiceImpl implements IRecordService {
     	repository.deleteById(recordId);
     }
 
-    public Record createRecordFromDto(@Valid RecordDto recordDto) {
+    public Response createRecordFromDto(@Valid RecordDto recordDto) {
+
+        Response response = this.checking(recordDto);
+        if (!response.isStatus()) return response;
+
         Record record = new Record();
         record.setPatientId(recordDto.getPatientId());
         record.setKoika(koikaService.getKoika(recordDto.getKoikaId()));
@@ -83,23 +87,50 @@ public class RecordServiceImpl implements IRecordService {
         Accounting accounting = this.createAccounting(record, LocalDate.now());
         accountingService.createAccounting(accounting);
 
-        return this.createRecord(record);
+        this.createRecord(record);
+        return response;
     }
 
-    private boolean checking(RecordDto recordDto){
+    private Response checking(RecordDto recordDto){
+         Response reject = new Response(false, "The period is occupied");
+         Response ok = new Response(true);
+         Response response = reject;
 
         int koikaId = recordDto.getKoikaId();
         Koika koika = koikaService.getKoika(koikaId);
         List<Record> records = this.repository.findByKoika(koika);
-        List<LocalDate> wantedDays = new ArrayList<>();
-        int  interval = Period.between(recordDto.getStartDate(), recordDto.getFinishDate())
-                .getDays();
 
+        if (records.size()==0) response = ok;
+        if (records.size()==2) response = reject;
 
+        if (records.size()==1){
 
-        return true;
+            Record record = records.get(0);
+
+            if (record.getState().equals(State.OCCUP)
+                    && recordDto.getState().equals(State.OCCUP)) response = reject;
+
+            if (record.getState().equals(State.BOOK)
+                    && recordDto.getState().equals(State.BOOK)) response = reject;
+
+            if (record.getState().equals(State.OCCUP)
+                    && recordDto.getState().equals(State.BOOK)
+                    && record.getFinish().isBefore(recordDto.getStartDate().atStartOfDay())
+                    ) response = ok;
+
+            if (record.getState().equals(State.BOOK)
+                    && recordDto.getState().equals(State.OCCUP)
+                    ){
+                if (recordDto.getFinishDate().isBefore(record.getStart().toLocalDate()))
+                    response = ok;
+
+            }
+
+        }
+        System.out.println(response);
+        return response;
     }
-
+//
     @Override
     public Record updateRecord(Record record) {
        return repository.save(record);

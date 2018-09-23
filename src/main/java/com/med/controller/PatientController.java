@@ -215,7 +215,7 @@ public class PatientController {
     }
 
     @PostMapping("/hotel/record/create/")
-    public Record createRecord(@Valid @RequestBody RecordDto record) {
+    public Response createRecord(@Valid @RequestBody RecordDto record) {
     	return recordService.createRecordFromDto(record);
     }
 
