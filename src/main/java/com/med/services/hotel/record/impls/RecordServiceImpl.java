@@ -92,7 +92,7 @@ public class RecordServiceImpl implements IRecordService {
     }
 
     private Response checking(RecordDto recordDto) {
-        Response reject = new Response(false, "The period is occupied");
+        Response reject = new Response(false, "Overlay");
         Response ok = new Response(true);
         Response response = reject;
 
@@ -101,17 +101,43 @@ public class RecordServiceImpl implements IRecordService {
         List<Record> records = this.repository.findByKoika(koika);
 
         if (records.size()==0) response = ok;
-        if (records.size()==2) response = reject;
+
+        if (records.size()==2) {
+            response.setMessage("Two records");
+            response = reject;}
+
+
+
+        if (recordDto.getStartDate().isAfter(recordDto.getFinishDate())){
+            reject.setMessage("Start is after finish");
+            return reject;
+        }
+
+        if (recordDto.getState().equals(State.OCCUP)
+                && !recordDto.getStartDate().equals(LocalDate.now()))
+        {
+            reject.setMessage("Lodging is for today only");
+            return reject;
+        }
+
 
         if (records.size()==1){
 
             Record record = records.get(0);
 
             if (record.getState().equals(State.OCCUP)
-                    && recordDto.getState().equals(State.OCCUP)) response = reject;
+                    && recordDto.getState().equals(State.OCCUP)
+                    ) {
+                if (recordDto.getStartDate().isBefore(record.getFinish().toLocalDate())) {
+                    reject.setMessage("Overlay by two occupations");
+                    return reject;
+                } else return ok;
+            }
 
             if (record.getState().equals(State.BOOK)
-                    && recordDto.getState().equals(State.BOOK)) response = reject;
+                    && recordDto.getState().equals(State.BOOK)) {
+                reject.setMessage("Two bookings");
+                response = reject;}
 
             if (record.getState().equals(State.OCCUP)
                     && recordDto.getState().equals(State.BOOK)
