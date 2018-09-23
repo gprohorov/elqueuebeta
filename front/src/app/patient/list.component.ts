@@ -58,11 +58,13 @@ export class PatientListComponent implements OnInit, OnDestroy {
     showAssignHotelPopup(patientId: string) {
         let patient = this.items.filter(x => patientId == x.id)[0];
         if (!patient) patient = this.todayItems.filter(x => patientId == x.id)[0];
-        this.modalService.openDialog(this.viewRef, {
+        let options: any = {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignHotelModalComponent,
             data: { patientId: patientId, patientName: patient.person.fullName }
-        });
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(); });
     }
 
     showIncomePopup(patient: any) {
@@ -72,18 +74,18 @@ export class PatientListComponent implements OnInit, OnDestroy {
             data: patient
         });
     }
-    
+
     delete(id: number, name: string) {
         if (confirm('Видалити "' + name + '" ?')) {
             this.subDelete = this.patientService.delete(id).subscribe(() => { this.load(); });
         }
     }
-    
+
     load(search: string = '') {
         this.loading = true;
         this.subToday = this.patientsQueueService.getAll(this.date).subscribe(data => {
             this.todayItems = data.filter(x => {
-                return x.person.fullName.toLowerCase().indexOf(search) > -1; 
+                return x.person.fullName.toLowerCase().indexOf(search) > -1;
             }).sort((a, b) => {
                 let x = a.person.fullName, y = b.person.fullName;
                 if (x < y) return -1;

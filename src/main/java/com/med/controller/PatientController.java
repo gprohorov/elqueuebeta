@@ -161,14 +161,9 @@ public class PatientController {
     // 12.08.18
     // getAll patients for the date together with their's talons
     @GetMapping("/list/date/{date}")
-    public List<Patient> showPatientsForDate(
-            @PathVariable(value = "date") String date
-    ) {
+    public List<Patient> showPatientsForDate(@PathVariable(value = "date") String date) {
         return service.getAllForDate(LocalDate.parse(date));
     }
-
-
-
 
     @GetMapping("/talon/set/activity/{talonId}/{activity}")
     public Talon talonSetActivity(
@@ -209,33 +204,8 @@ public class PatientController {
     	return service.getUltimateBalanceToday(patientId);
     }
 
-    @GetMapping("/hotel/bill/{patientId}")
-    public Accounting createBill(@PathVariable(value = "patientId") String patientId) {
-    	return null;
-    }
-
-    @PostMapping("/hotel/record/create/")
-    public Response createRecord(@Valid @RequestBody RecordDto record) {
-    	return recordService.createRecordFromDto(record);
-    }
-
-    @GetMapping("/hotel/record/get/{recordId}")
-    public Record getRecord(@PathVariable(value = "recordId") String recordId) {
-    	return recordService.getRecord(recordId);
-    }
-
-
-    @PostMapping("/hotel/record/update/")
-    public Record updateRecord(@Valid @RequestBody Record record) {
-    	return recordService.updateRecord(record);
-    }
-
-
-
-
     @GetMapping("/bye/{patientId}")
-    public Patient bye(
-            @PathVariable(value = "patientId") String patientId) {
+    public Patient bye(@PathVariable(value = "patientId") String patientId) {
         return  service.patientBye(patientId);
     }
 

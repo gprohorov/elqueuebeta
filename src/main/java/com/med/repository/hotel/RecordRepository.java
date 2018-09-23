@@ -17,4 +17,6 @@ public interface RecordRepository extends MongoRepository<Record, String>{
     List<Record> findByKoika(Koika koika);
     List<Record> findByStartGreaterThan(LocalDateTime dateTime);
     List<Record> findByFinishGreaterThan(LocalDateTime dateTime);
+    
+    List<Record> findByKoikaAndStartAfter(Koika koika, LocalDateTime start);
 }

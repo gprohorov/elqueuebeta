@@ -38,15 +38,16 @@
                     <td *ngIf="date.state" 
                         class="{{date.id ? 'text-light bg-' + HotelState[date.state].cssClass : ''}}"
                         title="{{HotelState[date.state].text}}" [attr.colspan]="date.duration">
-                        <div [ngStyle]="{'width': 70 * date.duration + 'px', 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}" *ngIf="date.id">
+                        <div [ngStyle]="{'width': 70 * date.duration + 'px', 'overflow': 'hidden',
+                            'text-overflow': 'ellipsis', 'white-space': 'nowrap'}" *ngIf="date.id">
                             <button class="btn btn-danger" (click)="cancel(date.id)" *ngIf="date.id"
                                 title="Видалити запис">
                                 <i class="fa fa-trash"></i>
                             </button>
-                            <!-- <button class="btn btn-info" (click)="update(date)" *ngIf="date.id"
+                            <button class="btn btn-info" (click)="update(date)" *ngIf="date.id"
                                 title="Редагувати запис">
                                 <i class="fa fa-pencil"></i>
-                            </button>  -->
+                            </button>
                             {{date.name}} ({{date.start | date:'dd.MM'}} - {{date.finish | date:'dd.MM'}}) 
                             - {{date.price}} грн.
                         </div>

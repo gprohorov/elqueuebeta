@@ -75,11 +75,11 @@ public class RecordServiceImpl implements IRecordService {
         record.setState(recordDto.getState());
         record.setPrice(recordDto.getPrice());
 
-        Patient patient = patientService.getPatient(recordDto.getPatientId());
         if (recordDto.getState().equals(State.OCCUP) 
     	//	&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1))
     	//	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
     		) {
+        	Patient patient = patientService.getPatient(recordDto.getPatientId());
         	patient.setHotel(true);
             patientService.savePatient(patient);
         }
@@ -91,10 +91,10 @@ public class RecordServiceImpl implements IRecordService {
         return response;
     }
 
-    private Response checking(RecordDto recordDto){
-         Response reject = new Response(false, "The period is occupied");
-         Response ok = new Response(true);
-         Response response = reject;
+    private Response checking(RecordDto recordDto) {
+        Response reject = new Response(false, "The period is occupied");
+        Response ok = new Response(true);
+        Response response = reject;
 
         int koikaId = recordDto.getKoikaId();
         Koika koika = koikaService.getKoika(koikaId);
@@ -152,12 +152,11 @@ public class RecordServiceImpl implements IRecordService {
        return repository.save(record);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         repository.deleteAll();
     }
 
-
-    private int getSum(Record record){
+    private int getSum(Record record) {
         int days = (int)ChronoUnit.DAYS.between(record.getStart(), record.getFinish());
         int subtractPausedDays = 0;
         int sum = 0;
@@ -308,17 +307,15 @@ public class RecordServiceImpl implements IRecordService {
         return koikaLines;
     }
 
-    public List<KoikaRecord> getKoikaMap() {
+    public List<KoikaRecord> getKoikaMap(LocalDate start) {
+		
         List<KoikaRecord> map = new ArrayList<>();
 
         koikaService.getAll().stream().forEach(koika -> {
             KoikaRecord koikaRecord = new KoikaRecord();
-            List<Record> list = repository.findByKoika(koika).stream()
-                    .filter(record -> record.getFinish().isAfter(LocalDateTime.now().minusDays(1)))
-                    .sorted(Comparator.comparing(Record::getStart))
-                    .collect(Collectors.toList());
+            List<Record> list = repository.findByKoikaAndStartAfter(koika, start.atStartOfDay().minusDays(100))
+        		.stream().sorted(Comparator.comparing(Record::getStart)).collect(Collectors.toList());
             list.stream().forEach(record -> {
-
                 Patient patient = patientService.getPatient(record.getPatientId());
                 patient.setTherapy(null);
                 record.getKoika().setPatient(patient);
@@ -327,7 +324,6 @@ public class RecordServiceImpl implements IRecordService {
             koikaRecord.setRecords(list);
             map.add(koikaRecord);
         });
-
 
         return map;
     }

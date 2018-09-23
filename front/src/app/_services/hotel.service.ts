@@ -9,21 +9,17 @@ import { Procedure } from '../_models/index';
 
 @Injectable()
 export class HotelService {
-    private bookingUrl = config.api_path + '/workplace/hotel/booking/';
-    private koikaMapUrl = config.api_path + '/workplace/hotel/koika/map/';
-    private koikaListUrl = config.api_path + '/workplace/hotel/koika/list/';
-    private getRecordUrl = config.api_path + '/workplace/hotel/record/get/';
-    private createRecordUrl = config.api_path + '/patient/hotel/record/create/';
-    private cancelRecordUrl = config.api_path + '/workplace/hotel/record/cancel/';
+    private koikaMapUrl = config.api_path + '/hotel/koika/map/';
+    private koikaListUrl = config.api_path + '/hotel/koika/list/';
+    private getRecordUrl = config.api_path + '/hotel/record/get/';
+    private createRecordUrl = config.api_path + '/hotel/record/create/';
+    private updateRecordUrl = config.api_path + '/hotel/record/update/';
+    private cancelRecordUrl = config.api_path + '/hotel/record/cancel/';
 
     constructor(private http: HttpClient) { }
 
-    getBooking() {
-        return this.http.get(this.bookingUrl).pipe(catchError(this.handleError));
-    }
-
-    getKoikaMap() {
-        return this.http.get(this.koikaMapUrl).pipe(catchError(this.handleError));
+    getKoikaMap(start: string) {
+        return this.http.get(this.koikaMapUrl + start).pipe(catchError(this.handleError));
     }
 
     getKoikaList() {
@@ -36,6 +32,10 @@ export class HotelService {
 
     createRecord(record: any) {
         return this.http.post(this.createRecordUrl, record).pipe(catchError(this.handleError));
+    }
+
+    updateRecord(record: any) {
+        return this.http.post(this.updateRecordUrl, record).pipe(catchError(this.handleError));
     }
     
     cancelRecord(recordId: string) {

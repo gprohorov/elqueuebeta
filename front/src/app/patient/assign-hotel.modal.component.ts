@@ -34,7 +34,7 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
         this.data.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.data.finish = this.data.start;
         this.data.state = "OCCUP";
-        
+
         if (this.data.id) {
             this.load(this.data.id);
         }
@@ -51,12 +51,12 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
             }
         });
     }
-    
+
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
 
-        this.hotelService.createRecord({
+        let record: any = {
             patientId: this.data.patientId,
             desc: this.data.desc,
             koikaId: this.data.koikaId,
@@ -64,17 +64,35 @@ export class PatientAssignHotelModalComponent implements IModalDialog {
             start: this.data.start,
             finish: this.data.finish,
             state: this.data.state
-        }).subscribe(() => {
-            this.alertService.success('Пацієнта ' + this.data.patientName + ' поселено/заброньовано в готель.');
-            options.closeDialogSubject.next();
-        });
+        };
+
+        if (this.data.id) {
+            record.id = this.data.id;
+            this.hotelService.updateRecord(record).subscribe((data) => {
+                if (data.status) {
+                    this.alertService.success('Запис Пацієнта ' + this.data.patientName + ' у готель успішно змінений.');
+                    options.closeDialogSubject.next();
+                } else {
+                    this.alertService.error(data.message);
+                }
+            });
+        } else {
+            this.hotelService.createRecord(record).subscribe((data) => {
+                if (data.status) {
+                    this.alertService.success('Пацієнта ' + this.data.patientName + ' поселено/заброньовано в готель.');
+                    options.closeDialogSubject.next();
+                } else {
+                    this.alertService.error(data.message);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subLoad) this.subLoad.unsubscribe();
     }
-    
+
     updatePrice(koikaId) {
         this.data.price = this.koikas.find(x => x.id == koikaId).price;
     }
