@@ -7,21 +7,13 @@ import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by george on 3/9/18.
@@ -66,7 +58,7 @@ public class HotelController {
     // UPDATE the Record
     @PostMapping("/record/update")
     public Response updateRecord(@Valid @RequestBody RecordDto recordDto) {
-    	return new Response(true, ""); //service.createRecordFromDto(recordDto);
+    	return service.updateRecord(recordDto);
     }
     
     @GetMapping("/record/cancel/{recordId}")

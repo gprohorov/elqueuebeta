@@ -101,6 +101,12 @@ public class RecordServiceImpl implements IRecordService {
         List<Record> records = this.repository.findByKoika(koika).stream()
                 .filter(record -> record.getFinish().toLocalDate().isAfter(LocalDate.now().minusDays(1)))
                 .collect(Collectors.toList());
+
+        if (recordDto.getStartDate().isAfter(recordDto.getFinishDate())){
+            reject.setMessage("Start is after finish");
+            return reject;
+        }
+
         if (records.size()==0) response = ok;
 
         if (records.size()==2) {
@@ -109,22 +115,20 @@ public class RecordServiceImpl implements IRecordService {
 
 
 
-        if (recordDto.getStartDate().isAfter(recordDto.getFinishDate())){
-            reject.setMessage("Start is after finish");
-            return reject;
-        }
-
         if (recordDto.getState().equals(State.OCCUP)
-                && !recordDto.getStartDate().equals(LocalDate.now()))
+                && !recordDto.getStartDate().equals(LocalDate.now())
+                && recordDto.getId()==null
+                )
         {
             reject.setMessage("Lodging is for today only");
             return reject;
         }
 
-
         if (records.size()==1){
 
             Record record = records.get(0);
+
+            if(recordDto.getId()!= null && recordDto.getId().equals(record.getId())) return ok;
 
             if (record.getState().equals(State.OCCUP)
                     && recordDto.getState().equals(State.OCCUP)
@@ -150,13 +154,41 @@ public class RecordServiceImpl implements IRecordService {
                     ){
                 if (recordDto.getFinishDate().isBefore(record.getStart().toLocalDate()))
                     response = ok;
-
             }
-
         }
         System.out.println(response);
         return response;
     }
+
+
+    public Response updateRecord(RecordDto recordDto) {
+
+        Response response = this.checking(recordDto);
+        if (!response.isStatus()) return response;
+
+        Record record = this.getRecord(recordDto.getId());
+        record.setPatientId(recordDto.getPatientId());
+        record.setKoika(koikaService.getKoika(recordDto.getKoikaId()));
+        record.setDesc(recordDto.getDesc());
+        record.setStringStart(recordDto.getStart());
+        record.setStringFinish(recordDto.getFinish());
+        record.setState(recordDto.getState());
+        record.setPrice(recordDto.getPrice());
+        if (recordDto.getState().equals(State.OCCUP)
+            //	&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1))
+            //	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
+                ) {
+            Patient patient = patientService.getPatient(recordDto.getPatientId());
+            patient.setHotel(true);
+            patientService.savePatient(patient);
+        }
+        this.createRecord(record);
+
+        return response;
+    }
+
+
+
 //
     @Override
     public Record updateRecord(Record record) {
