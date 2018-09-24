@@ -9,22 +9,22 @@
 </div>
 <div class="row mb-3">
     <div class="col-auto mr-auto">
-        <button [disabled]="loading" title="Назад на два тижня" [style.width.px]="120"
+        <button [disabled]="loading" title="Назад на два тижня" [style.width.px]="120" (click)="slide(-14)"
             class="btn btn-primary"><i class="fa fa-lg fa-angle-double-left" aria-hidden="true"></i></button>
-        <button [disabled]="loading" title="Назад на тиждень" [style.width.px]="80"
+        <button [disabled]="loading" title="Назад на тиждень" [style.width.px]="80" (click)="slide(-7)"
             class="btn btn-primary"><i class="fa fa-lg fa-angle-left" aria-hidden="true"></i></button>
     </div>
     <div class="col-auto">
-        <button [disabled]="loading" title="Вперед на тиждень" [style.width.px]="80"
+        <button [disabled]="loading" title="Вперед на тиждень" [style.width.px]="80" (click)="slide(7)"
             class="btn btn-primary"><i class="fa fa-lg fa-angle-right" aria-hidden="true"></i></button>
-        <button [disabled]="loading" title="Вперед на два тижня" [style.width.px]="120"
+        <button [disabled]="loading" title="Вперед на два тижня" [style.width.px]="120" (click)="slide(14)"
             class="btn btn-primary"><i class="fa fa-lg fa-angle-double-right" aria-hidden="true"></i></button>
     </div>
 </div>
 <div class="table-responsive" *ngIf="items">
     <table class="table table-bordered table-sm table-striped">
         <thead class="thead-light">
-            <tr [style.font-size.rem]=".9">
+            <tr [style.font-size.rem]=".9" [style.width.px]="70">
                 <th scope="col" class="text-nowrap">№</th>
                 <th scope="col" *ngFor="let date of dates" [ngClass]="{'text-nowrap': true, 'text-light': true,
                     'bg-danger': date.we && !date.today, 'bg-secondary': !date.we && !date.today, 
@@ -32,19 +32,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of items">
+            <tr *ngFor="let item of items" [style.height.px]="40">
                 <td>{{item.koika.name}}</td>
                 <ng-container *ngFor="let date of item.line">
-                    <td *ngIf="date.state" 
+                    <td *ngIf="date.state" [style.width.px]="70 * date.duration"
                         class="{{date.id ? 'text-light bg-' + HotelState[date.state].cssClass : ''}}"
-                        title="{{HotelState[date.state].text}}" [attr.colspan]="date.duration">
-                        <div [ngStyle]="{'width': 70 * date.duration + 'px', 'overflow': 'hidden',
-                            'text-overflow': 'ellipsis', 'white-space': 'nowrap'}" *ngIf="date.id">
-                            <button class="btn btn-danger" (click)="cancel(date.id)" *ngIf="date.id"
+                         [attr.colspan]="date.duration">
+                        <div *ngIf="date.id"
+                            [ngStyle]="{'overflow-y': 'hidden', 'height': '30px', 'text-overflow': 'ellipsis'}" 
+                            [ngbPopover]="popContent" triggers="mouseenter:mouseleave" placement="bottom" 
+                            popoverTitle="aaa">
+                            <ng-template #popContent>
+                            aaa
+                            </ng-template>
+                            <button class="btn btn-danger btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
                                 title="Видалити запис">
                                 <i class="fa fa-trash"></i>
                             </button>
-                            <button class="btn btn-info" (click)="update(date)" *ngIf="date.id"
+                            <button class="btn btn-info btn-sm" (click)="update(date)" *ngIf="date.id"
                                 title="Редагувати запис">
                                 <i class="fa fa-pencil"></i>
                             </button>

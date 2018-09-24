@@ -16,6 +16,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     subDel: Subscription;
     items: any[] = [];
     dates: any[] = [];
+    start;
     HotelState = HotelState;
     HotelStates = Object.keys(HotelState);
     
@@ -24,7 +25,10 @@ export class HotelMainComponent implements OnInit, OnDestroy {
         private alertService: AlertService,
         private modalService: ModalDialogService,
         private service: HotelService
-    ) { }
+    ) { 
+        this.start = this.getMonday(new Date());
+        this.start.setHours(0,0,0,0);
+    }
     
     ngOnInit() {
         this.load();
@@ -52,11 +56,21 @@ export class HotelMainComponent implements OnInit, OnDestroy {
         options.closeDialogSubject.subscribe(() => { this.load(); });
     }
     
+    slide(days:number) {
+        this.start.setDate(this.start.getDate() + days);
+        this.load();
+    }
+    
+    getMonday(date) {
+        let day = date.getDay() || 7;  
+        if (day !== 1) date.setHours(-24 * (day - 1)); 
+        return date;
+    }
+
     load() {
         this.loading = true;
         this.dates = [];
-        const start = new Date();
-        let currDay = start;
+        let currDay = new Date(this.start.getTime());
         currDay.setDate(currDay.getDate() - 1);
         currDay.setHours(0, 0, 0, 0);
         for (let i = 0; i < 14; i++) {
@@ -65,7 +79,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
             this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()), 
                 today: ( date.toDateString() == (new Date()).toDateString() ) });
         }
-        this.sub = this.service.getKoikaMap(start.toISOString().split('T')[0]).subscribe(data => {
+        this.sub = this.service.getKoikaMap(this.start.toISOString().split('T')[0]).subscribe(data => {
             this.loading = false;
             this.items = data;
             this.items.forEach(item => {

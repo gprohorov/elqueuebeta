@@ -3,7 +3,6 @@ package com.med.controller;
 import com.med.model.Response;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
-import com.med.model.hotel.dto.KoikaLine;
 import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;
@@ -49,7 +48,7 @@ public class HotelController {
     }
 
     //show free koikas for today ---- WTF !!!??? ----
-    public List<Koika> showFreeKoikasForToday(){
+    public List<Koika> showFreeKoikasForToday() {
     	return service.getFreeKoikasForDay(LocalDateTime.now());
 	}
 
