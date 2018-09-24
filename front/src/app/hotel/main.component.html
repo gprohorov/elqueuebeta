@@ -37,13 +37,15 @@
                 <ng-container *ngFor="let date of item.line">
                     <td *ngIf="date.state" [style.width.px]="70 * date.duration"
                         class="{{date.id ? 'text-light bg-' + HotelState[date.state].cssClass : ''}}"
-                         [attr.colspan]="date.duration">
-                        <div *ngIf="date.id"
-                            [ngStyle]="{'overflow-y': 'hidden', 'height': '30px', 'text-overflow': 'ellipsis'}" 
-                            [ngbPopover]="popContent" triggers="mouseenter:mouseleave" placement="bottom" 
-                            popoverTitle="aaa">
+                        title="{{HotelState[date.state].text}}" [attr.colspan]="date.duration">
+                        <div *ngIf="date.id" [ngStyle]="{'overflow-y': 'hidden', 'height': '30px'}" 
+                            [ngbPopover]="popContent" triggers="mouseenter:mouseleave" placement="bottom">
                             <ng-template #popContent>
-                            aaa
+                                Статус: <strong>{{HotelState[date.state].text}}</strong><br/>
+                                Паціент: <strong>{{date.name}}</strong><br/>
+                                Дата заїзду: <strong>{{date.start | date:'dd.MM'}}</strong><br/>
+                                Дата виїзду: <strong>{{date.finish | date:'dd.MM'}}</strong><br/>
+                                Ціна: <strong>{{date.price}}</strong> грн.
                             </ng-template>
                             <button class="btn btn-danger btn-sm" (click)="cancel(date.id)" *ngIf="date.id"
                                 title="Видалити запис">
