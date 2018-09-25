@@ -174,8 +174,6 @@ public class AccountingServiceImpl implements IAccountingService {
         List<Patient> debetors = patientService.getDebetors();
         List<DebetorDTO> list = new ArrayList<>();
         List<Accounting> accountings;
-        LocalDate globalStart = LocalDate.of(2018,8,27);
-
 
         for (Patient debetor:debetors) {
 
@@ -184,15 +182,8 @@ public class AccountingServiceImpl implements IAccountingService {
 
             accountings = repository.findByPatientId(debetor.getId());
 
-            LocalDate start = accountings.stream()
-                    .min(Comparator.comparing(Accounting::getDate))
-                    .get().getDate();
             dto.setStart(start);
 
-            LocalDate finish = accountings.stream()
-                    //.filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
-                    .max(Comparator.comparing(Accounting::getDate))
-                    .get().getDate();
             dto.setFinish(finish);
 
             Accounting paymentAccounting = accountings.stream()
@@ -228,32 +219,9 @@ public class AccountingServiceImpl implements IAccountingService {
             list.add(dto);
         }
 
-
         return list.stream()
                 .sorted(Comparator.comparing(DebetorDTO::getDebt))
                 .collect(Collectors.toList());
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
