@@ -184,12 +184,12 @@ public class AccountingServiceImpl implements IAccountingService {
 
             accountings = repository.findByPatientId(debetor.getId());
 
-            LocalDate start = accountings.stream()
+            LocalDate begin = accountings.stream()
                     .min(Comparator.comparing(Accounting::getDate))
                     .get().getDate();
-            dto.setStart(start);
+            dto.setStart(begin);
 
-            LocalDate finish = accountings.stream()
+            LocalDate end = accountings.stream()
                     //.filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
                     .max(Comparator.comparing(Accounting::getDate))
                     .get().getDate();
