@@ -112,9 +112,9 @@ public class StatisticServiceImpl implements IStatisticService {
         return patientService.getDebetors();
     }
 
-    public List<DebetorDTO> getAllDebtorsExt() {
+    public List<DebetorDTO> getAllDebtorsExt(LocalDate start, LocalDate finish) {
 
-        return accountingService.getDebetorsExt();
+        return accountingService.getDebetorsExt(start, finish);
     }
 
     @Override
