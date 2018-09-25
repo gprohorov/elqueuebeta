@@ -8,6 +8,7 @@ import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
 import com.med.model.statistics.dto.doctor.ProcedureCount;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
+import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -111,9 +112,9 @@ public class StatisticServiceImpl implements IStatisticService {
         return patientService.getDebetors();
     }
 
-    public List<Patient> getAllDebtorsExt() {
+    public List<DebetorDTO> getAllDebtorsExt() {
 
-        return patientService.getDebetors();
+        return accountingService.getDebetorsExt();
     }
 
     @Override

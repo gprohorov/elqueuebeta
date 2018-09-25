@@ -13,6 +13,7 @@ export class StatisticService {
     private doctorsProceduresFromToUrl = config.api_path + '/statistics/doctors/';
     private proceduresStatistics = config.api_path + '/statistics/procedures/';
     private patientsDebetorsUrl = config.api_path + '/statistics/patients/debetors';
+    private patientsDebetorsExtUrl = config.api_path + '/statistics/patients/debetors-ext';
     private patientStatisticsUrl = config.api_path + '/statistics/patient/';
     private doctorStatisticsUrl = config.api_path + '/statistics/doctors/current/';
 
@@ -44,6 +45,10 @@ export class StatisticService {
 
     getPatientsDebetors() {
         return this.http.get(this.patientsDebetorsUrl).pipe(catchError(this.handleError));
+    }
+
+    getPatientsDebetorsExt() {
+        return this.http.get(this.patientsDebetorsExtUrl).pipe(catchError(this.handleError));
     }
 
     getPatientStatistics(patientId: string) {
