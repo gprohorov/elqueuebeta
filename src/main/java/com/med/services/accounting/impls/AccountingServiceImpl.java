@@ -5,6 +5,7 @@ import com.med.model.Patient;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
+import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,6 +168,73 @@ public class AccountingServiceImpl implements IAccountingService {
                 .filter(accounting -> accounting.getPatientId().equals(patientId))
                 .mapToInt(Accounting::getSum).sum();
     }
+
+    public List<DebetorDTO> getDebetorsExt() {
+
+        List<Patient> debetors = patientService.getDebetors();
+        List<DebetorDTO> list = new ArrayList<>();
+        List<Accounting> accountings;
+        LocalDate globalStart = LocalDate.of(2018,8,27);
+
+
+        for (Patient debetor:debetors) {
+
+            DebetorDTO dto = new DebetorDTO();
+            dto.setPatient(debetor);
+
+            accountings = repository.findByPatientId(debetor.getId());
+
+            LocalDate start = accountings.stream()
+                    .min(Comparator.comparing(Accounting::getDate))
+                    .get().getDate();
+            dto.setStart(start);
+
+            LocalDate finish = accountings.stream()
+                    .filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
+                    .max(Comparator.comparing(Accounting::getDate))
+                    .get().getDate();
+            dto.setFinish(finish);
+
+            Accounting paymentAccounting = accountings.stream()
+                    .filter(
+                       accounting -> accounting.getPayment().equals(PaymentType.CASH)
+                    || accounting.getPayment().equals(PaymentType.CARD)
+                    )
+                    .max(Comparator.comparing(Accounting::getDate))
+                    .orElse(null);
+            LocalDate lastPayment = (paymentAccounting==null) ? null : paymentAccounting.getDate();
+            dto.setLastPaymentDate(lastPayment);
+
+            Integer bill = accountings.stream()
+                    .filter(
+                        accounting ->
+                            accounting.getPayment().equals(PaymentType.PROC)
+                         || accounting.getPayment().equals(PaymentType.HOTEL)
+                            )
+                    .mapToInt(Accounting::getSum).sum();
+            dto.setBill(bill);
+
+            Integer payment = accountings.stream()
+                    .filter(
+                        accounting ->
+                            accounting.getPayment().equals(PaymentType.CASH)
+                         || accounting.getPayment().equals(PaymentType.CARD)
+                            )
+                    .mapToInt(Accounting::getSum).sum();
+            dto.setPayment(payment);
+
+            dto.setDebt(bill+payment);
+
+            list.add(dto);
+        }
+
+
+        return list.stream()
+                .sorted(Comparator.comparing(DebetorDTO::getDebt))
+                .collect(Collectors.toList());
+    }
+
+
 }
 
 

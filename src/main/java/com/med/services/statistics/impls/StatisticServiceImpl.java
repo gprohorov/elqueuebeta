@@ -111,6 +111,11 @@ public class StatisticServiceImpl implements IStatisticService {
         return patientService.getDebetors();
     }
 
+    public List<Patient> getAllDebtorsExt() {
+
+        return patientService.getDebetors();
+    }
+
     @Override
     public Long getTotalCash() {
 

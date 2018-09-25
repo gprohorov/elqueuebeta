@@ -92,7 +92,7 @@ public class RecordServiceImpl implements IRecordService {
     }
 
     private Response checking(RecordDto recordDto) {
-        Response reject = new Response(false, "Overlay");
+        Response reject = new Response(false, "Накладка");
         Response ok = new Response(true);
         Response response = reject;
 
@@ -103,26 +103,57 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList());
 
         if (recordDto.getStartDate().isAfter(recordDto.getFinishDate())){
-            reject.setMessage("Start is after finish");
+            reject.setMessage("Старт пiсле финиша");
             return reject;
         }
-
-        if (records.size()==0) response = ok;
-
-        if (records.size()==2) {
-            response.setMessage("Two records");
-            response = reject;}
-
-
 
         if (recordDto.getState().equals(State.OCCUP)
                 && !recordDto.getStartDate().equals(LocalDate.now())
                 && recordDto.getId()==null
                 )
         {
-            reject.setMessage("Lodging is for today only");
+            reject.setMessage("Поселення тiльки на поточний день");
             return reject;
         }
+
+//
+        if (records.size()==0) response = ok;
+
+        if (records.size()==2) {
+
+            Record occup = records.stream()
+                    .filter(record -> record.getState().equals(State.OCCUP))
+                    .findFirst().orElse(null);
+            Record booked = records.stream()
+                    .filter(record -> record.getState().equals(State.BOOK))
+                    .findFirst().orElse(null);
+
+
+            if (occup.getId().equals(recordDto.getId())){
+                if (recordDto.getFinishDate().isBefore(booked.getStart().toLocalDate()))
+                {return ok;}
+                else {
+                    reject.setMessage("Накладка поселення та бронювання");
+                }
+            }else { reject.setMessage("Бронювання та поселення принципово неможливе");
+                    return reject;
+            }
+
+            if (recordDto.getState().equals(State.BOOK) && recordDto.getId().equals(booked.getId())){
+                if (recordDto.getStartDate().isAfter(occup.getFinish().toLocalDate())){
+                    return ok;
+                }else reject.setMessage("Накладка по часу бронюваня та поселення");
+            } else reject.setMessage(" Два бронювання неможливе");
+
+
+            response = reject;
+            return response;
+
+        }
+
+
+
+
 
         if (records.size()==1){
 
@@ -432,7 +463,7 @@ public class RecordServiceImpl implements IRecordService {
         accounting.setPatientId(record.getPatientId());
         accounting.setKoikaId(record.getKoika().getId());
         accounting.setSum(-1*record.getPrice());
-        accounting.setDesc("Проживання у готелі");
+        accounting.setDesc("Проживання у готелі " + record.getKoika().getName() + " к");
 		return accounting;
 	}
 
