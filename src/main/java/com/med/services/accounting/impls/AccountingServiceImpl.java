@@ -174,8 +174,6 @@ public class AccountingServiceImpl implements IAccountingService {
         List<Patient> debetors = patientService.getDebetors();
         List<DebetorDTO> list = new ArrayList<>();
         List<Accounting> accountings;
-        LocalDate globalStart = LocalDate.of(2018,8,26);
-
 
         for (Patient debetor:debetors) {
 
@@ -184,15 +182,8 @@ public class AccountingServiceImpl implements IAccountingService {
 
             accountings = repository.findByPatientId(debetor.getId());
 
-            LocalDate begin = accountings.stream()
-                    .min(Comparator.comparing(Accounting::getDate))
-                    .get().getDate();
-            dto.setStart(begin);
+            dto.setStart(start);
 
-            LocalDate end = accountings.stream()
-                    //.filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
-                    .max(Comparator.comparing(Accounting::getDate))
-                    .get().getDate();
             dto.setFinish(finish);
 
             Accounting paymentAccounting = accountings.stream()
@@ -219,45 +210,18 @@ public class AccountingServiceImpl implements IAccountingService {
                         accounting ->
                             accounting.getPayment().equals(PaymentType.CASH)
                          || accounting.getPayment().equals(PaymentType.CARD)
-                         || accounting.getPayment().equals(PaymentType.WIRED)
                             )
                     .mapToInt(Accounting::getSum).sum();
             dto.setPayment(payment);
 
             dto.setDebt(bill+payment);
 
-            if(finish.isAfter(globalStart)) {
-                list.add(dto);
-            }
-
+            list.add(dto);
         }
-
 
         return list.stream()
                 .sorted(Comparator.comparing(DebetorDTO::getDebt))
                 .collect(Collectors.toList());
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
