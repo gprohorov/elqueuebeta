@@ -98,9 +98,11 @@ public class StatisticsController {
     }
     
     // Боржники (розширено)
-    @RequestMapping("/patients/debetors-ext")
-    public List<DebetorDTO> getPatientsDebetsExt() {
-    	return service.getAllDebtorsExt();
+    @RequestMapping("/patients/debetors-ext/{start}/{finish}")
+    public List<DebetorDTO> getPatientsDebetsExt(
+            @PathVariable(value = "start") String start,
+            @PathVariable(value = "finish") String finish) {
+    	return service.getAllDebtorsExt(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
 

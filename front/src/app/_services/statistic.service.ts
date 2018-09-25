@@ -34,8 +34,8 @@ export class StatisticService {
     }
 
     getProceduresStatistics(start: string, finish: string) {
-        return this.http.get(this.proceduresStatistics + start + '/' + finish
-        ).pipe(catchError(this.handleError));
+        return this.http.get(this.proceduresStatistics + start + '/' + finish)
+            .pipe(catchError(this.handleError));
     }
 
     getProceduresStatisticsByDoctors(start: string, finish: string, procedureId: number) {
@@ -47,8 +47,9 @@ export class StatisticService {
         return this.http.get(this.patientsDebetorsUrl).pipe(catchError(this.handleError));
     }
 
-    getPatientsDebetorsExt() {
-        return this.http.get(this.patientsDebetorsExtUrl).pipe(catchError(this.handleError));
+    getPatientsDebetorsExt(start: string, finish: string) {
+        return this.http.get(this.patientsDebetorsExtUrl + start + '/' + finish)
+            .pipe(catchError(this.handleError));
     }
 
     getPatientStatistics(patientId: string) {

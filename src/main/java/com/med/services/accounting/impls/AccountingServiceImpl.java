@@ -169,7 +169,7 @@ public class AccountingServiceImpl implements IAccountingService {
                 .mapToInt(Accounting::getSum).sum();
     }
 
-    public List<DebetorDTO> getDebetorsExt() {
+    public List<DebetorDTO> getDebetorsExt(LocalDate start, LocalDate finish) {
 
         List<Patient> debetors = patientService.getDebetors();
         List<DebetorDTO> list = new ArrayList<>();
