@@ -190,7 +190,7 @@ public class AccountingServiceImpl implements IAccountingService {
             dto.setStart(start);
 
             LocalDate finish = accountings.stream()
-                    .filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
+                    //.filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
                     .max(Comparator.comparing(Accounting::getDate))
                     .get().getDate();
             dto.setFinish(finish);
