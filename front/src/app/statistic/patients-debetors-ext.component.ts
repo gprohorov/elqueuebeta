@@ -11,7 +11,9 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
     sub: Subscription;
     loading = false;
     data: any;
-    sum: number = 0;
+    totalBill: number = 0;
+    totalPayment: number = 0;
+    totalDebt: number = 0;
     
     constructor(private service: StatisticService, private alertService: AlertService) { }
     
@@ -26,9 +28,13 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
     load() {
         this.sub = this.service.getPatientsDebetorsExt().subscribe(data => { 
             this.data = data;
-            this.sum = 0;
+            this.totalBill = 0;
+            this.totalPayment = 0;
+            this.totalDebt = 0;
             data.forEach( currentValue => {
-                this.sum += currentValue.balance;
+                this.totalBill += currentValue.bill;
+                this.totalPayment += currentValue.payment;
+                this.totalDebt += currentValue.debt;
             });
         });
     }
