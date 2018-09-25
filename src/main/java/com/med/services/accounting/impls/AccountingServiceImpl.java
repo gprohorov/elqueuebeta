@@ -174,7 +174,7 @@ public class AccountingServiceImpl implements IAccountingService {
         List<Patient> debetors = patientService.getDebetors();
         List<DebetorDTO> list = new ArrayList<>();
         List<Accounting> accountings;
-        LocalDate globalStart = LocalDate.of(2018,8,27);
+        LocalDate globalStart = LocalDate.of(2018,8,26);
 
 
         for (Patient debetor:debetors) {
@@ -219,13 +219,17 @@ public class AccountingServiceImpl implements IAccountingService {
                         accounting ->
                             accounting.getPayment().equals(PaymentType.CASH)
                          || accounting.getPayment().equals(PaymentType.CARD)
+                         || accounting.getPayment().equals(PaymentType.WIRED)
                             )
                     .mapToInt(Accounting::getSum).sum();
             dto.setPayment(payment);
 
             dto.setDebt(bill+payment);
 
-            list.add(dto);
+            if(finish.isAfter(globalStart)) {
+                list.add(dto);
+            }
+
         }
 
 
