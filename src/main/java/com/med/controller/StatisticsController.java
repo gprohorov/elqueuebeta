@@ -6,6 +6,7 @@ import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
+import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -94,6 +95,12 @@ public class StatisticsController {
     @RequestMapping("/patients/debetors")
     public List<Patient> getPatientsDebets() {
         return service.getAllDebtors();
+    }
+    
+    // Боржники (розширено)
+    @RequestMapping("/patients/debetors-ext")
+    public List<DebetorDTO> getPatientsDebetsExt() {
+    	return service.getAllDebtorsExt();
     }
 
 
