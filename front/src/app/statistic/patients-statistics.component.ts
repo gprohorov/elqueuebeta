@@ -15,7 +15,10 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
     start: string;
     finish: string;
     totalBill: number = 0;
-    totalPayment: number = 0;
+    totalCash: number = 0;
+    totalCard: number = 0;
+    totalDiscount: number = 0;
+    totalDonation: number = 0;
     totalDebt: number = 0;
     
     constructor(private service: StatisticService, private alertService: AlertService) {
@@ -35,11 +38,17 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
         this.sub = this.service.getPatientsStatistics(this.start, this.finish).subscribe(data => { 
             this.data = data;
             this.totalBill = 0;
-            this.totalPayment = 0;
+            this.totalCash = 0;
+            this.totalCard = 0;
+            this.totalDiscount = 0;
+            this.totalDonation = 0;
             this.totalDebt = 0;
             data.forEach( currentValue => {
                 this.totalBill += currentValue.bill;
-                this.totalPayment += currentValue.payment;
+                this.totalCash += currentValue.cash;
+                this.totalCard += currentValue.card;
+                this.totalDiscount += currentValue.discount;
+                this.totalDonation += currentValue.donation;
                 this.totalDebt += currentValue.debt;
             });
         });

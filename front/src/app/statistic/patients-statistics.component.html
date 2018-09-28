@@ -17,36 +17,43 @@
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
 <div class="content table-responsive table-full-width">
-    <h4>Боржники (розширено)</h4>
+    <h4>Пацієнти</h4>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>ПІБ</th>
                 <th>Нараховано</th>
-                <th>Сплачено</th>
+                <th>Готівка</th>
+                <th>Карта</th>
+                <th>Знижка</th>
+                <th>Благодійність</th>
                 <th>Борг</th>
-                <th>Телефон</th>
                 <th>Початок</th>
                 <th>Завершення</th>
-                <th>Розрахунок</th>
+                <th>Днів (зон)</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of data;">
-                <td>{{item.patient.person.fullName}}</td>
+                <td>{{item.name}}</td>
                 <td class="text-right">{{item.bill}} грн.</td>
-                <td class="text-right">{{item.payment}} грн.</td>
+                <td class="text-right">{{item.cash}} грн.</td>
+                <td class="text-right">{{item.card}} грн.</td>
+                <td class="text-right">{{item.discount}} грн.</td>
+                <td class="text-right">{{item.donation}} грн.</td>
                 <td class="text-right">{{item.debt}} грн.</td>
-                <td>{{item.patient.person.cellPhone}}</td>
                 <td>{{item.start | date:"dd.MM.yyyy"}}</td>
                 <td>{{item.finish | date:"dd.MM.yyyy"}}</td>
-                <td>{{item.lastPaymentDate | date:"dd.MM.yyyy"}}</td>
+                <td>{{item.days}} ({{item.zones}})</td>
             </tr>
             <tr>
                 <td><strong>Всього:</strong></td>
-                <td class="text-right"><strong>{{totalBill}} грн.</strong></td>
-                <td class="text-right"><strong>{{totalPayment}} грн.</strong></td>
-                <td class="text-right"><strong>{{totalDebt}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalBill}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalCash}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalCard}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalDiscount}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalDonation}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalDebt}} грн.</strong></td>
             </tr>
         </tbody>
     </table>
