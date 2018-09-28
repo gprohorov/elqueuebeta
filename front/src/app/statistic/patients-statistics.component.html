@@ -1,0 +1,53 @@
+﻿<form class="form-inline mb-3">
+    <div class="input-group mr-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Початок</div>
+        </div>
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+    </div>
+    <div class="input-group mr-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Кінець</div>
+        </div>
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+    </div>
+</form>
+<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="content table-responsive table-full-width">
+    <h4>Боржники (розширено)</h4>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ПІБ</th>
+                <th>Нараховано</th>
+                <th>Сплачено</th>
+                <th>Борг</th>
+                <th>Телефон</th>
+                <th>Початок</th>
+                <th>Завершення</th>
+                <th>Розрахунок</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data;">
+                <td>{{item.patient.person.fullName}}</td>
+                <td class="text-right">{{item.bill}} грн.</td>
+                <td class="text-right">{{item.payment}} грн.</td>
+                <td class="text-right">{{item.debt}} грн.</td>
+                <td>{{item.patient.person.cellPhone}}</td>
+                <td>{{item.start | date:"dd.MM.yyyy"}}</td>
+                <td>{{item.finish | date:"dd.MM.yyyy"}}</td>
+                <td>{{item.lastPaymentDate | date:"dd.MM.yyyy"}}</td>
+            </tr>
+            <tr>
+                <td><strong>Всього:</strong></td>
+                <td class="text-right"><strong>{{totalBill}} грн.</strong></td>
+                <td class="text-right"><strong>{{totalPayment}} грн.</strong></td>
+                <td class="text-right"><strong>{{totalDebt}} грн.</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

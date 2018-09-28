@@ -15,6 +15,7 @@ export class StatisticService {
     private patientsDebetorsUrl = config.api_path + '/statistics/patients/debetors';
     private patientsDebetorsExtUrl = config.api_path + '/statistics/patients/debetors-ext/';
     private patientStatisticsUrl = config.api_path + '/statistics/patient/';
+    private patientsStatisticsUrl = config.api_path + '/statistics/patient/list/';
     private doctorStatisticsUrl = config.api_path + '/statistics/doctors/current/';
 
     constructor(private http: HttpClient) { }
@@ -54,6 +55,12 @@ export class StatisticService {
 
     getPatientStatistics(patientId: string) {
         return this.http.get(this.patientStatisticsUrl + patientId).pipe(catchError(this.handleError));
+    }
+    
+
+    getPatientsStatistics(start: string, finish: string) {
+        return this.http.get(this.patientsStatisticsUrl + start + '/' + finish)
+        .pipe(catchError(this.handleError));
     }
     
     getDoctorsCurrentStatistics() {
