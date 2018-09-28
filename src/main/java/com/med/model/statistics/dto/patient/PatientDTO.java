@@ -10,13 +10,13 @@ import java.time.LocalDate;
 public class PatientDTO {
 
     private Patient patient;
-    private LocalDate start;
-    private LocalDate finish;
-    private Integer days;
-    private Integer procedures;
+    private LocalDate start; //  first day of proceduring
+    private LocalDate finish;   // the day of last proedure
+    private Integer days;      // days of proceduring
+    private Integer procedures;  // the ammount of executed procedures
     private Integer zones;
-    private Integer bill;
-    private Integer cash;
+    private Integer bill;   //  bill for procedures and hotel
+    private Integer cash;   //
     private Integer card;
     private Integer discount;
     private Integer donation;
