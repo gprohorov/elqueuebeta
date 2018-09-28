@@ -394,7 +394,7 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
     public PatientDTO getPatientStatistics(String patientId, LocalDate begin, LocalDate end) {
 
         PatientDTO statistics = new PatientDTO();
-        statistics.setPatient(patientService.getPatient(patientId));
+        statistics.setName(patientService.getPatient(patientId).getPerson().getFullName());
 
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
 

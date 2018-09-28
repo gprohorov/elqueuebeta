@@ -1,7 +1,5 @@
 package com.med.model.statistics.dto.patient;
 
-import com.med.model.Patient;
-
 import java.time.LocalDate;
 
 /**
@@ -9,7 +7,7 @@ import java.time.LocalDate;
  */
 public class PatientDTO {
 
-    private Patient patient;
+    private String name;
     private LocalDate start; //  first day of proceduring
     private LocalDate finish;   // the day of last proedure
     private Integer days;      // days of proceduring
@@ -57,12 +55,12 @@ public class PatientDTO {
 
 
 
-    public Patient getPatient() {
-        return patient;
+    public String getName() {
+        return name;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getStart() {
