@@ -227,80 +227,6 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
         return list;
     }
 
-    public PatientDTO getPatientStatistics(String patientId) {
-
-        PatientDTO statistics = new PatientDTO();
-        statistics.setPatient(patientService.getPatient(patientId));
-
-        Therapy therapy = therapyService.findTheLastTherapy(patientId);
-        LocalDate start = therapy.getStart().toLocalDate();
-        statistics.setStart(start);
-
-        List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
-                .filter(talon -> talon.getDate().isAfter(start.minusDays(1)))
-                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-                .collect(Collectors.toList());
-        if (talons.isEmpty()){return null;}
-
-        LocalDate finish = talons.stream()
-
-                .map(talon -> talon.getDate())
-                .sorted(Comparator.reverseOrder()).findFirst().orElse(null);
-        statistics.setFinish(finish);
-
-        int days = (int) talons.stream().map(talon -> talon.getDate())
-                .distinct().count();
-        statistics.setDays(days);
-
-        int procedures = (int) talons.size();
-        statistics.setProcedures(procedures);
-
-        int zones =  talons.stream().mapToInt(talon -> talon.getZones()).sum();
-        statistics.setZones(zones);
-
-
-       List<Accounting> accountings = patientService
-               .getUltimateBalance(patientId,start.minusDays(1),finish.plusDays(1));
-
-       int bill = accountings.stream()
-               .filter(accounting ->(
-                       accounting.getPayment().equals(PaymentType.PROC)
-                         ||
-                       accounting.getPayment().equals(PaymentType.HOTEL)
-               ))
-               .mapToInt(Accounting::getSum)
-               .sum();
-       statistics.setBill(bill*(-1));
-
-       int cash = accountings.stream()
-                .filter(accounting ->
-                        accounting.getPayment().equals(PaymentType.CASH)
-                )
-                .mapToInt(Accounting::getSum)
-                .sum();
-        statistics.setCash(cash);
-
-       int card = accountings.stream()
-                .filter(accounting ->
-                        accounting.getPayment().equals(PaymentType.CARD)
-                )
-                .mapToInt(Accounting::getSum)
-                .sum();
-        statistics.setCard(card);
-
-        int discount = accountings.stream()
-                .filter(accounting ->
-                        accounting.getPayment().equals(PaymentType.DISCOUNT)
-                )
-                .mapToInt(Accounting::getSum)
-                .sum();
-        statistics.setDiscount(discount);
-
-        statistics.setDebt(cash + card + discount + bill);
-
-        return statistics; // of patient
-    }
-
     public GeneralStatisticsDTO getGeneralStatisticsDay(LocalDate date) {
 
         GeneralStatisticsDTO statisticsDTO = new GeneralStatisticsDTO();
@@ -461,4 +387,103 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
      private String getLastName(String fullName){
          return fullName.split(" ")[0];
      }
+
+
+
+
+    public PatientDTO getPatientStatistics(String patientId, LocalDate begin, LocalDate end) {
+
+        PatientDTO statistics = new PatientDTO();
+        statistics.setPatient(patientService.getPatient(patientId));
+
+        Therapy therapy = therapyService.findTheLastTherapy(patientId);
+
+        List<Talon> talons = talonService.getAllTalonsForPatient(patientId);
+
+        LocalDate start = talons.stream().map(talon -> talon.getDate())
+                .min(Comparator.comparing(LocalDate::toEpochDay)).orElse(null);
+        statistics.setStart(start);
+
+        LocalDate finish = talons.stream().map(talon -> talon.getDate())
+                .max(Comparator.comparing(LocalDate::toEpochDay)).orElse(null);
+        statistics.setFinish(finish);
+
+
+        int days = (int) talons.stream().filter(talon -> talon.getProcedure().getId()>3)
+                .map(talon -> talon.getDate())
+                .distinct().count();
+        statistics.setDays(days);
+
+        int procedures = (int) talons.size();
+        statistics.setProcedures(procedures);
+
+        int zones =  talons.stream().mapToInt(talon -> talon.getZones()).sum();
+        statistics.setZones(zones);
+
+        List<Accounting> accountings = patientService
+                .getUltimateBalance(patientId,start.minusDays(1),finish.plusDays(1));
+
+        int bill = accountings.stream()
+                .filter(accounting ->(
+                        accounting.getPayment().equals(PaymentType.PROC)
+                                ||
+                                accounting.getPayment().equals(PaymentType.HOTEL)
+                ))
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setBill(bill*(-1));
+
+        int cash = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.CASH)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setCash(cash);
+
+        int card = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.CARD)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setCard(card);
+
+        int discount = accountings.stream()
+                .filter(accounting ->
+                        accounting.getPayment().equals(PaymentType.DISCOUNT)
+                )
+                .mapToInt(Accounting::getSum)
+                .sum();
+        statistics.setDiscount(discount);
+
+        statistics.setDebt(cash + card + discount + bill);
+
+        return statistics; // of patient
+    }
+
+
+
+
+
+    public List<PatientDTO> getPatientsStatistics( LocalDate start, LocalDate finish) {
+
+         List<PatientDTO> list = new ArrayList<>();
+
+        List<Accounting> acs =
+                accountingService.getByDateBetween(start.minusDays(1), finish.plusDays(1));
+        List<String> uniquePatientIds = acs.stream()
+                .map(accounting -> accounting.getPatientId())
+                .distinct().collect(Collectors.toList());
+        List<Patient> patients = uniquePatientIds.stream()
+                .map(id-> patientService.getPatient(id))
+                .collect(Collectors.toList());
+
+        for (Patient patient:patients){
+
+            PatientDTO dto = this.getPatientStatistics(patient.toString(),start,finish);
+            list.add(dto);
+        }
+         return list;
+    }
 }

@@ -519,7 +519,7 @@ public class TalonServiceImpl implements ITalonService {
                 .min(Comparator.comparing(Talon::getDate))
                 .get().getDate();
 
-        int days = Period.between(start, LocalDate.now()).getDays();
+        int days = Period.between(start, LocalDate.now()).getDays()+1;
 
         return days;
     }

@@ -69,9 +69,15 @@ public class PatientServiceImpl implements IPatientService {
 	@Override
 	public Patient deletePatient(String id) {
 		Patient patient = this.getPatient(id);
+
 		List<Talon> talons = talonService.getAllTalonsForPatient(id);
 		talonService.deleteAll(talons);
+
+		List<Accounting> accountings = accountingService.getByPatientId(id);
+		accountingService.deleteAll(accountings);
+
 		repository.deleteById(id);
+
 		return patient;
 	}
 

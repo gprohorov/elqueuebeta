@@ -63,8 +63,15 @@ public class AccountingServiceImpl implements IAccountingService {
         return repository.findAll();
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
+    public void deleteAll() {repository.deleteAll();}
+
+    public List<Accounting> getByPatientId(String patientId){
+        return repository.findByPatientId(patientId);
+    }
+
+     public void deleteAll(List<Accounting> accountings) {
+
+        repository.deleteAll(accountings);
     }
 
     @Override
@@ -81,6 +88,11 @@ public class AccountingServiceImpl implements IAccountingService {
 
     public List<Accounting> getAllForDate(LocalDate date){
         return repository.findByDate(date);
+    }
+
+
+    public List<Accounting> getByDateBetween(LocalDate start, LocalDate finish){
+        return repository.findByDateBetween(start, finish);
     }
 
     public Long getSumForDateTotal(LocalDate date){
@@ -170,8 +182,17 @@ public class AccountingServiceImpl implements IAccountingService {
     }
 
     public List<DebetorDTO> getDebetorsExt(LocalDate start, LocalDate finish) {
+        List<Accounting> acs =
+                repository.findByDateBetween(start.minusDays(1), finish.plusDays(1));
+        List<String> uniquePatientIds = acs.stream()
+                .map(accounting -> accounting.getPatientId())
+                .distinct().collect(Collectors.toList());
+        List<Patient> debetors = uniquePatientIds.stream()
+                .map(id-> patientService.getPatient(id))
+                .filter(patient -> patient.getBalance()<0)
+                .collect(Collectors.toList());
 
-        List<Patient> debetors = patientService.getDebetors();
+       // List<Patient> debetors = patientService.getDebetors();
         List<DebetorDTO> list = new ArrayList<>();
         List<Accounting> accountings;
 

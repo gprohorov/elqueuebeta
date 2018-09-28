@@ -19,9 +19,10 @@ public class PatientDTO {
     private Integer cash;
     private Integer card;
     private Integer discount;
+    private Integer donation;
     private Integer debt;
 
-    public PatientDTO() {}
+
 
     public Integer getCash() {
         return cash;
@@ -39,19 +40,22 @@ public class PatientDTO {
         this.card = card;
     }
 
-    public PatientDTO(Patient patient, LocalDate start, LocalDate finish, Integer days, Integer procedures, Integer zones, Integer bill, Integer cash, Integer card, Integer discount, Integer debt) {
-        this.patient = patient;
-        this.start = start;
-        this.finish = finish;
-        this.days = days;
-        this.procedures = procedures;
-        this.zones = zones;
-        this.bill = bill;
-        this.cash = cash;
-        this.card = card;
-        this.discount = discount;
-        this.debt = debt;
+
+    public PatientDTO() {
+
+        this.days = 0;
+        this.procedures = 0;
+        this.zones = 0;
+        this.bill = 0;
+        this.cash = 0;
+        this.card = 0;
+        this.discount = 0;
+        this.donation = 0;
+        this.debt = 0;
     }
+
+
+
 
     public Patient getPatient() {
         return patient;
@@ -117,6 +121,10 @@ public class PatientDTO {
     public void setDiscount(Integer discount) {
         this.discount = discount;
     }
+
+    public Integer getDonation() {return donation;}
+
+    public void setDonation(Integer donation) {this.donation = donation;}
 
     public Integer getDebt() {
         return debt;
