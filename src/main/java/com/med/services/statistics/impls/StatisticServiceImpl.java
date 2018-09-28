@@ -421,7 +421,7 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
         statistics.setZones(zones);
 
         List<Accounting> accountings = patientService
-                .getUltimateBalance(patientId,start.minusDays(1),finish.plusDays(1));
+                .getUltimateBalance(patientId,begin.minusDays(1),end.plusDays(1));
 
         int bill = accountings.stream()
                 .filter(accounting ->(
@@ -481,9 +481,12 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         for (Patient patient:patients){
 
-            PatientDTO dto = this.getPatientStatistics(patient.toString(),start,finish);
+            PatientDTO dto = this.getPatientStatistics(patient.getId(),start,finish);
+           // System.out.println(dto.getPatient().getPerson().getFullName());
+
             list.add(dto);
         }
-         return list;
+
+        return list;
     }
 }
