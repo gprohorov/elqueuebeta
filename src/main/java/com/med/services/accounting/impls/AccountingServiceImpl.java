@@ -151,11 +151,6 @@ public class AccountingServiceImpl implements IAccountingService {
     }
 
 
-
-
-
-
-
     public List<Accounting> getAllFrom(LocalDate date){
         return this.getAll().stream()
                 .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(date))

@@ -398,7 +398,10 @@ public List<ProcedureStatistics> getProceduresStatistics(LocalDate start, LocalD
 
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
 
-        List<Talon> talons = talonService.getAllTalonsForPatient(patientId);
+        List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
+                .filter(talon -> talon.getProcedure().getId()>3)
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
 
         LocalDate start = talons.stream().map(talon -> talon.getDate())
                 .min(Comparator.comparing(LocalDate::toEpochDay)).orElse(null);

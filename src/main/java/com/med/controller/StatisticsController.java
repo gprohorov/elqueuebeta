@@ -78,9 +78,6 @@ public class StatisticsController {
     }
 
 
-
-
-
     @RequestMapping("/procedures/count")
     public Long getProceduresCount() {
         return service.getAllProceduresCount();

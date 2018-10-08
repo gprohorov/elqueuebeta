@@ -39,6 +39,7 @@ public class PatientDTO {
     }
 
 
+
     public PatientDTO() {
 
         this.days = 0;
