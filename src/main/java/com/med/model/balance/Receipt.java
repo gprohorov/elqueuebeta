@@ -10,16 +10,15 @@ import java.util.List;
  * Created by george on 28.08.18.
  */
 public class Receipt {
-    String number;
-    Patient patient;
-    LocalDate start;
-    LocalDate finish;
-
-    List<ProcedureReceipt> list;
-    int sum;
-    int discount;
-    int hotel;
-    int tips;
+    private  String number;
+    private Patient patient;
+    private LocalDate start;
+    private LocalDate finish;
+    private List<ProcedureReceipt> list;
+    private int sum;
+    private int discount;
+    private int hotel;
+    private int tips;
 
     public int getHotel() {
         return hotel;

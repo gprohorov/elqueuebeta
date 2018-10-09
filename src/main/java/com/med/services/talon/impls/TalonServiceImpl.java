@@ -471,10 +471,12 @@ public class TalonServiceImpl implements ITalonService {
     }
 
 
-    // 27 aug
+    // 27 aug  receipt means check
     public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
-        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, LocalDate.now().minusDays(15))
-                .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, from.minusDays(15))
+                .stream()
+                .filter(talon -> talon.getDate().isBefore(to.plusDays(1)))
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .collect(Collectors.toList());
         List<ProcedureReceipt> list = new ArrayList<>();
         Receipt receipt = new Receipt();

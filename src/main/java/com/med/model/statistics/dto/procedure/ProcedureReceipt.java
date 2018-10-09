@@ -5,10 +5,10 @@ package com.med.model.statistics.dto.procedure;
  */
 public class ProcedureReceipt {
 
-    String name;
-    int price;
-    int zones;
-    long sum;
+    private String name;
+    private int price;
+    private int zones;
+    private long sum;
 
     public ProcedureReceipt() {
     }
