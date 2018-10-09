@@ -7,6 +7,7 @@ public class ProcedureReceipt {
 
     private String name;
     private int price;
+    private int amount;
     private int zones;
     private long sum;
 
@@ -20,6 +21,10 @@ public class ProcedureReceipt {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getAmount() { return amount; }
+
+    public void setAmount(int amount) { this.amount = amount;}
 
     public int getPrice() {
         return price;
@@ -44,4 +49,5 @@ public class ProcedureReceipt {
     public void setSum(long sum) {
         this.sum = sum;
     }
+
 }

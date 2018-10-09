@@ -486,11 +486,12 @@ public class TalonServiceImpl implements ITalonService {
                 .forEach((key, value) ->{
                     ProcedureReceipt procedureReceipt = new ProcedureReceipt();
                     procedureReceipt.setName(key.getName());
-                    procedureReceipt.setPrice(key.getSOCIAL()); // kostil
+                    procedureReceipt.setAmount(value.size());
                     int zones = value.stream().mapToInt(Talon::getZones).sum();
                     procedureReceipt.setZones(zones);
                     long sum = value.stream().mapToLong(Talon::getSum).sum();
                     procedureReceipt.setSum(sum);
+                    procedureReceipt.setPrice((int) sum/zones);
                     list.add(procedureReceipt);
             }
         );
@@ -503,6 +504,10 @@ public class TalonServiceImpl implements ITalonService {
        int discount = accountings.stream().filter(ac->ac.getPayment().equals(PaymentType.DISCOUNT))
                .mapToInt(Accounting::getSum).sum();
        receipt.setDiscount(discount);
+
+       int hotel = accountings.stream().filter(ac->ac.getPayment().equals(PaymentType.HOTEL))
+               .mapToInt(Accounting::getSum).sum();
+       receipt.setHotel(hotel);
 
         return receipt;
     }
