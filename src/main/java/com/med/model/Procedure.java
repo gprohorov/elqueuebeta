@@ -25,6 +25,7 @@ public class Procedure {
     private int ALL_INCLUSIVE;
     @JsonProperty("SOCIAL")
     private int SOCIAL;
+    private int percent;
     private boolean zoned;
     private int number;
     private Card card;
@@ -191,6 +192,14 @@ public class Procedure {
     @JsonProperty("SOCIAL")
     public void setSOCIAL(int SOCIAL) {
         this.SOCIAL = SOCIAL;
+    }
+
+    public int getPercent() {
+        return percent;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
     }
 
     public boolean isZoned() {
