@@ -110,7 +110,7 @@
                                     <button class="btn btn-success" (click)="showAssignHotelPopup(item)">Поселити у готель</button>
                                 </div>
                                 <div class="col-auto">
-                                    <button class="btn btn-warning">Чек</button>
+                                    <a class="btn btn-warning" target="_blank" routerLink="/check/{{item.id}}">Чек</a>
                                 </div>
                                 <div class="col-auto">
                                     <a class="btn btn-info" target="_blank" routerLink="/receipt/{{item.id}}">Виписка</a>

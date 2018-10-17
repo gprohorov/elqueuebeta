@@ -66,6 +66,7 @@ import { PatientsStatisticsComponent } from './statistic/patients-statistics.com
 import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.component';
 
 import { ReceiptComponent } from './receipt/main.component';
+import { CheckComponent } from './check/main.component';
 
 import {
     WorkplaceMainComponent,
@@ -203,9 +204,14 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
-    
+
     {
         path: 'receipt/:patientId', component: ReceiptComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
+        path: 'check/:patientId', component: CheckComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
@@ -253,6 +259,7 @@ const appRoutes: Routes = [
         PatientsStatisticsComponent,
         DoctorsStatisticsComponent,
         ReceiptComponent,
+        CheckComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent

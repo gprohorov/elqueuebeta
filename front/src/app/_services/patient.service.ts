@@ -20,6 +20,7 @@ export class PatientService {
     private incomeUrl = config.api_path + '/income/create';
     private getBalanceUrl = config.api_path + '/patient/balance/today/';
     private receiptUrl = config.api_path + '/patient/create/receipt/';
+    private checkUrl = config.api_path + '/patient/create/receipt/';
 
     constructor(private http: HttpClient) { }
 
@@ -66,7 +67,12 @@ export class PatientService {
         return this.http.get(this.receiptUrl + patientId + '/' + from + '/' + to)
         .pipe(catchError(this.handleError));
     }
-    
+
+    getCheck(patientId: string, from: string, to: string) {
+        return this.http.get(this.checkUrl + patientId + '/' + from + '/' + to)
+        .pipe(catchError(this.handleError));
+    }
+
     sortBy(criteria: PatientSearchCriteria, list) {
         return list.sort((a, b) => {
             let x = a.person[criteria.sortColumn], y = b.person[criteria.sortColumn];
