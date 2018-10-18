@@ -30,7 +30,7 @@ export class NavComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
     }
-   
+
     toggleNavbar() {
       this.navbarOpen = !this.navbarOpen;
     }
