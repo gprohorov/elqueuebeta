@@ -489,9 +489,9 @@ public class TalonServiceImpl implements ITalonService {
                     procedureReceipt.setAmount(value.size());
                     int zones = value.stream().mapToInt(Talon::getZones).sum();
                     procedureReceipt.setZones(zones);
-                    long sum = value.stream().mapToLong(Talon::getSum).sum();
+                    int sum = value.stream().mapToInt(Talon::getSum).sum();
                     procedureReceipt.setSum(sum);
-                    procedureReceipt.setPrice((int) sum/zones);
+                    procedureReceipt.setPrice(key.getSOCIAL());
                     list.add(procedureReceipt);
             }
         );
@@ -500,14 +500,15 @@ public class TalonServiceImpl implements ITalonService {
         receipt.setSum(sumForProcedures);
 
        List<Accounting> accountings = accountingService
-               .getAllIncomesForPatientFromTo(patientId,from,to);
+               .getAllIncomesForPatientFromTo(patientId,from.minusDays(15),to.plusDays(1));
        int discount = accountings.stream().filter(ac->ac.getPayment().equals(PaymentType.DISCOUNT))
                .mapToInt(Accounting::getSum).sum();
        receipt.setDiscount(discount);
 
        int hotel = accountings.stream().filter(ac->ac.getPayment().equals(PaymentType.HOTEL))
                .mapToInt(Accounting::getSum).sum();
-       receipt.setHotel(hotel);
+
+       receipt.setHotel(-1*hotel);
 
         return receipt;
     }

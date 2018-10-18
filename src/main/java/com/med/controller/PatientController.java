@@ -3,8 +3,6 @@ package com.med.controller;
 import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
-import com.med.model.hotel.Record;
-import com.med.model.hotel.dto.RecordDto;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
