@@ -1,37 +1,4 @@
-﻿<img src="assets/logo_mednean.jpg" width="120" class="pull-left">
-<img src="assets/logo_medecine.jpg" class="pull-right">
-<center>
-<strong>МІНІСТЕРСТВО ОХОРОНИ ЗДОРОВ’Я УКРАЇНИ<br/>
-ПРИВАТНЕ ПІДПРИЄМСТВО МЕДИЧНИЙ ЦЕНТР «МЕДНЕАН»<br/>
-ЄДРПОУ 36191728<br/>
-м.Чернівці, вул. Прип’ятська, 6А<br/></strong>
-тел. +38 (0372) 567 100<br/>
-www.mednean.com.ua<br/>
-e-mail: mednean@gmail.com
-<br/><br/>
-<h1>Виписка</h1>
-</center>
-<span class="pull-right">вих. №______</span>
-<br/><br/>
-Видана гр. <strong>{{data?.patient.person.fullName}}</strong>, 
-<strong>{{data?.patient.person.dateOfBirth ? 
-    (data?.patient.person.dateOfBirth | date:"dd.MM.yyyy") : '_________________' }}</strong> р.н.,
-{{data?.patient.person.gender ? 'жителю' : 'жительці'}}
-м./с. {{data?.patient.person.town || '__________________________'}} 
-{{data?.patient.person.address  || '_____________________________________________________________'}}
-в тому, що {{data?.patient.person.gender ? 'він' : 'вона'}} 
-дійсно {{data?.patient.person.gender ? 'перебував' : 'перебувала'}} 
-на амбулаторному (стаціонарному) лікуванні в ПП МЦ «МЕДНЕАН» 
-з {{data?.start ? (data?.start | date:"dd.MM.yyyy") : '_________________'}}
-по {{data?.finish ? (data?.finish | date:"dd.MM.yyyy") : '_________________'}}
-<br/><br/>
-<strong>Діагноз при поступленні</strong>: {{data?.patient.therapy.diag 
-|| '______________________________________________________________________________________________________________________________________ 
-____________________________________________________________________________________________________________________________________________________________________'}}
-<br/><br/>
-За час лікування {{data?.patient.person.gender ? 'проходив' : 'проходила'}}:
-<br/><br/>
-<table class="table table-bordered">
+﻿<table class="table table-bordered">
     <thead class="thead-light">
         <tr>
             <th width="80">№ п/п</th>
@@ -56,13 +23,3 @@ ________________________________________________________________________________
 <p>Знижка: <strong>{{data?.discount || 0}}</strong> грн.</p>
 <p>Внески: <strong>{{data?.tips || 0}}</strong> грн.</p>
 <p>Сума: <strong>{{data?.sum || 0}}</strong> грн.</p>
-
-<br/><br/>
-Рекомендації:_______________________________________________________________________________________
-____________________________________________________________________________________________________
-____________________________________________________________________
-<br/><br/>
-М.П.
-<span class="pull-right">{{ date | date: "dd.MM.yyyy"}} p.</span>
-<br/><br/>
-<span class="pull-right">Головний лікар ______________________ Нечай А.В.</span>

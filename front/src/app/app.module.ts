@@ -91,6 +91,7 @@ const appRoutes: Routes = [
         }
     },
     { path: 'login', component: LoginComponent },
+    { path: 'home', component: HomeComponent },
 
     {
         path: 'hotel', component: HotelMainComponent,

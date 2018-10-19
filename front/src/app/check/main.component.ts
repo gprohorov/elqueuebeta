@@ -14,13 +14,13 @@ export class CheckComponent implements OnInit, OnDestroy {
     sub: Subscription;
     data: any;
     loading = false;
-    
+
     patientId: string;
     start: string;
     finish: string;
-    
+
     date = new Date();
-    
+
     constructor(
         private service: PatientService,
         private alertService: AlertService,
@@ -35,10 +35,17 @@ export class CheckComponent implements OnInit, OnDestroy {
         this.finish = new Date().toISOString().split('T').shift();
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.sub = this.service.getCheck(this.patientId, this.start, this.finish)
-            .subscribe(data => { this.data = data; });
+            .subscribe(data => {
+                this.data = data;
+                this.setTimer();
+            });
     }
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+    }
+
+    setTimer() {
+        setTimeout(() => { this.router.navigate(['home']) }, 3 * 60 * 1000);
     }
 }
