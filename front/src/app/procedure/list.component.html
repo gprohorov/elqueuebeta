@@ -18,6 +18,7 @@
                 <th>Кабінет</th>
                 <th class="text-nowrap">К-сть місць</th>
                 <th *ngFor="let status of Statuses" class="text-nowrap">{{Status[status].text}}</th>
+                <th>%</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
                 <td>{{item.cabinet}}</td>
                 <td>{{item.number}}</td>
                 <td *ngFor="let status of Statuses">{{item[status]}}</td>
+                <td align="right">{{item.percent}}</td>
                 <td align="right">
                     <button class="btn btn-primary btn-sm"
                         [routerLink]="['/procedure-form', { id: item.id }]">Редагувати</button>

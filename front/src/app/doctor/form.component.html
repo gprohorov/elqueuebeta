@@ -19,6 +19,11 @@
                     #speciality="ngModel" />
             </div>
             <div class="form-group">
+                <label for="rate">Ставка</label> <input type="number"
+                    class="form-control" name="rate" [(ngModel)]="model.rate"
+                    #rate="ngModel" />
+            </div>
+            <div class="form-group">
                 <label>Процедури</label>
                 <div class="form-check" *ngFor="let procedure of procedures">
                     <input type="checkbox" class="form-check-input" [name]="procedure.value"
