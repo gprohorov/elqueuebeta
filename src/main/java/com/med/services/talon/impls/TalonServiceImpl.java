@@ -491,7 +491,8 @@ public class TalonServiceImpl implements ITalonService {
                     procedureReceipt.setZones(zones);
                     int sum = value.stream().mapToInt(Talon::getSum).sum();
                     procedureReceipt.setSum(sum);
-                    procedureReceipt.setPrice(key.getSOCIAL());
+                    int price = (zones ==0 )? 0: sum/zones;
+                    procedureReceipt.setPrice(price);
                     list.add(procedureReceipt);
             }
         );

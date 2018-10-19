@@ -4,6 +4,7 @@ import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.accrual.impls.AccrualServiceImpl;
 import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
@@ -59,6 +60,9 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
 
     @Autowired
     TherapyServiceImpl therapyService;
+
+    @Autowired
+    AccrualServiceImpl accrualService;
 
     private static final Logger logger = LoggerFactory.getLogger(TailServiceImpl.class);
 
@@ -154,6 +158,14 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
                 , PaymentType.PROC
                 , descr);
         accountingService.createAccounting(accounting);
+
+        Accrual accrual = new Accrual();
+        accrual.setDateTime(LocalDateTime.now());
+        accrual.setTalonId(talon.getId());
+        accrual.setDoctorId(talon.getDoctor().getId());
+        accrual.setDesc(descr);
+        accrual.setSum(talon.getProcedure().getSOCIAL()/10);
+        accrualService.createAccrual(accrual);
 
 
  /////////////////  cancelling and activating approp. talons
