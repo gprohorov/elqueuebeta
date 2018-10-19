@@ -28,7 +28,7 @@ export class ProcedureListComponent implements OnInit {
   ngOnDestroy() {
     if (this.sub) this.sub.unsubscribe();
   }
-  
+
   load() {
     this.loading = true;
     this.sub = this.service.getAll().subscribe(data => { this.items = data; this.loading = false; });

@@ -4,6 +4,7 @@ export class Procedure {
     name            : string;
     cabinet         : number;
     number          : number;
+    percent         : number;
     zoned           : boolean;
     freeChoice      : boolean;
     FOREIGN         : number;
