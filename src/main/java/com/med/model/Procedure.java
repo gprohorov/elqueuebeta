@@ -100,6 +100,23 @@ public class Procedure {
         this.procedureType = procedureType;
     }
 
+    public Procedure(String name, int cabinet, Boolean freeChoice, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, int percent, boolean zoned, int number, Card card, ProcedureType procedureType, int today) {
+        this.name = name;
+        this.cabinet = cabinet;
+        this.freeChoice = freeChoice;
+        this.FOREIGN = FOREIGN;
+        this.VIP = VIP;
+        this.BUSINESS = BUSINESS;
+        this.ALL_INCLUSIVE = ALL_INCLUSIVE;
+        this.SOCIAL = SOCIAL;
+        this.percent = percent;
+        this.zoned = zoned;
+        this.number = number;
+        this.card = card;
+        this.procedureType = procedureType;
+        this.today = today;
+    }
+
     public ProcedureType getProcedureType() {
         return procedureType;
     }
