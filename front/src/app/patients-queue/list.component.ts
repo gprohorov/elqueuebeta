@@ -1,12 +1,10 @@
 ﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { ModalDialogService } from 'ngx-modal-dialog';
 import * as moment from 'moment';
 
-import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
-import { AlertService, PatientsQueueService } from '../_services/index';
+import { PatientsQueueService } from '../_services/index';
 
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
@@ -38,7 +36,6 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
     constructor(
         private viewRef: ViewContainerRef,
-        private alertService: AlertService,
         private modalService: ModalDialogService,
         private service: PatientsQueueService
     ) { }
@@ -57,7 +54,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     scrollToRow(itemId) {
-        let item = this.items.find(x => { return x.id == itemId });
+        const item = this.items.find(x => x.id === itemId);
         if (item) {
             item.expanded = true;
             setTimeout(() => {
@@ -69,83 +66,83 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     getProgress(list: any[]) {
         let executed = 0, total = 0;
         list.forEach(function (item) {
-            if (item.activity == 'EXECUTED') executed++;
-            if (item.activity != 'CANCELED') total++;
+            if (item.activity === 'EXECUTED') executed++;
+            if (item.activity !== 'CANCELED') total++;
         });
         return executed + '/' + total;
     }
 
     showCreatePatientPopup() {
-        let options = {
+        const options = {
             title: 'Добавити пацієнта',
             childComponent: CreatePatientModalComponent,
-            closeDialogSubject: null 
+            closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe((itemId) => { this.load(itemId); });
     }
 
     showAssignProcedurePopup(item: any) {
-        let options = { 
+        const options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
             data: { patientId: item.id, patientName: item.person.fullName },
-            closeDialogSubject: null 
+            closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     showIncomePopup(item: any) {
-        let options = {
+        const options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientIncomeModalComponent,
             data: item,
-            closeDialogSubject: null 
+            closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     showAssignProceduresOnDatePopup(item: any) {
-        let options = {
+        const options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignProceduresOnDateModalComponent,
             data: { patientId: item.id, patientName: item.person.fullName },
-            closeDialogSubject: null 
+            closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
-    
+
     showAssignHotelPopup(item: any) {
-        let options = {
+        const options = {
             title: 'Пацієнт: ' + item.person.fullName,
             childComponent: PatientAssignHotelModalComponent,
             data: { patientId: item.id, patientName: item.person.fullName },
-            closeDialogSubject: null 
-        }
+            closeDialogSubject: null
+        };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 
     updateActivity(id: string, value: string, item: any) {
         if (value === 'CANCELED' && !confirm('Встановити процедурі "' + Activity[value].text + '" ?')) return false;
-        this.subTemp = this.service.updateActivity(id, value).subscribe(data => {
+        this.subTemp = this.service.updateActivity(id, value).subscribe(() => {
             this.load(item.id);
         });
     }
 
     updateActivityAll(item: any, value: string) {
         if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
-            this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(data => {
+            this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
                 this.load(item.id);
             });
         }
     }
 
     updateOutOfTurn(id: string, value: boolean, item: any) {
-        this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
+        this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(() => {
             this.load(item.id);
         });
     }
@@ -190,21 +187,21 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     isHiddenRow(item: any) {
-        return ((item.activity != 'ACTIVE' 
-              && item.activity != 'ON_PROCEDURE' 
-              && item.activity != 'INVITED'
-              && item.activity != 'STUCK'
-            ) && this.filters == 'active') 
-            || ((item.activity == 'ACTIVE' 
-              || item.activity == 'ON_PROCEDURE' 
-              || item.activity == 'INVITED'
-              || item.activity == 'STUCK'
-            ) && this.filters == 'notactive')
-            || (item.hotel == false && this.filters == 'hotel');
+        return ((item.activity !== 'ACTIVE'
+              && item.activity !== 'ON_PROCEDURE'
+              && item.activity !== 'INVITED'
+              && item.activity !== 'STUCK'
+            ) && this.filters === 'active')
+            || ((item.activity === 'ACTIVE'
+              || item.activity === 'ON_PROCEDURE'
+              || item.activity === 'INVITED'
+              || item.activity === 'STUCK'
+            ) && this.filters === 'notactive')
+            || (item.hotel === false && this.filters === 'hotel');
     }
-    
+
     changeDay(days: number) {
-        let date = new Date(this.date);
+        const date = new Date(this.date);
         date.setDate(date.getDate() + days);
         this.date = date.toISOString().split('T')[0];
         this.load();
@@ -213,25 +210,25 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     load(itemId: string = null) {
         this.loading = true;
         this.sub = this.service.getAll(this.date).subscribe(data => {
-            data.forEach(x => { x.fullName = x.person.fullName });
+            data.forEach(x => { x.fullName = x.person.fullName; });
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.appointments = [];
             let appointmentsObj = {}, i = 0;
             data.forEach(x => {
-                if (appointmentsObj[x.appointed] == undefined) appointmentsObj[x.appointed] = []; 
-                appointmentsObj[x.appointed].push(i); 
-                i++; 
+                if (appointmentsObj[x.appointed] === undefined) appointmentsObj[x.appointed] = [];
+                appointmentsObj[x.appointed].push(i);
+                i++;
             });
-            for (var prop in appointmentsObj) {
+            for (const prop in appointmentsObj) {
                 this.appointments.push({ appointment: parseInt(prop), items: appointmentsObj[prop] });
             }
             this.totalPatients = data.length;
             this.hotelPatients = data.filter( x => x.hotel ).length;
-            this.activePatients = data.filter( x => 
-                   x.activity == 'ACTIVE' 
-                || x.activity == 'ON_PROCEDURE' 
-                || x.activity == 'INVITED'
-                || x.activity == 'STUCK' ).length;
+            this.activePatients = data.filter( x =>
+                   x.activity === 'ACTIVE'
+                || x.activity === 'ON_PROCEDURE'
+                || x.activity === 'INVITED'
+                || x.activity === 'STUCK' ).length;
             this.notActivePatients = this.totalPatients - this.activePatients;
             this.loading = false;
             if (itemId) this.scrollToRow(itemId);
@@ -240,16 +237,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
 
 }
 
-var sort_by;
+let sort_by;
 
 (function () {
     // utility functions
-    var default_cmp = function (a, b) {
-        if (a == b) return 0;
+    const default_cmp = function (a, b) {
+        if (a === b) return 0;
         return a < b ? -1 : 1;
     },
         getCmpFunc = function (primer, reverse) {
-            var dfc = default_cmp, // closer in scope
+            let dfc = default_cmp, // closer in scope
                 cmp = default_cmp;
             if (primer) {
                 cmp = function (a, b) {
@@ -266,18 +263,17 @@ var sort_by;
 
     // actual implementation
     sort_by = function () {
-        var fields = [],
+        let fields = [],
             n_fields = arguments.length,
-            field, name, reverse, cmp;
+            field, name, cmp;
 
         // preprocess sorting options
-        for (var i = 0; i < n_fields; i++) {
+        for (let i = 0; i < n_fields; i++) {
             field = arguments[i];
             if (typeof field === 'string') {
                 name = field;
                 cmp = default_cmp;
-            }
-            else {
+            } else {
                 name = field.name;
                 cmp = getCmpFunc(field.primer, field.reverse);
             }
@@ -289,8 +285,8 @@ var sort_by;
 
         // final comparison function
         return function (A, B) {
-            var a, b, name, result;
-            for (var i = 0; i < n_fields; i++) {
+            let name, result;
+            for (let i = 0; i < n_fields; i++) {
                 result = 0;
                 field = fields[i];
                 name = field.name;
@@ -299,6 +295,6 @@ var sort_by;
                 if (result !== 0) break;
             }
             return result;
-        }
-    }
+        };
+    };
 }());

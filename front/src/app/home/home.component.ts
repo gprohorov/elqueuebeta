@@ -1,7 +1,12 @@
 ﻿import { Component } from '@angular/core';
 
 @Component({
-    template: ''
+    templateUrl: './home.component.html'
 })
 
-export class HomeComponent { }
+export class HomeComponent {
+
+    constructor() {
+        sessionStorage.setItem('showMenu', 'false');
+    }
+}
