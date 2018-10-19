@@ -21,7 +21,7 @@ public class Doctor {
     private String speciality;
     private String cellPhone;
     private List<Integer> procedureIds = new ArrayList<>();
-
+    private int rate;
     public List<Integer> getProcedureIds() {
         return procedureIds;
     }
