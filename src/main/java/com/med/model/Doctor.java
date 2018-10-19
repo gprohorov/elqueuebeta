@@ -45,6 +45,27 @@ public class Doctor {
         this.userId = userId;
     }
 
+    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, int rate, String userId) {
+        this.fullName = fullName;
+        this.speciality = speciality;
+        this.cellPhone = cellPhone;
+        this.procedureIds = procedureIds;
+        this.rate = rate;
+        this.userId = userId;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getFullName() {
         return fullName;
     }
