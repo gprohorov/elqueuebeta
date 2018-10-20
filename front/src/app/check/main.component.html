@@ -1,4 +1,22 @@
-﻿<table class="table table-bordered">
+﻿<img src="assets/logo_mednean.jpg" width="120" class="pull-left">
+<img src="assets/logo_medecine.jpg" class="pull-right">
+<center>
+<strong>МІНІСТЕРСТВО ОХОРОНИ ЗДОРОВ’Я УКРАЇНИ<br/>
+ПРИВАТНЕ ПІДПРИЄМСТВО МЕДИЧНИЙ ЦЕНТР «МЕДНЕАН»<br/>
+ЄДРПОУ 36191728<br/>
+м.Чернівці, вул. Прип’ятська, 6А<br/></strong>
+тел. +38 (0372) 567 100<br/>
+www.mednean.com.ua<br/>
+e-mail: mednean@gmail.com
+<br/><br/>
+<h1>Рахунок</h1>
+</center>
+Паціент: <strong>{{data?.patient.person.fullName}}</strong>
+<br/>
+Період лікування: <strong>{{start | date:"dd.MM.yyyy"}}
+    <span *ngIf="start !== finish"> - {{finish | date:"dd.MM.yyyy"}}</span></strong>
+<br/><br/>
+<table class="table table-sm">
     <thead class="thead-light">
         <tr>
             <th width="80">№ п/п</th>
@@ -16,10 +34,17 @@
             <td align="right">{{item.price}} грн.</td>
             <td align="right">{{item.sum}} грн.</td>
         </tr>
+        <tr *ngIf="data?.hotel > 0">
+            <td align="right" colspan="4"><strong>За процедури:</strong></td>
+            <td align="right"><strong>{{data?.sum || 0}} грн.</strong></td>
+        </tr>
+        <tr *ngIf="data?.hotel > 0">
+            <td align="right" colspan="4"><strong>За готель:</strong></td>
+            <td align="right"><strong>{{data?.hotel || 0}} грн.</strong></td>
+        </tr>
+        <tr>
+            <td align="right" colspan="4"><strong>Всього до оплати:</strong></td>
+            <td align="right"><strong>{{data?.hotel + data?.sum || 0}} грн.</strong></td>
+        </tr>
     </tbody>
 </table>
-
-<p>Готель: <strong>{{data?.hotel || 0}}</strong> грн.</p>
-<p>Знижка: <strong>{{data?.discount || 0}}</strong> грн.</p>
-<p>Внески: <strong>{{data?.tips || 0}}</strong> грн.</p>
-<p>Сума: <strong>{{data?.sum || 0}}</strong> грн.</p>

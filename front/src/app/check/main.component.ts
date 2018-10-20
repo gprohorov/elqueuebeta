@@ -38,6 +38,7 @@ export class CheckComponent implements OnInit, OnDestroy {
             .subscribe(data => {
                 this.data = data;
                 this.setTimer();
+                console.log(this.start, this.finish);
             });
     }
 
