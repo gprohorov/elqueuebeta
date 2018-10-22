@@ -90,7 +90,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                     for (let i = 0; i < 14; i++) {
                         let currentDay = this.dates[i].date;
                         if (start <= currentDay && finish >= currentDay) {
-                            let duration = (finish - currentDay) / (1000 * 60 * 60 * 24) + 1;
+                            let duration = Math.round((finish - currentDay) / (1000 * 60 * 60 * 24) + 1);
                             item.line[i] = {
                                 duration: duration,
                                 id: record.id,
