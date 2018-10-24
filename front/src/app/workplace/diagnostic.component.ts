@@ -1,14 +1,15 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable, pipe } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+// tslint:disable-next-line:import-blacklist
+import { pipe } from 'rxjs';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Status } from '../_storage/index';
-import { Patient, Procedure } from '../_models/index';
-import { AlertService, ProcedureService, WorkplaceDiagnosticService, PatientsQueueService } from '../_services/index';
+import { AlertService, WorkplaceDiagnosticService, PatientsQueueService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
 @Component({
@@ -33,13 +34,13 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     Statuses = Object.keys(Status);
     procedures: any;
     currentProcedureId: number = null;
-    currentProcedureName: string = '';
+    currentProcedureName = '';
 
     item: any;
     patientId: string;
     procedureId: number;
-    lastCabinet: number = 0;
-    procedureStarted: boolean = false;
+    lastCabinet = 0;
+    procedureStarted = false;
     model: any = {};
 
     constructor(
@@ -69,7 +70,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
 
     public toggleProcedure(procedure, val: boolean = null) {
         if (!procedure.selected || val === true) {
-            if (this.canvasBuffer.length > 0 && (!procedure.picture || procedure.picture.length == 0)) {
+            if (this.canvasBuffer.length > 0 && (!procedure.picture || procedure.picture.length === 0)) {
                 procedure.picture = this.canvasBuffer;
             }
             procedure.selected = true;
@@ -79,7 +80,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     }
 
     public saveProcedure() {
-        let p = this.procedures.find(x => { return (x.id == this.currentProcedureId) ? x : false; });
+        const p = this.procedures.find(x => (x.id === this.currentProcedureId) ? x : false);
         p.picture = this.canvasBuffer;
         this.currentProcedureId = null;
         this.currentProcedureName = '';
@@ -89,7 +90,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     public clearCanvas() {
         this.restoreCanvas([]);
         if (this.currentProcedureId != null) {
-            let p = this.procedures.find(x => { return (x.id == this.currentProcedureId) ? x : false; });
+            const p = this.procedures.find(x => (x.id === this.currentProcedureId) ? x : false);
             p.picture = this.canvasBuffer;
         }
     }
@@ -107,7 +108,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     public restoreCanvas(picture) {
         this.canvasInit();
         this.canvasBuffer = picture;
-        this.canvasBuffer.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+        this.canvasBuffer.forEach(x => { this.drawOnCanvas(x[0], x[1]); });
     }
 
     public setColor(color) {
@@ -140,12 +141,12 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
                 // after a mouse down, we'll record all mouse moves
                 return fromEvent(canvasEl, 'mousemove').pipe(
                     // we'll stop (and unsubscribe) once the user releases the mouse
-                    // this will trigger a 'mouseup' event    
+                    // this will trigger a 'mouseup' event
                     takeUntil(Observable.fromEvent(canvasEl, 'mouseup')),
                     // we'll also stop (and unsubscribe) once the mouse leaves the canvas (mouseleave event)
                     takeUntil(Observable.fromEvent(canvasEl, 'mouseleave')),
                     // pairwise lets us get the previous value to draw a line from
-                    // the previous point to the current point    
+                    // the previous point to the current point
                     pairwise()
                 );
             })
@@ -175,10 +176,10 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
                 // after a touch start, we'll record all moves
                 return fromEvent(canvasEl, 'touchmove').pipe(
                     // we'll stop (and unsubscribe) once the user stop touching
-                    // this will trigger a 'touchend' event    
+                    // this will trigger a 'touchend' event
                     takeUntil(Observable.fromEvent(canvasEl, 'touchend')),
                     // pairwise lets us get the previous value to draw a line from
-                    // the previous point to the current point    
+                    // the previous point to the current point
                     pairwise()
                 );
             })
@@ -235,7 +236,8 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.sub = this.service.getProcedures().subscribe(data => {
             this.procedures = data.sort(function (a, b) {
-                var x = a.cabinet; var y = b.cabinet;
+                const x = a.cabinet;
+                const y = b.cabinet;
                 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
             });
 
@@ -245,6 +247,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
                 cab = p.cabinet;
             });
 
+            // tslint:disable-next-line:no-shadowed-variable
             this.subPatient = this.service.getPatient(this.patientId).subscribe(data => {
                 this.loading = false;
 
@@ -252,23 +255,23 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
                 this.model = data.therapy ? data.therapy : { days: 10 };
                 this.model.manualTherapy = true;
 
-                this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
+                this.procedureStarted = ('ON_PROCEDURE' === this.item.talon.activity);
 
                 setTimeout(() => {
                     this.canvasInit();
                     if (this.model.assignments) {
                         this.procedures.forEach((p) => {
                             this.model.assignments.forEach((sp) => {
-                                if (sp.procedureId == p.id) {
+                                if (sp.procedureId === p.id) {
                                     p.picture = sp.picture;
                                     this.toggleProcedure(p, true);
                                 }
                             });
                         });
-                        if (this.canvasBuffer.length == 0) {
+                        if (this.canvasBuffer.length === 0) {
                             for (let i = 0; i <= this.procedures.length; i++) {
-                                if (this.procedures[i] 
-                                    && this.procedures[i].picture 
+                                if (this.procedures[i]
+                                    && this.procedures[i].picture
                                     && this.procedures[i].picture.length > 0
                                     ) {
                                         this.restoreCanvas(this.procedures[i].picture);
@@ -284,10 +287,10 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         });
     }
 
-    updateStatus(id: string, value: string, event: any) {
+    updateStatus(id: string, value: string) {
         if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
             this.loading = true;
-            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
+            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(() => {
                 this.load();
             });
         } else {
@@ -301,12 +304,12 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             childComponent: PatientIncomeModalComponent,
             data: patient.patient
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        this.alertService.subject.subscribe(() => { this.load(); });
     }
 
     startProcedure() {
         this.loading = true;
-        this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(data => {
+        this.subProcedure = this.service.startProcedure(this.item.talon.id).subscribe(() => {
             this.alertService.success('Процедуру розпочато.');
             this.load();
         });
@@ -315,7 +318,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
             this.loading = true;
-            this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(data => {
+            this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(() => {
                 this.alertService.success('Процедуру скасовано.');
                 this.router.navigate(['workplace']);
             });
@@ -327,10 +330,10 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         // form assignment
         this.model.assignments = [];
         this.procedures.forEach((p) => {
-            if (p.selected) this.model.assignments.push({ procedureId: p.id, desc: '', picture: p.picture })
+            if (p.selected) this.model.assignments.push({ procedureId: p.id, desc: '', picture: p.picture });
         });
 
-        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.model).subscribe(data => {
+        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.model).subscribe(() => {
             this.alertService.success('Процедуру завершено.');
             this.router.navigate(['workplace']);
         });

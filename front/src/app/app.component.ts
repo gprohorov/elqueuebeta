@@ -12,10 +12,10 @@ export class AppComponent implements OnInit {
         sessionStorage.setItem('showMenu', 'true');
     }
 
-    showMenu():boolean {
-        return sessionStorage.getItem('showMenu') == 'false' ? false : true;
+    showMenu(): boolean {
+        return sessionStorage.getItem('showMenu') === 'false' ? false : true;
     }
-    
+
     ngOnInit(): void {
         const user: any = this.authService.getUserInfo();
         if (user && user.authorities) {

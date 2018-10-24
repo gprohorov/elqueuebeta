@@ -1,10 +1,9 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Status } from '../_storage/index';
-import { Patient } from '../_models/index';
 import { AlertService, WorkplaceCommonService, PatientsQueueService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
@@ -31,7 +30,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     talonId: string;
     patientId: string;
     procedureId: number;
-    procedureStarted: boolean = false;
+    procedureStarted = false;
     model: any = { comment: '' };
 
     constructor(
@@ -67,16 +66,16 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.subPatient = this.service.getPatient(this.patientId, this.procedureId).subscribe(data => {
             this.item = data;
             this.loading = false;
-            this.procedureStarted = ('ON_PROCEDURE' == this.item.talon.activity)
+            this.procedureStarted = ('ON_PROCEDURE' === this.item.talon.activity);
 
             setTimeout(() => {
                 this.canvasInit();
                 if (this.item.patient.therapy && this.item.patient.therapy.assignments) {
                     const procedure = this.item.patient.therapy.assignments.find(x => {
-                        return (x.procedureId == this.procedureId) ? x : false;
+                        return (x.procedureId === this.procedureId) ? x : false;
                     });
                     if (procedure && procedure.picture) {
-                        procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]) });
+                        procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]); });
                     }
                 }
             }, 0);
@@ -119,9 +118,9 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         }
     }
 
-    updateStatus(id: string, value: string, event: any) {
+    updateStatus(id: string, value: string) {
         if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
-            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(data => {
+            this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(() => {
                 this.load();
             });
         } else {
@@ -135,7 +134,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             childComponent: PatientIncomeModalComponent,
             data: patient.patient
         });
-        this.alertService.subject.subscribe(() => { this.load() });
+        this.alertService.subject.subscribe(() => { this.load(); });
     }
 
     startProcedure() {
@@ -153,7 +152,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     cancelProcedure() {
         if (confirm('Скасувати процедуру ?')) {
             this.loading = true;
-            this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(data => {
+            this.subProcedure = this.service.cancelProcedure(this.item.talon.id).subscribe(() => {
                 this.alertService.success('Процедуру скасовано.');
                 this.router.navigate(['workplace']);
             });
@@ -163,7 +162,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     executeProcedure() {
         this.loading = true;
         this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.item.talon.zones)
-            .subscribe(data => {
+            .subscribe(() => {
                 this.alertService.success('Процедуру завершено.');
                 this.router.navigate(['workplace']);
             },
@@ -176,7 +175,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     subZone() {
         this.loading = true;
         this.service.subZone(this.item.talon.id).subscribe(
-            data => {
+            () => {
                 this.alertService.success('Зону скасовано.', true);
                 this.load();
             },
@@ -189,7 +188,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     addZone() {
         this.loading = true;
         this.service.addZone(this.item.talon.id).subscribe(
-            data => {
+            () => {
                 this.alertService.success('Зону додано.', true);
                 this.load();
             },
@@ -202,7 +201,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     comment() {
         this.loading = true;
         this.service.commentProcedure(this.item.talon.id, this.model.comment).subscribe(
-            data => {
+            () => {
                 this.alertService.success('Зміни збережено.', true);
                 this.model.comment = '';
                 this.load();

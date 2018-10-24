@@ -3,14 +3,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { HotelState } from '../_storage/index';
-import { AlertService, HotelService } from '../_services/index';
+import { HotelService } from '../_services/index';
 import { PatientAssignHotelModalComponent } from '../patient/assign-hotel.modal.component';
 
 @Component({
     templateUrl: './main.component.html',
 })
 export class HotelMainComponent implements OnInit, OnDestroy {
-    
+
     loading = false;
     sub: Subscription;
     subDel: Subscription;
@@ -19,65 +19,64 @@ export class HotelMainComponent implements OnInit, OnDestroy {
     start;
     HotelState = HotelState;
     HotelStates = Object.keys(HotelState);
-    
+
     constructor(
         private viewRef: ViewContainerRef,
-        private alertService: AlertService,
         private modalService: ModalDialogService,
         private service: HotelService
-    ) { 
+    ) {
         this.start = this.getMonday(new Date());
-        this.start.setHours(0,0,0,0);
+        this.start.setHours(0, 0, 0, 0);
     }
-    
+
     ngOnInit() {
         this.load();
     }
-    
+
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subDel) this.subDel.unsubscribe();
     }
-    
+
     cancel(recordId) {
         if (confirm('Видалити запис?')) {
-            this.subDel = this.service.cancelRecord(recordId).subscribe(data => { this.load(); });
+            this.subDel = this.service.cancelRecord(recordId).subscribe(() => { this.load(); });
         }
     }
-    
+
     update(record) {
-        let options = {
+        const options = {
             title: 'Пацієнт: ' + record.name,
             childComponent: PatientAssignHotelModalComponent,
             data: { id: record.id, patientName: record.name },
-            closeDialogSubject: null 
-        }
+            closeDialogSubject: null
+        };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(); });
     }
-    
-    slide(days:number) {
+
+    slide(days: number) {
         this.start.setDate(this.start.getDate() + days);
         this.load();
     }
-    
+
     getMonday(date) {
-        let day = date.getDay() || 7;  
-        if (day !== 1) date.setHours(-24 * (day - 1)); 
+        const day = date.getDay() || 7;
+        if (day !== 1) date.setHours(-24 * (day - 1));
         return date;
     }
 
     load() {
         this.loading = true;
         this.dates = [];
-        let currDay = new Date(this.start.getTime());
+        const currDay = new Date(this.start.getTime());
         currDay.setDate(currDay.getDate() - 1);
         currDay.setHours(0, 0, 0, 0);
         for (let i = 0; i < 14; i++) {
-            let date = new Date(currDay.setDate(currDay.getDate() + 1));
-            let day = date.toLocaleDateString("uk", { weekday: 'short', month: 'numeric', day: 'numeric' });
-            this.dates.push({ date: date, str: day, we: [6,0].includes(date.getDay()), 
-                today: ( date.toDateString() == (new Date()).toDateString() ) });
+            const date = new Date(currDay.setDate(currDay.getDate() + 1));
+            const day = date.toLocaleDateString('uk', { weekday: 'short', month: 'numeric', day: 'numeric' });
+            this.dates.push({ date: date, str: day, we: [6, 0].includes(date.getDay()),
+                today: ( date.toDateString() === (new Date()).toDateString() ) });
         }
         this.sub = this.service.getKoikaMap(this.start.toISOString().split('T')[0]).subscribe(data => {
             this.loading = false;
@@ -85,12 +84,12 @@ export class HotelMainComponent implements OnInit, OnDestroy {
             this.items.forEach(item => {
                 item.line = new Array(14).fill({state: 'FREE', name: ''});
                 item.records.forEach(record => {
-                    let start:any = new Date(record.start);
-                    let finish:any = new Date(record.finish);
+                    const start: any = new Date(record.start);
+                    const finish: any = new Date(record.finish);
                     for (let i = 0; i < 14; i++) {
-                        let currentDay = this.dates[i].date;
+                        const currentDay = this.dates[i].date;
                         if (start <= currentDay && finish >= currentDay) {
-                            let duration = Math.round((finish - currentDay) / (1000 * 60 * 60 * 24) + 1);
+                            const duration = Math.round((finish - currentDay) / (1000 * 60 * 60 * 24) + 1);
                             item.line[i] = {
                                 duration: duration,
                                 id: record.id,
@@ -99,7 +98,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                                 start: record.start,
                                 finish: record.finish,
                                 name: record.koika.patient.person.fullName
-                            }
+                            };
                             for (let c = i + 1; c < duration + i; c++) item.line[c] = {};
                             i = i - 1 + duration;
                         }

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
-import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
 import { AlertService, WorkplaceMainService } from '../_services/index';
 
@@ -31,7 +30,6 @@ export class WorkplaceMainComponent implements OnInit, OnDestroy {
     };
 
     constructor(
-        private router: Router,
         private alertService: AlertService,
         private service: WorkplaceMainService
     ) { }
