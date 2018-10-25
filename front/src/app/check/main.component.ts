@@ -1,14 +1,12 @@
-﻿import { Component, OnInit, OnDestroy, Output } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { AppComponent } from '../app.component';
-import { PatientService, AlertService } from '../_services/index';
+import { PatientService} from '../_services/index';
 
 @Component({
     templateUrl: './main.component.html'
 })
-
 export class CheckComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
@@ -23,7 +21,6 @@ export class CheckComponent implements OnInit, OnDestroy {
 
     constructor(
         private service: PatientService,
-        private alertService: AlertService,
         private router: Router,
         private route: ActivatedRoute
     ) {
@@ -47,6 +44,6 @@ export class CheckComponent implements OnInit, OnDestroy {
     }
 
     setTimer() {
-        setTimeout(() => { this.router.navigate(['home']) }, 3 * 60 * 1000);
+        setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
     }
 }

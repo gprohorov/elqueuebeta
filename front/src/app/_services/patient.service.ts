@@ -102,3 +102,4 @@ export class PatientSearchCriteria {
     sortColumn: string;
     sortDirection: string;
 }
+

@@ -13,7 +13,6 @@ export class SortService {
     columnSorted(event: ColumnSortedEvent) {
         this.columnSortedSource.next(event);
     }
-
 }
 
 export interface ColumnSortedEvent {

@@ -1,12 +1,11 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StatisticService, AlertService } from '../_services/index';
+import { StatisticService } from '../_services/index';
 
 @Component({
     templateUrl: './procedures-statistics.component.html'
 })
-
 export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
@@ -15,17 +14,17 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
     data: any;
     start: string;
     finish: string;
-    
-    procedures: any = {};
-    
-    assigned: number = 0;
-    executed: number = 0;
-    cancelled: number = 0;
-    expired: number = 0;
-    zones: number = 0;
-    sum: number = 0;
 
-    constructor(private service: StatisticService, private alertService: AlertService) {
+    procedures: any = {};
+
+    assigned = 0;
+    executed = 0;
+    cancelled = 0;
+    expired = 0;
+    zones = 0;
+    sum = 0;
+
+    constructor(private service: StatisticService) {
         this.start = new Date().toISOString().split('T').shift();
         this.finish = new Date().toISOString().split('T').shift();
     }
@@ -41,11 +40,11 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
 
     getInfo(procedureId: number) {
         this.sub = this.service.getProceduresStatisticsByDoctors(this.start, this.finish, procedureId)
-            .subscribe(data => { 
+            .subscribe(data => {
                 this.procedures[procedureId] = data;
             });
     }
-    
+
     load() {
         this.sub = this.service.getProceduresStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;

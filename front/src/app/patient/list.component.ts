@@ -46,8 +46,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     showAssignProcedurePopup(patientId: string) {
-        let patient = this.items.filter(x => patientId == x.id)[0];
-        if (!patient) patient = this.todayItems.filter(x => patientId == x.id)[0];
+        let patient = this.items.filter(x => ('' + patientId === '' + x.id))[0];
+        if (!patient) patient = this.todayItems.filter(x => ('' + patientId === '' + x.id))[0];
         this.modalService.openDialog(this.viewRef, {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignProcedureModalComponent,
@@ -56,9 +56,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     showAssignHotelPopup(patientId: string) {
-        let patient = this.items.filter(x => patientId == x.id)[0];
-        if (!patient) patient = this.todayItems.filter(x => patientId == x.id)[0];
-        let options: any = {
+        let patient = this.items.filter(x => ('' + patientId === '' + x.id))[0];
+        if (!patient) patient = this.todayItems.filter(x => ('' + patientId === '' + x.id))[0];
+        const options: any = {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientAssignHotelModalComponent,
             data: { patientId: patientId, patientName: patient.person.fullName }
@@ -87,7 +87,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
             this.todayItems = data.filter(x => {
                 return x.person.fullName.toLowerCase().indexOf(search) > -1;
             }).sort((a, b) => {
-                let x = a.person.fullName, y = b.person.fullName;
+                const x = a.person.fullName;
+                const y = b.person.fullName;
                 if (x < y) return -1;
                 if (x > y) return 1;
                 return 0;
@@ -99,5 +100,4 @@ export class PatientListComponent implements OnInit, OnDestroy {
             this.loading = false;
         });
     }
-
 }

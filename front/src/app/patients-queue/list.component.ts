@@ -213,12 +213,14 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data.forEach(x => { x.fullName = x.person.fullName; });
             this.items = data.sort(sort_by('appointed', 'fullName'));
             this.appointments = [];
-            let appointmentsObj = {}, i = 0;
+            const appointmentsObj = {};
+            let i = 0;
             data.forEach(x => {
                 if (appointmentsObj[x.appointed] === undefined) appointmentsObj[x.appointed] = [];
                 appointmentsObj[x.appointed].push(i);
                 i++;
             });
+            // tslint:disable-next-line:forin
             for (const prop in appointmentsObj) {
                 this.appointments.push({ appointment: parseInt(prop), items: appointmentsObj[prop] });
             }
@@ -246,8 +248,8 @@ let sort_by;
         return a < b ? -1 : 1;
     },
         getCmpFunc = function (primer, reverse) {
-            let dfc = default_cmp, // closer in scope
-                cmp = default_cmp;
+            const dfc = default_cmp; // closer in scope
+            let cmp = default_cmp;
             if (primer) {
                 cmp = function (a, b) {
                     return dfc(primer(a), primer(b));
@@ -263,9 +265,8 @@ let sort_by;
 
     // actual implementation
     sort_by = function () {
-        let fields = [],
-            n_fields = arguments.length,
-            field, name, cmp;
+        const fields = [], n_fields = arguments.length;
+        let field, name, cmp;
 
         // preprocess sorting options
         for (let i = 0; i < n_fields; i++) {
@@ -285,7 +286,8 @@ let sort_by;
 
         // final comparison function
         return function (A, B) {
-            let name, result;
+            // tslint:disable-next-line:no-shadowed-variable
+            let name = '', result = 0;
             for (let i = 0; i < n_fields; i++) {
                 result = 0;
                 field = fields[i];

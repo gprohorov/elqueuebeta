@@ -5,19 +5,19 @@ const USER_KEY = 'UserInfo';
 @Injectable()
 export class UserStorage {
 
-  constructor() { }
+    constructor() { }
 
-  signOut() {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.clear();
-  }
+    signOut() {
+        window.sessionStorage.removeItem(USER_KEY);
+        window.sessionStorage.clear();
+    }
 
-  public saveUser(user: object) {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
-  }
+    public saveUser(user: object) {
+        window.sessionStorage.removeItem(USER_KEY);
+        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    }
 
-  public getUser(): string {
-    return JSON.parse(sessionStorage.getItem(USER_KEY));
-  }
+    public getUser(): string {
+        return JSON.parse(sessionStorage.getItem(USER_KEY));
+    }
 }

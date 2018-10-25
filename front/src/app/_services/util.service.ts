@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { config } from '../../config';
 
-
 @Injectable()
 export class UtilService {
   // Define the routes we are going to interact with
@@ -24,8 +23,7 @@ export class UtilService {
 
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
-    console.error('An error occurred', err);
-    return Observable.throw(err.message || err);
+      console.error('An error occurred', err);
+      return Observable.throw(err.message || err);
   }
-
 }

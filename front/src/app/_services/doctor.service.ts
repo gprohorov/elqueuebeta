@@ -54,5 +54,4 @@ export class DoctorService {
     console.error('An error occurred', err);
     return Observable.throw(err.message || err);
   }
-
 }

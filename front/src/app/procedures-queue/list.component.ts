@@ -2,7 +2,6 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
-import { Patient } from '../_models/index';
 import { Status, Activity } from '../_storage/index';
 import { AlertService, PatientsQueueService } from '../_services/index';
 
@@ -60,21 +59,19 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     updateOutOfTurn(id: string, value: boolean, patientName: string, procedureName: string) {
         if (confirm((value ? 'Призначити' : 'Зняти') + ' "Поза чергою" пацієнта "'
                 + patientName + '", процедура "'  + procedureName + '" ?')) {
-            this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(data => {
-                this.load();
-            });
+            this.subTemp = this.service.updateOutOfTurn(id, value).subscribe(() => { this.load(); });
         }
     }
 
     executeProcedure(talonId: string, patientName: string, procedureName: string) {
         if (confirm('Виконати процедуру "' + procedureName + '" для пацієнта "' + patientName + '" ?')) {
-            this.subTemp = this.service.executeProcedure(talonId).subscribe(data => {
+            this.subTemp = this.service.executeProcedure(talonId).subscribe(() => {
                 this.alertService.info('Процедуру "' + procedureName + '" для пацієнта "' + patientName + '".');
                 this.load();
             });
         }
     }
-    
+
     load() {
         this.loading = true;
         this.sub = this.service.getTails().subscribe(
@@ -85,7 +82,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
             error => {
                 this.alertService.error(error);
                 this.loading = false;
-            });
+            }
+        );
     }
-
 }

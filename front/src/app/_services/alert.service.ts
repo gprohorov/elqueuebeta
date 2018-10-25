@@ -8,7 +8,7 @@ export class AlertService {
     public subject = new Subject<any>();
     private keepAfterNavigationChange = false;
 
-    constructor(private router: Router) {
+    constructor(router: Router) {
         // clear alert message on route change
         router.events.subscribe(event => {
             if (event instanceof NavigationStart) {
@@ -32,12 +32,12 @@ export class AlertService {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'danger', text: message });
     }
-    
+
     warn(message: string, keepAfterNavigationChange = false) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'warning', text: message });
     }
-    
+
     info(message: string, keepAfterNavigationChange = false) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'info', text: message });
@@ -47,3 +47,4 @@ export class AlertService {
         return this.subject.asObservable();
     }
 }
+

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
@@ -21,5 +21,4 @@ export class WorkplaceMainService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }

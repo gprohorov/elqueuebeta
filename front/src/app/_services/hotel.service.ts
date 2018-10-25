@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { config } from '../../config';
-
-import { Procedure } from '../_models/index';
 
 @Injectable()
 export class HotelService {
@@ -37,7 +35,7 @@ export class HotelService {
     updateRecord(record: any) {
         return this.http.post(this.updateRecordUrl, record).pipe(catchError(this.handleError));
     }
-    
+
     cancelRecord(recordId: string) {
         return this.http.get(this.cancelRecordUrl + recordId).pipe(catchError(this.handleError));
     }
@@ -47,5 +45,4 @@ export class HotelService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }

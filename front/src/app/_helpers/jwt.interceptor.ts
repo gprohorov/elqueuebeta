@@ -1,9 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent,
-  HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent,
-  HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 import 'rxjs/add/operator/do';
 
 import { TokenStorage } from '../_storage/index';
@@ -23,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
   if (this.token.getToken() != null) {
     authReq = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.token.getToken())});
   }
-  return next.handle(authReq).do((event: any) => {},
+  return next.handle(authReq).do(() => {},
     ( error: any ) => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 401 || error.status === 403) {
