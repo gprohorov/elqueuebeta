@@ -54,6 +54,10 @@
                 <button class="btn btn-success m-1" (click)="showAssignHotelPopup(item.id)">Поселити у готель</button>
                 <button class="btn btn-warning m-1" (click)="showIncomePopup(item)">Розрахувати</button>
                 <a target="_blank" *ngxPermissionsOnly="['ROLE_HEAD']"
+                     routerLink="/workplace/diagnostic/{{item?.id}}">
+                    <button class="btn btn-light m-1">Діагностика</button>
+                </a>
+                <a target="_blank" *ngxPermissionsOnly="['ROLE_HEAD']"
                      routerLink="/statistic/patient/{{item?.id}}/{{start}}/{{finish}}">
                     <button class="btn btn-secondary m-1">Статистика</button>
                 </a>

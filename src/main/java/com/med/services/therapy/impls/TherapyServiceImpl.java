@@ -97,9 +97,9 @@ public class TherapyServiceImpl implements ITherapyService {
 	public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
 		Talon talon = talonService.findAll().stream().filter(tal -> tal.getPatientId().equals(patientId))
 				.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
-				.filter(tal -> (tal.getActivity().equals(Activity.ACTIVE)
-						|| tal.getActivity().equals(Activity.ON_PROCEDURE)))
-				.findFirst().orElse(null);
+//				.filter(tal -> (tal.getActivity().equals(Activity.ACTIVE)
+//						|| tal.getActivity().equals(Activity.ON_PROCEDURE)))
+				.findFirst().orElse(this.talonService.createTalon(patientId, 2, 0));
 		Patient patient = patientService.getPatient(patientId);
 		Therapy therapy = this.findTheLastTherapy(patientId);
 
