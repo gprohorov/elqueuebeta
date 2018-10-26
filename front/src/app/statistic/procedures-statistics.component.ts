@@ -39,13 +39,16 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
     }
 
     getInfo(procedureId: number) {
+        this.loading = true;
         this.sub = this.service.getProceduresStatisticsByDoctors(this.start, this.finish, procedureId)
             .subscribe(data => {
                 this.procedures[procedureId] = data;
+                this.loading = false;
             });
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getProceduresStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;
             this.procedures = {};
@@ -63,6 +66,7 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
                 this.zones += currentValue.zones;
                 this.sum += currentValue.fee;
             });
+            this.loading = false;
         });
     }
 }

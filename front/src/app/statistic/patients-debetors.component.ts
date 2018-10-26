@@ -24,12 +24,14 @@ export class PatientsDebetorsComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getPatientsDebetors().subscribe(data => {
             this.data = data;
             this.sum = 0;
             data.forEach( currentValue => {
                 this.sum += currentValue.balance;
             });
+            this.loading = false;
         });
     }
 }

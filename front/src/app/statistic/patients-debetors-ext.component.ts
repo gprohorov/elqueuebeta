@@ -31,6 +31,7 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getPatientsDebetorsExt(this.start, this.finish).subscribe(data => {
             this.data = data;
             this.totalBill = 0;
@@ -41,6 +42,7 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
                 this.totalPayment += currentValue.payment;
                 this.totalDebt += currentValue.debt;
             });
+            this.loading = false;
         });
     }
 }

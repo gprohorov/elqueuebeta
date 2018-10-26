@@ -31,8 +31,10 @@ export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getDoctorsCurrentStatistics().subscribe(data => {
             this.data = data;
+            this.loading = false;
         });
     }
 }

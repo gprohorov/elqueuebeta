@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StatisticService, AlertService } from '../_services/index';
+import { StatisticService } from '../_services/index';
 
 @Component({
     templateUrl: './cash-summary.component.html'
@@ -15,7 +15,11 @@ export class CashSummaryComponent implements OnInit, OnDestroy {
     constructor(private service: StatisticService) { }
 
     ngOnInit() {
-        this.sub = this.service.getCashSummary().subscribe(data => { this.data = data; });
+        this.loading = true;
+        this.sub = this.service.getCashSummary().subscribe(data => {
+            this.data = data;
+            this.loading = false;
+        });
     }
 
     ngOnDestroy() {

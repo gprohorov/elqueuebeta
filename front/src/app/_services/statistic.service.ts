@@ -54,7 +54,10 @@ export class StatisticService {
     }
 
     getPatientStatistics(patientId: string) {
-        return this.http.get(this.patientStatisticsUrl + patientId).pipe(catchError(this.handleError));
+        const start = new Date().toISOString().split('T').shift();
+        const finish = new Date().toISOString().split('T').shift();
+        return this.http.get(this.patientStatisticsUrl + patientId + '/' + start + '/' + finish)
+            .pipe(catchError(this.handleError));
     }
 
 

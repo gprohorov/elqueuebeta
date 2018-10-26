@@ -12,7 +12,7 @@ import { ModalDialogModule } from 'ngx-modal-dialog';
 import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { JwtInterceptor } from './_helpers/index';
+import { JwtInterceptor, LoaderComponent } from './_helpers/index';
 import { TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
@@ -231,10 +231,14 @@ const appRoutes: Routes = [
         ModalDialogModule.forRoot(),
         RouterModule.forRoot(appRoutes, {useHash: true})
     ],
+    exports: [
+        LoaderComponent
+    ],
     declarations: [
         AppComponent,
         HomeComponent,
         AlertComponent,
+        LoaderComponent,
         SortableTableDirective,
         SortableColumnComponent,
         LoginComponent,

@@ -29,11 +29,13 @@ export class DoctorsProceduresFromToComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getDoctorsProceduresFromTo(this.start, this.finish)
             .subscribe(data => {
                 this.data = data;
                 this.sum = 0;
                 data.forEach( currentValue => { this.sum += currentValue.fee; });
+                this.loading = false;
             });
     }
 }

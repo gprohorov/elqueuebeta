@@ -36,6 +36,7 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getGeneralStatisticsFromTo(this.start, this.finish).subscribe(data => {
             this.data = data;
 
@@ -56,6 +57,7 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
                 this.discount += currentValue.discount;
                 this.debt += currentValue.debt;
             });
+            this.loading = false;
         });
     }
 }

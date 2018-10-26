@@ -27,9 +27,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
         private patientService: PatientService,
-        private patientsQueueService: PatientsQueueService,
-        private alertService: AlertService
-    ) { }
+        private patientsQueueService: PatientsQueueService
+        ) { }
 
     ngOnInit() {
         this.load();

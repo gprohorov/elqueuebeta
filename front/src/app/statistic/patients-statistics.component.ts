@@ -34,6 +34,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getPatientsStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;
             this.totalBill = 0;
@@ -50,6 +51,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
                 this.totalDonation += currentValue.donation;
                 this.totalDebt += currentValue.debt;
             });
+            this.loading = false;
         });
     }
 }
