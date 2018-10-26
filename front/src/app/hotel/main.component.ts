@@ -79,7 +79,6 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                 today: ( date.toDateString() === (new Date()).toDateString() ) });
         }
         this.sub = this.service.getKoikaMap(this.start.toISOString().split('T')[0]).subscribe(data => {
-            this.loading = false;
             this.items = data;
             this.items.forEach(item => {
                 item.line = new Array(14).fill({state: 'FREE', name: ''});
@@ -105,6 +104,7 @@ export class HotelMainComponent implements OnInit, OnDestroy {
                     }
                 });
             });
+            this.loading = false;
         });
     }
 }

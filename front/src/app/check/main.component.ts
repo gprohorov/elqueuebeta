@@ -31,11 +31,12 @@ export class CheckComponent implements OnInit, OnDestroy {
         this.start = new Date().toISOString().split('T').shift();
         this.finish = new Date().toISOString().split('T').shift();
         this.patientId = this.route.snapshot.paramMap.get('patientId');
+        this.loading = true;
         this.sub = this.service.getCheck(this.patientId, this.start, this.finish)
             .subscribe(data => {
                 this.data = data;
                 this.setTimer();
-                console.log(this.start, this.finish);
+                this.loading = false;
             });
     }
 

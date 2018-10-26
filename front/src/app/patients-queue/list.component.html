@@ -1,4 +1,5 @@
-﻿<div class="position-fixed" [style.right.px]="50">
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
     <button class="fa fa-eject text-success btn btn-light mb-3" title="Наверх"
         (click)="scrollToTop()"></button>
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
