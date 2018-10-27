@@ -154,8 +154,8 @@
                                             {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
                                     </p>
                                 </div>
-                                <div class="col-auto"
-                                    *ngIf="['EXECUTED', 'CANCELED', 'ON_PROCEDURE'].indexOf(talon.activity) < 0">
+                                <div class="col-auto" *ngIf="['EXECUTED', 'CANCELED'].indexOf(talon.activity) < 0 
+                                    && (talon.activity !== 'ON_PROCEDURE' || isSuperadmin())">
                                     <button title='Встановити "{{Activity.ACTIVE.text}}"'
                                         class="btn btn-sm btn-success text-white"
                                         (click)="updateActivity(talon.id, 'ACTIVE', item)">

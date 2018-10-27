@@ -46,6 +46,16 @@ export class AuthService {
         return (this.token.getToken()) ? true : false;
     }
 
+    isAdmin() {
+        const user: any = this.user.getUser();
+        return user.authorities.indexOf('ROLE_ADMIN') > -1;
+    }
+
+    isSuperadmin() {
+        const user: any = this.user.getUser();
+        return user.authorities.indexOf('ROLE_SUPERADMIN') > -1;
+    }
+
     // Implement a method to handle errors if any
     private handleError(err: HttpErrorResponse | any) {
         console.error('An error occurred', err);

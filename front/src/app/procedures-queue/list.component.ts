@@ -66,7 +66,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     executeProcedure(talonId: string, patientName: string, procedureName: string) {
         if (confirm('Виконати процедуру "' + procedureName + '" для пацієнта "' + patientName + '" ?')) {
             this.subTemp = this.service.executeProcedure(talonId).subscribe(() => {
-                this.alertService.info('Процедуру "' + procedureName + '" для пацієнта "' + patientName + '".');
+                this.alertService.info('Процедуру "' + procedureName + '" для пацієнта "' + patientName + '" виконано.');
                 this.load();
             });
         }

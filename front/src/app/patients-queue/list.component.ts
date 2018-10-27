@@ -4,7 +4,7 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import * as moment from 'moment';
 
 import { Status, Activity } from '../_storage/index';
-import { PatientsQueueService } from '../_services/index';
+import { PatientsQueueService, AuthService } from '../_services/index';
 
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
@@ -37,7 +37,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     constructor(
         private viewRef: ViewContainerRef,
         private modalService: ModalDialogService,
-        private service: PatientsQueueService
+        private service: PatientsQueueService,
+        private authService: AuthService
     ) { }
 
     ngOnInit() {
@@ -205,6 +206,10 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         date.setDate(date.getDate() + days);
         this.date = date.toISOString().split('T')[0];
         this.load();
+    }
+
+    isSuperadmin() {
+        return this.authService.isSuperadmin();
     }
 
     load(itemId: string = null) {
