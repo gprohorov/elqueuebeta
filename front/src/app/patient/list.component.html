@@ -1,4 +1,5 @@
-﻿<div class="row mb-3">
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row mb-3">
     <div class="col-auto">
         <h3>Список пацієнтів</h3>
     </div>
@@ -52,7 +53,12 @@
                     Призначити процедуру</button>
                 <button class="btn btn-success m-1" (click)="showAssignHotelPopup(item.id)">Поселити у готель</button>
                 <button class="btn btn-warning m-1" (click)="showIncomePopup(item)">Розрахувати</button>
-                <a routerLink="/statistic/patient/{{item?.id}}" *ngxPermissionsOnly="['ROLE_HEAD']">
+                <a target="_blank" *ngxPermissionsOnly="['ROLE_HEAD']"
+                     routerLink="/workplace/diagnostic/{{item?.id}}">
+                    <button class="btn btn-light m-1">Діагностика</button>
+                </a>
+                <a target="_blank" *ngxPermissionsOnly="['ROLE_HEAD']"
+                     routerLink="/statistic/patient/{{item?.id}}/{{start}}/{{finish}}">
                     <button class="btn btn-secondary m-1">Статистика</button>
                 </a>
             </div>

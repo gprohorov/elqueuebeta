@@ -18,8 +18,8 @@ export class PatientIncomeModalComponent implements IModalDialog {
         desc: ''
     };
     sub: Subscription;
-    loading: boolean = false;
-    showDetails: boolean = false;
+    loading = false;
+    showDetails = false;
     details: any = [];
 
     @ViewChild('f') myForm;
@@ -28,7 +28,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
         private patientService: PatientService
     ) { }
 
-    dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+    dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
         options.actionButtons = [{
             text: 'Внести',
             onAction: () => {
@@ -48,54 +48,54 @@ export class PatientIncomeModalComponent implements IModalDialog {
             this.details = data;
         });
     }
-    
+
     getSumProcedures() {
         let sum = 0;
         this.details.forEach( (item) => {
-            if (item.payment == 'PROC') sum += item.sum;
+            if (item.payment === 'PROC') sum += item.sum;
         });
         return sum * -1;
     }
-    
+
     getSumIncome() {
         let sum = 0;
         this.details.forEach( (item) => {
-            if (item.payment == 'CASH' 
-                || item.payment == 'CARD'
-                || item.payment == 'WIRED'
+            if (item.payment === 'CASH'
+                || item.payment === 'CARD'
+                || item.payment === 'WIRED'
             ) sum += item.sum;
         });
         return sum;
     }
-    
+
     getSumDiscount() {
         let sum = 0;
         this.details.forEach( (item) => {
-            if (item.payment == 'DISCOUNT') sum += item.sum;
+            if (item.payment === 'DISCOUNT') sum += item.sum;
         });
         return sum;
     }
-    
+
     getSumHotel() {
         let sum = 0;
         this.details.forEach( (item) => {
-            if (item.payment == 'HOTEL') sum += item.sum;
+            if (item.payment === 'HOTEL') sum += item.sum;
         });
         return sum * -1;
     }
-    
+
     getDesc(item) {
-        if (item.payment == 'DISCOUNT') return 'Знижка' + (item.desc == '' ? '' : ' (' + item.desc + ')');
-        if (item.payment == 'CASH') return 'Внесення готівки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
-        if (item.payment == 'CARD') return 'Внесення з картки' + (item.desc == '' ? '' : ' (' + item.desc + ')');
-        if (item.payment == 'WIRED') return 'Внесення по перерахунку' + (item.desc == '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'DISCOUNT') return 'Знижка' + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'CASH') return 'Внесення готівки' + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'CARD') return 'Внесення з картки' + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'WIRED') return 'Внесення по перерахунку' + (item.desc === '' ? '' : ' (' + item.desc + ')');
         return item.desc;
     }
 
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
-        this.model.closeDay = this.model.closeDay || false; 
+        this.model.closeDay = this.model.closeDay || false;
         this.sub = this.patientService.income(this.model).subscribe(() => {
             this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
                 + ' внесено ' + this.model.sum + ' грн.');

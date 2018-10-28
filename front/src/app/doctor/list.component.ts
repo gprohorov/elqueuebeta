@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 
 import { Doctor, Procedure } from '../_models/index';
-import { AlertService, DoctorService, ProcedureService } from '../_services/index';
+import { DoctorService, ProcedureService } from '../_services/index';
 
 @Component({
     templateUrl: './list.component.html'
@@ -18,7 +18,6 @@ export class DoctorListComponent implements OnInit, OnDestroy {
     rows = [];
 
     constructor(
-        private alertService: AlertService,
         private service: DoctorService,
         private procedureService: ProcedureService
     ) { }
@@ -40,22 +39,21 @@ export class DoctorListComponent implements OnInit, OnDestroy {
     }
 
     loadProcedures() {
-        this.subProcedures = this.procedureService.getAll().subscribe(data => { 
+        this.subProcedures = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
             this.load();
         });
     }
 
     getProcedures(list) {
-        return list.map(id => this.procedures.find(x => x.id == id).name).join(', ');
+        return list.map(id => this.procedures.find(x => x.id === id).name).join(', ');
     }
-    
+
     load(search: string = '') {
         this.loading = true;
-        this.sub = this.service.getAll(search).subscribe(data => { 
+        this.sub = this.service.getAll(search).subscribe(data => {
             this.items = data;
             this.loading = false;
         });
     }
-
 }

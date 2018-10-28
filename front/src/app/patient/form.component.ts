@@ -9,9 +9,9 @@ import { Patient } from '../_models/index';
     templateUrl: './form.component.html'
 })
 export class PatientFormComponent implements OnInit, OnDestroy {
-    
+
     loading = false;
-    
+
     model: Patient = new Patient();
     sub: Subscription;
 
@@ -24,7 +24,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');
-        if (id && id != '') this.load(id);
+        if (id && id !== '') this.load(id);
     }
 
     ngOnDestroy() {
@@ -36,7 +36,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
         this.sub = this.service.get(id).subscribe(
             data => {
                 data.person.gender = data.person.gender.toString();
-                this.model = data
+                this.model = data;
                 this.loading = false;
             },
             error => {
@@ -48,7 +48,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
     submit() {
         this.loading = true;
         this.service.update(this.model).subscribe(
-            data => {
+            () => {
                 this.alertService.success('Зміни збережено.', true);
                 this.router.navigate(['patients']);
             },

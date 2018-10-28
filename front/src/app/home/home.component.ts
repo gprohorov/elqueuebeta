@@ -3,10 +3,7 @@
 @Component({
     templateUrl: './home.component.html'
 })
-
 export class HomeComponent {
 
-    constructor() {
-        sessionStorage.setItem('showMenu', 'false');
-    }
+    constructor() { sessionStorage.setItem('showMenu', 'false'); }
 }

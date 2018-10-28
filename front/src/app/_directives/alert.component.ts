@@ -8,7 +8,7 @@ import { AlertService } from '../_services/index';
     template: `<div *ngIf="message" (click)="message=''" class="alert alert-{{message.type}}">{{message.text}}</div>`
 })
 export class AlertComponent implements OnDestroy {
-    
+
     private subscription: Subscription;
     message: any;
 

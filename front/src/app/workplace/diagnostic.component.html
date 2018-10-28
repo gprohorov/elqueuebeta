@@ -1,8 +1,9 @@
-﻿<button
+﻿<app-loader [loader]="loading"></app-loader>
+<button
     [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
 <div class="content" *ngIf="item?.patient">
-    <h2 class="title">{{item.talon.procedure.name}}</h2>
+    <h2 class="title">Діагностика</h2>
     <h4 class="title mb-5">{{item.patient.person.fullName}} ({{item?.dayOfCure}} день)</h4>
     <form name="form" #f="ngForm" novalidate (ngSubmit)="f.form.valid">
         <div class="row">

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { config } from '../../../config';
-
-import { Patient } from '../../_models/index';
 
 @Injectable()
 export class WorkplaceDiagnosticService {
@@ -21,7 +19,7 @@ export class WorkplaceDiagnosticService {
     getProcedures() {
         return this.http.get(this.getProceduresUrl).pipe(catchError(this.handleError));
     }
-    
+
     getPatient(patientId: string) {
         return this.http.get(this.getPatientUrl + patientId).pipe(catchError(this.handleError));
     }
@@ -38,11 +36,11 @@ export class WorkplaceDiagnosticService {
         return this.http.post(this.executeProcedureUrl + talonId, therapy)
             .pipe(catchError(this.handleError));
     }
-    
+
     // Implement a method to handle errors if any
     private handleError(err: HttpErrorResponse | any) {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }
+

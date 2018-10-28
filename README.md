@@ -25,8 +25,6 @@
     `cd front`
     
     `npm install`
-    
-    `sudo npm i -g @angular/cli`
   
 2. Run Front-End from "/front" folder 
   

@@ -1,9 +1,10 @@
-﻿<div class="position-fixed" [style.right.px]="50">
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
 <div class="content table-responsive table-full-width" *ngIf="data">
-    <h4>Статистика по пацієнту: <i>{{data?.patient.person.fullName}}</i></h4>
+    <h4>Статистика по пацієнту: <i>{{data?.name}}</i></h4>
     <table class="table">
         <tbody>
             <tr>

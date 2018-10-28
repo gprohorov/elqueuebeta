@@ -1,5 +1,5 @@
 ﻿import { Component, ComponentRef, ViewChild, OnDestroy } from '@angular/core';
-import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
+import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ProcedureService, PatientService, AlertService } from '../_services/index';
@@ -19,7 +19,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
     patients: any[];
     addProcedure = true;
     creating = false;
-    search: string = '';
+    search = '';
     patientId: string = null;
 
     @ViewChild('f') myForm;
@@ -29,13 +29,13 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
         private alertService: AlertService
     ) { }
 
-    dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+    dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
 
         this.subProcedures = this.procedureService.getAll().subscribe(data => {
             this.procedures = data;
             this.data.procedureId = this.procedures[0].id;
             this.data.date = new Date().toISOString().split('T').shift();
-            let hours = new Date().getHours();
+            const hours = new Date().getHours();
             this.data.appointed = hours < 8 ? 8 : hours > 16 ? 16 : hours;
             this.data.activate = true;
         });
@@ -76,14 +76,13 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
                     this.alertService.error(error);
                 });
         } else if (this.patientId != null) {
-            let patientName = '';
-            let patient = this.patients.find(x => { return x.id == this.patientId });
-            if (patient) patientName = patient.person.fullName;
+            const patient = this.patients.find(x => ('' + x.id === '' + this.patientId));
+            const patientName = patient ? patient.person.fullName : '';
             this.patientService.assignProcedure(
                 this.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
             ).subscribe(() => {
                 this.alertService.success('Пацієнта ' + patientName + ' назначено на процедуру '
-                    + this.procedures.find(x => x.id == this.data.procedureId).name);
+                    + this.procedures.find(x => ('' + +x.id === '' + this.data.procedureId)).name);
                 options.closeDialogSubject.next(this.patientId);
             });
         }

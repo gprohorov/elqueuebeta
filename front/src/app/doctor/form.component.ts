@@ -2,7 +2,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Doctor, Procedure } from '../_models/index';
+import { Doctor } from '../_models/index';
 import { AlertService, DoctorService, ProcedureService } from '../_services/index';
 
 @Component({
@@ -69,11 +69,11 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
             });
     }
 
-    submit(form) {
+    submit() {
         this.loading = true;
         this.model.procedureIds = this.procedures.filter(x => x.checked).map(x => x.value);
         this.service.update(this.model).subscribe(
-            data => {
+            () => {
                 this.alertService.success('Операція пройшла успішно', true);
                 this.router.navigate(['doctors']);
             },

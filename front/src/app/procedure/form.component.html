@@ -1,4 +1,5 @@
-﻿<div class="row justify-content-md-center">
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row justify-content-md-center">
     <div class="col-6">
         <h2>{{model.id > 0 ? 'Редагування' : 'Створення'}} процедури</h2>
         <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>

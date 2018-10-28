@@ -1,12 +1,11 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { StatisticService, AlertService } from '../_services/index';
+import { StatisticService } from '../_services/index';
 
 @Component({
     templateUrl: './general-statistic-from-to.component.html'
 })
-
 export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
@@ -14,16 +13,16 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     data: any;
     start: string;
     finish: string;
-    
-    patients: number = 0;
-    doctors: number = 0;
-    cash: number = 0;
-    card: number = 0;
-    bill: number = 0;
-    discount: number = 0;
-    debt: number = 0;
 
-    constructor(private service: StatisticService, private alertService: AlertService) {
+    patients = 0;
+    doctors = 0;
+    cash = 0;
+    card = 0;
+    bill = 0;
+    discount = 0;
+    debt = 0;
+
+    constructor(private service: StatisticService) {
         this.start = new Date().toISOString().split('T').shift();
         this.finish = new Date().toISOString().split('T').shift();
     }
@@ -37,9 +36,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     }
 
     load() {
+        this.loading = true;
         this.sub = this.service.getGeneralStatisticsFromTo(this.start, this.finish).subscribe(data => {
             this.data = data;
-            
+
             this.patients = 0;
             this.doctors = 0;
             this.cash = 0;
@@ -47,8 +47,8 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
             this.bill = 0;
             this.discount = 0;
             this.debt = 0;
-            
-            data.forEach( currentValue => {
+
+            data.forEach(currentValue => {
                 this.patients += currentValue.patients;
                 this.doctors += currentValue.doctors;
                 this.cash += currentValue.cash;
@@ -57,6 +57,7 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
                 this.discount += currentValue.discount;
                 this.debt += currentValue.debt;
             });
+            this.loading = false;
         });
     }
 }

@@ -1,4 +1,5 @@
-﻿<div class="position-fixed" [style.right.px]="50">
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>

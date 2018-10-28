@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { config } from '../../../config';
-
-import { Patient } from '../../_models/index';
 
 @Injectable()
 export class WorkplaceCommonService {
@@ -37,7 +35,7 @@ export class WorkplaceCommonService {
     addZone(talonId: string) {
         return this.http.get(this.zoneAddUrl + talonId).pipe(catchError(this.handleError));
     }
-    
+
     startProcedure(talonId: string) {
         return this.http.get(this.startProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
@@ -55,5 +53,5 @@ export class WorkplaceCommonService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }
+

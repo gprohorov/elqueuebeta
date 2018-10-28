@@ -1,4 +1,5 @@
-﻿<button
+﻿<app-loader [loader]="loading"></app-loader>
+<button
     [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
     [disabled]="loading" (click)="load()" title="Обновити"></button>
 <div class="mb-3" *ngIf="item?.patient">

@@ -52,7 +52,7 @@ export class PatientsQueueService {
     updateBalance(id: string, value: string) {
         return this.http.get(this.updateBalanceUrl + id + '/' + value).pipe(catchError(this.handleError));
     }
-    
+
     executeProcedure(talonId: string) {
         return this.http.get(this.executeProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
@@ -66,5 +66,4 @@ export class PatientsQueueService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }

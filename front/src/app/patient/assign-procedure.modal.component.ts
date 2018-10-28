@@ -1,6 +1,6 @@
 import { Component, ComponentRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
+import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 
 import { Procedure } from '../_models/index';
 import { ProcedureService, PatientService, AlertService } from '../_services/index';
@@ -21,7 +21,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
         private patientService: PatientService
     ) { }
 
-    dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+    dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
         options.actionButtons = [{
             text: 'Призначити',
             onAction: () => {
@@ -45,7 +45,7 @@ export class PatientAssignProcedureModalComponent implements IModalDialog {
             this.data.patientId, this.data.procedureId, this.data.date, this.data.appointed, this.data.activate
         ).subscribe(() => {
             this.alertService.success('Пацієнта ' + this.data.patientName + ' назначено на процедуру '
-                + this.procedures.find(x => x.id == this.data.procedureId).name);
+                + this.procedures.find(x => ('' + x.id === '' + this.data.procedureId)).name);
             options.closeDialogSubject.next();
         });
     }

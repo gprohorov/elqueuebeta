@@ -40,7 +40,7 @@ export class StatisticService {
     }
 
     getProceduresStatisticsByDoctors(start: string, finish: string, procedureId: number) {
-        return this.http.get(this.proceduresStatistics + start + '/' + finish + '/' + procedureId 
+        return this.http.get(this.proceduresStatistics + start + '/' + finish + '/' + procedureId
         ).pipe(catchError(this.handleError));
     }
 
@@ -54,15 +54,18 @@ export class StatisticService {
     }
 
     getPatientStatistics(patientId: string) {
-        return this.http.get(this.patientStatisticsUrl + patientId).pipe(catchError(this.handleError));
+        const start = new Date().toISOString().split('T').shift();
+        const finish = new Date().toISOString().split('T').shift();
+        return this.http.get(this.patientStatisticsUrl + patientId + '/' + start + '/' + finish)
+            .pipe(catchError(this.handleError));
     }
-    
+
 
     getPatientsStatistics(start: string, finish: string) {
         return this.http.get(this.patientsStatisticsUrl + start + '/' + finish)
         .pipe(catchError(this.handleError));
     }
-    
+
     getDoctorsCurrentStatistics() {
         return this.http.get(this.doctorStatisticsUrl).pipe(catchError(this.handleError));
     }
@@ -72,5 +75,4 @@ export class StatisticService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
-
 }
