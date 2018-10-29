@@ -27,7 +27,8 @@ import {
     WorkplaceMainService,
     WorkplaceCommonService,
     WorkplaceDiagnosticService,
-    HotelService
+    HotelService,
+    FinanceService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -67,6 +68,8 @@ import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.compo
 
 import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
+
+import { FinanceSalaryComponent } from './finance/salary.component';
 
 import {
     WorkplaceMainComponent,
@@ -207,6 +210,12 @@ const appRoutes: Routes = [
     },
 
     {
+        path: 'finance/salary', component: FinanceSalaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+    },
+
+    {
         path: 'receipt/:patientId', component: ReceiptComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
@@ -267,7 +276,8 @@ const appRoutes: Routes = [
         CheckComponent,
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
-        WorkplaceDiagnosticComponent
+        WorkplaceDiagnosticComponent,
+        FinanceSalaryComponent
     ],
     providers: [
         AuthGuard,
@@ -287,6 +297,7 @@ const appRoutes: Routes = [
         WorkplaceCommonService,
         WorkplaceDiagnosticService,
         HotelService,
+        FinanceService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [

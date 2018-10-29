@@ -1,0 +1,40 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="content table-responsive table-full-width">
+    <h4>Менеджер витрат - ЗАРПЛАТИ</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ПІБ Лікаря</th>
+                <th>Днів</th>
+                <th>Ставка</th>
+                <th>Бонуси</th>
+                <th>Штрафи</th>
+                <th>Залишок за минулий місяць</th>
+                <th>Кредитний ліміт</th>
+                <th>Премія</th>
+                <th>Всього можна отримати</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let item of data">
+            <tr>
+                <td class="text-nowrap">{{item.name}}</td>
+                <td class="text-right text-nowrap">{{item.days}}</td>
+                <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
+                <td class="text-right text-nowrap">{{item.accural}} грн.</td>
+                <td class="text-right text-nowrap">{{item.penalty}} грн.</td>
+                <td class="text-right text-nowrap">{{item.rest}} грн.</td>
+                <td class="text-right text-nowrap">{{item.kredit}} грн.</td>
+                <td class="text-right text-nowrap">{{item.award}} грн.</td>
+                <td class="text-right text-nowrap">{{item.total}} грн.</td>
+            </tr>
+        </tbody>
+        <tr>
+            <td colspan="8"><strong>Всього:</strong></td>
+            <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
+        </tr>
+    </table>
+</div>

@@ -36,6 +36,15 @@
                         routerLinkActive="active">Паціенти</a>
                 </div>
             </div>
+            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_HEAD']">
+                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    ngbDropdownToggle>Менеджер витрат</a>
+                <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                    <a class="dropdown-item" routerLink="/finance/salary"
+                        routerLinkActive="active">Зарплати</a>
+                </div>
+            </div>
             <a class="dropdown-item" routerLink="/patients" routerLinkActive="active"
                 *ngxPermissionsOnly="['ROLE_HEAD']">Список пацієнтів</a>
         </div>
