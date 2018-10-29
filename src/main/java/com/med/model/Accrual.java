@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 /**
  * Created by george on 18.10.18.
  */
-@Document(collection = "accrual" )
+//@Document(collection = "accrual" )
 public class Accrual {
     private String id;
     private LocalDateTime dateTime;
