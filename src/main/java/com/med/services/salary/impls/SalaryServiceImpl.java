@@ -98,6 +98,7 @@ public class SalaryServiceImpl implements ISalaryService {
         List<Salary> list= repository.findAll().stream()
                 .filter(salary -> salary.getDoctorId()==doctorId)
                 .collect(Collectors.toList());
+        if (list.isEmpty()) return dto;
 
         int weeks = list.stream().filter(salary -> salary.getType().equals(SalaryType.WEEK))
                 .mapToInt(Salary::getSum).sum();
