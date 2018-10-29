@@ -22,6 +22,8 @@ public class Doctor {
     private String cellPhone;
     private List<Integer> procedureIds = new ArrayList<>();
     private int rate;
+    private int kredit;
+
     public List<Integer> getProcedureIds() {
         return procedureIds;
     }
@@ -45,12 +47,13 @@ public class Doctor {
         this.userId = userId;
     }
 
-    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, int rate, String userId) {
+    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, int rate, int kredit,  String userId) {
         this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
         this.procedureIds = procedureIds;
         this.rate = rate;
+        this.kredit = kredit;
         this.userId = userId;
     }
 
@@ -102,6 +105,13 @@ public class Doctor {
         this.cellPhone = cellPhone;
     }
 
+    public int getKredit() {
+        return kredit;
+    }
+
+    public void setKredit(int kredit) {
+        this.kredit = kredit;
+    }
 
     @Override
     public boolean equals(Object o) {

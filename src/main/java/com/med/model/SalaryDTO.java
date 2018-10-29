@@ -4,8 +4,9 @@ package com.med.model;
  * Created by george on 28.10.18.
  */
 public class SalaryDTO {
-    private int days;
+
     private String name;
+    private int days;
     private int stavka;
     private int accural;
     private int award;
