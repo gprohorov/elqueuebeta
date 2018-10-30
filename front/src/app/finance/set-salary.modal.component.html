@@ -1,0 +1,18 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="row form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+        <div class="input-group col">
+            <div class="input-group-prepend">
+                <div class="input-group-text bg-success text-light">Премія</div>
+            </div>
+            <input type="number" class="form-control" name="award" [(ngModel)]="data.award"
+                #award="ngModel" required />
+        </div>
+        <div class="input-group col">
+            <div class="input-group-prepend">
+                <div class="input-group-text bg-danger text-light">Штраф</div>
+            </div>
+            <input type="number" class="form-control" name="penalty" [(ngModel)]="data.penalty"
+                #penalty="ngModel" required />
+        </div>
+    </div>
+</form>

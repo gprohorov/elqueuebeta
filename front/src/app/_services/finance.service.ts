@@ -10,6 +10,7 @@ export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
     private giveSalaryUrl = config.api_path + '/salary/get';
+    private setSalaryUrl = config.api_path + '/salary/set';
 
     constructor(private http: HttpClient) { }
 
@@ -19,6 +20,10 @@ export class FinanceService {
 
     giveSalary(data: any) {
         return this.http.post(this.giveSalaryUrl, data).pipe(catchError(this.handleError));
+    }
+
+    setSalary(data: any) {
+        return this.http.post(this.setSalaryUrl, data).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
