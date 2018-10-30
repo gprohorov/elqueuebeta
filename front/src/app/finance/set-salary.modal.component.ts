@@ -2,7 +2,6 @@ import { Component, ComponentRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 
-import { Doctor } from '../_models/index';
 import { FinanceService, AlertService } from '../_services/index';
 
 @Component({
@@ -11,7 +10,6 @@ import { FinanceService, AlertService } from '../_services/index';
 export class SetSalaryModalComponent implements IModalDialog {
 
     data: any;
-    doctors: Doctor[];
     sub: Subscription;
 
     @ViewChild('f') myForm;
