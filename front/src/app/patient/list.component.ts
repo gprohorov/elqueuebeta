@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Patient } from '../_models/index';
-import { AlertService, PatientService, PatientsQueueService, PatientSearchCriteria } from '../_services/index';
+import { PatientService, PatientsQueueService, PatientSearchCriteria } from '../_services/index';
 
 import { PatientIncomeModalComponent } from './income.modal.component';
 import { PatientAssignHotelModalComponent } from './assign-hotel.modal.component';

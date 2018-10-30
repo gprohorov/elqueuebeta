@@ -4,5 +4,6 @@ export class Doctor {
   cellPhone: string;
   speciality: string;
   rate: number;
+  kredit: number;
   procedureIds: number[];
 }

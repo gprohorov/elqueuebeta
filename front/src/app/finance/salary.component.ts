@@ -30,6 +30,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
             this.data = data;
             this.totalSummary = 0;
             data.forEach( currentValue => {
+                currentValue.name = currentValue.name.split(' ')[0];
                 this.totalSummary += currentValue.total;
             });
             this.loading = false;
