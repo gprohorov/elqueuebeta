@@ -70,6 +70,7 @@ import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
+import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -277,7 +278,8 @@ const appRoutes: Routes = [
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
-        FinanceSalaryComponent
+        FinanceSalaryComponent,
+        GiveSalaryModalComponent
     ],
     providers: [
         AuthGuard,
@@ -305,7 +307,8 @@ const appRoutes: Routes = [
         PatientAssignProcedureModalComponent,
         PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent,
-        CreatePatientModalComponent
+        CreatePatientModalComponent,
+        GiveSalaryModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

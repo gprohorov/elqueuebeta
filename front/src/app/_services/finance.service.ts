@@ -9,11 +9,16 @@ import { config } from '../../config';
 export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
+    private giveSalaryUrl = config.api_path + '/salary/get';
 
     constructor(private http: HttpClient) { }
 
     getSalary() {
         return this.http.get(this.salaryUrl).pipe(catchError(this.handleError));
+    }
+
+    giveSalary(data: any) {
+        return this.http.post(this.giveSalaryUrl, data).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

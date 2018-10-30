@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { AuthService, UtilService, AlertService } from '../_services/index';
+
+import { GiveSalaryModalComponent } from '../finance/give-salary.modal.component';
 
 @Component({
     selector: 'app-nav',
@@ -18,6 +21,8 @@ export class NavComponent implements OnInit, OnDestroy {
         public authService: AuthService,
         private utilService: UtilService,
         private alertService: AlertService,
+        private modalService: ModalDialogService,
+        private viewRef: ViewContainerRef,
         private router: Router
     ) { }
 
@@ -33,6 +38,13 @@ export class NavComponent implements OnInit, OnDestroy {
 
     toggleNavbar() {
       this.navbarOpen = !this.navbarOpen;
+    }
+
+    showGiveSalaryPopup() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача зарплати лікарю',
+            childComponent: GiveSalaryModalComponent
+        });
     }
 
     resetDB() {

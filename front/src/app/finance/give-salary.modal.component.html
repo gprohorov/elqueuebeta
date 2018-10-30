@@ -1,0 +1,25 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Лікар</div>
+            </div>
+            <select class="form-control" name="doctorId" [(ngModel)]="data.doctorId"
+                #doctorId="ngModel" required>
+                <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+                    {{doctor.fullName}}</option>
+            </select>
+        </div>
+        <div *ngIf="f.submitted && !doctorId.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Сума</div>
+            </div>
+            <input type="number" class="form-control" name="sum" [(ngModel)]="data.sum"
+                #sum="ngModel" required />
+        </div>
+        <div *ngIf="f.submitted && !sum.valid" class="help-block text-danger">Поле
+            обов`язкове</div>
+    </div>
+</form>
