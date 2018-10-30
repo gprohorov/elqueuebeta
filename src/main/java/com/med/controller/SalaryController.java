@@ -1,15 +1,18 @@
 package com.med.controller;
 
 import com.med.model.Doctor;
+import com.med.model.Patient;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -17,7 +20,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/salary")
 @CrossOrigin("*")
 public class SalaryController {
 
@@ -25,8 +28,10 @@ public class SalaryController {
     SalaryServiceImpl service;
 
 
-    @RequestMapping("/salary/list")
+    @RequestMapping("/list")
     public List<SalaryDTO> showSalaries() {
+
+        service.createWeekSalary();
         return service.getSalaryList();
     }
 
@@ -35,4 +40,14 @@ public class SalaryController {
         return service.createWeekSalary();
     }
 
+    // a doctor get a salary into buzunar
+    @RequestMapping("/get")
+    public Salary getSalary(@Valid @RequestBody Salary salary) {
+        return service.createSalary(salary);
+    }
+    // i.e. nechay  insert bonus or a penalty
+    @RequestMapping("/create")
+    public Salary createSalary(@Valid @RequestBody Salary salary) {
+        return service.createSalary(salary);
+    }
 }

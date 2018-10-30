@@ -1,6 +1,7 @@
 package com.med.model;
 
 import com.med.model.SalaryType;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
  */
 @Document(collection = "salary" )
 public class Salary {
+    @Id
     private String id;
     private int doctorId;
     private LocalDateTime dateTime;

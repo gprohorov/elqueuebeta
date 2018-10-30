@@ -26,4 +26,11 @@ public class UtilController {
         dataStorage.reset();
     }
 
+    @GetMapping("/util/launch")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void launch() {
+        // dataStorage.resetPatientsTable();
+        dataStorage.reset();
+    }
+
 }

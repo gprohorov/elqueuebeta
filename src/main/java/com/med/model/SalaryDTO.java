@@ -12,19 +12,22 @@ public class SalaryDTO {
     private int award;
     private int penalty;
     private int kredit;
+    private int total;
+    private int recd;
     private int rest;
 
-    private int total;
 
-    public SalaryDTO(int days, String name, int stavka, int accural, int award, int penalty, int kredit, int total) {
-        this.days = days;
+    public SalaryDTO(String name, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest) {
         this.name = name;
+        this.days = days;
         this.stavka = stavka;
         this.accural = accural;
         this.award = award;
         this.penalty = penalty;
         this.kredit = kredit;
         this.total = total;
+        this.recd = recd;
+        this.rest = rest;
     }
 
     public SalaryDTO() {
@@ -84,6 +87,14 @@ public class SalaryDTO {
 
     public void setKredit(int kredit) {
         this.kredit = kredit;
+    }
+
+    public int getRecd() {
+        return recd;
+    }
+
+    public void setRecd(int recd) {
+        this.recd = recd;
     }
 
     public int getRest() {

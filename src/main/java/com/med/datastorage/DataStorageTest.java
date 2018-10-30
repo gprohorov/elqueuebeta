@@ -109,6 +109,10 @@ public class DataStorageTest {
 //        System.out.println("----------------- koiki updated------------------------------");
 //    }
 
+    public void launch(){
+
+    }
+
     public void reset(){
 
      //   recordService.deleteAll();
