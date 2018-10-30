@@ -39,7 +39,7 @@ public class SalaryServiceImpl implements ISalaryService {
     @PostConstruct
     void init() {
         repository.save(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,1));
-      repository.deleteAll();
+     // repository.deleteAll();
    /*      List<Salary> list = new ArrayList<>(
                 Arrays.asList(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,1),
                 new Salary(2,LocalDateTime.now(),SalaryType.ACCURAL,2),
