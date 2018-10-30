@@ -50,4 +50,16 @@ public class SalaryController {
     public Salary createSalary(@Valid @RequestBody Salary salary) {
         return service.createSalary(salary);
     }
+
+    @RequestMapping("/create/penalty")
+    public Salary insertPenalty(@Valid @RequestBody Salary salary) {
+        return service.createSalary(salary);
+    }
+
+        @RequestMapping("/create/bonus")
+    public Salary insertBonus(@Valid @RequestBody Salary salary) {
+        return service.createSalary(salary);
+    }
+
+
 }
