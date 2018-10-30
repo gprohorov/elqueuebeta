@@ -8,7 +8,7 @@
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>ПІБ Лікаря</th>
+                <th>Прізвище лікаря</th>
                 <th>Днів</th>
                 <th>Ставка</th>
                 <th>Бонуси</th>
@@ -16,7 +16,9 @@
                 <th>Залишок за минулий місяць</th>
                 <th>Кредитний ліміт</th>
                 <th>Премія</th>
-                <th>Всього можна отримати</th>
+                <th>Виплачено</th>
+                <th>Залишок</th>
+                <th>Всього нараховано</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of data">
@@ -29,11 +31,13 @@
                 <td class="text-right text-nowrap">{{item.rest}} грн.</td>
                 <td class="text-right text-nowrap">{{item.kredit}} грн.</td>
                 <td class="text-right text-nowrap">{{item.award}} грн.</td>
+                <td class="text-right text-nowrap">{{item.recd}} грн.</td>
+                <td class="text-right text-nowrap">{{item.rest}} грн.</td>
                 <td class="text-right text-nowrap">{{item.total}} грн.</td>
             </tr>
         </tbody>
         <tr>
-            <td colspan="8"><strong>Всього:</strong></td>
+            <td colspan="10"><strong>Всього:</strong></td>
             <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
         </tr>
     </table>
