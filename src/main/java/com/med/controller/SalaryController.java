@@ -45,21 +45,16 @@ public class SalaryController {
         salary.setType(SalaryType.BUZUNAR);
         return service.createSalary(salary);
     }
+
     // i.e. nechay  insert bonus or a penalty
     @RequestMapping("/create")
     public Salary createSalary(@Valid @RequestBody Salary salary) {
         return service.createSalary(salary);
     }
 
-    @RequestMapping("/create/penalty")
-    public Salary insertPenalty(@Valid @RequestBody Salary salary) {
-        return service.createSalary(salary);
+    @RequestMapping("/set")
+    public Salary insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
+        return null;
     }
-
-        @RequestMapping("/create/bonus")
-    public Salary insertBonus(@Valid @RequestBody Salary salary) {
-        return service.createSalary(salary);
-    }
-
 
 }
