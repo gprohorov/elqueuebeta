@@ -127,8 +127,10 @@ public class TherapyServiceImpl implements ITherapyService {
 		patient.setLastActivity(LocalDateTime.now());
 		patientService.savePatient(patient);
 
-		tail.setPatientOnProcedure(patient);
-		tail.setVacant(false);
+		if (tail!=null) {
+			tail.setPatientOnProcedure(patient);
+			tail.setVacant(false);
+		}
 
 		tailService.setSemaforSignal(talon.getProcedure().getId(), false);
 		talonService.saveTalon(talon);
@@ -171,8 +173,10 @@ public class TherapyServiceImpl implements ITherapyService {
 		patient.setLastActivity(LocalDateTime.now());
 		patientService.savePatient(patient);
 
-		tail.setPatientOnProcedure(null);
-		tail.setVacant(true);
+		if(tail!=null) {
+			tail.setPatientOnProcedure(null);
+			tail.setVacant(true);
+		}
 
 		therapy.setPatientId(patient.getId());
 		therapy.setStart(LocalDateTime.now());

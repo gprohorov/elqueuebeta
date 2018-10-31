@@ -33,7 +33,7 @@ public class SalaryController {
         return service.getSalaryList();
     }
 
-    @RequestMapping("/salary/create/week")
+    @RequestMapping("/create/week")
     public List<Salary> createWeek() {
         return service.createWeekSalary();
     }
