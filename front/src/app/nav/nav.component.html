@@ -68,7 +68,15 @@
                         DB</a>
                 </div>
             </div>
-            <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">Зарплата лікарям</button>
+            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    ngbDropdownToggle>Каса</a>
+                <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">Зарплата лікарям</button>
+                    <button class="dropdown-item btn btn-primary">Здати касу</button>
+                </div>
+            </div>
             <a class="dropdown-item" target="clientwindow" routerLink="/home" routerLinkActive="active">Вікно клієнта</a>
         </div>
         <!-- Administrator interface section END -->

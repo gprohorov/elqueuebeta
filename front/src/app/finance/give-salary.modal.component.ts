@@ -16,6 +16,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
     };
     doctors: Doctor[];
     sub: Subscription;
+    subKassa: Subscription;
 
     @ViewChild('f') myForm;
     constructor(
@@ -32,6 +33,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.sub = this.doctorService.getAll().subscribe(data => { this.doctors = data; });
+        this.subKassa = this.financeService.getKassa().subscribe(data => { this.kassa = data; });
     }
 
     submit(f, options) {
@@ -45,6 +47,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.subKassa) this.subKassa.unsubscribe();
     }
 }
