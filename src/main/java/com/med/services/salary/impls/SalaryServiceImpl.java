@@ -166,13 +166,16 @@ public class SalaryServiceImpl implements ISalaryService {
                 .mapToInt(Salary::getSum).sum();
         dto.setRest(rest);
 
+        int recd = list.stream().filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
+                .mapToInt(Salary::getSum).sum();
+        dto.setRecd(recd);
+
         int penalty = list.stream().filter(salary -> salary.getType().equals(SalaryType.PENALTY))
                 .mapToInt(Salary::getSum).sum();
         dto.setPenalty(penalty);
 
-        dto.setTotal(weeks - taxes - canteen + rest + accural + award - penalty);
-
-
+        dto.setTotal(weeks - taxes - canteen + rest + accural + award - penalty - recd);
+        
         return dto;
     }
 
