@@ -71,6 +71,7 @@ import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
+import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -279,7 +280,8 @@ const appRoutes: Routes = [
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
-        GiveSalaryModalComponent
+        GiveSalaryModalComponent,
+        SetSalaryModalComponent
     ],
     providers: [
         AuthGuard,
@@ -308,7 +310,8 @@ const appRoutes: Routes = [
         PatientAssignProceduresOnDateModalComponent,
         PatientAssignHotelModalComponent,
         CreatePatientModalComponent,
-        GiveSalaryModalComponent
+        GiveSalaryModalComponent,
+        SetSalaryModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

@@ -8,6 +8,7 @@
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
+                <th></th>
                 <th>Прізвище лікаря</th>
                 <th>Днів</th>
                 <th>Ставка</th>
@@ -17,13 +18,16 @@
                 <th>Кредитний ліміт</th>
                 <th>Премія</th>
                 <th>Виплачено</th>
-                <th>Залишок</th>
                 <th>Всього нараховано</th>
+                <th>Залишок</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of data">
             <tr>
-                <td class="text-nowrap">{{item.name}}</td>
+                <td><button class="btn btn-success" title="Призначити" (click)="showSetSalaryPopup(item)">
+                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                </button></td>
+                <td class="text-nowrap">{{item.lastName}}</td>
                 <td class="text-right text-nowrap">{{item.days}}</td>
                 <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
                 <td class="text-right text-nowrap">{{item.accural}} грн.</td>
@@ -32,13 +36,15 @@
                 <td class="text-right text-nowrap">{{item.kredit}} грн.</td>
                 <td class="text-right text-nowrap">{{item.award}} грн.</td>
                 <td class="text-right text-nowrap">{{item.recd}} грн.</td>
-                <td class="text-right text-nowrap">{{item.rest}} грн.</td>
                 <td class="text-right text-nowrap">{{item.total}} грн.</td>
+                <td class="text-right text-nowrap">{{item.rest}} грн.</td>
             </tr>
         </tbody>
         <tr>
-            <td colspan="10"><strong>Всього:</strong></td>
+            <td colspan="9"><strong>Всього:</strong></td>
+            <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
             <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
+            <td class="text-right text-nowrap"><strong>{{totalRest}} грн.</strong></td>
         </tr>
     </table>
 </div>
