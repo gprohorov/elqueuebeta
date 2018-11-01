@@ -17,7 +17,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
 
     totalRecd = 0;
     totalSummary = 0;
-    totalRest = 0;
+    totalActual = 0;
 
     constructor(
         private modalService: ModalDialogService,
@@ -45,12 +45,12 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
         this.sub = this.service.getSalary().subscribe(data => {
             this.data = data;
             this.totalSummary = 0;
-            this.totalRest = 0;
+            this.totalActual = 0;
             data.forEach( currentValue => {
                 currentValue.lastName = currentValue.name.split(' ')[0];
                 this.totalRecd += currentValue.recd;
                 this.totalSummary += currentValue.total;
-                this.totalRest += currentValue.rest;
+                this.totalActual += currentValue.actual;
             });
             this.loading = false;
         });
