@@ -1,8 +1,11 @@
 package com.med.services.cashbox.impls;
 
 import com.med.model.CashBox;
+import com.med.model.Salary;
+import com.med.model.SalaryType;
 import com.med.repository.cashbox.CashRepository;
 import com.med.services.cashbox.interfaces.ICashBoxService;
+import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,9 @@ public class CashBoxServiceImpl implements ICashBoxService {
 
     @Autowired
     CashRepository repository;
+
+    @Autowired
+    SalaryServiceImpl salaryService;
 
     @PostConstruct
     void init(){
@@ -43,6 +49,8 @@ public class CashBoxServiceImpl implements ICashBoxService {
         int rest = this.getCashBox();
         CashBox cashBox =
                 new CashBox(LocalDateTime.now(), null, 1, "Кассу знято", -1*rest);
+        Salary salary = new Salary(1, LocalDateTime.now(), SalaryType.BUZUNAR, rest);
+        salaryService.createSalary(salary);
         return repository.save(cashBox);
     }
 }

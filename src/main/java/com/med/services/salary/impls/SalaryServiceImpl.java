@@ -173,13 +173,16 @@ public class SalaryServiceImpl implements ISalaryService {
                 .mapToInt(Salary::getSum).sum();
         dto.setRecd(recd);
 
+        int kredit = doctorService.getDoctor(doctorId).getKredit();
+        dto.setKredit(kredit);
+
         int penalty = list.stream().filter(salary -> salary.getType().equals(SalaryType.PENALTY))
                 .mapToInt(Salary::getSum).sum();
         dto.setPenalty(penalty);
         int total = weeks - taxes - canteen + rest + accural + award - penalty;
         dto.setTotal(total);
         dto.setActual(total - recd);
-       // System.out.println(dto);
+       // System.out.println(dto); Hope1234
         return dto;
     }
 
