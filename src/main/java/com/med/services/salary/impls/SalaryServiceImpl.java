@@ -38,7 +38,7 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @PostConstruct
     void init() {
-        repository.save(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,1));
+        repository.save(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,0));
      // repository.deleteAll();
    /*      List<Salary> list = new ArrayList<>(
                 Arrays.asList(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,1),
@@ -153,6 +153,8 @@ public class SalaryServiceImpl implements ISalaryService {
         int canteen = list.stream().filter(salary -> salary.getType().equals(SalaryType.CANTEEN))
                 .mapToInt(Salary::getSum).sum();
         dto.setStavka(weeks - taxes - canteen);
+
+
 
         int accural = list.stream().filter(salary -> salary.getType().equals(SalaryType.ACCURAL))
                 .mapToInt(Salary::getSum).sum();

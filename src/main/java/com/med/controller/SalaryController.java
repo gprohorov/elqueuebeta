@@ -33,7 +33,7 @@ public class SalaryController {
     @RequestMapping("/list")
     public List<SalaryDTO> showSalaries() {
 
-        service.createWeekSalary();
+      //  service.createWeekSalary();
         return service.getSalaryList();
     }
 
