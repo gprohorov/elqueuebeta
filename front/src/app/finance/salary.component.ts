@@ -33,11 +33,13 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     }
 
     showSetSalaryPopup(doctor: any) {
-        this.modalService.openDialog(this.viewRef, {
+        const options: any = {
             title: 'Лікар: ' + doctor.name,
             childComponent: SetSalaryModalComponent,
             data: doctor
-        });
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(); });
     }
 
     load() {

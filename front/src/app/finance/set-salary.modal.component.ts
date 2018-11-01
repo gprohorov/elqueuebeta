@@ -25,8 +25,11 @@ export class SetSalaryModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.data = options.data;
-        this.data.doctorId = options.data.doctorId;
+        this.data = {
+            doctorID: options.data.doctorId,
+            award: 0,
+            penalty: 0
+        };
     }
 
     submit(f, options) {
@@ -34,7 +37,7 @@ export class SetSalaryModalComponent implements IModalDialog {
         if (!f.form.valid) return false;
 
         this.sub = this.financeService.setSalary({
-            doctorId: this.data.doctorId,
+            doctorID: this.data.doctorID,
             award: this.data.award,
             penalty: this.data.penalty
         }).subscribe(() => {
