@@ -6,6 +6,7 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import { AuthService, UtilService, AlertService } from '../_services/index';
 
 import { GiveSalaryModalComponent } from '../finance/give-salary.modal.component';
+import { KassaTozeroModalComponent } from '../finance/kassa-tozero.modal.component';
 
 @Component({
     selector: 'app-nav',
@@ -44,6 +45,13 @@ export class NavComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Видача зарплати лікарю',
             childComponent: GiveSalaryModalComponent
+        });
+    }
+
+    showKassaTozeroPopup() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Здача каси',
+            childComponent: KassaTozeroModalComponent
         });
     }
 
