@@ -26,6 +26,7 @@ export class SetSalaryModalComponent implements IModalDialog {
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = options.data;
+        this.data.doctorId = options.data.doctorId;
     }
 
     submit(f, options) {
