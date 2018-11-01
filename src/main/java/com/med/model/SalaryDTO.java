@@ -6,6 +6,7 @@ package com.med.model;
 public class SalaryDTO {
 
     private String name;
+    private int doctorId;
     private int days;
     private int stavka;
     private int accural;
@@ -18,8 +19,9 @@ public class SalaryDTO {
     private int actual;
 
 
-    public SalaryDTO(String name, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
+    public SalaryDTO(String name, int doctorId, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
         this.name = name;
+        this.doctorId = doctorId;
         this.days = days;
         this.stavka = stavka;
         this.accural = accural;
@@ -120,6 +122,14 @@ public class SalaryDTO {
 
     public void setActual(int actual) {
         this.actual = actual;
+    }
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
 
     @Override

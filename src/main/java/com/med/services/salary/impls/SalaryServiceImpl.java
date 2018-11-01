@@ -124,6 +124,7 @@ public class SalaryServiceImpl implements ISalaryService {
         SalaryDTO dto = new SalaryDTO();
 
         dto.setName( doctorService.getDoctor(doctorId).getFullName());
+        dto.setDoctorId(doctorId);
 
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
@@ -178,6 +179,7 @@ public class SalaryServiceImpl implements ISalaryService {
         int total = weeks - taxes - canteen + rest + accural + award - penalty;
         dto.setTotal(total);
         dto.setActual(total - recd);
+       // System.out.println(dto);
         return dto;
     }
 

@@ -64,9 +64,29 @@ public class SalaryController {
         return service.createSalary(salary);
     }
 
+    //      !!!       Do it!
     @RequestMapping("/set")
-    public Salary insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
-        return null;
+    public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
+        System.out.println(dto);
+        if(dto.getAward()!=0){
+
+            Salary salary = new Salary(
+                    dto.getDoctorID()
+                    , LocalDateTime.now()
+                    , SalaryType.AWARD
+                    , dto.getAward());
+            service.createSalary(salary);
+        }
+
+        if(dto.getPenalty()!=0){
+            Salary salary = new Salary(
+                    dto.getDoctorID()
+                    , LocalDateTime.now()
+                    , SalaryType.PENALTY
+                    , dto.getPenalty());
+            service.createSalary(salary);
+        }
+
     }
 
 }

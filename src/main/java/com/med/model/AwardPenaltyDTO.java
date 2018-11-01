@@ -18,11 +18,36 @@ public class AwardPenaltyDTO {
     public AwardPenaltyDTO() {
     }
 
+    public int getAward() {
+        return award;
+    }
+
+    public void setAward(int award) {
+        this.award = award;
+    }
+
+    public int getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
     public int getDoctorID() {
         return doctorID;
     }
 
     public void setDoctorID(int doctorID) {
         this.doctorID = doctorID;
+    }
+
+    @Override
+    public String toString() {
+        return "AwardPenaltyDTO{" +
+                "doctorID=" + doctorID +
+                ", award=" + award +
+                ", penalty=" + penalty +
+                '}';
     }
 }
