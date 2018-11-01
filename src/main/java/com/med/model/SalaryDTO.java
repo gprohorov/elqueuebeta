@@ -15,9 +15,10 @@ public class SalaryDTO {
     private int total;
     private int recd;
     private int rest;
+    private int actual;
 
 
-    public SalaryDTO(String name, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest) {
+    public SalaryDTO(String name, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
         this.name = name;
         this.days = days;
         this.stavka = stavka;
@@ -28,6 +29,7 @@ public class SalaryDTO {
         this.total = total;
         this.recd = recd;
         this.rest = rest;
+        this.actual = actual;
     }
 
     public SalaryDTO() {
@@ -112,4 +114,28 @@ public class SalaryDTO {
         this.total = total;
     }
 
+    public int getActual() {
+        return actual;
+    }
+
+    public void setActual(int actual) {
+        this.actual = actual;
+    }
+
+    @Override
+    public String toString() {
+        return "SalaryDTO{" +
+                "name='" + name + '\'' +
+                ", days=" + days +
+                ", stavka=" + stavka +
+                ", accural=" + accural +
+                ", award=" + award +
+                ", penalty=" + penalty +
+                ", kredit=" + kredit +
+                ", total=" + total +
+                ", recd=" + recd +
+                ", rest=" + rest +
+                ", actual=" + actual +
+                '}';
+    }
 }

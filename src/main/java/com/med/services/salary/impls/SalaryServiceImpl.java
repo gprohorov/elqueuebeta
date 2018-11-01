@@ -173,9 +173,9 @@ public class SalaryServiceImpl implements ISalaryService {
         int penalty = list.stream().filter(salary -> salary.getType().equals(SalaryType.PENALTY))
                 .mapToInt(Salary::getSum).sum();
         dto.setPenalty(penalty);
-
-        dto.setTotal(weeks - taxes - canteen + rest + accural + award - penalty - recd);
-        
+        int total = weeks - taxes - canteen + rest + accural + award - penalty;
+        dto.setTotal(total);
+        dto.setActual(total - recd);
         return dto;
     }
 

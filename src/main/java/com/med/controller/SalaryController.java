@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.model.*;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class SalaryController {
     @Autowired
     SalaryServiceImpl service;
 
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
+
 
     @RequestMapping("/list")
     public List<SalaryDTO> showSalaries() {
@@ -43,6 +47,14 @@ public class SalaryController {
     public Salary getSalary(@Valid @RequestBody Salary salary) {
         salary.setDateTime(LocalDateTime.now());
         salary.setType(SalaryType.BUZUNAR);
+        // kassa is down by this salary
+        cashBoxService.saveCash(new CashBox(
+                LocalDateTime.now()
+                , null
+                , salary.getDoctorId()
+                ,null
+                , -1*salary.getSum()));
+
         return service.createSalary(salary);
     }
 
