@@ -1,8 +1,10 @@
 package com.med.controller;
 
+import com.med.model.CashBox;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.user.UserService;
 import org.json.JSONObject;
@@ -31,6 +33,9 @@ public class AccountingController {
     @Autowired
     PatientServiceImpl patientService;
 
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
+
 
     @RequestMapping("/list")
     public List<Accounting> showAll(){
@@ -57,6 +62,8 @@ public class AccountingController {
 
         if (sum != 0) {
             service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
+            CashBox cash = new CashBox(LocalDateTime.now(),patientId,0,"",sum);
+            cashBoxService.saveCash(cash);
         }
 
         if (discount != 0) {
