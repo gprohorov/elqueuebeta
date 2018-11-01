@@ -11,7 +11,7 @@ echo 'Building Back-end...'
 echo ''
 echo ''
 cd ..
-mvn clean package
+mvn clean package -DskipTests
 
 echo ''
 echo ''
