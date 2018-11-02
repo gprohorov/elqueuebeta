@@ -182,7 +182,7 @@ public class SalaryServiceImpl implements ISalaryService {
         int total = weeks - taxes - canteen + rest + accural + award - penalty;
         dto.setTotal(total);
         dto.setActual(total - recd);
-       // System.out.println(dto); Hope1234
+        System.out.println(dto);
         return dto;
     }
 
