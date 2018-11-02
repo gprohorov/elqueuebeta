@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.datastorage.DataStorageTest;
+import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,18 +20,33 @@ public class UtilController {
      @Autowired
      DataStorageTest dataStorage;
 
+     @Autowired
+    SalaryServiceImpl salaryService;
+
     @GetMapping("/util/reset-db")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void resetPatientsTable() {
-        // dataStorage.resetPatientsTable();
-        dataStorage.reset();
+      salaryService.createWeekSalary();
     }
 
     @GetMapping("/util/launch")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void launch() {
         // dataStorage.resetPatientsTable();
-        dataStorage.reset();
+
     }
 
+    @GetMapping("/util/taskone")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void executeTaskOne() {
+        // dataStorage.resetPatientsTable();
+        dataStorage.taskOne();
+    }
+
+    @GetMapping("/util/tasktwo")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void executeTaskTwo() {
+        // dataStorage.resetPatientsTable();
+        dataStorage.taskTwo();
+    }
 }

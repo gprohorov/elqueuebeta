@@ -8,6 +8,7 @@ public class SalaryDTO {
     private String name;
     private int doctorId;
     private int days;
+    private int hours;
     private int stavka;
     private int accural;
     private int award;
@@ -18,11 +19,11 @@ public class SalaryDTO {
     private int rest;
     private int actual;
 
-
-    public SalaryDTO(String name, int doctorId, int days, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
+    public SalaryDTO(String name, int doctorId, int days, int hours, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
         this.name = name;
         this.doctorId = doctorId;
         this.days = days;
+        this.hours = hours;
         this.stavka = stavka;
         this.accural = accural;
         this.award = award;
@@ -132,11 +133,21 @@ public class SalaryDTO {
         this.doctorId = doctorId;
     }
 
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
     @Override
     public String toString() {
         return "SalaryDTO{" +
                 "name='" + name + '\'' +
+                ", doctorId=" + doctorId +
                 ", days=" + days +
+                ", hours=" + hours +
                 ", stavka=" + stavka +
                 ", accural=" + accural +
                 ", award=" + award +

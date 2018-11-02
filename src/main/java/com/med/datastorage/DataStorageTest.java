@@ -113,6 +113,16 @@ public class DataStorageTest {
 
     }
 
+    public void taskOne(){
+
+    }
+
+    public void taskTwo(){
+
+    }
+
+
+
     public void reset(){
 
      //   recordService.deleteAll();

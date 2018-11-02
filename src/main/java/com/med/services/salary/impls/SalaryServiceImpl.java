@@ -64,13 +64,8 @@ public class SalaryServiceImpl implements ISalaryService {
 
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-            //    .filter(talon -> talon.getDoctor().getId()==doctorId)
+              .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());
-
-        if (doctorId!=2){
-            talons = talons.stream().filter(talon -> talon.getDoctor().getId()==doctorId)
-                    .collect(Collectors.toList());
-        }
 
         int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
         //talons.stream().map(talon -> talon.getDate()).distinct().forEach(System.out::println);
@@ -86,13 +81,14 @@ public class SalaryServiceImpl implements ISalaryService {
                    int hrs = (int) ChronoUnit.HOURS.between(begin,end);
                    hours[0] +=hrs;
                 });
+         if (doctorId==2 || doctorId==1) {hours[0] = days * 8; }
          int rate = doctorService.getDoctor(doctorId).getRate();
          String name = doctorService.getDoctor(doctorId).getFullName();
          int weekSum = 0;
          if (hours[0]<=40) weekSum=hours[0]*rate;
          else weekSum=(hours[0] - 40)*rate * 3/2 + 40*rate;
         list.add(new Salary(doctorId, LocalDateTime.now(), SalaryType.WEEK, weekSum));
-        System.out.println(" - " + name + " : " + days + " : " + hours[0]);
+     //   System.out.println(" - " + name + " : " + days + " : " + hours[0]);
         return repository.saveAll(list);
     }
 
@@ -123,8 +119,13 @@ public class SalaryServiceImpl implements ISalaryService {
 
         SalaryDTO dto = new SalaryDTO();
 
-        dto.setName( doctorService.getDoctor(doctorId).getFullName());
+        Doctor doctor = doctorService.getDoctor(doctorId);
+
+        dto.setName(doctor.getFullName());
         dto.setDoctorId(doctorId);
+
+        int kredit = doctor.getKredit();
+        dto.setKredit(kredit);
 
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
@@ -132,30 +133,32 @@ public class SalaryServiceImpl implements ISalaryService {
                 .collect(Collectors.toList());
 
         int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
-        String name = doctorService.getDoctor(doctorId).getFullName();
- /*       System.out.println(" - " + name + " -- " + days + "  ");
-
-        talons.stream().map(talon -> talon.getDate()).distinct()
-                .sorted()
-                .forEach(System.out::println);
-*/
-
         dto.setDays(days);
+
+        final int[] hours = {0};
+        talons.stream().collect(Collectors.groupingBy(Talon::getDate)).entrySet()
+                .forEach((entry)->{
+                    LocalDateTime begin = entry.getValue().stream().min(Comparator.comparing(Talon::getStart)).get().getStart();
+                    LocalDateTime end = entry.getValue().stream().max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
+                    int hrs = (int) ChronoUnit.HOURS.between(begin,end);
+                    hours[0] +=hrs;
+                });
+        dto.setHours(hours[0]);
+        if (doctorId==2){dto.setHours(days*8);}
+
 
         List<Salary> list= repository.findAll().stream()
                 .filter(salary -> salary.getDoctorId()==doctorId)
                 .collect(Collectors.toList());
         if (list.isEmpty()) return dto;
 
-        int weeks = list.stream().filter(salary -> salary.getType().equals(SalaryType.WEEK))
+        int week = list.stream().filter(salary -> salary.getType().equals(SalaryType.WEEK))
                 .mapToInt(Salary::getSum).sum();
         int taxes = list.stream().filter(salary -> salary.getType().equals(SalaryType.TAX))
                 .mapToInt(Salary::getSum).sum();
         int canteen = list.stream().filter(salary -> salary.getType().equals(SalaryType.CANTEEN))
                 .mapToInt(Salary::getSum).sum();
-        dto.setStavka(weeks - taxes - canteen);
-
-
+        dto.setStavka(week - taxes - canteen);
 
         int accural = list.stream().filter(salary -> salary.getType().equals(SalaryType.ACCURAL))
                 .mapToInt(Salary::getSum).sum();
@@ -173,16 +176,14 @@ public class SalaryServiceImpl implements ISalaryService {
                 .mapToInt(Salary::getSum).sum();
         dto.setRecd(recd);
 
-        int kredit = doctorService.getDoctor(doctorId).getKredit();
-        dto.setKredit(kredit);
 
         int penalty = list.stream().filter(salary -> salary.getType().equals(SalaryType.PENALTY))
                 .mapToInt(Salary::getSum).sum();
         dto.setPenalty(penalty);
-        int total = weeks - taxes - canteen + rest + accural + award - penalty;
+        int total = week - taxes - canteen + rest + accural + award - penalty;
         dto.setTotal(total);
         dto.setActual(total - recd);
-        System.out.println(dto);
+      //  System.out.println(dto);
         return dto;
     }
 
@@ -201,6 +202,17 @@ public class SalaryServiceImpl implements ISalaryService {
         return salaryDTOList;
     }
 
-   //------------------private------------------------
 
+    public Salary createWeekBonusesForDoctor(int doctorId) {
+        List<Salary> list = new ArrayList<>();
+
+        List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
+                .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
+                .collect(Collectors.toList());
+
+
+
+        return null;
+    }
 }
