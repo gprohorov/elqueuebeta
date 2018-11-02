@@ -3,6 +3,7 @@ package com.med.services.salary.impls;
 import com.med.model.*;
 import com.med.repository.salary.SalaryRepository;
 import com.med.services.doctor.impls.DoctorServiceImpl;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @Autowired
     DoctorServiceImpl doctorService;
+
+    @Autowired
+    ProcedureServiceImpl procedureService;
 
     @PostConstruct
     void init() {
@@ -204,15 +208,38 @@ public class SalaryServiceImpl implements ISalaryService {
 
 
     public Salary createWeekBonusesForDoctor(int doctorId) {
-        List<Salary> list = new ArrayList<>();
+        System.out.printf("Called");
+       Salary salary = new Salary(doctorId, LocalDateTime.now(), SalaryType.ACCURAL,0);
 
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());
+        if (talons.isEmpty()){return salary;}
 
+        final int[] sum = {0};
 
-
-        return null;
+        talons.stream().forEach(talon -> {
+            Procedure procedure = procedureService.getProcedure(talon.getProcedureId());
+            int price = procedure.getSOCIAL();
+            int zones = talon.getZones();
+            int percent = procedure.getPercent();
+            sum[0] += (int) price * zones * percent / 100;
+        });
+        salary.setSum(sum[0]);
+        //System.out.println(salary.getSum());
+        return salary;
     }
+
+    public List<Salary> createWeekBonus(){
+        List<Salary> list = new ArrayList<>();
+
+        doctorService.getAll().stream().forEach(doctor -> {
+
+           list.add( this.createWeekBonusesForDoctor(doctor.getId()));
+        });
+
+        return repository.saveAll(list);
+    }
+
 }
