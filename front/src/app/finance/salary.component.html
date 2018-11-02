@@ -1,4 +1,4 @@
-﻿<app-loader [loader]="loading"></app-loader>
+<app-loader [loader]="loading"></app-loader>
 <div class="position-fixed" [style.right.px]="50">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
@@ -11,15 +11,16 @@
                 <th></th>
                 <th>Прізвище лікаря</th>
                 <th>Днів</th>
+                <th>Годин</th>
                 <th>Ставка</th>
                 <th>Бонуси</th>
                 <th>Штрафи</th>
-                <th>Залишок за минулий місяць</th>
+                <th>Залишок</th>
                 <th>Кредитний ліміт</th>
                 <th>Премія</th>
                 <th>Виплачено</th>
                 <th>Всього нараховано</th>
-                <th>Залишок</th>
+                <th>Отримати</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of data">
@@ -29,6 +30,7 @@
                 </button></td>
                 <td class="text-nowrap">{{item.lastName}}</td>
                 <td class="text-right text-nowrap">{{item.days}}</td>
+                <td class="text-right text-nowrap">{{item.hours}}</td>
                 <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
                 <td class="text-right text-nowrap">{{item.accural}} грн.</td>
                 <td class="text-right text-nowrap">{{item.penalty}} грн.</td>
@@ -41,7 +43,7 @@
             </tr>
         </tbody>
         <tr>
-            <td colspan="9"><strong>Всього:</strong></td>
+            <td colspan="10"><strong>Всього:</strong></td>
             <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
             <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
             <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
