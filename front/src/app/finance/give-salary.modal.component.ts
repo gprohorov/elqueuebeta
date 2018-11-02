@@ -42,9 +42,15 @@ export class GiveSalaryModalComponent implements IModalDialog {
         f.submitted = true;
         if (!f.form.valid) return false;
 
-        this.sub = this.financeService.giveSalary({doctorId: this.data.doctorId, sum: this.data.sum}).subscribe(() => {
-            this.alertService.success('Зарплату видано.');
-            options.closeDialogSubject.next();
+        this.sub = this.financeService.giveSalary({
+            doctorId: this.data.doctorId, 
+            sum: this.data.sum}).subscribe(resp => {
+                if (resp && resp.status) {
+                    this.alertService.success('Зарплату видано.');
+                    options.closeDialogSubject.next();
+                } else {
+                    this.alertService.error('Помилка видачі: ' + resp.message);
+                }
         });
     }
 
