@@ -63,4 +63,22 @@ export class NavComponent implements OnInit, OnDestroy {
             });
         }
     }
+    
+    Task1() {
+        if (confirm('Do Task1?')) {
+            this.utilService.Task1().subscribe(() => {
+                this.alertService.success('Task1 passed.', true);
+                this.router.navigate(['']);
+            });
+        }
+    }
+    
+    Task2() {
+        if (confirm('Do Task2?')) {
+            this.utilService.Task2().subscribe(() => {
+                this.alertService.success('Task2 passed.', true);
+                this.router.navigate(['']);
+            });
+        }
+    }
 }
