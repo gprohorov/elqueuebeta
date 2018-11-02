@@ -44,7 +44,7 @@ public class SalaryController {
 
     // a doctor get a salary into buzunar
     @RequestMapping("/get")
-    public Salary getSalary(@Valid @RequestBody Salary salary) {
+    public Response getSalary(@Valid @RequestBody Salary salary) {
         salary.setDateTime(LocalDateTime.now());
         salary.setType(SalaryType.BUZUNAR);
         // kassa is down by this salary
@@ -55,7 +55,11 @@ public class SalaryController {
                 ,null
                 , -1*salary.getSum()));
 
-        return service.createSalary(salary);
+        service.createSalary(salary);
+
+        Response response = new Response(true, "");
+
+        return response;
     }
 
     // i.e. nechay  insert bonus or a penalty

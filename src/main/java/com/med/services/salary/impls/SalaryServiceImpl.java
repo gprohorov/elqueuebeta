@@ -144,7 +144,7 @@ public class SalaryServiceImpl implements ISalaryService {
                     hours[0] +=hrs;
                 });
         dto.setHours(hours[0]);
-        if (doctorId==2){dto.setHours(days*8);}
+        if (doctorId==2 || doctorId==1){dto.setHours(days*8);}
 
 
         List<Salary> list= repository.findAll().stream()
