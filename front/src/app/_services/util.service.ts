@@ -10,7 +10,7 @@ export class UtilService {
   // Define the routes we are going to interact with
   private resetDBURL = config.api_path + '/util/reset-db';
   private Task1URL = config.api_path + '/util/taskone';
-  private Task2URL = config.api_path + '/util/taskone';
+  private Task2URL = config.api_path + '/util/tasktwo';
 
   constructor(private http: HttpClient) { }
 
