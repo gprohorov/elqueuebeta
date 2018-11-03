@@ -1,9 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 // tslint:disable-next-line:import-blacklist
-import { pipe } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 import { ModalDialogService } from 'ngx-modal-dialog';
