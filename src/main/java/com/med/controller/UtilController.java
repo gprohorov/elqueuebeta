@@ -26,7 +26,7 @@ public class UtilController {
     @GetMapping("/util/reset-db")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void resetPatientsTable() {
-      salaryService.createWeekSalary();
+
     }
 
     @GetMapping("/util/launch")
@@ -39,14 +39,14 @@ public class UtilController {
     @GetMapping("/util/taskone")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskOne() {
-        // dataStorage.resetPatientsTable();
+       // salaryService.createWeekSalary();
         dataStorage.taskOne();
     }
 
     @GetMapping("/util/tasktwo")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskTwo() {
-        // dataStorage.resetPatientsTable();
+    //    salaryService.createWeekSalary();
         dataStorage.taskTwo();
     }
 }
