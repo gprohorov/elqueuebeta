@@ -64,7 +64,7 @@ public class DataStorageTest {
 
 
     public void reset(){
-        salaryService.createWeekBonus();
+        
     }
 
 

@@ -2,6 +2,7 @@ package com.med.services.salary.impls;
 
 import com.med.model.*;
 import com.med.repository.salary.SalaryRepository;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
@@ -39,6 +40,9 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @Autowired
     ProcedureServiceImpl procedureService;
+
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
 
     @PostConstruct
     void init() {
@@ -242,4 +246,32 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.saveAll(list);
     }
 
+    public Response paySalary(Salary salary){
+
+        Response response = new Response(true,"");
+
+        int sum = salary.getSum();
+        int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
+        int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
+
+        if (sum>rest+kredit) {
+            response.setStatus(false);
+            response.setMessage("Брак коштів");
+            return response;
+        }
+
+        salary.setDateTime(LocalDateTime.now());
+        salary.setType(SalaryType.BUZUNAR);
+
+        // kassa is down by this salary
+        cashBoxService.saveCash(new CashBox(
+                LocalDateTime.now()
+                , null
+                , salary.getDoctorId()
+                ,null
+                , -1*salary.getSum()));
+
+        this.createSalary(salary);
+        return response;
+    }
 }

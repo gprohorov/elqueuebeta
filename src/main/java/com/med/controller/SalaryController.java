@@ -44,8 +44,8 @@ public class SalaryController {
 
     // a doctor get a salary into buzunar
     @RequestMapping("/get")
-    public Response getSalary(@Valid @RequestBody Salary salary) {
-        salary.setDateTime(LocalDateTime.now());
+    public Response paySalary(@Valid @RequestBody Salary salary) {
+   /*     salary.setDateTime(LocalDateTime.now());
         salary.setType(SalaryType.BUZUNAR);
         // kassa is down by this salary
         cashBoxService.saveCash(new CashBox(
@@ -58,8 +58,8 @@ public class SalaryController {
         service.createSalary(salary);
 
         Response response = new Response(true, "");
-
-        return response;
+*/
+        return service.paySalary(salary);
     }
 
     // i.e. nechay  insert bonus or a penalty
