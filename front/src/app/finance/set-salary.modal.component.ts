@@ -20,6 +20,12 @@ export class SetSalaryModalComponent implements IModalDialog {
 
     dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
         options.actionButtons = [{
+            text: 'Редагувати Лікаря',
+            buttonClass: 'btn btn-info mr-5',
+            onAction: () => {
+                window.open('/#/doctor-form;id=' + options.data.doctorId, '_blank');
+            }
+        }, {
             text: 'Призначити',
             onAction: () => {
                 return this.submit(this.myForm, options);

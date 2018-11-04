@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
-import { FinanceService } from '../_services/index';
+import { AlertService, FinanceService } from '../_services/index';
 
 import { SetSalaryModalComponent } from './set-salary.modal.component';
 
@@ -20,6 +20,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     totalActual = 0;
 
     constructor(
+        private alertService: AlertService,
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
         private service: FinanceService) { }
@@ -55,6 +56,11 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
                 this.totalActual += currentValue.actual;
             });
             this.loading = false;
+        }, 
+        error => {
+            this.alertService.error('Помилка на сервері', false);
+            this.loading = false;
+            this.data = [];
         });
     }
 }

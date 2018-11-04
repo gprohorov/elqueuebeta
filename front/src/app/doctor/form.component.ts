@@ -78,7 +78,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
     submit(f) {
         this.loading = true;
         this.model.procedureIds = this.procedures.filter(x => x.checked).map(x => x.value);
-        this.model.percents = this.procedures.map(x => return { procedureId: x.value, procent: x.procent };);
+        this.model.percents = this.procedures.map(x => { return { procedureId: x.value, procent: x.procent }; });
         this.service.update(this.model).subscribe(
             () => {
                 this.alertService.success('Операція пройшла успішно', true);

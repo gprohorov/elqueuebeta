@@ -119,23 +119,23 @@ const appRoutes: Routes = [
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
         path: 'doctor-form', component: DoctorFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
     {
         path: 'procedures', component: ProcedureListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
         path: 'procedure-form', component: ProcedureFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
     {
