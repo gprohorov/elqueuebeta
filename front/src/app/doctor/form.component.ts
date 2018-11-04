@@ -38,7 +38,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
         this.subProcedures = this.procedureService.getAll().subscribe(
             data => {
                 this.loading = false;
-                this.procedures = data.map(x => ({ name: x.name, value: x.id, checked: false }) );
+                this.procedures = data.map(x => ({ name: x.name, value: x.id, checked: false, procent: 0 }) );
                 const id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (id > 0) this.load(id);
             },
@@ -53,6 +53,12 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
             const p = this.procedures.find(x => x.value === id);
             if (p) p.checked = true;
         });
+        if (this.model.procents) {
+            this.model.procents.forEach(r => {
+                const p = this.procedures.find(x => x.value === r.procedureId);
+                if (p) p.procent = r.procent;
+            });
+        }
     }
 
     load(id: number) {
@@ -72,6 +78,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
     submit(f) {
         this.loading = true;
         this.model.procedureIds = this.procedures.filter(x => x.checked).map(x => x.value);
+        this.model.procents = this.procedures.map(x => return { procedureId: x.value, procent: x.procent };);
         this.service.update(this.model).subscribe(
             () => {
                 this.alertService.success('Операція пройшла успішно', true);
