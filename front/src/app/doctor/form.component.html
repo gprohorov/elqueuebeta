@@ -39,7 +39,7 @@
 	                </div>
 	                <div class="col form-inline"> 
 						<input [style.width.px]="150" type="number" class="form-control"
-	                    	name="procedure.procent" [(ngModel)]="procedure.procent"/> 
+	                    	[name]="'percents_' + procedure.value" [(ngModel)]="procedure.procent"/> 
 	                    	<label class="ml-2">%</label> 
 	                </div>
                 </div>
