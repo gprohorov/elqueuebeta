@@ -60,11 +60,13 @@ public class AccountingController {
       
         int doctorId = 1;
 
-//        if (sum != 0 && paymentType.equals(PaymentType.CASH)) {
+//
         if (sum != 0) {
             service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
-            CashBox cash = new CashBox(LocalDateTime.now(),patientId,0,"",sum);
-            cashBoxService.saveCash(cash);
+            if (paymentType.equals(PaymentType.CASH)) {
+                CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
+                cashBoxService.saveCash(cash);
+            }
         }
 
         if (discount != 0) {
