@@ -52,10 +52,7 @@ public class DataStorageTest {
 
     }
 
-    public void taskOne(){
-        salaryService.createWeekSalary();
-
-    }
+    public void taskOne() { salaryService.createWeekSalary(); }
 
     public void taskTwo(){
         salaryService.createWeekBonus();

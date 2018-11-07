@@ -45,10 +45,10 @@ public class CashBoxServiceImpl implements ICashBoxService {
         return repository.findAll().stream().mapToInt(CashBox::getSum).sum();
     }
 
-    public CashBox toZero() {
-        int rest = this.getCashBox();
+    public CashBox toZero(int sum) {
+        int rest = sum;
         CashBox cashBox =
-                new CashBox(LocalDateTime.now(), null, 1, "Кассу знято", -1*rest);
+                new CashBox(LocalDateTime.now(), null, 1, "Кассу знято на " + rest, -1*rest);
         Salary salary = new Salary(1, LocalDateTime.now(), SalaryType.BUZUNAR, rest);
         salaryService.createSalary(salary);
         return repository.save(cashBox);

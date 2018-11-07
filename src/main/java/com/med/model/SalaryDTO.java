@@ -1,23 +1,49 @@
 package com.med.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * Created by george on 28.10.18.
  */
-public class SalaryDTO {
 
-    private String name;
-    private int doctorId;
-    private int days;
-    private int hours;
-    private int stavka;
-    private int accural;
-    private int award;
-    private int penalty;
-    private int kredit;
-    private int total;
-    private int recd;
-    private int rest;
-    private int actual;
+    // зкземляр этого класса в жизни является строкой зарплатной ведомости.
+    // Эту ведомость передают из бухгалтерии в кассу для выдачи зарплаты.
+    // Каждая строка соответствует какому-то врачу.
+    // Ведомость охватывает ТРИ недели.
+    // Прошлая неделя. За неё насчитывается: - ставка исходя из проработанных часов
+    //                                       - начисления за процедуры
+    // Позапрошлая неделя.  Если врач не выбрал зарплату за позапрошлую неделю, то
+    // этот остаток ему переносится в в ведомость в колонку rest
+    // Текущая неделя.  Можно врачу начислять премии и штрафы.  А также учитывать ,
+    // сколько он уже из кассы выгреб.
+
+    @Document
+public class SalaryDTO {
+    @Id
+    private String id;
+    private LocalDate from;  // с какого числа включительно
+    private LocalDate to;   //  по какое число включительно считаем зарплату
+    private LocalDateTime opened; // открыли зарплатную ведомость - можно выплачивать з/п
+    private LocalDateTime closed;  // з/п выплачена, ведомость закрыта, остатки в след. вед.
+    private String name;  // фамилия доктора
+    private int doctorId;  // его айдишник
+    private int days;     // сколько дней проработал (обычно 6 дней) за прошедшую неделю
+    private int hours;    // часов за прошедшую неделю
+    private int stavka;   // мин. начисления минус налог минус обед
+    private int accural;   // бонусы за процедуры
+    private int award;    // премии, могут добавляться в теч.текущей  недели
+    private int penalty;  // также и штрафы
+    private int kredit;   // сколько можно взять в долг
+    private int total;   // всего начислено за прошедшую неделю
+    private int recd;    // всего уже получено в кассе за текущую  неделю
+    private int rest;    //  остаток в кассе, не выбранный зо позапрошлую неделю
+    private int actual;  // сумма, которую можно получитьв кассе, учитывая вышеизложенное
+                         // (не влезая в долг)
+                        //
 
     public SalaryDTO(String name, int doctorId, int days, int hours, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
         this.name = name;
@@ -141,10 +167,55 @@ public class SalaryDTO {
         this.hours = hours;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDate getFrom() {
+        return from;
+    }
+
+    public void setFrom(LocalDate from) {
+        this.from = from;
+    }
+
+    public LocalDate getTo() {
+        return to;
+    }
+
+    public void setTo(LocalDate to) {
+        this.to = to;
+    }
+
+    public LocalDateTime getOpened() {
+        return opened;
+    }
+
+    public void setOpened(LocalDateTime opened) {
+        this.opened = opened;
+    }
+
+    public LocalDateTime getClosed() {
+        return closed;
+    }
+
+    public void setClosed(LocalDateTime closed) {
+        this.closed = closed;
+    }
+
     @Override
     public String toString() {
         return "SalaryDTO{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", from=" + from +
+                ", to=" + to +
+                ", opened=" + opened +
+                ", closed=" + closed +
+                ", name='" + name + '\'' +
                 ", doctorId=" + doctorId +
                 ", days=" + days +
                 ", hours=" + hours +

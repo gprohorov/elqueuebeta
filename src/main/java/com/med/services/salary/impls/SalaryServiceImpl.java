@@ -60,11 +60,15 @@ public class SalaryServiceImpl implements ISalaryService {
         */
     }
 
+    // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
     @Override
     public Salary createSalary(Salary salary) {
         return repository.save(salary);
     }
 
+
+
+    // вносит в базу списком обязат недельные платежи (за часы, минус налог, минус обед)
     @Override
     public List<Salary> createWeekSalaryForDoctor(int doctorId) {
         List<Salary> list = new ArrayList<>();
@@ -100,6 +104,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.saveAll(list);
     }
 
+    // вносит недельные начисления сразу всем врачам списком
     @Override
     public List<Salary> createWeekSalary() {
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(7),LocalDate.now().plusDays(1))
@@ -121,7 +126,8 @@ public class SalaryServiceImpl implements ISalaryService {
     }
 
 
-
+    // возвращает по доктору все его подробности по зарплате,
+    // т.е строку зарплатной ведомости
     @Override
     public SalaryDTO getSalaryByDoctor(int doctorId) {
 
@@ -195,22 +201,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return dto;
     }
 
-    @Override
-    public List<SalaryDTO> getSalaryList() {
-
-        List<Integer> doctorIds =doctorService.getAll()
-                .stream().mapToInt(Doctor::getId).boxed()
-                .collect(Collectors.toList());
-
-        List<SalaryDTO> salaryDTOList = new ArrayList<>();
-
-        doctorIds.stream().forEach(id->{
-            salaryDTOList.add(this.getSalaryByDoctor(id));
-        });
-        return salaryDTOList;
-    }
-
-
+    // начисление врачу бонусов за процедуры прошедшей недели
     public Salary createWeekBonusesForDoctor(int doctorId) {
         System.out.printf("Called");
        Salary salary = new Salary(doctorId, LocalDateTime.now(), SalaryType.ACCURAL,0);
@@ -235,6 +226,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return salary;
     }
 
+    // начисление бонусов всем врачам
     public List<Salary> createWeekBonus(){
         List<Salary> list = new ArrayList<>();
 
@@ -246,6 +238,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.saveAll(list);
     }
 
+    // выдача зарплаты : отметка в ведомости и в кассе
     public Response paySalary(Salary salary){
 
         Response response = new Response(true,"");
@@ -274,4 +267,23 @@ public class SalaryServiceImpl implements ISalaryService {
         this.createSalary(salary);
         return response;
     }
+
+
+    // зарплатная ведомость всех врачей за прошедшую неделю
+    // со всеми ставками, бонусами и тд
+    @Override
+    public List<SalaryDTO> getSalaryList() {
+
+        List<Integer> doctorIds =doctorService.getAll()
+                .stream().mapToInt(Doctor::getId).boxed()
+                .collect(Collectors.toList());
+
+        List<SalaryDTO> salaryDTOList = new ArrayList<>();
+
+        doctorIds.stream().forEach(id->{
+            salaryDTOList.add(this.getSalaryByDoctor(id));
+        });
+        return salaryDTOList;
+    }
+
 }
