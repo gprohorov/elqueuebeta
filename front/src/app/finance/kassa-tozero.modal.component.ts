@@ -9,10 +9,7 @@ import { FinanceService, AlertService } from '../_services/index';
 })
 export class KassaTozeroModalComponent implements IModalDialog {
 
-    data = {
-        doctorId: null,
-        sum: 0
-    };
+    data = { sum: 0 };
     kassa = 0;
     sub: Subscription;
     subKassa: Subscription;
@@ -30,14 +27,17 @@ export class KassaTozeroModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.subKassa = this.financeService.getKassa().subscribe(data => { this.kassa = data; });
+        this.subKassa = this.financeService.getKassa().subscribe(data => { 
+            this.kassa = data;
+            this.data.sum = data;
+        });
     }
 
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
 
-        this.sub = this.financeService.toZero().subscribe(() => {
+        this.sub = this.financeService.toZero(this.data.sum).subscribe(() => {
             this.alertService.success('Касу здано.');
             options.closeDialogSubject.next();
         });
