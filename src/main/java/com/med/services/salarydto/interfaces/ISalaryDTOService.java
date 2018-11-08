@@ -11,7 +11,7 @@ import java.util.List;
 public interface ISalaryDTOService {
     SalaryDTO createSalaryDTO(SalaryDTO salaryDTO);
     SalaryDTO getSalaryDTOById(String salaryDTOId);
-    SalaryDTO getSalaryDTOByWeek(int week);
+    SalaryDTO getSalaryDTOByWeek(int week, int doctorid);
 
 
 

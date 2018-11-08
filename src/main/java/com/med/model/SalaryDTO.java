@@ -27,6 +27,7 @@ public class SalaryDTO {
     private String id;
     private LocalDate from;  // с какого числа включительно
     private LocalDate to;   //  по какое число включительно считаем зарплату
+    private int week;      // номер недели в году
     private LocalDateTime opened; // открыли зарплатную ведомость - можно выплачивать з/п
     private LocalDateTime closed;  // з/п выплачена, ведомость закрыта, остатки в след. вед.
     private String name;  // фамилия доктора
@@ -205,6 +206,14 @@ public class SalaryDTO {
 
     public void setClosed(LocalDateTime closed) {
         this.closed = closed;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     @Override
