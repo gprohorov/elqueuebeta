@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
-import { AlertService, FinanceService } from '../_services/index';
+import { AuthService, AlertService, FinanceService } from '../_services/index';
 
 import { SetSalaryModalComponent } from './set-salary.modal.component';
 
@@ -20,6 +20,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     totalActual = 0;
 
     constructor(
+        public authService: AuthService,
         private alertService: AlertService,
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
@@ -45,22 +46,39 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.sub = this.service.getSalary().subscribe(data => {
-            this.data = data;
-            this.totalSummary = 0;
-            this.totalActual = 0;
-            data.forEach( currentValue => {
-                currentValue.lastName = currentValue.name.split(' ')[0];
-                this.totalRecd += currentValue.recd;
-                this.totalSummary += currentValue.total;
-                this.totalActual += currentValue.actual;
-            });
-            this.loading = false;
-        }, 
-        error => {
-            this.alertService.error('Помилка на сервері', false);
-            this.loading = false;
-            this.data = [];
+        if (this.authService.isSuperadmin()) this.loadNew(); else this.loadOld();
+    }
+    
+    loadOld() {
+        this.sub = this.service.getSalary().subscribe(
+            data => this.parseData(data),
+            error => this.parseError(error)
+        );
+    }
+    
+    loadNew() {
+        this.sub = this.service.getSalaryNew().subscribe(
+            data => this.parseData(data),
+            error => this.parseError(error)
+        );
+    }
+    
+    parseData(data) {
+        this.data = data;
+        this.totalSummary = 0;
+        this.totalActual = 0;
+        data.forEach( currentValue => {
+            currentValue.lastName = currentValue.name.split(' ')[0];
+            this.totalRecd += currentValue.recd;
+            this.totalSummary += currentValue.total;
+            this.totalActual += currentValue.actual;
         });
+        this.loading = false;
+    }
+    
+    parseError(error) {
+        this.alertService.error('Помилка на сервері', false);
+        this.loading = false;
+        this.data = [];
     }
 }

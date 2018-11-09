@@ -217,6 +217,12 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
+    
+    {
+        path: 'finance/salary-new', component: FinanceSalaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
 
     {
         path: 'receipt/:patientId', component: ReceiptComponent,

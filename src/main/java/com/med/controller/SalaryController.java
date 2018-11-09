@@ -44,6 +44,16 @@ public class SalaryController {
       //                  , LocalDate.now().plusDays(1));
 
     }
+    
+    @RequestMapping("/list/new")
+    public List<SalaryDTO> showSalariesNew() {
+    	
+    	//  service.createWeekSalary();
+    	return service.getSalaryList();
+    	//   return salaryDTOService.generateSalaryWeekTable(LocalDate.now().minusDays(1)
+    	//                  , LocalDate.now().plusDays(1));
+    	
+    }
 
     @RequestMapping("/create/week")
     public List<Salary> createWeek() {
