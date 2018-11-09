@@ -10,6 +10,7 @@ import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,9 +35,13 @@ public class StatisticsController {
     @Autowired
     StatisticServiceImpl service;
 
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
+
     @RequestMapping("/cash/now")
     public Long getCashAvailable() {
-        return service.getCashAvailable();
+       // return Long.valueOf(cashBoxService.getCashBox());
+       return service.getCashAvailable();
     }
 
     @RequestMapping("/cash/total")

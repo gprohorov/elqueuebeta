@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -43,6 +44,16 @@ public class CashBoxServiceImpl implements ICashBoxService {
     @Override
     public int getCashBox() {
         return repository.findAll().stream().mapToInt(CashBox::getSum).sum();
+    }
+
+    // TODO: findAll to smth elegant
+    @Override
+    public int getTodayGiven() {
+        return  repository.findAll().stream()
+                .filter(el->el.getDateTime().toLocalDate().equals(LocalDate.now()))
+                .filter(el->el.getSum()<0)
+                .mapToInt(CashBox::getSum).sum();
+
     }
 
     public CashBox toZero(int sum) {

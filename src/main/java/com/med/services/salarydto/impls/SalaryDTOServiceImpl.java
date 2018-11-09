@@ -45,6 +45,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
     @Override
     public SalaryDTO createSalaryDTO(SalaryDTO salaryDTO) {
+        this.recalculateDTO(salaryDTO);
         return repository.save(salaryDTO);
     }
 
@@ -88,7 +89,9 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         dto.setName(doctor.getFullName());
         dto.setKredit(doctor.getKredit());
 
-        int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
+      //  int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
+
+        int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
@@ -122,13 +125,14 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
         return dto;
     }
+/*
 
     private int getRestOfDoctorFromTheLastTable(int doctorId){
       return repository.findAll().stream().filter(dto->dto.getDoctorId()==doctorId)
              .filter(dto->dto.getClosed()==null).findFirst().orElse(new SalaryDTO())
              .getActual();
-
     }
+*/
 
     private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
         return doctor.getRate()*hours - TAX - days*CANTEEN;
@@ -175,6 +179,22 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         return table;
     }
 
+    private int generateRestForDoctorFromLastTable(Doctor doctor){
+        SalaryDTO dto = repository.findAll().stream()
+                .filter(el->el.getClosed()==null).findAny().orElse(null);
+       int rest =0;
+         if(dto!=null) {
+             rest = dto.getActual();
+         //    dto.setClosed(LocalDateTime.now());
+           //   repository.save(dto);
+         }
+        return rest;
+    }
+
+    public List<SalaryDTO> getOpenTable(){
+        return repository.findAll().stream().filter(dto->dto.getClosed()==null)
+                .collect(Collectors.toList());
+    }
 
 
 }

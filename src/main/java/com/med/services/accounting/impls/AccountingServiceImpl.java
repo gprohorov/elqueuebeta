@@ -8,6 +8,7 @@ import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class AccountingServiceImpl implements IAccountingService {
 
     @Autowired
     AccountingRepository repository;
+
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
 
 
 
@@ -118,12 +122,17 @@ public class AccountingServiceImpl implements IAccountingService {
 
         AvailableexecutedPart report = new AvailableexecutedPart();
 
-        Long available = today.stream()
+        Long payed = today.stream()
                 .filter(accounting -> accounting.getSum()>0)
                 .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
                 .mapToLong(Accounting::getSum)
                 .sum();
-        report.setAvailable(available);
+        report.setPayed(payed);
+
+      //  Long given = Long.valueOf(cashBoxService.getTodayGiven());
+        Long available = Long.valueOf(cashBoxService.getCashBox());
+
+        report.setGiven(payed-available);
 
         Long executed = today.stream()
                 .filter(accounting -> accounting.getSum()<0)

@@ -4,6 +4,7 @@ import com.med.model.*;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,12 +31,18 @@ public class SalaryController {
     @Autowired
     CashBoxServiceImpl cashBoxService;
 
+    @Autowired
+    SalaryDTOServiceImpl salaryDTOService;
+
 
     @RequestMapping("/list")
     public List<SalaryDTO> showSalaries() {
 
       //  service.createWeekSalary();
         return service.getSalaryList();
+     //   return salaryDTOService.generateSalaryWeekTable(LocalDate.now().minusDays(1)
+      //                  , LocalDate.now().plusDays(1));
+
     }
 
     @RequestMapping("/create/week")
