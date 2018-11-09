@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.datastorage.DataStorageTest;
+import com.med.model.SalaryDTO;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by george on 27.04.18.
@@ -59,9 +62,9 @@ public class UtilController {
 
     @GetMapping("/util/taskfour")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    public void executeTaskFour() {
+    public List<SalaryDTO> executeTaskFour() {
     //    salaryService.createWeekSalary();
-        salaryService.getSalaryList();
+        return salaryService.getSalaryList();
     }
 
 
