@@ -61,7 +61,7 @@ public class UtilController {
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskFour() {
     //    salaryService.createWeekSalary();
-        dataStorage.taskTwo();
+        salaryService.getSalaryList();
     }
 
 
