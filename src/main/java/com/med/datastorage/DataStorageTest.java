@@ -74,7 +74,6 @@ public class DataStorageTest {
             item.setTo(to);
             item.setWeek(week);
             item.setOpened(opened);
-
             salaryDTOService.createSalaryDTO(item);
         });
 
@@ -85,12 +84,8 @@ public class DataStorageTest {
 
 
 
-    public void taskTwo(){
-
-     //   salaryDTOService.generateSalaryWeekTable(LocalDate.now().minusDays(1)
-       //         , LocalDate.now().plusDays(1));
-
-        //salaryService.createWeekBonus();
+    public List<SalaryDTO> taskTwo(){
+       return salaryDTOService.getOpenTable();
     }
 
 

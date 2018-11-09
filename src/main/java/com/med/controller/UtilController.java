@@ -42,29 +42,26 @@ public class UtilController {
     @GetMapping("/util/taskone")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskOne() {
-       // salaryService.createWeekSalary();
+
         dataStorage.taskOne();
     }
 
     @GetMapping("/util/tasktwo")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    public void executeTaskTwo() {
-    //    salaryService.createWeekSalary();
-        dataStorage.taskTwo();
+    public List<SalaryDTO> executeTaskTwo() {
+
+        return dataStorage.taskTwo();
     }
 
     @GetMapping("/util/taskthree")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskThree() {
-    //    salaryService.createWeekSalary();
         dataStorage.taskTwo();
     }
 
     @GetMapping("/util/taskfour")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskFour() {
-    //    salaryService.createWeekSalary();
-    //    salaryService.getSalaryList();
     }
 
 
