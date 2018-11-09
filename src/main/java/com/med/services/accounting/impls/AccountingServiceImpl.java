@@ -122,7 +122,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
         AvailableexecutedPart report = new AvailableexecutedPart();
 
-        Long payed = today.stream()
+        int payed = (int) today.stream()
                 .filter(accounting -> accounting.getSum()>0)
                 .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
                 .mapToLong(Accounting::getSum)
@@ -130,11 +130,12 @@ public class AccountingServiceImpl implements IAccountingService {
         report.setPayed(payed);
 
       //  Long given = Long.valueOf(cashBoxService.getTodayGiven());
-        Long available = Long.valueOf(cashBoxService.getCashBox());
+        int available = cashBoxService.getCashBox();
 
+        
         report.setGiven(payed-available);
 
-        Long executed = today.stream()
+        int executed = (int) today.stream()
                 .filter(accounting -> accounting.getSum()<0)
                 .mapToLong(Accounting::getSum)
                 .sum();
@@ -155,6 +156,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
         report.setPercentage(part);
 
+        System.out.println(report.toString());
 
         return report;
     }

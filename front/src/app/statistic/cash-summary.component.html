@@ -1,5 +1,13 @@
 ﻿<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
 <h4>Готівка в касі</h4>
-<h1>В наявності: <strong>{{data?.available}}</strong> грн.</h1>
-<h1>Нараховано за процедури: <strong>{{data?.executed}}</strong> грн.</h1>
-<h1>Співвідношення зроблених процедур до назначених: <strong>{{data?.percentage}}</strong> %</h1>
+<table class="table">
+<tr><td>В наявності</td><td class="text-right"><strong>{{data?.available}}</strong> грн.</td></tr>
+<tr><td>Надійшло</td><td class="text-right"><strong>{{data?.payed}}</strong> грн.</td></tr>
+<tr><td>Видано зарплат</td><td class="text-right"><strong>{{data?.given}}</strong> грн.</td></tr>
+<tr><td>Нараховано за процедури</td><td class="text-right"><strong>{{data?.executed}}</strong> грн.</td></tr>
+<tr><td>Співвідношення зроблених процедур до назначених</td><td class="text-right"><strong>{{data?.percentage}}</strong> %</td></tr>
+</table>
