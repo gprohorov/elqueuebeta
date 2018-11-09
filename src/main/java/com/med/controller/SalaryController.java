@@ -49,8 +49,7 @@ public class SalaryController {
     public List<SalaryDTO> showSalariesNew() {
 
     	return salaryDTOService.getOpenTable();
-    	//   return salaryDTOService.generateSalaryWeekTable(LocalDate.now().minusDays(1)
-    	//                  , LocalDate.now().plusDays(1));
+
     	
     }
 
