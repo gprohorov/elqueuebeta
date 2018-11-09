@@ -11,6 +11,8 @@ export class UtilService {
   private resetDBURL = config.api_path + '/util/reset-db';
   private Task1URL = config.api_path + '/util/taskone';
   private Task2URL = config.api_path + '/util/tasktwo';
+  private Task3URL = config.api_path + '/util/taskthree';
+  private Task4URL = config.api_path + '/util/taskfour';
 
   constructor(private http: HttpClient) { }
 
@@ -36,6 +38,24 @@ export class UtilService {
     console.log('Task2...', this.Task2URL);
     return this.http
       .get(this.Task2URL)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  Task3() {
+    console.log('Task3...', this.Task3URL);
+    return this.http
+      .get(this.Task3URL)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  Task4() {
+    console.log('Task4...', this.Task4URL);
+    return this.http
+      .get(this.Task4URL)
       .pipe(
         catchError(this.handleError)
       );
