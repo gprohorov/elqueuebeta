@@ -49,4 +49,20 @@ public class UtilController {
     //    salaryService.createWeekSalary();
         dataStorage.taskTwo();
     }
+
+    @GetMapping("/util/taskthree")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void executeTaskThree() {
+    //    salaryService.createWeekSalary();
+        dataStorage.taskTwo();
+    }
+
+    @GetMapping("/util/taskfour")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+    public void executeTaskFour() {
+    //    salaryService.createWeekSalary();
+        dataStorage.taskTwo();
+    }
+
+
 }
