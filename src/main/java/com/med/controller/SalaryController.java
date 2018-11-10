@@ -87,7 +87,7 @@ public class SalaryController {
     //      !!!       Do it!
     @RequestMapping("/set")
     public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
-        System.out.println(dto);
+        //System.out.println(dto);
         if(dto.getAward()!=0){
 
             Salary salary = new Salary(
@@ -96,6 +96,12 @@ public class SalaryController {
                     , SalaryType.AWARD
                     , dto.getAward());
             service.createSalary(salary);
+            SalaryDTO record = salaryDTOService.getAll().stream()
+                    .filter(row->row.getDoctorId()==dto.getDoctorID())
+                    .filter(row->row.getClosed()==null)
+                    .findAny().get();
+            record.setAward(dto.getAward());
+            salaryDTOService.updateSalaryDTO(record);
         }
 
         if(dto.getPenalty()!=0){
@@ -105,6 +111,13 @@ public class SalaryController {
                     , SalaryType.PENALTY
                     , dto.getPenalty());
             service.createSalary(salary);
+            SalaryDTO record = salaryDTOService.getAll().stream()
+                    .filter(row->row.getDoctorId()==dto.getDoctorID())
+                    .filter(row->row.getClosed()==null)
+                    .findAny().get();
+            record.setPenalty(dto.getPenalty());
+            salaryDTOService.updateSalaryDTO(record);
+
         }
 
     }

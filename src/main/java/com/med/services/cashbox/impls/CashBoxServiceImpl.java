@@ -27,7 +27,7 @@ public class CashBoxServiceImpl implements ICashBoxService {
 
     @PostConstruct
     void init(){
-        repository.save( new CashBox(LocalDateTime.now(), null, 1, "Test", 0));
+      //  repository.save( new CashBox(LocalDateTime.now(), null, 1, "Test", 0));
     }
 
     @Override

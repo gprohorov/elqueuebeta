@@ -43,9 +43,18 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     private final int TAX = 400;
     private final int CANTEEN = 20;
 
+
+    public List<SalaryDTO> getAll(){
+        return repository.findAll();
+    }
+
     @Override
     public SalaryDTO createSalaryDTO(SalaryDTO salaryDTO) {
-        this.recalculateDTO(salaryDTO);
+        return repository.save(salaryDTO);
+    }
+
+    public SalaryDTO updateSalaryDTO(SalaryDTO salaryDTO) {
+       salaryDTO = this.recalculateDTO(salaryDTO);
         return repository.save(salaryDTO);
     }
 
@@ -78,10 +87,13 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     public SalaryDTO  generateRowOfDoctor(int doctorId){
 
         SalaryDTO dto = new SalaryDTO();
-        dto.setFrom(LocalDate.now().minusDays(6));
-        dto.setTo(LocalDate.now().plusDays(1));
+        LocalDate from = LocalDate.now().minusDays(5);
+        LocalDate to = LocalDate.now();
 
-        dto.setWeek(LocalDate.now().getDayOfYear()/7 +1);
+        dto.setFrom(from);
+        dto.setTo(to);
+
+        dto.setWeek(from.getDayOfYear()/7 );
         dto.setDoctorId(doctorId);
 
 
@@ -94,7 +106,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
-        List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
+        List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());
@@ -112,7 +124,15 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         dto.setHours(hours[0]);
         if (doctorId==2 || doctorId==1){dto.setHours(days*8);}
 
-        int stavka = this.generateStavkaForDoctor(doctor,days,dto.getHours());
+        //TODO:  hardcode
+        if (doctorId>16)
+        {   dto.setDays(6);
+            dto.setHours(40);}
+
+
+
+
+        int stavka = this.generateStavkaForDoctor(doctor,dto.getDays(),dto.getHours());
         dto.setStavka(stavka);
 
         int accural = this.generateBonusesForDoctor(talons);
@@ -159,10 +179,11 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         return (int) sum ;
     }
 
-    public void recalculateDTO(SalaryDTO dto){
+    public SalaryDTO recalculateDTO(SalaryDTO dto){
         dto.setTotal(dto.getRest() + dto.getStavka() + dto.getAward()
                         + dto.getAccural() - dto.getPenalty());
         dto.setActual(dto.getTotal() - dto.getRecd());
+        return dto;
     }
 
     public List<SalaryDTO> generateSalaryWeekTable(LocalDate start, LocalDate finish) {
@@ -181,7 +202,9 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
     private int generateRestForDoctorFromLastTable(Doctor doctor){
         SalaryDTO dto = repository.findAll().stream()
-                .filter(el->el.getClosed()==null).findAny().orElse(null);
+                .filter(el->el.getClosed()==null)
+                .filter(el->el.getDoctorId()==doctor.getId())
+                .findAny().orElse(null);
        int rest =0;
          if(dto!=null) {
              rest = dto.getActual();
@@ -194,6 +217,18 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     public List<SalaryDTO> getOpenTable(){
         return repository.findAll().stream().filter(dto->dto.getClosed()==null)
                 .collect(Collectors.toList());
+    }
+
+    public List<SalaryDTO> createNewTable(){
+        LocalDate today = LocalDate.now();
+        List<SalaryDTO> list =
+                this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
+        List<SalaryDTO> expiredList =repository.findAll().stream()
+                .filter(row->row.getClosed()==null)
+                .collect(Collectors.toList());
+         expiredList.stream().forEach(row->row.setClosed(LocalDateTime.now()));
+         repository.saveAll(expiredList);
+        return repository.saveAll(list);
     }
 
 

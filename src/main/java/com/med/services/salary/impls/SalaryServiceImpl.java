@@ -8,6 +8,7 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -128,6 +129,7 @@ public class SalaryServiceImpl implements ISalaryService {
 
     // возвращает по доктору все его подробности по зарплате,
     // т.е строку зарплатной ведомости
+    //Depricated
     @Override
     public SalaryDTO getSalaryByDoctor(int doctorId) {
 
@@ -141,7 +143,13 @@ public class SalaryServiceImpl implements ISalaryService {
         int kredit = doctor.getKredit();
         dto.setKredit(kredit);
 
-        List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
+        LocalDate strt = LocalDate.of(2018,10,29);
+        LocalDate fnsh = LocalDate.of(2018,11,3);
+        dto.setFrom(strt);
+        dto.setTo(fnsh);
+        dto.setWeek(fnsh.getDayOfYear()/7);
+
+        List<Talon> talons = talonService.getAllTallonsBetween(strt, fnsh)
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());

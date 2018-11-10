@@ -63,17 +63,17 @@ public class DataStorageTest {
     public void taskOne() {
         // salaryService.createWeekSalary();
         List<SalaryDTO> list = salaryService.getSalaryList();
-        LocalDate from = LocalDate.now().minusDays(12);
-        LocalDate to = LocalDate.now().minusDays(7);
+        LocalDate from = LocalDate.of(2018,10,29);
+        LocalDate to = LocalDate.of(2018,11,3);
         LocalDateTime opened = LocalDateTime.now().minusDays(7);
         int week =  to.getDayOfYear()/7;
 
         list.stream().forEach(item-> {
 
-            item.setFrom(from);
-            item.setTo(to);
-            item.setWeek(week);
-            item.setOpened(opened);
+        //    item.setFrom(from);
+        //    item.setTo(to);
+       //     item.setWeek(week);
+       //     item.setOpened(opened);
             salaryDTOService.createSalaryDTO(item);
         });
 
@@ -81,11 +81,9 @@ public class DataStorageTest {
 
         }
 
-
-
-
     public List<SalaryDTO> taskTwo(){
-       return salaryDTOService.getOpenTable();
+
+        return salaryDTOService.createNewTable();
     }
 
 
