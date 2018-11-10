@@ -6,6 +6,7 @@ import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -44,6 +45,9 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @Autowired
     CashBoxServiceImpl cashBoxService;
+
+    @Autowired
+    SalaryDTOServiceImpl salaryDTOService;
 
     @PostConstruct
     void init() {
@@ -250,9 +254,14 @@ public class SalaryServiceImpl implements ISalaryService {
     public Response paySalary(Salary salary){
 
         Response response = new Response(true,"");
+        SalaryDTO dto = salaryDTOService.getAll().stream()
+                .filter(el->el.getClosed()==null)
+                .filter(el->el.getDoctorId()==salary.getDoctorId())
+                .findAny().orElse(new SalaryDTO());
 
+        int rest = dto.getActual();
         int sum = salary.getSum();
-        int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
+       // int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
         int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
 
         if (sum>rest+kredit) {
@@ -273,6 +282,8 @@ public class SalaryServiceImpl implements ISalaryService {
                 , -1*salary.getSum()));
 
         this.createSalary(salary);
+        dto.setRecd(dto.getRecd()+salary.getSum());
+        salaryDTOService.updateSalaryDTO(dto);
         return response;
     }
 

@@ -43,14 +43,15 @@ public class UtilController {
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskOne() {
 
-        dataStorage.taskOne();
+       // dataStorage.taskOne();
     }
 
     @GetMapping("/util/tasktwo")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public List<SalaryDTO> executeTaskTwo() {
 
-        return dataStorage.taskTwo();
+      //  return dataStorage.taskTwo();
+        return null;
     }
 
     @GetMapping("/util/taskthree")

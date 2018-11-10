@@ -239,5 +239,30 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
    }
 
+    public SalaryDTO recalculateDTO(int doctorId){
+       Doctor doctor = doctorService.getDoctor(doctorId);
+
+        SalaryDTO dto = repository.findAll().stream()
+                .filter(el->el.getClosed()==null)
+                .filter(el->el.getDoctorId()==doctorId)
+                .findAny().orElse(null);
+
+        if (dto==null) return null;
+
+        int stavka = this.generateStavkaForDoctor(doctor,dto.getDays(),dto.getHours());
+        dto.setStavka(stavka);
+
+        LocalDate from = dto.getFrom();
+        LocalDate to = dto.getTo();
+        List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
+                .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
+                .collect(Collectors.toList());
+
+        int accural = this.generateBonusesForDoctor(talons);
+        dto.setAccural(accural);
+
+       return this.updateSalaryDTO(dto);
+    }
 
 }
