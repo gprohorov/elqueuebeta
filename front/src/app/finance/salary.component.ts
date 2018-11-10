@@ -46,18 +46,18 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        if (this.authService.isSuperadmin()) this.loadNew(); else this.loadOld();
+        if (this.authService.isSuperadmin()) this.loadOld(); else this.loadNew();
     }
     
     loadOld() {
-        this.sub = this.service.getSalary().subscribe(
+        this.sub = this.service.getSalaryOld().subscribe(
             data => this.parseData(data),
             error => this.parseError(error)
         );
     }
     
     loadNew() {
-        this.sub = this.service.getSalaryNew().subscribe(
+        this.sub = this.service.getSalary().subscribe(
             data => this.parseData(data),
             error => this.parseError(error)
         );

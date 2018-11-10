@@ -35,22 +35,14 @@ public class SalaryController {
     SalaryDTOServiceImpl salaryDTOService;
 
 
-    @RequestMapping("/list")
+    @RequestMapping("/list/old")
     public List<SalaryDTO> showSalaries() {
-
-      //  service.createWeekSalary();
         return service.getSalaryList();
-     //   return salaryDTOService.generateSalaryWeekTable(LocalDate.now().minusDays(1)
-      //                  , LocalDate.now().plusDays(1));
-
     }
     
-    @RequestMapping("/list/new")
+    @RequestMapping("/list")
     public List<SalaryDTO> showSalariesNew() {
-
     	return salaryDTOService.getOpenTable();
-
-    	
     }
 
     @RequestMapping("/create/week")

@@ -219,7 +219,7 @@ const appRoutes: Routes = [
     },
     
     {
-        path: 'finance/salary-new', component: FinanceSalaryComponent,
+        path: 'finance/salary-old', component: FinanceSalaryComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
