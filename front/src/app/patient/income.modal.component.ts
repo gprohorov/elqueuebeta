@@ -29,15 +29,21 @@ export class PatientIncomeModalComponent implements IModalDialog {
     ) { }
 
     dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+        this.data = options.data;
+        this.model.patientId = this.data.id;
+        this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
         options.actionButtons = [{
+            text: 'Виписка',
+            buttonClass: 'btn btn-info mr-5',
+            onAction: () => {
+                window.open('/#/receipt/' + this.model.patientId, '_blank');
+            }
+        }, {
             text: 'Внести',
             onAction: () => {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.data = options.data;
-        this.model.patientId = this.data.id;
-        this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
     }
 
     getDetails() {

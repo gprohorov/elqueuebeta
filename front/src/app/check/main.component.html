@@ -14,8 +14,10 @@ e-mail: mednean@gmail.com
 </center>
 Паціент: <strong>{{data?.patient.person.fullName}}</strong>
 <br/>
-Період лікування: <strong>{{start | date:"dd.MM.yyyy"}}
-    <span *ngIf="start !== finish"> - {{finish | date:"dd.MM.yyyy"}}</span></strong>
+<span *ngIf="start !== finish">Період лікування: 
+	<strong>{{start | date:"dd.MM.yyyy"}} - {{finish | date:"dd.MM.yyyy"}}</strong>
+</span>
+<span *ngIf="start === finish">Дата: <strong>{{start | date:"dd.MM.yyyy"}}</strong></span>
 <br/><br/>
 <table class="table table-sm">
     <thead class="thead-light">
