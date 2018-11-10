@@ -102,8 +102,8 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
-        const clientwindow = window.open('/#/check/' + item.id, 'clientwindow');
-        clientwindow.window.location.reload(true);
+        window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
+        window.open().close();
         options.closeDialogSubject.subscribe(() => { this.load(item.id); });
     }
 

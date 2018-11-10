@@ -22,11 +22,16 @@ export class SetSalaryModalComponent implements IModalDialog {
     ) { }
 
     dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
+        this.data = {
+            doctorID: options.data.doctorId,
+            award: 0,
+            penalty: 0
+        };
         options.actionButtons = [{
             text: 'Редагувати Лікаря',
             buttonClass: 'btn btn-info mr-5',
             onAction: () => {
-                this.router.navigate(['/doctor-form', { id: options.data.doctorId }]);
+                this.router.navigate(['/doctor-form', { id: this.data.doctorID }]);
             }
         }, {
             text: 'Призначити',
@@ -34,11 +39,6 @@ export class SetSalaryModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.data = {
-            doctorID: options.data.doctorId,
-            award: 0,
-            penalty: 0
-        };
     }
 
     submit(f, options) {
