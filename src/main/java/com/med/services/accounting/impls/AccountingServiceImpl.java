@@ -129,7 +129,6 @@ public class AccountingServiceImpl implements IAccountingService {
                 .sum();
         report.setPayed(payed);
 
-      //  Long given = Long.valueOf(cashBoxService.getTodayGiven());
         int available = cashBoxService.getCashBox();
         report.setAvailable(available);
 
