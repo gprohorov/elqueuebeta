@@ -109,9 +109,4 @@ public class SalaryController {
         }
     }
 
-    @RequestMapping("/recalculate/{doctorId}")
-    public SalaryDTO recalculateSalaryDTO(@PathVariable(value = "doctorId")  int doctorId){
-        return salaryDTOService.recalculateDTO(doctorId);
-    }
-
 }

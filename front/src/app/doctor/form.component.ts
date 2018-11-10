@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Doctor } from '../_models/index';
-import { AlertService, DoctorService, ProcedureService } from '../_services/index';
+import { AuthService, AlertService, DoctorService, ProcedureService } from '../_services/index';
 
 @Component({
     templateUrl: './form.component.html'
@@ -18,6 +18,7 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
     subProcedures: Subscription;
 
     constructor(
+        public authService: AuthService,
         private alertService: AlertService,
         private route: ActivatedRoute,
         private router: Router,
@@ -82,7 +83,11 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
         this.service.update(this.model).subscribe(
             () => {
                 this.alertService.success('Операція пройшла успішно', true);
-                this.router.navigate(['doctors']);
+                if (this.authService.isSuperadmin()) {
+                    this.router.navigate(['doctors']); 
+                } else { 
+                    this.router.navigate(['finance/salary']); 
+                }
             },
             error => {
                 this.alertService.error(error);

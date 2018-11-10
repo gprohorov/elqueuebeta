@@ -1,4 +1,5 @@
 import { Component, ComponentRef, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 
@@ -14,6 +15,8 @@ export class SetSalaryModalComponent implements IModalDialog {
 
     @ViewChild('f') myForm;
     constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         private alertService: AlertService,
         private financeService: FinanceService
     ) { }
@@ -23,7 +26,7 @@ export class SetSalaryModalComponent implements IModalDialog {
             text: 'Редагувати Лікаря',
             buttonClass: 'btn btn-info mr-5',
             onAction: () => {
-                window.open('/#/doctor-form;id=' + options.data.doctorId, '_blank');
+                this.router.navigate(['/doctor-form', { id: options.data.doctorId }]);
             }
         }, {
             text: 'Призначити',

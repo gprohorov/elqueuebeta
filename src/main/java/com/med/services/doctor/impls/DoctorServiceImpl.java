@@ -3,6 +3,8 @@ package com.med.services.doctor.impls;
 import com.med.model.Doctor;
 import com.med.repository.doctor.DoctorRepository;
 import com.med.services.doctor.interfaces.IDoctorService;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,9 @@ public class DoctorServiceImpl implements IDoctorService {
 
     @Autowired
     DoctorRepository repository;
-
+    
+    @Autowired
+    SalaryDTOServiceImpl salaryDTOService;
 
 /*
 
@@ -53,7 +57,9 @@ public class DoctorServiceImpl implements IDoctorService {
                     .mapToInt(Doctor::getId).max().getAsInt() + 1;
             doctor.setId(id);
         }
-        return repository.save(doctor);
+        repository.save(doctor);
+        salaryDTOService.recalculateDTO(doctor.getId());
+        return doctor;
     }
 
     @Override
