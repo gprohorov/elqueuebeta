@@ -45,6 +45,7 @@ public class CashBoxController {
 
     @RequestMapping("/tozero/{suma}")
     public CashBox setKassaToZero(@PathVariable(value = "suma")  int suma) {
+
         return service.toZero(suma);
     }
 

@@ -231,12 +231,14 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         return repository.saveAll(list);
     }
 
-   public void payDoctorSalary(int doctorId, int suma){
+   public SalaryDTO payDoctorSalary(int doctorId, int suma){
         SalaryDTO dto = repository.findAll().stream()
                 .filter(el->el.getClosed()==null)
                 .filter(el->el.getDoctorId()==doctorId)
                 .findAny().orElse(null);
+        dto.setRecd(dto.getRecd()+ suma);
 
+        return this.updateSalaryDTO(dto);
    }
 
     public SalaryDTO recalculateDTO(int doctorId){

@@ -6,6 +6,7 @@ import com.med.model.SalaryType;
 import com.med.repository.cashbox.CashRepository;
 import com.med.services.cashbox.interfaces.ICashBoxService;
 import com.med.services.salary.impls.SalaryServiceImpl;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class CashBoxServiceImpl implements ICashBoxService {
 
     @Autowired
     SalaryServiceImpl salaryService;
+
+    @Autowired
+    SalaryDTOServiceImpl salaryDTOService;
+
 
     @PostConstruct
     void init(){
@@ -46,7 +51,7 @@ public class CashBoxServiceImpl implements ICashBoxService {
         return repository.findAll().stream().mapToInt(CashBox::getSum).sum();
     }
 
-    // TODO: findAll to smth elegant
+    // TODO: findAll to smth elegant Hope1234
     @Override
     public int getTodayGiven() {
         return  repository.findAll().stream()
@@ -61,6 +66,10 @@ public class CashBoxServiceImpl implements ICashBoxService {
         CashBox cashBox =
                 new CashBox(LocalDateTime.now(), null, 1, "Кассу знято на " + rest, -1*rest);
         Salary salary = new Salary(1, LocalDateTime.now(), SalaryType.BUZUNAR, rest);
+
+        salaryDTOService.payDoctorSalary(1, sum);
+
+
         salaryService.createSalary(salary);
         return repository.save(cashBox);
     }
