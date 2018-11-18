@@ -116,26 +116,12 @@ public class SalaryController {
     public List<SalaryDTO> showSalariesByWeek(@PathVariable(value = "week") int week) {
         return salaryDTOService.getTableByWeek(week);
     }
-<<<<<<< Updated upstream
-    
+
     @RequestMapping("list/payment/{doctor}/{from}/{to}")
     public List<CashBox> getPaymentsForDoctor(
         @PathVariable(value = "doctor") int doctorId,
         @PathVariable(value = "from") String from,
         @PathVariable(value = "to") String to) {
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
-=======
-    @RequestMapping("list/payment/{doctor/{from}/{to}")
-    public List<CashBox> getPaymentsForDoctor
-            (
-            @PathVariable(value = "doctor") int doctorId,
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to
-            )
-    {
-
-        return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
-
->>>>>>> Stashed changes
     }
 }
