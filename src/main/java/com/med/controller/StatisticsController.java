@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
+import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
@@ -56,6 +57,12 @@ public class StatisticsController {
     public AvailableexecutedPart getCurrentReport() {
         return accountingService.getCurrentReport();
     }
+    @RequestMapping("/report/current/details")
+    public CurrentReport getCurrentReportDetails() {
+        return cashBoxService.getCurrentReportDetails();
+    }
+
+
 
     // Лекари - загальна колькость процедур
     // Выводится по каждому врачу:
