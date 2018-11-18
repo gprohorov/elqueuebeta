@@ -276,12 +276,15 @@ public class SalaryServiceImpl implements ISalaryService {
         salary.setType(SalaryType.BUZUNAR);
 
         // kassa is down by this salary
-        cashBoxService.saveCash(new CashBox(
+        CashBox cashBox = new CashBox(
                 LocalDateTime.now()
                 , null
                 , salary.getDoctorId()
+                , CashType.SALLARY
                 ,null
-                , -1*salary.getSum()));
+                , -1*salary.getSum());
+       // cashBox.setType(CashType.SALLARY);
+        cashBoxService.saveCash(cashBox);
 
         this.createSalary(salary);
         dto.setRecd(dto.getRecd()+salary.getSum());
