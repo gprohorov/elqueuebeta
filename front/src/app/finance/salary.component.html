@@ -44,10 +44,18 @@
         </thead>
         <tbody *ngIf="data.length > 0">
             <tr *ngFor="let item of data">
-                <td><button class="btn btn-success" title="Призначити" (click)="showSetSalaryPopup(item)">
-                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                </button></td>
-                <td class="text-nowrap">{{item.lastName}}</td>
+                <td class="text-nowrap" [style.width.px]="92">
+	                <button class="btn btn-success" title="Призначити" 
+	                	(click)="showSetSalaryPopup(item)"
+	                	[disabled]="item.closed">
+	                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+	                </button>
+	                <button class="btn btn-info" title="Історія виплат" 
+	                	(click)="showSalaryHistoryPopup(item)">
+	                    <i class="fa fa-usd" aria-hidden="true"></i>
+	                </button>
+                </td>
+                <td class="text-nowrap" title="{{item.name}}">{{item.lastName}}</td>
                 <td class="text-right text-nowrap">{{item.days}}</td>
                 <td class="text-right text-nowrap">{{item.hours}}</td>
                 <td class="text-right text-nowrap">{{item.stavka}} грн.</td>

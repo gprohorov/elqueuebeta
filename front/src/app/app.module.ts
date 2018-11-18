@@ -70,6 +70,7 @@ import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
+import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
@@ -281,6 +282,7 @@ const appRoutes: Routes = [
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
+        DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent
@@ -313,6 +315,7 @@ const appRoutes: Routes = [
         PatientAssignHotelModalComponent,
         CreatePatientModalComponent,
         GiveSalaryModalComponent,
+        DoctorSalaryHistoryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent
     ],

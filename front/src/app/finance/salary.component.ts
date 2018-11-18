@@ -5,6 +5,7 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import { AuthService, AlertService, FinanceService } from '../_services/index';
 
 import { SetSalaryModalComponent } from './set-salary.modal.component';
+import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
 
 @Component({
     templateUrl: './salary.component.html'
@@ -43,6 +44,15 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => { this.load(); });
+    }
+
+    showSalaryHistoryPopup(doctor: any) {
+        const options: any = {
+            title: 'Історія виплат',
+            childComponent: DoctorSalaryHistoryModalComponent,
+            data: doctor
+        };
+        this.modalService.openDialog(this.viewRef, options);
     }
 
     changeWeek(weeks: number) {

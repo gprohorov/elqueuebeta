@@ -1,0 +1,38 @@
+<h5>
+	<i class="fa fa-spinner fa-pulse text-secondary pull-right" *ngIf="loading" aria-hidden="true"></i>
+	{{doctorName}}
+</h5>
+<form name="form" #f="ngForm" novalidate>
+    <div class="row mt-3" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+	    <div class="input-group col mr-2">
+	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+	    <div class="input-group col">
+	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+    </div>
+</form>
+<div [ngClass]="{'loadmask': loading}" [style.min-height.px]="200">
+    <table class="table table-sm mt-3">
+        <thead class="thead-light">
+            <tr>
+                <th>Дата, час</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="!loading">
+            <tr *ngFor="let item of data">
+                <td>{{item.dateTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+                <td class="text-right">{{item.sum}} грн.</td>
+            </tr>
+        </tbody>
+        <tr>
+            <td><strong>Всього:</strong></td>
+            <td class="text-right"><strong>{{getSumTotal()}}</strong> грн.</td>
+        </tr>
+    </table>
+</div>

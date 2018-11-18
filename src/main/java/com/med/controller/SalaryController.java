@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Created by george on 29.10.18.
  */
-
 @RestController
 @RequestMapping("/api/salary")
 @CrossOrigin("*")
@@ -30,7 +29,6 @@ public class SalaryController {
 
     @Autowired
     SalaryDTOServiceImpl salaryDTOService;
-
 
     @RequestMapping("/list/old")
     public List<SalaryDTO> showSalaries() {
@@ -50,7 +48,7 @@ public class SalaryController {
     // a doctor get a salary into buzunar
     @RequestMapping("/get")
     public Response paySalary(@Valid @RequestBody Salary salary) {
-   /*     salary.setDateTime(LocalDateTime.now());
+	/* salary.setDateTime(LocalDateTime.now());
         salary.setType(SalaryType.BUZUNAR);
         // kassa is down by this salary
         cashBoxService.saveCash(new CashBox(
@@ -63,7 +61,7 @@ public class SalaryController {
         service.createSalary(salary);
 
         Response response = new Response(true, "");
-*/
+    */
         return service.paySalary(salary);
     }
 
@@ -77,8 +75,7 @@ public class SalaryController {
     @RequestMapping("/set")
     public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
         //System.out.println(dto);
-        if(dto.getAward()!=0){
-
+        if (dto.getAward() != 0) {
             Salary salary = new Salary(
                     dto.getDoctorID()
                     , LocalDateTime.now()
@@ -93,7 +90,7 @@ public class SalaryController {
             salaryDTOService.updateSalaryDTO(record);
         }
 
-        if(dto.getPenalty()!=0){
+        if (dto.getPenalty() !=0 ) {
             Salary salary = new Salary(
                     dto.getDoctorID()
                     , LocalDateTime.now()
@@ -108,6 +105,7 @@ public class SalaryController {
             salaryDTOService.updateSalaryDTO(record);
         }
     }
+    
     //--------------------------------  17 nov
     @RequestMapping("/list/summary")
     public List<SalaryDTO> showSummarySalaries() {
@@ -118,16 +116,12 @@ public class SalaryController {
     public List<SalaryDTO> showSalariesByWeek(@PathVariable(value = "week") int week) {
         return salaryDTOService.getTableByWeek(week);
     }
-    @RequestMapping("list/payment/{doctor/{from}/{to}")
-    public List<CashBox> getPaymentsForDoctor
-            (
-            @PathVariable(value = "doctor") int doctorId,
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to
-            )
-    {
-        List<CashBox> payments =
-           service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
-        return payments;
+    
+    @RequestMapping("list/payment/{doctor}/{from}/{to}")
+    public List<CashBox> getPaymentsForDoctor(
+        @PathVariable(value = "doctor") int doctorId,
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
+		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 }
