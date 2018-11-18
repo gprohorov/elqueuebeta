@@ -9,6 +9,7 @@ import com.med.services.salary.impls.SalaryServiceImpl;
 import com.med.services.salarydto.interfaces.ISalaryDTOService;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -70,7 +71,8 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
         return null;
     }
-    // главврач генерит зарплату врачу за неделю. Если его что-то не устраивает,
+    // главврач генерит зарплату врачу за неделю.
+    // Если его что-то не устраивает, то он ПОТОМ
     // он начисляет премию\штраф,  меняет ставку и процент за процедуры ,
     // а потом снова перегенерит.
     // Если всё ОК,  запоминает в базу.
@@ -219,6 +221,15 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
                 .collect(Collectors.toList());
     }
 
+    // Генериться автоматически КРОНОМ
+    // в субботу, когда все свалят,
+    // генерится зарплатная ведомость за прошедшую неделю (пн-сб)
+    // ПРИ ЭТОМ
+    //  актуальная ведомость (за позпрошлую неделю закрывается,
+    // а остатки из неё переносятся в новую таблу) Hope1234
+    // Новая ведомость заносится в базу и становится актуальной
+
+    @Scheduled(cron = "0 30 16 ? * SAT")
     public List<SalaryDTO> createNewTable(){
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list =
@@ -228,7 +239,15 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
                 .collect(Collectors.toList());
          expiredList.stream().forEach(row->row.setClosed(LocalDateTime.now()));
          repository.saveAll(expiredList);
+        System.out.println(" SALARY WEEK TABLE HAS BEEN GENERATED");
         return repository.saveAll(list);
+    }
+
+    // получить ведомость по номеру недели
+    public List<SalaryDTO> getTableByWeek(int week){
+        return this.getAll().stream().filter(dto->dto.getWeek()==week)
+                .sorted(Comparator.comparing(SalaryDTO::getDoctorId))
+                .collect(Collectors.toList());
     }
 
    public SalaryDTO payDoctorSalary(int doctorId, int suma){
@@ -266,5 +285,81 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
        return this.updateSalaryDTO(dto);
     }
+
+
+
+    // суммируем данные по зарплате по врачу за период,
+    // например, за месяц. А то у нас по неделям.
+    // Период пока не указан. По умолч. с 29.10 по настоящее время
+    public SalaryDTO getDoctorSummarySalary(int doctorId){
+        SalaryDTO dto = new SalaryDTO();
+
+        dto.setDoctorId(doctorId);
+        dto.setName(doctorService.getDoctor(doctorId).getFullName());
+
+        int startWeek = 43;
+        int endWeek = this.getAll().stream().mapToInt(SalaryDTO::getWeek)
+                .max().getAsInt();
+
+        LocalDate startDate = this.getAll().stream()
+                .filter(el-> el.getWeek()==startWeek).findAny()
+                .get().getFrom();
+        dto.setFrom(startDate);
+
+        LocalDate endDate = this.getAll().stream()
+                .filter(el-> el.getWeek()==endWeek).findAny()
+                .get().getTo();
+        dto.setTo(endDate);
+
+        List<SalaryDTO> list = this.getAll().stream()
+                .filter(el->el.getDoctorId()==doctorId)
+                .filter(el->( el.getWeek()>=startWeek && el.getWeek()<=endWeek ))
+                .collect(Collectors.toList());
+
+        int hours = list.stream().mapToInt(SalaryDTO::getDays).sum();
+        dto.setHours(hours);
+
+        int days = list.stream().mapToInt(SalaryDTO::getHours).sum();
+        dto.setDays(days);
+
+        int stavka = list.stream().mapToInt(SalaryDTO::getStavka).sum();
+        dto.setStavka(stavka);
+
+        int accural = list.stream().mapToInt(SalaryDTO::getAccural).sum();
+        dto.setAccural(accural);
+
+        int award = list.stream().mapToInt(SalaryDTO::getAward).sum();
+        dto.setAward(award);
+
+        int penalty = list.stream().mapToInt(SalaryDTO::getPenalty).sum();
+        dto.setPenalty(penalty);
+
+        int kredit = doctorService.getDoctor(doctorId).getKredit();
+        dto.setKredit(kredit);
+
+        int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
+        dto.setRecd(recd);
+
+        int total = stavka + accural + award - penalty;
+        dto.setTotal(total);
+
+        int actual = total - recd;
+        dto.setActual(actual);
+
+        return dto;
+    }
+
+    // итог по всем врачам за период
+    public List<SalaryDTO> getSummarySalaryList() {
+        List<SalaryDTO> list = new ArrayList<>();
+        doctorService.getAll().stream().forEach(
+                doctor -> {
+                    list.add(this.getDoctorSummarySalary(doctor.getId()));
+                }
+        );
+        return list;
+    }
+
+
 
 }

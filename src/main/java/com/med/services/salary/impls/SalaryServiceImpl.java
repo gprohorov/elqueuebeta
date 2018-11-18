@@ -71,7 +71,9 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.save(salary);
     }
 
-
+    public List<Salary> getAll(){
+        return repository.findAll();
+    }
 
     // вносит в базу списком обязат недельные платежи (за часы, минус налог, минус обед)
     @Override
@@ -288,8 +290,10 @@ public class SalaryServiceImpl implements ISalaryService {
     }
 
 
-    // зарплатная ведомость всех врачей за прошедшую неделю
+    // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
     // со всеми ставками, бонусами и тд
+    //  обычно генерится в субботу после 15.00, когда все свалят
+    // DEPRICATED
     @Override
     public List<SalaryDTO> getSalaryList() {
 
@@ -305,4 +309,11 @@ public class SalaryServiceImpl implements ISalaryService {
         return salaryDTOList;
     }
 
+    public List<CashBox> getPaymentsByDoctor(int doctorId, LocalDate from, LocalDate to) {
+        return cashBoxService.getAll().stream()
+                .filter(cashBox -> cashBox.getDoctorId()==doctorId)
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+                .collect(Collectors.toList());
+    }
 }

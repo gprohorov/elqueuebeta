@@ -108,5 +108,26 @@ public class SalaryController {
             salaryDTOService.updateSalaryDTO(record);
         }
     }
+    //--------------------------------  17 nov
+    @RequestMapping("/list/summary")
+    public List<SalaryDTO> showSummarySalaries() {
+        return salaryDTOService.getSummarySalaryList();
+    }
 
+    @RequestMapping("/list/{week}")
+    public List<SalaryDTO> showSalariesByWeek(@PathVariable(value = "week") int week) {
+        return salaryDTOService.getTableByWeek(week);
+    }
+    @RequestMapping("list/payment/{doctor/{from}/{to}")
+    public List<CashBox> getPaymentsForDoctor
+            (
+            @PathVariable(value = "doctor") int doctorId,
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to
+            )
+    {
+        List<CashBox> payments =
+           service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
+        return payments;
+    }
 }

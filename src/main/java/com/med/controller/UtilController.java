@@ -57,8 +57,13 @@ public class UtilController {
     @GetMapping("/util/taskthree")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void executeTaskThree() {
-        dataStorage.taskTwo();
+        dataStorage.taskTree(5);
     }
+
+
+
+
+
 
     @GetMapping("/util/taskfour")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")

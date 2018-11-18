@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by george on 31.10.18.
@@ -33,6 +34,9 @@ public class CashBoxServiceImpl implements ICashBoxService {
     @PostConstruct
     void init(){
       //  repository.save( new CashBox(LocalDateTime.now(), null, 1, "Test", 0));
+    }
+    public List<CashBox> getAll(){
+        return repository.findAll();
     }
 
     @Override
