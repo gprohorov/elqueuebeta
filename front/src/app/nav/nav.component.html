@@ -70,19 +70,22 @@
                     <a class="dropdown-item" routerLink="" (click)="Task2()">Task2</a>
                     <a class="dropdown-item" routerLink="" (click)="Task3()">Task3</a>
                     <a class="dropdown-item" routerLink="" (click)="Task4()">Task4</a>
-                    <a class="dropdown-item" routerLink="/finance/salary-old" routerLinkActive="active">Зарплати OLD</a>
                 </div>
             </div>
-            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+            <div class="nav-item dropdown" ngbDropdown 
+            	*ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
                 <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>Каса</a>
                 <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">Зарплата лікарям</button>
-                    <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()">Здати касу</button>
+                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">
+                    	Зарплата лікарям</button>
+                    <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()">
+                    	Здати касу</button>
                 </div>
             </div>
-            <a class="dropdown-item" target="clientwindow" routerLink="/home" routerLinkActive="active">Вікно клієнта</a>
+            <a class="dropdown-item" target="clientwindow" routerLink="/home" routerLinkActive="active">
+            	Вікно клієнта</a>
         </div>
         <!-- Administrator interface section END -->
         <div class="navbar-nav">

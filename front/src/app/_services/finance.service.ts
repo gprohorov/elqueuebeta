@@ -9,7 +9,6 @@ import { config } from '../../config';
 export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
-    private salaryOldUrl = config.api_path + '/salary/list/old';
     private giveSalaryUrl = config.api_path + '/salary/get';
     private setSalaryUrl = config.api_path + '/salary/set';
     private kassaUrl = config.api_path + '/cashbox/kassa';
@@ -17,12 +16,10 @@ export class FinanceService {
 
     constructor(private http: HttpClient) { }
 
-    getSalary() {
-        return this.http.get(this.salaryUrl).pipe(catchError(this.handleError));
-    }
-
-    getSalaryOld() {
-        return this.http.get(this.salaryOldUrl).pipe(catchError(this.handleError));
+    getSalary(week: number = null) {
+        let url = this.salaryUrl;
+        if (week !== null) url += '/' + week;
+        return this.http.get(url).pipe(catchError(this.handleError));
     }
 
     giveSalary(data: any) {

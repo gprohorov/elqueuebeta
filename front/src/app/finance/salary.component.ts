@@ -14,6 +14,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     sub: Subscription;
     loading = false;
     data: any;
+    week: number = null;
 
     totalRecd = 0;
     totalSummary = 0;
@@ -44,41 +45,33 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
         options.closeDialogSubject.subscribe(() => { this.load(); });
     }
 
+    changeWeek(weeks: number) {
+        this.week += weeks; 
+        this.load();
+    }
+    
     load() {
-        this.loading = true;
-        if (this.authService.isSuperadmin()) this.loadOld(); else this.loadNew();
-    }
-    
-    loadOld() {
-        this.sub = this.service.getSalaryOld().subscribe(
-            data => this.parseData(data),
-            error => this.parseError(error)
-        );
-    }
-    
-    loadNew() {
-        this.sub = this.service.getSalary().subscribe(
-            data => this.parseData(data),
-            error => this.parseError(error)
-        );
-    }
-    
-    parseData(data) {
-        this.data = data;
-        this.totalSummary = 0;
-        this.totalActual = 0;
-        data.forEach( currentValue => {
-            currentValue.lastName = currentValue.name.split(' ')[0];
-            this.totalRecd += currentValue.recd;
-            this.totalSummary += currentValue.total;
-            this.totalActual += currentValue.actual;
-        });
-        this.loading = false;
-    }
-    
-    parseError(error) {
-        this.alertService.error('Помилка на сервері', false);
-        this.loading = false;
         this.data = [];
+        this.sub = this.service.getSalary(this.week).subscribe(
+            data => {
+                this.data = data;
+                this.totalSummary = 0;
+                this.totalRecd = 0;
+                this.totalActual = 0;
+                if (this.week === null) this.week = this.data[0].week;
+                data.forEach( currentValue => {
+                    currentValue.lastName = currentValue.name.split(' ')[0];
+                    this.totalRecd += currentValue.recd;
+                    this.totalSummary += currentValue.total;
+                    this.totalActual += currentValue.actual;
+                });
+                this.loading = false;
+            },
+            error => {
+                this.alertService.error('Помилка на сервері', false);
+                this.loading = false;
+                this.data = [];
+            }
+        );
     }
 }

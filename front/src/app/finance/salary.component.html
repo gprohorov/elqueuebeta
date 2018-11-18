@@ -3,12 +3,27 @@
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
+<div class="row mb-2">
+   	<div class="col">
+	    <h4>Зарплатна відомість за період 
+	    	<span *ngIf="data.length > 0">
+	    		з {{data[0].from | date:"dd.MM"}} по {{data[0].to | date:"dd.MM"}}
+	    	</span>
+	    </h4>
+    </div>
+    <div class="col-auto form-inline">
+    	<h4>Тиждень:</h4>
+        <button class="btn btn-success ml-2" (click)="changeWeek(-1)">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <input type="number" class="form-control ml-2 mr-2 text-center" name="week" [(ngModel)]="week"
+            [(ngValue)]="week" (change)="load()" [style.width.px]="60" />
+        <button class="btn btn-success" (click)="changeWeek(1)">
+            <i class="fa fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
 <div class="content table-responsive table-full-width table-sm">
-    <h4>Менеджер витрат - Зарплатна відомість за період 
-    	<span *ngIf="data">
-    		з {{data[0].from | date:"dd.MM"}} по {{data[0].to | date:"dd.MM"}} (тиждень: {{data[0].week}})
-    	</span>
-    </h4>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr class="text-center">
@@ -27,8 +42,8 @@
                 <th>Отримати</th>
             </tr>
         </thead>
-        <tbody *ngFor="let item of data">
-            <tr>
+        <tbody *ngIf="data.length > 0">
+            <tr *ngFor="let item of data">
                 <td><button class="btn btn-success" title="Призначити" (click)="showSetSalaryPopup(item)">
                     <i class="fa fa-star-half-o" aria-hidden="true"></i>
                 </button></td>
@@ -45,12 +60,15 @@
                 <td class="text-right text-nowrap">{{item.recd}} грн.</td>
                 <td class="text-right text-nowrap">{{item.actual}} грн.</td>
             </tr>
+	        <tr>
+	            <td colspan="10"><strong>Всього:</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
+	        </tr>
         </tbody>
-        <tr>
-            <td colspan="10"><strong>Всього:</strong></td>
-            <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
-            <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
-            <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
-        </tr>
+        <tr *ngIf="data.length === 0"><td colspan="13" class="text-center text-danger">
+        	<strong>Данні відсутні ...</strong>
+        </td></tr>
     </table>
 </div>
