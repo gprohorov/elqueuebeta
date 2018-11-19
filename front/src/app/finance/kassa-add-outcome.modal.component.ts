@@ -40,7 +40,7 @@ export class KassaAddOutcomeModalComponent implements IModalDialog {
 
         this.sub = this.financeService.kassaAddOutcome({
             type: this.data.type,
-            sum: this.data.sum,
+            sum: this.data.sum * -1,
             desc: this.data.desc
             }).subscribe(data => {
                 this.alertService.success('Видано з каси ' + this.data.sum 
