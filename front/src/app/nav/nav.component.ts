@@ -7,6 +7,7 @@ import { AuthService, UtilService, AlertService } from '../_services/index';
 
 import { GiveSalaryModalComponent } from '../finance/give-salary.modal.component';
 import { KassaTozeroModalComponent } from '../finance/kassa-tozero.modal.component';
+import { KassaAddOutcomeModalComponent } from '../finance/kassa-add-outcome.modal.component';
 
 @Component({
     selector: 'app-nav',
@@ -52,6 +53,13 @@ export class NavComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Здача каси',
             childComponent: KassaTozeroModalComponent
+        });
+    }
+
+    showKassaAddOutcomePopup() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача з каси',
+            childComponent: KassaAddOutcomeModalComponent
         });
     }
 

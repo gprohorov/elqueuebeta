@@ -15,6 +15,7 @@ export class FinanceService {
     private setSalaryUrl = config.api_path + '/salary/set';
     private kassaUrl = config.api_path + '/cashbox/kassa';
     private tozeroUrl = config.api_path + '/cashbox/tozero/';
+    private kassaAddOutcomeUrl = config.api_path + '/cashbox/create';
 
     constructor(private http: HttpClient) { }
 
@@ -37,7 +38,7 @@ export class FinanceService {
     giveSalary(data: any) {
         return this.http.post(this.giveSalaryUrl, data).pipe(catchError(this.handleError));
     }
-
+    
     setSalary(data: any) {
         return this.http.post(this.setSalaryUrl, data).pipe(catchError(this.handleError));
     }
@@ -48,6 +49,10 @@ export class FinanceService {
     
     toZero(sum: number) {
         return this.http.get(this.tozeroUrl + sum).pipe(catchError(this.handleError));
+    }
+
+    kassaAddOutcome(data: any) {
+        return this.http.post(this.kassaAddOutcomeUrl, data).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CashBox {
     @Id
     private String id;
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTime = LocalDateTime.now();
     private String patientId;
     private int doctorId;
     private CashType type;
@@ -34,6 +34,12 @@ public class CashBox {
         this.type = type;
         this.desc = desc;
         this.sum = sum;
+    }
+    
+    public CashBox(CashType type, String desc, int sum) {
+    	this.type = type;
+    	this.desc = desc;
+    	this.sum = sum;
     }
 
     public CashBox() {

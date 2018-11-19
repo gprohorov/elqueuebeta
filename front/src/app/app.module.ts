@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, LoaderComponent } from './_helpers/index';
-import { TokenStorage, UserStorage } from './_storage/index';
+import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
@@ -75,6 +75,7 @@ import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-histo
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
+import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -292,7 +293,8 @@ const appRoutes: Routes = [
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
-        KassaTozeroModalComponent
+        KassaTozeroModalComponent,
+        KassaAddOutcomeModalComponent
     ],
     providers: [
         AuthGuard,
@@ -324,7 +326,8 @@ const appRoutes: Routes = [
         GiveSalaryModalComponent,
         DoctorSalaryHistoryModalComponent,
         SetSalaryModalComponent,
-        KassaTozeroModalComponent
+        KassaTozeroModalComponent,
+        KassaAddOutcomeModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

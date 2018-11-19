@@ -47,11 +47,6 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, options);
     }
     
-    changeWeek(weeks: number) {
-        this.week += weeks; 
-        this.load();
-    }
-    
     load() {
         this.loading = true;
         this.data = [];
@@ -61,7 +56,6 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
                 this.totalSummary = 0;
                 this.totalRecd = 0;
                 this.totalActual = 0;
-                if (this.week === null) this.week = this.data[0].week;
                 data.forEach( currentValue => {
                     currentValue.lastName = currentValue.name.split(' ')[0];
                     this.totalRecd += currentValue.recd;

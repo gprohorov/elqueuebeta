@@ -80,6 +80,8 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>Каса</a>
                 <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                    <button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopup()">
+                    	Видача з каси</button>
                     <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">
                     	Зарплата лікарям</button>
                     <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()">
