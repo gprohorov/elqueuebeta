@@ -70,6 +70,7 @@ import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
+import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
 import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
@@ -202,6 +203,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/salary-summary', component: FinanceSalarySummaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -282,6 +288,7 @@ const appRoutes: Routes = [
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
+        FinanceSalarySummaryComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,

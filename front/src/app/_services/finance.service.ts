@@ -9,6 +9,7 @@ import { config } from '../../config';
 export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
+    private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
     private giveSalaryUrl = config.api_path + '/salary/get';
     private setSalaryUrl = config.api_path + '/salary/set';
@@ -21,6 +22,11 @@ export class FinanceService {
         let url = this.salaryUrl;
         if (week !== null) url += '/' + week;
         return this.http.get(url).pipe(catchError(this.handleError));
+    }
+    
+    getSalarySummary(from: string, to: string) {
+        return this.http.get(this.salarySummaryUrl + '/' + from + '/' + to)
+            .pipe(catchError(this.handleError));
     }
     
     getDoctorSalaryHistory(doctor: number, from: string, to: string) {
