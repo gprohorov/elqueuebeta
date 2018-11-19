@@ -4,6 +4,7 @@ import com.med.model.AwardPenaltyDTO;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
+import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class CashBoxController {
     @RequestMapping("/create")
     public CashBox createCash(@Valid @RequestBody CashBox cash) {
         return service.saveCash(cash);
+    }
+
+    //------------------------ 18 nov
+    @RequestMapping("/current/details")
+    public CurrentReport getReportDetail() {
+        return service.getCurrentReportDetails();
     }
 
 

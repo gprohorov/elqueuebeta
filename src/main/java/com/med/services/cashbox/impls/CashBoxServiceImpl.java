@@ -84,12 +84,12 @@ public class CashBoxServiceImpl implements ICashBoxService {
     // report input/output cash from kassa in details
     public CurrentReport getCurrentReportDetails() {
         CurrentReport report = new CurrentReport();
-        List<CashBox> list = repository.findAll().stream() // DOIT: REFACTORING
+        //HARDCODE
+        List<CashBox> list = repository.findAll().stream()
                 .filter(cash->cash.getDateTime().toLocalDate().equals(LocalDate.now()))
                 .collect(Collectors.toList());
 
         int payed = list.stream()
-                //HARDCODE
                 .filter(cash->cash.getSum()>0)
                 .mapToInt(CashBox::getSum).sum();
         report.setPayed(payed);

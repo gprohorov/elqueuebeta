@@ -350,7 +350,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     }
 
     // итог по всем врачам за период
-    public List<SalaryDTO> getSummarySalaryList() {
+    public List<SalaryDTO> getSummarySalaryList(LocalDate from, LocalDate to) {
         List<SalaryDTO> list = new ArrayList<>();
         doctorService.getAll().stream().forEach(
                 doctor -> {

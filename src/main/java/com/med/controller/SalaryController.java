@@ -107,9 +107,12 @@ public class SalaryController {
     }
     
     //--------------------------------  17 nov
-    @RequestMapping("/list/summary")
-    public List<SalaryDTO> showSummarySalaries() {
-        return salaryDTOService.getSummarySalaryList();
+    @RequestMapping("/list/summary/{from}/{to}")
+    public List<SalaryDTO> showSummarySalaries(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to
+    ) {
+        return salaryDTOService.getSummarySalaryList(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/list/{week}")
