@@ -316,10 +316,10 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
                 .filter(el->( el.getWeek()>=startWeek && el.getWeek()<=endWeek ))
                 .collect(Collectors.toList());
 
-        int hours = list.stream().mapToInt(SalaryDTO::getDays).sum();
+        int hours = list.stream().mapToInt(SalaryDTO::getHours).sum();
         dto.setHours(hours);
 
-        int days = list.stream().mapToInt(SalaryDTO::getHours).sum();
+        int days = list.stream().mapToInt(SalaryDTO::getDays).sum();
         dto.setDays(days);
 
         int stavka = list.stream().mapToInt(SalaryDTO::getStavka).sum();
