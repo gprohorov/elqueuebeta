@@ -143,7 +143,7 @@ public class CashBoxServiceImpl implements ICashBoxService {
         int given = salary+extraction+milk+bread+conserve+food+machine+other;
         report.setGiven(given);
 
-        int available =payed+given;
+        int available =payed +given;
         report.setAvailable(available);
 
         return report;

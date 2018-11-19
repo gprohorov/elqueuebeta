@@ -3,7 +3,9 @@ package com.med.controller;
 import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
+import com.med.model.balance.ReceiptToday;
 import com.med.repository.accounting.AccountingRepository;
+import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
@@ -31,6 +33,9 @@ public class PatientController {
 
     @Autowired
     AccountingRepository accountingRepository;
+
+    @Autowired
+    AccountingServiceImpl accountingService;
 
     @Autowired
     RecordServiceImpl recordService;
@@ -206,5 +211,18 @@ public class PatientController {
     public Patient bye(@PathVariable(value = "patientId") String patientId) {
         return  service.patientBye(patientId);
     }
+
+
+    // 18 nov
+    // create check for today ONLY
+    @GetMapping("/create/receipt/{patientId}/today")
+    public ReceiptToday getReceiptToday(
+            @PathVariable(value = "patientId") String patientId){
+
+        return accountingService.getTodayReceipt(patientId);
+    }
+
+
+
 
 }

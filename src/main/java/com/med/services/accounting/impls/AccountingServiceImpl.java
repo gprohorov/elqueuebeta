@@ -4,6 +4,8 @@ import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
+import com.med.model.balance.ProcedureZonesSum;
+import com.med.model.balance.ReceiptToday;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.repository.accounting.AccountingRepository;
@@ -251,4 +253,25 @@ public class AccountingServiceImpl implements IAccountingService {
                 .collect(Collectors.toList());
     }
 
+    public ReceiptToday getTodayReceipt(String patientId) {
+        ReceiptToday receipt = new ReceiptToday();
+        List<ProcedureZonesSum> list = new ArrayList<>();
+        List<Accounting> accountings = this.getAllIncomesForPatientFromTo(patientId,
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1));
+        receipt.setDate(LocalDate.now());
+        receipt.setPatientId(patientId);
+        receipt.setPatientName(patientService.getPatient(patientId).getPerson().getFullName());
+        accountings.stream().forEach(accounting -> {
+            list.add( new ProcedureZonesSum(accounting.getDesc(), accounting.getSum()));
+        });
+        receipt.setList(list);
+        int sum = list.stream().mapToInt(ProcedureZonesSum::getSum).sum();
+        receipt.setProceduresSum(sum);
+        int totalDebt = this.getSumlForPatient(patientId);
+        receipt.setTotalToPay(totalDebt);
+        receipt.setDebt(totalDebt-sum);
+
+        return receipt;
+    }
 }
