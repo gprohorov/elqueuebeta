@@ -71,6 +71,7 @@ import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
+import { FinanceKassaOutcomeComponent } from './finance/kassa-outcome.component';
 import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
@@ -209,6 +210,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/kassa-outcome', component: FinanceKassaOutcomeComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -290,6 +296,7 @@ const appRoutes: Routes = [
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
+        FinanceKassaOutcomeComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,

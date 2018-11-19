@@ -2,7 +2,7 @@
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
-import { AuthService, AlertService, FinanceService } from '../_services/index';
+import { AlertService, FinanceService } from '../_services/index';
 
 import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
 
@@ -22,7 +22,6 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
     totalActual = 0;
 
     constructor(
-        public authService: AuthService,
         private alertService: AlertService,
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
@@ -67,7 +66,6 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
             error => {
                 this.alertService.error('Помилка на сервері', false);
                 this.loading = false;
-                this.data = [];
             }
         );
     }
