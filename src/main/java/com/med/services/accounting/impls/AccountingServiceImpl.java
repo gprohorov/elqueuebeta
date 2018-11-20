@@ -262,7 +262,9 @@ public class AccountingServiceImpl implements IAccountingService {
         receipt.setDate(LocalDate.now());
         receipt.setPatientId(patientId);
         receipt.setPatientName(patientService.getPatient(patientId).getPerson().getFullName());
-        accountings.stream().forEach(accounting -> {
+        accountings.stream()
+                .filter(accounting -> accounting.getSum()<0)
+                .forEach(accounting -> {
             list.add( new ProcedureZonesSum(accounting.getDesc(), accounting.getSum()));
         });
         receipt.setList(list);
