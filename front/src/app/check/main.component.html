@@ -12,42 +12,33 @@ e-mail: mednean@gmail.com
 <br/><br/>
 <h1>Рахунок</h1>
 </center>
-Паціент: <strong>{{data?.patient.person.fullName}}</strong>
+Паціент: <strong>{{data?.patientName}}</strong>
 <br/>
-<span *ngIf="start !== finish">Період лікування: 
-	<strong>{{start | date:"dd.MM.yyyy"}} - {{finish | date:"dd.MM.yyyy"}}</strong>
-</span>
-<span *ngIf="start === finish">Дата: <strong>{{start | date:"dd.MM.yyyy"}}</strong></span>
+Дата: <strong>{{date | date:"dd.MM.yyyy"}}</strong>
 <br/><br/>
 <table class="table table-sm">
     <thead class="thead-light">
         <tr>
-            <th width="80">№ п/п</th>
             <th>Назва</th>
-            <th width="100">К-ть зон</th>
-            <th width="120">Ціна</th>
             <th width="150">Сума</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let item of data?.list; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{item.name}}</td>
-            <td align="center">{{item.zones}}</td>
-            <td align="right">{{item.price}} грн.</td>
+            <td>{{item.procedureZones}}</td>
             <td align="right">{{item.sum}} грн.</td>
         </tr>
-        <tr *ngIf="data?.hotel > 0">
-            <td align="right" colspan="4"><strong>За процедури:</strong></td>
-            <td align="right"><strong>{{data?.sum || 0}} грн.</strong></td>
-        </tr>
-        <tr *ngIf="data?.hotel > 0">
-            <td align="right" colspan="4"><strong>За готель:</strong></td>
-            <td align="right"><strong>{{data?.hotel || 0}} грн.</strong></td>
+        <tr>
+            <td align="right"><strong>За процедури:</strong></td>
+            <td align="right"><strong>{{data?.proceduresSum || 0}} грн.</strong></td>
         </tr>
         <tr>
-            <td align="right" colspan="4"><strong>Всього до оплати:</strong></td>
-            <td align="right"><strong>{{data?.hotel + data?.sum || 0}} грн.</strong></td>
+            <td align="right"><strong>Борг за попередні дні:</strong></td>
+            <td align="right"><strong>{{data?.debt || 0}} грн.</strong></td>
+        </tr>
+        <tr>
+            <td align="right"><strong>Всього до оплати:</strong></td>
+            <td align="right"><strong>{{data?.totalToPay || 0}} грн.</strong></td>
         </tr>
     </tbody>
 </table>
