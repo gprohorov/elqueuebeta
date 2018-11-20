@@ -1,31 +1,19 @@
-
 echo 'Building Front-end...'
-echo ''
 echo ''
 cd front
 ng build -prod --locale uk
 
 echo ''
-echo ''
 echo 'Building Back-end...'
-echo ''
 echo ''
 cd ..
 mvn clean package -DskipTests
 
 echo ''
-echo ''
-echo 'Enter password for remotely STOP Backend on server'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo truncate /home/bvh/elqueue/elqueue.out --size 0;exit'
-
-echo ''
-echo ''
 echo 'Copying app to destination server...'
-echo ''
 echo ''
 scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:/home/bvh/elqueue
 
 echo ''
-echo ''
-echo 'Enter password for remotely START Backend on server'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl start elqueue.service;exit'
+echo 'Enter password for remotely RESTART server'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo truncate /home/bvh/elqueue/elqueue.out --size 0;sudo systemctl start elqueue.service;exit'
