@@ -103,14 +103,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         };
         this.modalService.openDialog(this.viewRef, options);
         window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
-        window.open().close();
         options.closeDialogSubject.subscribe(() => {
             this.load(item.id);
             window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
-            window.open().close();
             setTimeout(() => {
                 window.open('/#/home', 'clientwindow');
-                window.open().close();
             }, 10 * 1000);
         });
     }
