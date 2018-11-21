@@ -43,4 +43,8 @@ export class CheckComponent implements OnInit, OnDestroy {
     setTimer() {
         setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
     }
+    
+    abs(x) {
+        return Math.abs(x);
+    }
 }

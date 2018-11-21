@@ -26,22 +26,22 @@ e-mail: mednean@gmail.com
     <tbody>
         <tr *ngFor="let item of data?.list; let i = index">
             <td>{{item.procedureZones}}</td>
-            <td align="right">{{item.sum * -1}} грн.</td>
+            <td align="right">{{abs(item.sum)}} грн.</td>
         </tr>
         <tr *ngIf="data?.debt !== 0">
             <td align="right"><strong>За процедури:</strong></td>
-            <td align="right"><strong>{{data?.proceduresSum * -1}} грн.</strong></td>
+            <td align="right"><strong>{{abs(data?.proceduresSum)}} грн.</strong></td>
         </tr>
         <tr *ngIf="data?.debt !== 0">
             <td align="right">
             	<strong *ngIf="data?.debt < 0">Борг за попередні дні:</strong>
             	<strong *ngIf="data?.debt >= 0">Аванс / сплачено:</strong>
             </td>
-            <td align="right"><strong>{{data?.debt * -1}} грн.</strong></td>
+            <td align="right"><strong>{{abs(data?.debt)}} грн.</strong></td>
         </tr>
         <tr>
             <td align="right"><strong>Всього до оплати:</strong></td>
-            <td align="right"><strong>{{data?.totalToPay * -1}} грн.</strong></td>
+            <td align="right"><strong>{{data?.totalToPay *-1}} грн.</strong></td>
         </tr>
     </tbody>
 </table>
