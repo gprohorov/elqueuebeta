@@ -4,13 +4,11 @@ import com.med.model.AwardPenaltyDTO;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
+import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -46,15 +44,22 @@ public class CashBoxController {
         return service.getCashBox();
     }
 
-    @RequestMapping("/tozero")
-    public CashBox setKassaToZero() {
-        return service.toZero();
+    @RequestMapping("/tozero/{suma}")
+    public CashBox setKassaToZero(@PathVariable(value = "suma")  int suma) {
+
+        return service.toZero(suma);
     }
 
     //
     @RequestMapping("/create")
     public CashBox createCash(@Valid @RequestBody CashBox cash) {
         return service.saveCash(cash);
+    }
+
+    //------------------------ 18 nov
+    @RequestMapping("/current/details")
+    public CurrentReport getReportDetail() {
+        return service.getCurrentReportDetails();
     }
 
 

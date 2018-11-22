@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { JwtInterceptor, LoaderComponent } from './_helpers/index';
-import { TokenStorage, UserStorage } from './_storage/index';
+import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
@@ -70,9 +70,13 @@ import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
+import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
+import { FinanceKassaOutcomeComponent } from './finance/kassa-outcome.component';
+import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
+import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -119,23 +123,23 @@ const appRoutes: Routes = [
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
         path: 'doctor-form', component: DoctorFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
     {
         path: 'procedures', component: ProcedureListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
         path: 'procedure-form', component: ProcedureFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
     {
@@ -197,6 +201,22 @@ const appRoutes: Routes = [
     },
 
     {
+        path: 'finance/salary', component: FinanceSalaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/salary-summary', component: FinanceSalarySummaryComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/kassa-outcome', component: FinanceKassaOutcomeComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
+
+    {
         path: 'workplace', component: WorkplaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
@@ -211,13 +231,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
     },
-
-    {
-        path: 'finance/salary', component: FinanceSalaryComponent,
-        canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
-    },
-
+    
     {
         path: 'receipt/:patientId', component: ReceiptComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -281,9 +295,13 @@ const appRoutes: Routes = [
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
+        FinanceSalarySummaryComponent,
+        FinanceKassaOutcomeComponent,
+        DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
-        KassaTozeroModalComponent
+        KassaTozeroModalComponent,
+        KassaAddOutcomeModalComponent
     ],
     providers: [
         AuthGuard,
@@ -313,8 +331,10 @@ const appRoutes: Routes = [
         PatientAssignHotelModalComponent,
         CreatePatientModalComponent,
         GiveSalaryModalComponent,
+        DoctorSalaryHistoryModalComponent,
         SetSalaryModalComponent,
-        KassaTozeroModalComponent
+        KassaTozeroModalComponent,
+        KassaAddOutcomeModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

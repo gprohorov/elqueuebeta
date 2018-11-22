@@ -68,8 +68,8 @@ export class PatientService {
         .pipe(catchError(this.handleError));
     }
 
-    getCheck(patientId: string, from: string, to: string) {
-        return this.http.get(this.checkUrl + patientId + '/' + from + '/' + to)
+    getCheck(patientId: string) {
+        return this.http.get(this.checkUrl + patientId + '/today')
         .pipe(catchError(this.handleError));
     }
 

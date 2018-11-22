@@ -6,8 +6,10 @@ import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -44,6 +46,9 @@ public class SalaryServiceImpl implements ISalaryService {
     @Autowired
     CashBoxServiceImpl cashBoxService;
 
+    @Autowired
+    SalaryDTOServiceImpl salaryDTOService;
+
     @PostConstruct
     void init() {
         repository.save(new Salary(2,LocalDateTime.now(),SalaryType.WEEK,0));
@@ -60,11 +65,17 @@ public class SalaryServiceImpl implements ISalaryService {
         */
     }
 
+    // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
     @Override
     public Salary createSalary(Salary salary) {
         return repository.save(salary);
     }
 
+    public List<Salary> getAll(){
+        return repository.findAll();
+    }
+
+    // вносит в базу списком обязат недельные платежи (за часы, минус налог, минус обед)
     @Override
     public List<Salary> createWeekSalaryForDoctor(int doctorId) {
         List<Salary> list = new ArrayList<>();
@@ -100,6 +111,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.saveAll(list);
     }
 
+    // вносит недельные начисления сразу всем врачам списком
     @Override
     public List<Salary> createWeekSalary() {
         List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(7),LocalDate.now().plusDays(1))
@@ -121,7 +133,9 @@ public class SalaryServiceImpl implements ISalaryService {
     }
 
 
-
+    // возвращает по доктору все его подробности по зарплате,
+    // т.е строку зарплатной ведомости
+    //Depricated
     @Override
     public SalaryDTO getSalaryByDoctor(int doctorId) {
 
@@ -135,7 +149,13 @@ public class SalaryServiceImpl implements ISalaryService {
         int kredit = doctor.getKredit();
         dto.setKredit(kredit);
 
-        List<Talon> talons = talonService.getAllTallonsBetween(LocalDate.now().minusDays(6),LocalDate.now().plusDays(1))
+        LocalDate strt = LocalDate.of(2018,10,29);
+        LocalDate fnsh = LocalDate.of(2018,11,3);
+        dto.setFrom(strt);
+        dto.setTo(fnsh);
+        dto.setWeek(fnsh.getDayOfYear()/7);
+
+        List<Talon> talons = talonService.getAllTallonsBetween(strt, fnsh)
                 .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());
@@ -195,22 +215,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return dto;
     }
 
-    @Override
-    public List<SalaryDTO> getSalaryList() {
-
-        List<Integer> doctorIds =doctorService.getAll()
-                .stream().mapToInt(Doctor::getId).boxed()
-                .collect(Collectors.toList());
-
-        List<SalaryDTO> salaryDTOList = new ArrayList<>();
-
-        doctorIds.stream().forEach(id->{
-            salaryDTOList.add(this.getSalaryByDoctor(id));
-        });
-        return salaryDTOList;
-    }
-
-
+    // начисление врачу бонусов за процедуры прошедшей недели
     public Salary createWeekBonusesForDoctor(int doctorId) {
         System.out.printf("Called");
        Salary salary = new Salary(doctorId, LocalDateTime.now(), SalaryType.ACCURAL,0);
@@ -235,6 +240,7 @@ public class SalaryServiceImpl implements ISalaryService {
         return salary;
     }
 
+    // начисление бонусов всем врачам
     public List<Salary> createWeekBonus(){
         List<Salary> list = new ArrayList<>();
 
@@ -246,12 +252,18 @@ public class SalaryServiceImpl implements ISalaryService {
         return repository.saveAll(list);
     }
 
+    // выдача зарплаты : отметка в ведомости и в кассе
     public Response paySalary(Salary salary){
 
         Response response = new Response(true,"");
+        SalaryDTO dto = salaryDTOService.getAll().stream()
+                .filter(el->el.getClosed()==null)
+                .filter(el->el.getDoctorId()==salary.getDoctorId())
+                .findAny().orElse(new SalaryDTO());
 
+        int rest = dto.getActual();
         int sum = salary.getSum();
-        int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
+       // int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
         int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
 
         if (sum>rest+kredit) {
@@ -264,14 +276,47 @@ public class SalaryServiceImpl implements ISalaryService {
         salary.setType(SalaryType.BUZUNAR);
 
         // kassa is down by this salary
-        cashBoxService.saveCash(new CashBox(
+        CashBox cashBox = new CashBox(
                 LocalDateTime.now()
                 , null
                 , salary.getDoctorId()
+                , CashType.SALLARY
                 ,null
-                , -1*salary.getSum()));
+                , -1*salary.getSum());
+       // cashBox.setType(CashType.SALLARY);
+        cashBoxService.saveCash(cashBox);
 
         this.createSalary(salary);
+        dto.setRecd(dto.getRecd()+salary.getSum());
+        salaryDTOService.updateSalaryDTO(dto);
         return response;
+    }
+
+
+    // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
+    // со всеми ставками, бонусами и тд
+    //  обычно генерится в субботу после 15.00, когда все свалят
+    // DEPRICATED
+    @Override
+    public List<SalaryDTO> getSalaryList() {
+
+        List<Integer> doctorIds =doctorService.getAll()
+                .stream().mapToInt(Doctor::getId).boxed()
+                .collect(Collectors.toList());
+
+        List<SalaryDTO> salaryDTOList = new ArrayList<>();
+
+        doctorIds.stream().forEach(id->{
+            salaryDTOList.add(this.getSalaryByDoctor(id));
+        });
+        return salaryDTOList;
+    }
+
+    public List<CashBox> getPaymentsByDoctor(int doctorId, LocalDate from, LocalDate to) {
+        return cashBoxService.getAll().stream()
+                .filter(cashBox -> cashBox.getDoctorId()==doctorId)
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+                .collect(Collectors.toList());
     }
 }

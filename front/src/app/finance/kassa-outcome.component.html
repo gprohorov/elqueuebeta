@@ -1,0 +1,69 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<h4>Витрати</h4>
+<div class="content table-responsive table-full-width table-sm">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Стаття витрат</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-nowrap">{{cashType.EXTRACTION.text}}</td>
+                <td class="text-right text-nowrap">{{data.extraction}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.SALLARY.text}}</td>
+                <td class="text-right text-nowrap">{{data.salary}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.BREAD.text}}</td>
+                <td class="text-right text-nowrap">{{data.bread}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.MILK.text}}</td>
+                <td class="text-right text-nowrap">{{data.milk}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.MACHINE.text}}</td>
+                <td class="text-right text-nowrap">{{data.machine}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.CONSERVE.text}}</td>
+                <td class="text-right text-nowrap">{{data.conservation}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.FOOD.text}}</td>
+                <td class="text-right text-nowrap">{{data.food}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.TAX.text}}</td>
+                <td class="text-right text-nowrap">{{data.tax}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">{{cashType.OTHER.text}}</td>
+                <td class="text-right text-nowrap">{{data.other}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">Надійшло</td>
+                <td class="text-right text-nowrap">{{data.payed}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">Видано</td>
+                <td class="text-right text-nowrap">{{data.given}} грн.</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">В наявності</td>
+                <td class="text-right text-nowrap">{{data.available}} грн.</td>
+            </tr>
+        </tbody>
+        <tr *ngIf="data.length === 0"><td colspan="13" class="text-center text-danger">
+        	<strong>Данні відсутні ...</strong>
+        </td></tr>
+    </table>
+</div>

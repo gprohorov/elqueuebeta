@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import com.med.model.CashBox;
+import com.med.model.CashType;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.services.accounting.impls.AccountingServiceImpl;
@@ -65,6 +66,7 @@ public class AccountingController {
             service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
             if (paymentType.equals(PaymentType.CASH)) {
                 CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
+                cash.setType(CashType.PATIENT);
                 cashBoxService.saveCash(cash);
             }
         }

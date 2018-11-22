@@ -2,6 +2,7 @@ package com.med.controller;
 
 import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
+import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
@@ -10,6 +11,7 @@ import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,9 +36,13 @@ public class StatisticsController {
     @Autowired
     StatisticServiceImpl service;
 
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
+
     @RequestMapping("/cash/now")
     public Long getCashAvailable() {
-        return service.getCashAvailable();
+       // return Long.valueOf(cashBoxService.getCashBox());
+       return service.getCashAvailable();
     }
 
     @RequestMapping("/cash/total")
@@ -51,6 +57,12 @@ public class StatisticsController {
     public AvailableexecutedPart getCurrentReport() {
         return accountingService.getCurrentReport();
     }
+    @RequestMapping("/report/current/details")
+    public CurrentReport getCurrentReportDetails() {
+        return cashBoxService.getCurrentReportDetails();
+    }
+
+
 
     // Лекари - загальна колькость процедур
     // Выводится по каждому врачу:

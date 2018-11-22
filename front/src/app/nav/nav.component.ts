@@ -7,6 +7,7 @@ import { AuthService, UtilService, AlertService } from '../_services/index';
 
 import { GiveSalaryModalComponent } from '../finance/give-salary.modal.component';
 import { KassaTozeroModalComponent } from '../finance/kassa-tozero.modal.component';
+import { KassaAddOutcomeModalComponent } from '../finance/kassa-add-outcome.modal.component';
 
 @Component({
     selector: 'app-nav',
@@ -55,6 +56,13 @@ export class NavComponent implements OnInit, OnDestroy {
         });
     }
 
+    showKassaAddOutcomePopup() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача з каси',
+            childComponent: KassaAddOutcomeModalComponent
+        });
+    }
+
     resetDB() {
         if (confirm('Reset DB?')) {
             this.utilService.resetDB().subscribe(() => {
@@ -77,6 +85,24 @@ export class NavComponent implements OnInit, OnDestroy {
         if (confirm('Do Task2?')) {
             this.utilService.Task2().subscribe(() => {
                 this.alertService.success('Task2 passed.', true);
+                this.router.navigate(['']);
+            });
+        }
+    }
+    
+    Task3() {
+        if (confirm('Do Task3?')) {
+            this.utilService.Task3().subscribe(() => {
+                this.alertService.success('Task3 passed.', true);
+                this.router.navigate(['']);
+            });
+        }
+    }
+    
+    Task4() {
+        if (confirm('Do Task4?')) {
+            this.utilService.Task4().subscribe(() => {
+                this.alertService.success('Task4 passed.', true);
                 this.router.navigate(['']);
             });
         }

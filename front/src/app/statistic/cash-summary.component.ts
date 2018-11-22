@@ -15,14 +15,18 @@ export class CashSummaryComponent implements OnInit, OnDestroy {
     constructor(private service: StatisticService) { }
 
     ngOnInit() {
+        this.load();
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+    
+    load() {
         this.loading = true;
         this.sub = this.service.getCashSummary().subscribe(data => {
             this.data = data;
             this.loading = false;
         });
-    }
-
-    ngOnDestroy() {
-        this.sub.unsubscribe();
     }
 }

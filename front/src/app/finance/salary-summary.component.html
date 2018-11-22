@@ -4,23 +4,20 @@
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
 <div class="row mb-2">
-   	<div class="col">
-	    <h4>Зарплатна відомість за період 
-	    	<span *ngIf="data.length > 0">
-	    		з {{data[0].from | date:"dd.MM"}} по {{data[0].to | date:"dd.MM"}}
-	    	</span>
-	    </h4>
-    </div>
-    <div class="col-auto form-inline">
-    	<h4>Тиждень:</h4>
-        <button class="btn btn-success ml-2" (click)="changeWeek(-1)">
-            <i class="fa fa-arrow-left"></i>
-        </button>
-        <input type="number" class="form-control ml-2 mr-2 text-center" name="week" [(ngModel)]="week"
-            [(ngValue)]="week" (change)="load()" [style.width.px]="60" />
-        <button class="btn btn-success" (click)="changeWeek(1)">
-            <i class="fa fa-arrow-right"></i>
-        </button>
+	<div class="col"><h4>Зарплати підсумок за період</h4></div>
+	<div class="col-auto mr-2">
+	   	<div class="input-group" [style.width.px]="200">
+	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+	</div>
+	<div class="col-auto">
+	    <div class="input-group" [style.width.px]="210">
+	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
     </div>
 </div>
 <div class="content table-responsive table-full-width table-sm">
@@ -44,12 +41,7 @@
         </thead>
         <tbody *ngIf="data.length > 0">
             <tr *ngFor="let item of data">
-                <td class="text-nowrap" [style.width.px]="92">
-	                <button class="btn btn-success" title="Призначити" 
-	                	(click)="showSetSalaryPopup(item)"
-	                	[disabled]="item.closed">
-	                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-	                </button>
+                <td class="text-nowrap">
 	                <button class="btn btn-info" title="Історія виплат" 
 	                	(click)="showSalaryHistoryPopup(item)">
 	                    <i class="fa fa-usd" aria-hidden="true"></i>

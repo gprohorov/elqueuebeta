@@ -10,6 +10,7 @@ public interface ICashBoxService {
     CashBox saveCash(CashBox cash);
     CashBox getCashBox(String id);
     int getCashBox();
+    int getTodayGiven();
 
 
 }

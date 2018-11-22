@@ -1,4 +1,5 @@
 import { Component, ComponentRef, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 
@@ -14,22 +15,30 @@ export class SetSalaryModalComponent implements IModalDialog {
 
     @ViewChild('f') myForm;
     constructor(
+        private route: ActivatedRoute,
+        private router: Router,
         private alertService: AlertService,
         private financeService: FinanceService
     ) { }
 
     dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
-        options.actionButtons = [{
-            text: 'Призначити',
-            onAction: () => {
-                return this.submit(this.myForm, options);
-            }
-        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.data = {
             doctorID: options.data.doctorId,
             award: 0,
             penalty: 0
         };
+        options.actionButtons = [{
+            text: 'Редагувати Лікаря',
+            buttonClass: 'btn btn-info mr-5',
+            onAction: () => {
+                this.router.navigate(['/doctor-form', { id: this.data.doctorID }]);
+            }
+        }, {
+            text: 'Призначити',
+            onAction: () => {
+                return this.submit(this.myForm, options);
+            }
+        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
     }
 
     submit(f, options) {

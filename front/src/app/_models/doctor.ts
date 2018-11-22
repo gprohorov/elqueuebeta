@@ -6,4 +6,5 @@ export class Doctor {
   rate: number;
   kredit: number;
   procedureIds: number[];
+  percents: any[];
 }

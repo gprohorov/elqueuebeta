@@ -4,10 +4,13 @@ import com.med.model.Activity;
 import com.med.model.Patient;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
+import com.med.model.balance.ProcedureZonesSum;
+import com.med.model.balance.ReceiptToday;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.repository.accounting.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class AccountingServiceImpl implements IAccountingService {
 
     @Autowired
     AccountingRepository repository;
+
+    @Autowired
+    CashBoxServiceImpl cashBoxService;
 
 
 
@@ -118,14 +124,20 @@ public class AccountingServiceImpl implements IAccountingService {
 
         AvailableexecutedPart report = new AvailableexecutedPart();
 
-        Long available = today.stream()
+        int payed = (int) today.stream()
                 .filter(accounting -> accounting.getSum()>0)
                 .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
                 .mapToLong(Accounting::getSum)
                 .sum();
+        report.setPayed(payed);
+
+        int available = cashBoxService.getCashBox();
         report.setAvailable(available);
 
-        Long executed = today.stream()
+        
+        report.setGiven(payed-available);
+
+        int executed = (int) today.stream()
                 .filter(accounting -> accounting.getSum()<0)
                 .mapToLong(Accounting::getSum)
                 .sum();
@@ -146,6 +158,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
         report.setPercentage(part);
 
+        System.out.println(report.toString());
 
         return report;
     }
@@ -240,4 +253,27 @@ public class AccountingServiceImpl implements IAccountingService {
                 .collect(Collectors.toList());
     }
 
+    public ReceiptToday getTodayReceipt(String patientId) {
+        ReceiptToday receipt = new ReceiptToday();
+        List<ProcedureZonesSum> list = new ArrayList<>();
+        List<Accounting> accountings = this.getAllIncomesForPatientFromTo(patientId,
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1));
+        receipt.setDate(LocalDate.now());
+        receipt.setPatientId(patientId);
+        receipt.setPatientName(patientService.getPatient(patientId).getPerson().getFullName());
+        accountings.stream()
+                .filter(accounting -> accounting.getSum()<0)
+                .forEach(accounting -> {
+            list.add( new ProcedureZonesSum(accounting.getDesc(), accounting.getSum()));
+        });
+        receipt.setList(list);
+        int sum = list.stream().mapToInt(ProcedureZonesSum::getSum).sum();
+        receipt.setProceduresSum(sum);
+        int totalDebt = this.getSumlForPatient(patientId);
+        receipt.setTotalToPay(totalDebt);
+        receipt.setDebt(totalDebt-sum);
+
+        return receipt;
+    }
 }

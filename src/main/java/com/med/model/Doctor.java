@@ -21,6 +21,7 @@ public class Doctor {
     private String speciality;
     private String cellPhone;
     private List<Integer> procedureIds = new ArrayList<>();
+    private List<DoctorProcedureProcent>    percents =  new ArrayList<>();
     private int rate;
     private int kredit;
 
@@ -111,6 +112,14 @@ public class Doctor {
 
     public void setKredit(int kredit) {
         this.kredit = kredit;
+    }
+
+    public List<DoctorProcedureProcent> getPercents() {
+        return percents;
+    }
+
+    public void setPercents(List<DoctorProcedureProcent> percents) {
+        this.percents = percents;
     }
 
     @Override

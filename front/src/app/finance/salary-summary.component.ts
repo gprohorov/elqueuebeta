@@ -4,18 +4,18 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { AlertService, FinanceService } from '../_services/index';
 
-import { SetSalaryModalComponent } from './set-salary.modal.component';
 import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
 
 @Component({
-    templateUrl: './salary.component.html'
+    templateUrl: './salary-summary.component.html'
 })
-export class FinanceSalaryComponent implements OnInit, OnDestroy {
+export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
 
-    sub: Subscription;
     loading = false;
+    sub: Subscription;
     data: any;
-    week: number = null;
+    from: string;
+    to: string;
 
     totalRecd = 0;
     totalSummary = 0;
@@ -28,21 +28,13 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
         private service: FinanceService) { }
 
     ngOnInit() {
+        this.from = '2018-10-29';
+        this.to = new Date().toISOString().split('T').shift();
         this.load();
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
-    }
-
-    showSetSalaryPopup(doctor: any) {
-        const options: any = {
-            title: 'Лікар: ' + doctor.name,
-            childComponent: SetSalaryModalComponent,
-            data: doctor
-        };
-        this.modalService.openDialog(this.viewRef, options);
-        options.closeDialogSubject.subscribe(() => { this.load(); });
     }
 
     showSalaryHistoryPopup(doctor: any) {
@@ -53,21 +45,16 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
         };
         this.modalService.openDialog(this.viewRef, options);
     }
-
-    changeWeek(weeks: number) {
-        this.week += weeks; 
-        this.load();
-    }
     
     load() {
+        this.loading = true;
         this.data = [];
-        this.sub = this.service.getSalary(this.week).subscribe(
+        this.sub = this.service.getSalarySummary(this.from, this.to).subscribe(
             data => {
                 this.data = data;
                 this.totalSummary = 0;
                 this.totalRecd = 0;
                 this.totalActual = 0;
-                if (this.week === null) this.week = this.data[0].week;
                 data.forEach( currentValue => {
                     currentValue.lastName = currentValue.name.split(' ')[0];
                     this.totalRecd += currentValue.recd;
