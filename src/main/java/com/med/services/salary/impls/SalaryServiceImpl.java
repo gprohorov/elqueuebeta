@@ -281,7 +281,7 @@ public class SalaryServiceImpl implements ISalaryService {
                 , null
                 , salary.getDoctorId()
                 , CashType.SALLARY
-                ,null
+                ," з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
                 , -1*salary.getSum());
        // cashBox.setType(CashType.SALLARY);
         cashBoxService.saveCash(cashBox);

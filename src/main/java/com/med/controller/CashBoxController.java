@@ -1,30 +1,21 @@
 package com.med.controller;
 
-import com.med.model.AwardPenaltyDTO;
-import com.med.model.Salary;
-import com.med.model.SalaryDTO;
-import com.med.model.SalaryType;
 import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
+import com.med.services.dayoutlay.OutlayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 
 import com.med.model.*;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -38,6 +29,8 @@ public class CashBoxController {
 
     @Autowired
     CashBoxServiceImpl service;
+    @Autowired
+    OutlayService dayOutlayService;
     //
     @RequestMapping("/kassa")
     public int getKassa() {
@@ -61,6 +54,33 @@ public class CashBoxController {
     public CurrentReport getReportDetail() {
         return service.getCurrentReportDetails();
     }
+
+    //-------------------------------- 22 nov
+
+    @RequestMapping("/outlay/total//{from}/{to}")
+    public Outlay getOutlay(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to )
+    {
+        return  dayOutlayService.getOutlay(LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/outlay/details/salary/{from}/{to}")
+    public List<CashBox> getOutlaySalary(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to )
+    {
+        return  dayOutlayService.getOutlaySalary(LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/outlay/details/machine/{from}/{to}")
+    public List<CashBox> getOutlayMachine(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to )
+    {
+        return  dayOutlayService.getOutlayMachine(LocalDate.parse(from), LocalDate.parse(to));
+    }
+
 
 
 }
