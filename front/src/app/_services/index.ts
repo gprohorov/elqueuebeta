@@ -14,5 +14,5 @@ export * from './workplace/common.service';
 export * from './workplace/diagnostic.service';
 
 export * from './hotel.service';
-
 export * from './finance.service';
+export * from './outcome.service';
