@@ -1,0 +1,68 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="row mb-2">
+	<div class="col-auto"><h4>Витрати NEW</h4></div>
+	<div class="col"><button class="btn btn-success">Створити категорію</button></div>
+	<div class="col-auto mr-2">
+	   	<div class="input-group" [style.width.px]="200">
+	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+	</div>
+	<div class="col-auto">
+	    <div class="input-group" [style.width.px]="210">
+	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+    </div>
+    <div class="col-auto">
+    	<button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        	[disabled]="loading" (click)="load()" title="Обновити"></button>
+    </div>
+</div>
+
+<ngb-accordion>
+	<ngb-panel>
+		<ng-template ngbPanelTitle>
+			<span class="pull-right">
+				<button class="btn btn-light mr-5">0 грн.</button>
+				<button class="btn btn-danger">
+					<i class="fa fa-trash" aria-hidden="true" title="Видалити категорію"></i>
+				</button>
+				<button class="btn btn-primary">
+					<i class="fa fa-pencil" aria-hidden="true" title="Редагувати категорію"></i>
+				</button>
+				<button class="btn btn-success">
+					<i class="fa fa-plus" aria-hidden="true"
+						title="Добавити статтю витрат в категорію"></i>
+				</button>
+			</span>
+			<button class="btn btn-light">Category</button>
+		</ng-template>
+		<ng-template ngbPanelContent>
+			<ngb-accordion>
+				<ngb-panel>
+					<ng-template ngbPanelTitle>
+						<span class="pull-right">
+							<button class="btn btn-light mr-5">0 грн.</button>
+							<button class="btn btn-danger">
+								<i class="fa fa-trash" aria-hidden="true" title="Видалити статтю витрат"></i>
+							</button>
+							<button class="btn btn-primary">
+								<i class="fa fa-pencil" aria-hidden="true" title="Редагувати статтю витрат"></i>
+							</button>
+						</span>
+						<button class="btn btn-light">Item</button>
+					</ng-template>
+					<ng-template ngbPanelContent>
+						Item 1 details...
+					</ng-template>
+				</ngb-panel>
+			</ngb-accordion>
+		</ng-template>
+	</ngb-panel>
+</ngb-accordion>
+		
+<div *ngIf="data.length !== 0"><strong>{{data | json}}</strong></div>
+<div *ngIf="data.length === 0"><strong class="text-danger">Данні відсутні ...</strong></div>

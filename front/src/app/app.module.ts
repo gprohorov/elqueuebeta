@@ -28,7 +28,8 @@ import {
     WorkplaceCommonService,
     WorkplaceDiagnosticService,
     HotelService,
-    FinanceService
+    FinanceService,
+    OutcomeService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -77,6 +78,9 @@ import { GiveSalaryModalComponent } from './finance/give-salary.modal.component'
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
 import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal.component';
+
+import { FinanceOutcomeComponent } from './finance/outcome.component';
+import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -215,6 +219,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/outcome', component: FinanceOutcomeComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -297,11 +306,13 @@ const appRoutes: Routes = [
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
         FinanceKassaOutcomeComponent,
+        FinanceOutcomeComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
-        KassaAddOutcomeModalComponent
+        KassaAddOutcomeModalComponent,
+        FinanceOutcomeCategoryModalComponent
     ],
     providers: [
         AuthGuard,
@@ -322,6 +333,7 @@ const appRoutes: Routes = [
         WorkplaceDiagnosticService,
         HotelService,
         FinanceService,
+        OutcomeService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [
@@ -334,7 +346,8 @@ const appRoutes: Routes = [
         DoctorSalaryHistoryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
-        KassaAddOutcomeModalComponent
+        KassaAddOutcomeModalComponent,
+        FinanceOutcomeCategoryModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]
