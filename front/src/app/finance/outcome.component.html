@@ -1,7 +1,9 @@
 <app-loader [loader]="loading"></app-loader>
 <div class="row mb-2">
 	<div class="col-auto"><h4>Витрати NEW</h4></div>
-	<div class="col"><button class="btn btn-success">Створити категорію</button></div>
+	<div class="col">
+		<button class="btn btn-success" (click)="showCreateCategory()" disabled>Створити категорію</button>
+	</div>
 	<div class="col-auto mr-2">
 	   	<div class="input-group" [style.width.px]="200">
 	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
@@ -27,18 +29,18 @@
 		<ng-template ngbPanelTitle>
 			<span class="pull-right">
 				<button class="btn btn-light mr-5">0 грн.</button>
-				<button class="btn btn-danger">
+				<button class="btn btn-danger" (click)="showDeleteCategory('test')">
 					<i class="fa fa-trash" aria-hidden="true" title="Видалити категорію"></i>
 				</button>
-				<button class="btn btn-primary">
+				<button class="btn btn-primary" (click)="showUpdateCategory()" disabled>
 					<i class="fa fa-pencil" aria-hidden="true" title="Редагувати категорію"></i>
 				</button>
-				<button class="btn btn-success">
+				<button class="btn btn-success" (click)="showCreateItem()" disabled>
 					<i class="fa fa-plus" aria-hidden="true"
 						title="Добавити статтю витрат в категорію"></i>
 				</button>
 			</span>
-			<button class="btn btn-light">Category</button>
+			<button class="btn btn-light">Категорія</button>
 		</ng-template>
 		<ng-template ngbPanelContent>
 			<ngb-accordion>
@@ -46,23 +48,32 @@
 					<ng-template ngbPanelTitle>
 						<span class="pull-right">
 							<button class="btn btn-light mr-5">0 грн.</button>
-							<button class="btn btn-danger">
+							<button class="btn btn-danger" (click)="showDeleteItem('test')">
 								<i class="fa fa-trash" aria-hidden="true" title="Видалити статтю витрат"></i>
 							</button>
-							<button class="btn btn-primary">
+							<button class="btn btn-primary" (click)="showUpdateItem()" disabled>
 								<i class="fa fa-pencil" aria-hidden="true" title="Редагувати статтю витрат"></i>
 							</button>
 						</span>
-						<button class="btn btn-light">Item</button>
+						<button class="btn btn-light">Стаття витрат</button>
 					</ng-template>
 					<ng-template ngbPanelContent>
-						Item 1 details...
+						Список витрат по статті витрат "Стаття витрат"...
 					</ng-template>
 				</ngb-panel>
 			</ngb-accordion>
 		</ng-template>
 	</ngb-panel>
+	
+	<ngb-panel>
+		<ng-template ngbPanelTitle>
+			<span class="pull-right">
+				<button class="btn btn-light mr-5">0 грн.</button>
+			</span>
+			<button class="btn btn-light">ІНШЕ (спеціальна категорія)</button>
+		</ng-template>
+		<ng-template ngbPanelContent>
+			Список витрат по спеціальній категорії ІНШЕ...
+		</ng-template>
+	</ngb-panel>
 </ngb-accordion>
-		
-<div *ngIf="data.length !== 0"><strong>{{data | json}}</strong></div>
-<div *ngIf="data.length === 0"><strong class="text-danger">Данні відсутні ...</strong></div>

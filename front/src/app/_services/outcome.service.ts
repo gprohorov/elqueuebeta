@@ -11,6 +11,7 @@ export class OutcomeService {
     private getOutcomeTreeUrl = config.api_path + '/outcome/gettree';
     private createNodeUrl = config.api_path + '/outcome/createnode/';
     private updateNodeUrl = config.api_path + '/outcome/updatenode/';
+    private deleteNodeUrl = config.api_path + '/outcome/deletenode/';
 
     constructor(private http: HttpClient) { }
     
@@ -21,6 +22,10 @@ export class OutcomeService {
     sendNode(node: any) {
         const url = (node.id !== null) ? this.updateNodeUrl : this.createNodeUrl; 
         return this.http.post(url, node).pipe(catchError(this.handleError));
+    }
+    
+    deleteNode(id: string) {
+        return this.http.get(this.deleteNodeUrl + id).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
