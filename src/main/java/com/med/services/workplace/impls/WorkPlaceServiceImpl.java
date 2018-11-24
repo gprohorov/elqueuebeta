@@ -218,7 +218,8 @@ public class WorkPlaceServiceImpl implements IWorkPlaceService {
         Tail tail= tailService.getTail(talon.getProcedure().getId());
 
         talon.setActivity(Activity.TEMPORARY_NA);
-        talon.setDoctor(null);
+        //talon.setDoctor(null);
+        talon.setExecutionTime(LocalDateTime.now());
         Doctor doctor = userService.getCurrentUserInfo();
         talon.setDesc( doctor.getFullName() + "cancelled "
                 + LocalDateTime.now().toString()  +" : " + desc);

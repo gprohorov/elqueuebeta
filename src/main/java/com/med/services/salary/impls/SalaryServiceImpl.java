@@ -135,7 +135,7 @@ public class SalaryServiceImpl implements ISalaryService {
 
     // возвращает по доктору все его подробности по зарплате,
     // т.е строку зарплатной ведомости
-    //Depricated
+    //Depricated, see SalaryDTOService.generateRowOfDoctor
     @Override
     public SalaryDTO getSalaryByDoctor(int doctorId) {
 
@@ -265,6 +265,8 @@ public class SalaryServiceImpl implements ISalaryService {
         int sum = salary.getSum();
        // int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
         int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
+
+       // System.out.println("rest = "+ rest +" kredit = " + kredit +"  suma = "+sum);
 
         if (sum>rest+kredit) {
             response.setStatus(false);
