@@ -16,6 +16,8 @@ public class CashBox {
     private String patientId;
     private int doctorId;
     private CashType type;
+    private String catId;
+    private String item;
     private String desc;
     private int sum;
 
@@ -35,7 +37,15 @@ public class CashBox {
         this.desc = desc;
         this.sum = sum;
     }
-    
+
+    public CashBox(int doctorId, String catId, String item, String desc, int sum) {
+        this.doctorId = doctorId;
+        this.catId = catId;
+        this.item = item;
+        this.desc = desc;
+        this.sum = sum;
+    }
+
     public CashBox(CashType type, String desc, int sum) {
     	this.type = type;
     	this.desc = desc;
@@ -79,6 +89,22 @@ public class CashBox {
 
     public CashType getType() {
         return type;
+    }
+
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCategory(String catId) {
+        this.catId = catId;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public void setType(CashType type) {

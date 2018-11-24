@@ -1,12 +1,15 @@
 package com.med.controller;
 
+import com.med.model.CashBox;
 import com.med.model.OutcomeTree;
+import com.med.model.OutcomeTreeSum;
 import com.med.model.Response;
 import com.med.services.outcometree.impls.OutcomeTreeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -38,4 +41,29 @@ public class OutcomeController {
                ? new Response(false, "Error updating node!")
                : new Response(true, "OK");
     }
+    @RequestMapping("/summary/{from}/{to}")
+    public List<OutcomeTreeSum> getTreeSummary(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to ){
+        return service.getOutcomeListAsTree(LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/summary/{category}/{from}/{to}")
+    public List<OutcomeTreeSum> getCategorySummary(
+            @PathVariable(value = "category") String category,
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to ){
+        return service.getOutcomeSummaryOfCategory(category,LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/summary/{item}/{from}/{to}")
+    public List<CashBox> getItemBand(
+            @PathVariable(value = "item") String item,
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to ){
+        return service.getOutcomeSummaryOfItem(item,LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+
+
 }
