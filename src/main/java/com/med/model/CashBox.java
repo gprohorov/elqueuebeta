@@ -2,7 +2,7 @@ package com.med.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.lang.Nullable;
 import java.time.LocalDateTime;
 
 /**
@@ -16,8 +16,8 @@ public class CashBox {
     private String patientId;
     private int doctorId;
     private CashType type;
-    private String catId;
-    private String item;
+    @Nullable
+    private String itemId;
     private String desc;
     private int sum;
 
@@ -38,10 +38,9 @@ public class CashBox {
         this.sum = sum;
     }
 
-    public CashBox(int doctorId, String catId, String item, String desc, int sum) {
+    public CashBox(int doctorId, String itemId, String desc, int sum) {
         this.doctorId = doctorId;
-        this.catId = catId;
-        this.item = item;
+        this.itemId = itemId;
         this.desc = desc;
         this.sum = sum;
     }
@@ -91,20 +90,12 @@ public class CashBox {
         return type;
     }
 
-    public String getCatId() {
-        return catId;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setCategory(String catId) {
-        this.catId = catId;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public void setItem(String item) {
-        this.item = item;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public void setType(CashType type) {

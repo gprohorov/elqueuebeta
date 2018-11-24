@@ -29,11 +29,18 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     @Autowired
     CashBoxServiceImpl cashBoxService;
 
-
     @Override
     public List<OutcomeTree> getTree() {
-        List<OutcomeTree> list = repository.findAll();
-        return list;
+    	List<OutcomeTree> tree = repository.findAll().stream().filter( node -> node.getCatID() == null )
+        		.collect(Collectors.toList());
+        tree.forEach( node -> {
+        	List<OutcomeTree> items = this._getItemsByCatID(node.getId());
+        	node.setItems(items);
+        });
+
+        tree.add(new OutcomeTree("ІНШЕ (спеціальна категорія)", null));
+        
+        return tree;
     }
 
     @Override
@@ -71,15 +78,57 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
     		items.stream().forEach(item -> {
 
-    			// update CashBox rows here ...
+    			// TODO: update CashBox rows here ...
     			
     			repository.delete(item);
     		}); 
     	} else {
-    		// update CashBox rows here ...
+    		// TODO: update CashBox rows here ...
     	}
         repository.delete(node);
         return true;
+    }
+    
+    public List<OutcomeTree> getTreeSum(LocalDate from, LocalDate to) {
+    	
+    	// TODO: Make it By MongoRepository
+    	List<CashBox> outcomes = cashBoxService.getAll().stream()
+    			.filter(cash->cash.getSum()<0)
+    			.filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+    			.filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
+    			.collect(Collectors.toList());
+    	
+    	final long[] totalSum = {0};
+    	
+    	List<OutcomeTree> tree = repository.findAll().stream().filter( node -> node.getCatID() == null )
+    			.collect(Collectors.toList());
+    	tree.forEach( node -> {
+    		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
+    		totalSum[0] = 0;
+    		items.forEach(item -> {
+    			item.setSum(outcomes.stream()
+    					.filter( outcome-> item.getId().equals( outcome.getItemId() ) )
+    					.mapToLong(CashBox::getSum).sum());
+    			totalSum[0] += item.getSum();
+    		});
+    		node.setSum(totalSum[0]);
+    		node.setItems(items);
+    	});
+    	
+    	tree.add(new OutcomeTree("ІНШЕ (спеціальна категорія)", null, outcomes.stream()
+    			.filter( o -> o.getItemId() == null).mapToLong(CashBox::getSum).sum()));
+    	
+    	return tree;
+    }
+    
+    public List<CashBox> getOutcomeListOfItem(String itemId, LocalDate from, LocalDate to) {
+    	
+    	// TODO: Make it By MongoRepository
+    	return cashBoxService.getAll().stream()
+    			.filter(cash->cash.getItemId().equals(itemId))
+    			.filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+    			.filter(cash->cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+    			.collect(Collectors.toList());
     }
 
     private Boolean _isCategory(String id) {
@@ -89,75 +138,5 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     
     private List<OutcomeTree> _getItemsByCatID(String id) {
     	return repository.findByCatID(id);
-    }
-
-    public List<OutcomeTree> getOutcomeListAsTree(LocalDate from, LocalDate to) {
-        //TODO: Refactor
-    	List<CashBox> outcomes = cashBoxService.getAll().stream()
-           .filter(cash->cash.getSum()<0)
-           .filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-           .filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
-           .collect(Collectors.toList());
-
-    	final long[] totalSum = {0};
-    	
-        List<OutcomeTree> tree = this.getTree().stream().filter( node -> node.getCatID() == null )
-    		.collect(Collectors.toList());
-        tree.forEach( node -> {
-        	List<OutcomeTree> items = this._getItemsByCatID(node.getId());
-        	totalSum[0] = 0;
-        	items.forEach(item -> {
-        		item.setSum(outcomes.stream()
-                    .filter( outcome->outcome.getCatId().equals( item.getId() ) )
-                    .mapToLong(CashBox::getSum).sum());
-        		totalSum[0] += item.getSum();
-        	});
-        	node.setSum(totalSum[0]);
-        	node.setItems(items);
-        });
-
-        // TODO: Constructor two...
-        long sum = outcomes.stream().filter( o -> o.getCatId() == null)
-    		.mapToLong(CashBox::getSum).sum();
-        OutcomeTree nodeSpecial = new OutcomeTree("ІНШЕ (спеціальна категорія)", null);
-        nodeSpecial.setSum(sum);
-        tree.add(nodeSpecial);
-        
-        return tree;
-    }
-
-    public List<OutcomeTreeSum> getOutcomeSummaryOfCategory(String category, LocalDate from, LocalDate to) {
-
-        //TODO: Refactor
-        List<CashBox> outcomes = cashBoxService.getAll().stream()
-                .filter(cash->cash.getSum()<0)
-                .filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-                .filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
-                .filter(cash->cash.getCatId().equals(category))
-                .collect(Collectors.toList());
-
-        List<OutcomeTreeSum> list = new ArrayList<>();
-
-        List<OutcomeTree> items = this.getTree().stream()
-                .filter(node->node.getCatID()==category).collect(Collectors.toList());
-        items.stream().forEach(item->{
-            OutcomeTreeSum element = new OutcomeTreeSum(item.getName(), category, outcomes.stream().mapToInt(CashBox::getSum).sum());
-/*            element.setSum(sum));
-            element.setName(item.getName());
-            element.setCategory(category);
-            long sum = outcomes.stream().mapToInt(CashBox::getSum).sum();
-            element.setSum(sum);
-           */
-            list.add(element);
-        });
-        return list;
-    }
-
-    public List<CashBox> getOutcomeSummaryOfItem(String item, LocalDate from, LocalDate to) {
-        return cashBoxService.getAll().stream()
-                .filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-                .filter(cash->cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
-                .filter(cash->cash.getItem().equals(item))
-                .collect(Collectors.toList());
     }
 }

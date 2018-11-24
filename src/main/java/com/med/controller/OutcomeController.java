@@ -23,11 +23,16 @@ public class OutcomeController {
     @Autowired
     OutcomeTreeServiceImpl service;
 
-    @RequestMapping("/gettree/{from}/{to}")
-    public List<OutcomeTree> getTree(
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to ) {
-        return service.getOutcomeListAsTree(LocalDate.parse(from), LocalDate.parse(to));
+    @RequestMapping("/gettree")
+    public List<OutcomeTree> getTree() {
+        return service.getTree();
+    }
+    
+    @RequestMapping("/gettree-sum/{from}/{to}")
+    public List<OutcomeTree> getTreeSum(
+    		@PathVariable(value = "from") String from,
+    		@PathVariable(value = "to") String to ) {
+    	return service.getTreeSum(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/createnode/")
@@ -51,20 +56,12 @@ public class OutcomeController {
 				: new Response(true, "OK");
     }
 
-    @RequestMapping("/summary/{category}/{from}/{to}")
-    public List<OutcomeTreeSum> getCategorySummary(
-            @PathVariable(value = "category") String category,
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to ){
-        return service.getOutcomeSummaryOfCategory(category,LocalDate.parse(from), LocalDate.parse(to));
-    }
-
-    @RequestMapping("/summary/{item}/{from}/{to}")
+    @RequestMapping("/list/{item}/{from}/{to}")
     public List<CashBox> getItemBand(
             @PathVariable(value = "item") String item,
             @PathVariable(value = "from") String from,
             @PathVariable(value = "to") String to ){
-        return service.getOutcomeSummaryOfItem(item,LocalDate.parse(from), LocalDate.parse(to));
+        return service.getOutcomeListOfItem(item, LocalDate.parse(from), LocalDate.parse(to));
     }
 
 }

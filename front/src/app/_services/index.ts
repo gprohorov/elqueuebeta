@@ -1,6 +1,5 @@
 ﻿export * from './alert.service';
 export * from './auth.service';
-export * from './util.service';
 export * from './sort.service';
 
 export * from './patient.service';

@@ -42,7 +42,7 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
 
     load() {
         this.data = [];
-        this.sub = this.service.getOutcomeTree(this.from, this.to).subscribe(
+        this.sub = this.service.getOutcomeTreeSum(this.from, this.to).subscribe(
             data => {
                 this.data = data;
                 this.loading = false;

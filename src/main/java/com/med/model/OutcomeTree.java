@@ -26,21 +26,19 @@ public class OutcomeTree {
     
     @Transient
     private List<OutcomeTree> items;
+    
+    public OutcomeTree() { }
 
     public OutcomeTree(String name, String catID) {
         this.name = name;
         this.catID = catID;
     }
-
-    public OutcomeTree() {
-    }
-    /*
+    
     public OutcomeTree(String name, String catID, long sum) {
     	this.name = name;
     	this.catID = catID;
     	this.sum = sum;
     }
-    */
 
     public String getId() {
         return id;

@@ -17,7 +17,6 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
-    UtilService,
     SortService,
     PatientService,
     DoctorService,
@@ -323,7 +322,6 @@ const appRoutes: Routes = [
         AuthService,
         TokenStorage,
         UserStorage,
-        UtilService,
         SortService,
         PatientService,
         DoctorService,
