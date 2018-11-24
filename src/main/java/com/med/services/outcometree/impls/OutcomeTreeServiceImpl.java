@@ -141,11 +141,13 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
         List<OutcomeTree> items = this.getTree().stream()
                 .filter(node->node.getCatID()==category).collect(Collectors.toList());
         items.stream().forEach(item->{
-            OutcomeTreeSum element = new OutcomeTreeSum();
+            OutcomeTreeSum element = new OutcomeTreeSum(item.getName(), category, outcomes.stream().mapToInt(CashBox::getSum).sum());
+/*            element.setSum(sum));
             element.setName(item.getName());
             element.setCategory(category);
             long sum = outcomes.stream().mapToInt(CashBox::getSum).sum();
             element.setSum(sum);
+           */
             list.add(element);
         });
         return list;

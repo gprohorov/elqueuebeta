@@ -31,7 +31,9 @@ public class OutcomeTree {
         this.name = name;
         this.catID = catID;
     }
-    
+
+    public OutcomeTree() {
+    }
     /*
     public OutcomeTree(String name, String catID, long sum) {
     	this.name = name;
