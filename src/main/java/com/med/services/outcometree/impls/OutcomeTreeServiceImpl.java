@@ -91,35 +91,39 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     	return repository.findByCatID(id);
     }
 
-    public List<OutcomeTreeSum> getOutcomeListAsTree(LocalDate from,LocalDate to){
+    public List<OutcomeTree> getOutcomeListAsTree(LocalDate from, LocalDate to) {
         //TODO: Refactor
-       List<CashBox> outcomes = cashBoxService.getAll().stream()
-               .filter(cash->cash.getSum()<0)
-               .filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-               .filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
-               .collect(Collectors.toList());
+    	List<CashBox> outcomes = cashBoxService.getAll().stream()
+           .filter(cash->cash.getSum()<0)
+           .filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+           .filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
+           .collect(Collectors.toList());
 
-        List<OutcomeTreeSum> list = new ArrayList<>();
-
-        List<OutcomeTree> tree = this.getTree();
-        List<String> ids = this.getTree().stream()
-                .filter(node->node.getCatID()==null)
-                .map(node->node.getId())
-                .collect(Collectors.toList());
-
-        ids.stream().forEach(id->{
-            OutcomeTreeSum rootSummary = new OutcomeTreeSum();
-            rootSummary.setCategory(null);
-            rootSummary.setName(this.getNode(id).getName());
-            long sum = outcomes.stream()
-                    .filter(outcome->outcome.getCatId().equals(id))
-                    .mapToInt(CashBox::getSum).sum();
-             rootSummary.setSum(sum);
-
-            list.add(rootSummary);
+    	final long[] totalSum = {0};
+    	
+        List<OutcomeTree> tree = this.getTree().stream().filter( node -> node.getCatID() == null )
+    		.collect(Collectors.toList());
+        tree.forEach( node -> {
+        	List<OutcomeTree> items = this._getItemsByCatID(node.getId());
+        	totalSum[0] = 0;
+        	items.forEach(item -> {
+        		item.setSum(outcomes.stream()
+                    .filter( outcome->outcome.getCatId().equals( item.getId() ) )
+                    .mapToLong(CashBox::getSum).sum());
+        		totalSum[0] += item.getSum();
+        	});
+        	node.setSum(totalSum[0]);
+        	node.setItems(items);
         });
 
-        return list;
+        // TODO: Constructor two...
+        long sum = outcomes.stream().filter( o -> o.getCatId() == null)
+    		.mapToLong(CashBox::getSum).sum();
+        OutcomeTree nodeSpecial = new OutcomeTree("ІНШЕ (спеціальна категорія)", null);
+        nodeSpecial.setSum(sum);
+        tree.add(nodeSpecial);
+        
+        return tree;
     }
 
     public List<OutcomeTreeSum> getOutcomeSummaryOfCategory(String category, LocalDate from, LocalDate to) {

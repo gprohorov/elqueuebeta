@@ -8,15 +8,16 @@ import { config } from '../../config';
 @Injectable()
 export class OutcomeService {
 
-    private getOutcomeTreeUrl = config.api_path + '/outcome/gettree';
+    private getOutcomeTreeUrl = config.api_path + '/outcome/gettree/';
     private createNodeUrl = config.api_path + '/outcome/createnode/';
     private updateNodeUrl = config.api_path + '/outcome/updatenode/';
     private deleteNodeUrl = config.api_path + '/outcome/deletenode/';
 
     constructor(private http: HttpClient) { }
     
-    getOutcomeTree() {
-        return this.http.get(this.getOutcomeTreeUrl).pipe(catchError(this.handleError));
+    getOutcomeTree(from: string, to: string) {
+        return this.http.get(this.getOutcomeTreeUrl + from + '/' + to)
+            .pipe(catchError(this.handleError));
     }
     
     sendNode(node: any) {

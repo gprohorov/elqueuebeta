@@ -29,7 +29,7 @@ export class FinanceOutcomeItemModalComponent implements IModalDialog {
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
         this.node = options.data.node || this.node;
-        this.categories = options.data.categories.filter(x => x.catID === null); 
+        this.categories = options.data.categories.filter(x => (x.catID === null && x.id != null ) ); 
     }
 
     submit(f, options) {

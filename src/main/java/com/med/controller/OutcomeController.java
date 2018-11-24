@@ -23,9 +23,11 @@ public class OutcomeController {
     @Autowired
     OutcomeTreeServiceImpl service;
 
-    @RequestMapping("/gettree")
-    public List<OutcomeTree> getTree() {
-        return this.service.getTree();
+    @RequestMapping("/gettree/{from}/{to}")
+    public List<OutcomeTree> getTree(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to ) {
+        return service.getOutcomeListAsTree(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/createnode/")
@@ -47,13 +49,6 @@ public class OutcomeController {
     	return (!this.service.deleteNode(id))
     			? new Response(false, "Error updating node!")
 				: new Response(true, "OK");
-    }
-
-    @RequestMapping("/summary/{from}/{to}")
-    public List<OutcomeTreeSum> getTreeSummary(
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to ){
-        return service.getOutcomeListAsTree(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/summary/{category}/{from}/{to}")
