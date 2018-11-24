@@ -81,6 +81,7 @@ import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal
 
 import { FinanceOutcomeComponent } from './finance/outcome.component';
 import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
+import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -306,13 +307,14 @@ const appRoutes: Routes = [
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
         FinanceKassaOutcomeComponent,
-        FinanceOutcomeComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
         KassaAddOutcomeModalComponent,
-        FinanceOutcomeCategoryModalComponent
+        FinanceOutcomeComponent,
+        FinanceOutcomeCategoryModalComponent,
+        FinanceOutcomeItemModalComponent
     ],
     providers: [
         AuthGuard,
@@ -347,7 +349,8 @@ const appRoutes: Routes = [
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
         KassaAddOutcomeModalComponent,
-        FinanceOutcomeCategoryModalComponent
+        FinanceOutcomeCategoryModalComponent,
+        FinanceOutcomeItemModalComponent        
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

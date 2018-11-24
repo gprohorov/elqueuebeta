@@ -2,7 +2,7 @@
 <div class="row mb-2">
 	<div class="col-auto"><h4>Витрати NEW</h4></div>
 	<div class="col">
-		<button class="btn btn-success" (click)="showCreateCategory()" disabled>Створити категорію</button>
+		<button class="btn btn-success" (click)="showCreateCategory()">Створити категорію</button>
 	</div>
 	<div class="col-auto mr-2">
 	   	<div class="input-group" [style.width.px]="200">
@@ -25,40 +25,40 @@
 </div>
 
 <ngb-accordion>
-	<ngb-panel>
+	<ngb-panel *ngFor="let cat of data">
 		<ng-template ngbPanelTitle>
 			<span class="pull-right">
 				<button class="btn btn-light mr-5">0 грн.</button>
-				<button class="btn btn-danger" (click)="showDeleteCategory('test')">
+				<button class="btn btn-danger" (click)="showDeleteCategory(cat.id)">
 					<i class="fa fa-trash" aria-hidden="true" title="Видалити категорію"></i>
 				</button>
-				<button class="btn btn-primary" (click)="showUpdateCategory()" disabled>
+				<button class="btn btn-primary" (click)="showUpdateCategory(cat)">
 					<i class="fa fa-pencil" aria-hidden="true" title="Редагувати категорію"></i>
 				</button>
-				<button class="btn btn-success" (click)="showCreateItem()" disabled>
+				<button class="btn btn-success" (click)="showCreateItem(cat.id)">
 					<i class="fa fa-plus" aria-hidden="true"
 						title="Добавити статтю витрат в категорію"></i>
 				</button>
 			</span>
-			<button class="btn btn-light">Категорія</button>
+			<button class="btn btn-light">{{cat.name}}</button>
 		</ng-template>
 		<ng-template ngbPanelContent>
 			<ngb-accordion>
-				<ngb-panel>
+				<ngb-panel *ngFor="let item of cat.items">
 					<ng-template ngbPanelTitle>
 						<span class="pull-right">
 							<button class="btn btn-light mr-5">0 грн.</button>
-							<button class="btn btn-danger" (click)="showDeleteItem('test')">
+							<button class="btn btn-danger" (click)="showDeleteItem(item.id)">
 								<i class="fa fa-trash" aria-hidden="true" title="Видалити статтю витрат"></i>
 							</button>
-							<button class="btn btn-primary" (click)="showUpdateItem()" disabled>
+							<button class="btn btn-primary" (click)="showUpdateItem(item)">
 								<i class="fa fa-pencil" aria-hidden="true" title="Редагувати статтю витрат"></i>
 							</button>
 						</span>
-						<button class="btn btn-light">Стаття витрат</button>
+						<button class="btn btn-light">{{item.name}}</button>
 					</ng-template>
 					<ng-template ngbPanelContent>
-						Список витрат по статті витрат "Стаття витрат"...
+						Список витрат по статті витрат "{{item.name}}"...
 					</ng-template>
 				</ngb-panel>
 			</ngb-accordion>

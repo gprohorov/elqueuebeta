@@ -25,17 +25,24 @@ public class OutcomeController {
         return this.service.getTree();
     }
 
-    @RequestMapping("/createnode/{node}")
+    @RequestMapping("/createnode/")
     public Response addNode(@Valid @RequestBody OutcomeTree node) {
         return this.service.createNode(node).equals(null)
                 ? new Response(false, "Error creating node!")
                 : new Response(true, "OK");
     }
 
-    @RequestMapping("/updatenode/{node}")
+    @RequestMapping("/updatenode/")
     public Response updateNode(@Valid @RequestBody OutcomeTree node) {
         return this.service.updateNode(node).equals(null)
                ? new Response(false, "Error updating node!")
                : new Response(true, "OK");
+    }
+    
+    @RequestMapping("/deletenode/{id}")
+    public Response deleteNode(@PathVariable(value = "id") String id) {
+    	return (!this.service.deleteNode(id))
+    			? new Response(false, "Error updating node!")
+				: new Response(true, "OK");
     }
 }

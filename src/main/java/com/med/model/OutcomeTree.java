@@ -28,7 +28,11 @@ public class OutcomeTree {
         return id;
     }
 
-    public LocalDateTime getCreateTime() {
+    public void setId(String id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getCreateTime() {
         return createTime;
     }
 
@@ -47,4 +51,9 @@ public class OutcomeTree {
     public void setCatID(String catID) {
         this.catID = catID;
     }
+
+	@Override
+	public String toString() {
+		return "OutcomeTree [id=" + id + ", createTime=" + createTime + ", name=" + name + ", catID=" + catID + "]";
+	}
 }

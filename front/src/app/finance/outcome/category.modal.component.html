@@ -2,7 +2,7 @@
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
         <input type="text" class="form-control" name="name"
         	[(ngModel)]="node.name" #name="ngModel" required />
-        <div *ngIf="f.submitted && !categoryName.valid"
+        <div *ngIf="f.submitted && !name.valid"
         	class="help-block text-danger">Поле обов`язкове</div>
     </div>
 </form>

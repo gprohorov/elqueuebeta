@@ -31,25 +31,51 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
 
     @Override
     public OutcomeTree createNode(OutcomeTree node) {
-        if (!node.getId().isEmpty() || node.getName().isEmpty()) return null;
-        if ( !node.getCatID().equals(null) && !this._isCategory(node.getCatID()) ) return null;
+        if ( node.getId() != null || node.getName().isEmpty()) return null;
+        if ( node.getCatID() != null && !this._isCategory(node.getCatID()) ) return null;
         return repository.save(node);
     }
 
     @Override
     public OutcomeTree updateNode(OutcomeTree node) {
+    	if ( node.getId() == null ) return null;
         OutcomeTree src = this.getNode(node.getId());
-        if ( node.getName().isEmpty() ) return null;
-        if ( src.equals(null) ) return null;
-        if ( ( src.getCatID().equals(null) && !node.getCatID().equals(null) )
-            || ( !src.getCatID().equals(null) && node.getCatID().equals(null) ) ) return null;
-        if ( !node.getCatID().equals(src.getCatID())
+        if ( node.getName() == null || node.getName().isEmpty() ) return null;
+        if ( src == null ) return null;
+        if ( ( src.getCatID() == null && node.getCatID() != null )
+            || ( src.getCatID() != null && node.getCatID() == null ) ) return null;
+        if ( node.getCatID() != src.getCatID()
             && !this._isCategory(node.getCatID()) ) return null;
         return repository.save(node);
+    }
+    
+    @Override
+    public Boolean deleteNode(String id) {
+    	OutcomeTree node = this.getNode(id);
+    	if ( node == null ) return false;
+
+    	if ( node.getCatID() == null ) {
+    		// This is Category, so check for items
+    		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
+    		items.stream().forEach(item -> {
+
+    			// update CashBox rows here ...
+    			
+    			repository.delete(item);
+    		}); 
+    	} else {
+    		// update CashBox rows here ...
+    	}
+        repository.delete(node);
+        return true;
     }
 
     private Boolean _isCategory(String id) {
         OutcomeTree test = this.getNode(id);
-        return ( !test.equals(null) && test.getCatID().equals(null) );
+        return ( test != null && test.getCatID() == null );
+    }
+    
+    private List<OutcomeTree> _getItemsByCatID(String id) {
+    	return repository.findByCatID(id);
     }
 }

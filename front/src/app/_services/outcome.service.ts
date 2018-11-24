@@ -20,7 +20,7 @@ export class OutcomeService {
     }
     
     sendNode(node: any) {
-        const url = (node.id !== null) ? this.updateNodeUrl : this.createNodeUrl; 
+        const url = (node.id != null) ? this.updateNodeUrl : this.createNodeUrl; 
         return this.http.post(url, node).pipe(catchError(this.handleError));
     }
     

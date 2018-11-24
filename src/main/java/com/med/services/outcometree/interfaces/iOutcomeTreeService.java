@@ -13,4 +13,5 @@ public interface iOutcomeTreeService {
     OutcomeTree getNode(String id);
     OutcomeTree createNode(OutcomeTree node);
     OutcomeTree updateNode(OutcomeTree node);
+    Boolean deleteNode(String id);
 }

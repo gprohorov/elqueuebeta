@@ -1,0 +1,25 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Назва</div>
+            </div>
+	        <input type="text" class="form-control" name="name"
+	        	[(ngModel)]="node.name" #name="ngModel" required />
+       	</div>
+        <div *ngIf="f.submitted && !name.valid"
+        	class="help-block text-danger">Поле обов`язкове</div>
+        <div class="input-group mt-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Категорія</div>
+            </div>
+	        <select class="form-control" name="catID" [(ngModel)]="node.catID"
+                #catID="ngModel" required>
+                <option *ngFor="let cat of categories" [ngValue]="cat.id">
+                    {{cat.name}}</option>
+            </select>
+       	</div>
+        <div *ngIf="f.submitted && !catID.valid"
+        	class="help-block text-danger">Поле обов`язкове</div>
+    </div>
+</form>
