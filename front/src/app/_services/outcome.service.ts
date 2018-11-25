@@ -10,6 +10,7 @@ export class OutcomeService {
 
     private getOutcomeTreeUrl = config.api_path + '/outcome/gettree';
     private getOutcomeTreeSumUrl = config.api_path + '/outcome/gettree-sum/';
+    private getItemListUrl = config.api_path + '/outcome/list/';
     private createNodeUrl = config.api_path + '/outcome/createnode/';
     private updateNodeUrl = config.api_path + '/outcome/updatenode/';
     private deleteNodeUrl = config.api_path + '/outcome/deletenode/';
@@ -32,6 +33,11 @@ export class OutcomeService {
     
     deleteNode(id: string) {
         return this.http.get(this.deleteNodeUrl + id).pipe(catchError(this.handleError));
+    }
+    
+    getItemList(id: string, from: string, to: string) {
+        return this.http.get(this.getItemListUrl + id + '/' + from + '/' + to)
+            .pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

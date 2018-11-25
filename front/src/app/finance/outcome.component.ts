@@ -1,4 +1,5 @@
 ﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
@@ -17,9 +18,12 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
     
     sub: Subscription;
     subDelete: Subscription;
+    subItemList: Subscription;
     subSettings: Subscription;
     
     data: any;
+    totlalSum = 0;
+    itemsCache: any = {};
     settings: any;
     from: string;
     to: string;
@@ -33,7 +37,7 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.loading = false;
+        this.loading = true;
         this.from = new Date().toISOString().split('T').shift();
         this.to = new Date().toISOString().split('T').shift();
         this.subSettings = this.settingsService.get().subscribe(
@@ -50,14 +54,23 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subDelete) this.subDelete.unsubscribe();
+        if (this.subItemList) this.subItemList.unsubscribe();
         if (this.subSettings) this.subSettings.unsubscribe();
     }
 
     load() {
+        this.loading = true;
+        this.totlalSum = 0;
         this.data = [];
+        this.itemsCache = {};
         this.sub = this.service.getOutcomeTreeSum(this.from, this.to).subscribe(
             data => {
                 this.data = data;
+                this.data.forEach(x => {
+                    if (!x.catID) {
+                        this.totlalSum += x.sum;
+                    }
+                });
                 this.loading = false;
             },
             error => {
@@ -76,6 +89,35 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
     
     isLocked(id: string) {
         return id == this.settings.extractionItemId || id == this.settings.salaryItemId;
+    }
+    
+    public toggleAccordian( props:NgbPanelChangeEvent ): void {
+        if (props.nextState) {
+            this.loading = true;
+            this.itemsCache[props.panelId] = [];
+            this.subItemList = this.service.getItemList(props.panelId, this.from, this.to).subscribe(
+                data => {
+                    this.itemsCache[props.panelId] = data;
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error('Помилка на сервері', false);
+                    this.loading = false;
+                });
+        }
+        /*
+        props.nextState // true === panel is toggling to an open state 
+                                   // false === panel is toggling to a closed state
+        props.panelId    // the ID of the panel that was clicked
+        props.preventDefault(); // don't toggle the state of the selected panel
+        */
+    }
+    
+    public toggleCategory( props:NgbPanelChangeEvent ): void {
+        if (props.nextState && !props.panelId) {
+            props.panelId = null;
+            this.toggleAccordian(props);
+        }
     }
     
     showCreateCategory() {

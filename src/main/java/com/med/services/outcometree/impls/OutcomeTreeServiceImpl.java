@@ -5,11 +5,16 @@ import com.med.model.OutcomeTree;
 import com.med.model.OutcomeTreeSum;
 import com.med.repository.outcometree.OutcomeTreeRepository;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
+import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.outcometree.interfaces.iOutcomeTreeService;
+import com.med.services.patient.Impls.PatientServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Size;
+
+import java.awt.Window.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +33,12 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
 
     @Autowired
     CashBoxServiceImpl cashBoxService;
+    
+    @Autowired
+    DoctorServiceImpl doctorService;
+    
+    @Autowired
+    PatientServiceImpl patientService;
 
     @Override
     public List<OutcomeTree> getTree() {
@@ -122,13 +133,22 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     }
     
     public List<CashBox> getOutcomeListOfItem(String itemId, LocalDate from, LocalDate to) {
-    	
     	// TODO: Make it By MongoRepository
-    	return cashBoxService.getAll().stream()
-    			.filter(cash->cash.getItemId().equals(itemId))
-    			.filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-    			.filter(cash->cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
-    			.collect(Collectors.toList());
+    	List<CashBox> list = cashBoxService.getAll().stream()
+			.filter(cash -> itemId.equals("null") ? cash.getItemId() == null : itemId.equals(cash.getItemId()) )
+			.filter(cash -> cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+			.filter(cash -> cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+			.collect(Collectors.toList());
+    	list.forEach(item -> {
+    		if (item.getDoctorId() > 0) {
+    			item.setDoctor( doctorService.getDoctor( item.getDoctorId() ).getFullName() );
+    		}
+    		if (item.getPatientId() != null) {
+    			item.setPatient( 
+					patientService.getPatient( item.getPatientId() ).getPerson().getFullName() );
+    		}
+    	});
+    	return list;
     }
 
     private Boolean _isCategory(String id) {

@@ -23,12 +23,12 @@
         	[disabled]="loading" (click)="load()" title="Обновити"></button>
     </div>
 </div>
-
-<ngb-accordion>
-	<ngb-panel *ngFor="let cat of data">
-		<ng-template ngbPanelTitle>
-			<span class="pull-right">
-				<button class="btn btn-light mr-5">{{cat.sum}} грн.</button>
+<div *ngIf="data && data.length > 0">
+	<h5 class="text-right">Всього: {{totlalSum}} грн.</h5>
+	<ngb-accordion (panelChange)="toggleCategory($event)" [destroyOnHide]="false">
+		<ngb-panel *ngFor="let cat of data" id="{{cat.id}}">
+			<ng-template ngbPanelTitle>
+				<button class="btn btn-light mr-5">{{cat.name}}</button>
 				<button class="btn btn-danger"
 					(click)="showDeleteCategory(cat.id)" *ngIf="!isLockedCategory(cat.id)">
 					<i class="fa fa-trash" aria-hidden="true" title="Видалити категорію"></i>
@@ -40,31 +40,70 @@
 					<i class="fa fa-plus" aria-hidden="true"
 						title="Добавити статтю витрат в категорію"></i>
 				</button>
-			</span>
-			<button class="btn btn-light">{{cat.name}}</button>
-		</ng-template>
-		<ng-template ngbPanelContent>
-			<ngb-accordion *ngIf="cat.id">
-				<ngb-panel *ngFor="let item of cat.items">
-					<ng-template ngbPanelTitle>
-						<span class="pull-right">
-							<button class="btn btn-light mr-5">{{item.sum}} грн.</button>
+				<button class="btn btn-light pull-right">{{cat.sum}} грн.</button>
+			</ng-template>
+			<ng-template ngbPanelContent>
+				<ngb-accordion *ngIf="cat.id" (panelChange)="toggleAccordian($event)">
+					<ngb-panel *ngFor="let item of cat.items" id="{{item.id}}">
+						<ng-template ngbPanelTitle>
+							<button class="btn btn-light mr-5">{{item.name}}</button>
 							<button class="btn btn-danger"
 								(click)="showDeleteItem(item.id)" *ngIf="!isLocked(item.id)">
-								<i class="fa fa-trash" aria-hidden="true" title="Видалити статтю витрат"></i>
+								<i class="fa fa-trash" aria-hidden="true"
+									title="Видалити статтю витрат"></i>
 							</button>
 							<button class="btn btn-primary"
 								(click)="showUpdateItem(item)" *ngIf="!isLocked(item.id)">
-								<i class="fa fa-pencil" aria-hidden="true" title="Редагувати статтю витрат"></i>
+								<i class="fa fa-pencil" aria-hidden="true"
+									title="Редагувати статтю витрат"></i>
 							</button>
-						</span>
-						<button class="btn btn-light">{{item.name}}</button>
-					</ng-template>
-					<ng-template ngbPanelContent>
-						Список витрат по статті витрат "{{item.name}}"...
-					</ng-template>
-				</ngb-panel>
-			</ngb-accordion>
-		</ng-template>
-	</ngb-panel>
-</ngb-accordion>
+							<button class="btn btn-light pull-right">{{item.sum}} грн.</button>
+						</ng-template>
+						<ng-template ngbPanelContent>
+							<div class="content table-responsive table-full-width table-sm">
+							    <table class="table table-bordered">
+							        <thead class="thead-dark">
+							            <tr class="text-center">
+							                <th>Дата</th>
+							                <th>Фігурант</th>
+							                <th>Коментар</th>
+							                <th>Сума</th>
+							            </tr>
+							        </thead>
+							        <tbody *ngIf="itemsCache[item.id] && itemsCache[item.id].length > 0">
+							            <tr *ngFor="let i of itemsCache[item.id]">
+							                <td>{{i.dateTime | date: "dd.MM.yyyy HH:mm:ss"}}</td>
+							                <td>{{i.doctor}} {{i.patient}}</td>
+							                <td>{{i.desc}}</td>
+							                <td class="text-right text-nowrap">{{i.sum}} грн.</td>
+							            </tr>
+							        </tbody>
+							    </table>
+							</div>
+						</ng-template>
+					</ngb-panel>
+				</ngb-accordion>
+				<div *ngIf="!cat.id" class="content table-responsive table-full-width table-sm">
+				    <table class="table table-bordered">
+				        <thead class="thead-dark">
+				            <tr class="text-center">
+				                <th>Дата</th>
+				                <th>Фігурант</th>
+				                <th>Коментар</th>
+				                <th>Сума</th>
+				            </tr>
+				        </thead>
+				        <tbody *ngIf="itemsCache.null && itemsCache.null.length > 0">
+				            <tr *ngFor="let i of itemsCache.null">
+				                <td>{{i.dateTime | date: "dd.MM.yyyy HH:mm:ss"}}</td>
+				                <td>{{i.doctor}} {{i.patient}}</td>
+				                <td>{{i.desc}}</td>
+				                <td class="text-right text-nowrap">{{i.sum}} грн.</td>
+				            </tr>
+				        </tbody>
+				    </table>
+				</div>
+			</ng-template>
+		</ngb-panel>
+	</ngb-accordion>
+</div>

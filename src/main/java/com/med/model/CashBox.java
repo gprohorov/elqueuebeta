@@ -1,8 +1,10 @@
 package com.med.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
+
 import java.time.LocalDateTime;
 
 /**
@@ -20,6 +22,11 @@ public class CashBox {
     private String itemId;
     private String desc;
     private int sum;
+    @Transient
+    private String doctor;
+    @Transient
+    private String patient;
+    
 
     public CashBox(LocalDateTime dateTime, String patientId, int doctorId, String desc, int sum) {
         this.dateTime = dateTime;
@@ -117,4 +124,22 @@ public class CashBox {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
+
+	public String getPatient() {
+		return patient;
+	}
+
+	public void setPatient(String patient) {
+		this.patient = patient;
+	}
+    
+    
 }
