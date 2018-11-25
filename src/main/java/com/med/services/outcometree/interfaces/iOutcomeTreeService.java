@@ -1,7 +1,6 @@
 package com.med.services.outcometree.interfaces;
 
 import com.med.model.OutcomeTree;
-import com.med.repository.outcometree.OutcomeTreeRepository;
 
 import java.util.List;
 

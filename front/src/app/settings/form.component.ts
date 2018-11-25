@@ -13,6 +13,8 @@ export class SettingsFormComponent implements OnInit, OnDestroy {
 
     model = {
         tax: 0,
+        canteen: 0,
+        extractionItemId: 'other',
         salaryItemId: 'other'
     };
     outcomeItems: any;
@@ -28,7 +30,7 @@ export class SettingsFormComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-//        this.load();
+        this.load();
         this.subOutcomeItems = this.outcomeService.getOutcomeTree()
         .subscribe(data => { 
             this.outcomeItems = data.filter(x => x.id != null );
@@ -44,6 +46,8 @@ export class SettingsFormComponent implements OnInit, OnDestroy {
         this.sub = this.settingsService.get().subscribe(
             data => {
                 this.model = data;
+                if (this.model.salaryItemId == null) this.model.salaryItemId = 'other'; 
+                if (this.model.extractionItemId == null) this.model.extractionItemId = 'other';
                 this.loading = false;
             },
             error => {
@@ -55,10 +59,11 @@ export class SettingsFormComponent implements OnInit, OnDestroy {
     submit() {
         this.loading = true;
         if (this.model.salaryItemId === 'other') this.model.salaryItemId = null; 
+        if (this.model.extractionItemId === 'other') this.model.extractionItemId = null; 
         this.settingsService.update(this.model).subscribe(
             () => {
-                this.alertService.success('Зміни збережено.', true);
-                this.router.navigate(['/']);
+                this.alertService.success('Налаштування збережено.', true);
+                this.loading = false;
             },
             error => {
                 this.alertService.error(error);
