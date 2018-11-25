@@ -17,6 +17,7 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
+    SettingsService,
     SortService,
     PatientService,
     DoctorService,
@@ -34,6 +35,8 @@ import {
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
+
+import { SettingsFormComponent } from './settings/form.component';
 
 import { HotelMainComponent } from './hotel/main.component';
 
@@ -124,6 +127,12 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
+    {
+        path: 'settings', component: SettingsFormComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -277,6 +286,7 @@ const appRoutes: Routes = [
         SortableTableDirective,
         SortableColumnComponent,
         LoginComponent,
+        SettingsFormComponent,
         NavComponent,
         HotelMainComponent,
         PatientIncomeModalComponent,
@@ -322,6 +332,7 @@ const appRoutes: Routes = [
         AuthService,
         TokenStorage,
         UserStorage,
+        SettingsService,
         SortService,
         PatientService,
         DoctorService,
