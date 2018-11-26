@@ -76,7 +76,7 @@ export class KassaAddOutcomeModalComponent implements IModalDialog {
                 } else {
                     this.alertService.error('Помилка видачі: ' + resp.message);
                 }
-            }
+            },
             error => {
                 this.alertService.error('Помилка видачі: ' + error.message);
             });
