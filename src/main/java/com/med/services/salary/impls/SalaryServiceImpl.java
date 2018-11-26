@@ -7,6 +7,7 @@ import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
 import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+import com.med.services.settings.impls.SettingsServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -48,6 +49,9 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @Autowired
     SalaryDTOServiceImpl salaryDTOService;
+    
+    @Autowired
+    SettingsServiceImpl settingsService;
 
     @PostConstruct
     void init() {
@@ -254,8 +258,17 @@ public class SalaryServiceImpl implements ISalaryService {
 
     // выдача зарплаты : отметка в ведомости и в кассе
     public Response paySalary(Salary salary){
+    	
+    	Response response = new Response(false, "");
 
-        Response response = new Response(true,"");
+    	Settings settings = settingsService.get();
+    	String salaryItemId = settings.getSalaryItemId();
+    	if (salaryItemId == null || salaryItemId == "null" || salaryItemId.isEmpty()) {
+    		response.setStatus(false);
+    		response.setMessage("Не налаштована стаття витрат для обліку зарплати.");
+    		return response;
+    	}
+    	
         SalaryDTO dto = salaryDTOService.getAll().stream()
                 .filter(el->el.getClosed()==null)
                 .filter(el->el.getDoctorId()==salary.getDoctorId())
@@ -285,12 +298,13 @@ public class SalaryServiceImpl implements ISalaryService {
                 , CashType.SALLARY
                 ," з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
                 , -1*salary.getSum());
-       // cashBox.setType(CashType.SALLARY);
+        cashBox.setItemId(salaryItemId);
         cashBoxService.saveCash(cashBox);
 
         this.createSalary(salary);
         dto.setRecd(dto.getRecd()+salary.getSum());
         salaryDTOService.updateSalaryDTO(dto);
+        response.setStatus(true);
         return response;
     }
 
