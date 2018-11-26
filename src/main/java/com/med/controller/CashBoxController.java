@@ -30,13 +30,13 @@ public class CashBoxController {
         return service.getCashBox();
     }
 
-    @RequestMapping("/tozero/{suma}")
-    public CashBox setKassaToZero(@PathVariable(value = "suma")  int suma) {
-        return service.toZero(suma);
+    @RequestMapping("/tozero/{sum}")
+    public Response setKassaToZero(@PathVariable(value = "sum")  int sum) {
+        return service.toZero(sum);
     }
 
     @RequestMapping("/create")
-    public CashBox createCash(@Valid @RequestBody CashBox cash) {
+    public Response createCash(@Valid @RequestBody CashBox cash) {
         return service.saveCash(cash);
     }
 

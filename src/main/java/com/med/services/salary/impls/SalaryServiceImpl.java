@@ -247,26 +247,23 @@ public class SalaryServiceImpl implements ISalaryService {
     // начисление бонусов всем врачам
     public List<Salary> createWeekBonus(){
         List<Salary> list = new ArrayList<>();
-
         doctorService.getAll().stream().forEach(doctor -> {
-
            list.add( this.createWeekBonusesForDoctor(doctor.getId()));
         });
-
         return repository.saveAll(list);
     }
 
     // выдача зарплаты : отметка в ведомости и в кассе
-    public Response paySalary(Salary salary){
+    public Response paySalary(Salary salary) {
     	
-    	Response response = new Response(false, "");
-
+    	if (salary.getSum() > cashBoxService.getCashBox()) {
+    		return new Response(false, "В касі не вистачає коштів.");
+    	}
+    	
     	Settings settings = settingsService.get();
     	String salaryItemId = settings.getSalaryItemId();
     	if (salaryItemId == null || salaryItemId == "null" || salaryItemId.isEmpty()) {
-    		response.setStatus(false);
-    		response.setMessage("Не налаштована стаття витрат для обліку зарплати.");
-    		return response;
+    		return new Response(false, "Не налаштована стаття витрат для обліку зарплати.");
     	}
     	
         SalaryDTO dto = salaryDTOService.getAll().stream()
@@ -276,15 +273,10 @@ public class SalaryServiceImpl implements ISalaryService {
 
         int rest = dto.getActual();
         int sum = salary.getSum();
-       // int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
         int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
 
-       // System.out.println("rest = "+ rest +" kredit = " + kredit +"  suma = "+sum);
-
-        if (sum>rest+kredit) {
-            response.setStatus(false);
-            response.setMessage("Брак коштів");
-            return response;
+        if (sum > rest+kredit) {
+            return new Response(false, "Перевищено ліміт нарахованих грошей.");
         }
 
         salary.setDateTime(LocalDateTime.now());
@@ -304,10 +296,9 @@ public class SalaryServiceImpl implements ISalaryService {
         this.createSalary(salary);
         dto.setRecd(dto.getRecd()+salary.getSum());
         salaryDTOService.updateSalaryDTO(dto);
-        response.setStatus(true);
-        return response;
+        
+        return new Response(true, "");
     }
-
 
     // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
     // со всеми ставками, бонусами и тд
