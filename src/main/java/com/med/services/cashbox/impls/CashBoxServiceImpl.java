@@ -89,7 +89,8 @@ public class CashBoxServiceImpl implements ICashBoxService {
     		return new Response(false, "Не налаштована стаття витрат для обліку здачі каси.");
     	}
         CashBox cashBox =
-                new CashBox(LocalDateTime.now(), null, 1, "Кассу знято на " + sum, -1*sum);
+                new CashBox(LocalDateTime.now(), null, 1, 
+                		(sum < 0 ? "Касу знято" : "Внесено в касу"), -1*sum);
         cashBox.setType(CashType.EXTRACTION);
         cashBox.setItemId(extractionItemId);
         Salary salary = new Salary(1, LocalDateTime.now(), SalaryType.EXTRACTION, sum);
@@ -97,7 +98,15 @@ public class CashBoxServiceImpl implements ICashBoxService {
         repository.save(cashBox);
         return new Response(true, "");
     }
+    
+    public List<CashBox> findByItemId(String id) {
+    	return repository.findByItemId(id);
+    }
 
+    public void saveAll(List<CashBox> list) {
+    	repository.saveAll(list);
+    }
+    
     //-------------------------------- 18 nov
     // report input/output cash from kassa in details
     public CurrentReport getCurrentReportDetails() {

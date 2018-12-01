@@ -89,14 +89,25 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
     		items.stream().forEach(item -> {
 
-    			// TODO: update CashBox rows here ...
+    			List<CashBox> cbl = cashBoxService.findByItemId(item.getId());
+    			cbl.stream().forEach(cb -> {
+    				cb.setItemId(null);
+    				cb.setDesc(cb.getDesc() + " (Було: " + node.getName() + " -> " + item.getName() + ")");
+				});
+    			cashBoxService.saveAll(cbl);
     			
     			repository.delete(item);
     		}); 
     	} else {
-    		// TODO: update CashBox rows here ...
+    		OutcomeTree cat = this.getNode(node.getCatID());
+    		List<CashBox> cbl = cashBoxService.findByItemId(id);
+    		cbl.stream().forEach(cb -> {
+				cb.setItemId(null);
+				cb.setDesc(cb.getDesc() + " (Було: " + cat.getName() + " -> " + node.getName() + ")");
+			});
+			cashBoxService.saveAll(cbl);
     	}
-        repository.delete(node);
+    	repository.delete(node);
         return true;
     }
     
