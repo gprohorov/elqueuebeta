@@ -44,4 +44,7 @@ public class CashBoxController {
     public CurrentReport getReportDetail() {
         return service.getCurrentReportDetails();
     }
+
+
+
 }

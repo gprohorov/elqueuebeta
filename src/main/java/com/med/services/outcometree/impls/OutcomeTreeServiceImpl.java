@@ -135,10 +135,11 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     public List<CashBox> getOutcomeListOfItem(String itemId, LocalDate from, LocalDate to) {
     	// TODO: Make it By MongoRepository
     	List<CashBox> list = cashBoxService.getAll().stream()
+				.filter(cash -> cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+				.filter(cash -> cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+				.filter(cash -> cash.getSum() < 0 )
 			.filter(cash -> itemId.equals("null") ? cash.getItemId() == null : itemId.equals(cash.getItemId()) )
-			.filter(cash -> cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-			.filter(cash -> cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
-			.collect(Collectors.toList());
+				.collect(Collectors.toList());
     	list.forEach(item -> {
     		if (item.getDoctorId() > 0) {
     			item.setDoctor( doctorService.getDoctor( item.getDoctorId() ).getFullName() );
