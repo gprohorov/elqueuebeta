@@ -90,7 +90,7 @@ public class CashBoxServiceImpl implements ICashBoxService {
     	}
         CashBox cashBox =
                 new CashBox(LocalDateTime.now(), null, 1, 
-                		(sum < 0 ? "Касу знято" : "Внесено в касу"), -1*sum);
+                		(sum > 0 ? "Касу знято" : "Внесено в касу"), -1*sum);
         cashBox.setType(CashType.EXTRACTION);
         cashBox.setItemId(extractionItemId);
         Salary salary = new Salary(1, LocalDateTime.now(), SalaryType.EXTRACTION, sum);
