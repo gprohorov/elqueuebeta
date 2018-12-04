@@ -1,7 +1,9 @@
 package com.med.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
@@ -16,8 +18,15 @@ public class CashBox {
     private String patientId;
     private int doctorId;
     private CashType type;
+    @Nullable
+    private String itemId;
     private String desc;
     private int sum;
+    @Transient
+    private String doctor;
+    @Transient
+    private String patient;
+    
 
     public CashBox(LocalDateTime dateTime, String patientId, int doctorId, String desc, int sum) {
         this.dateTime = dateTime;
@@ -35,7 +44,14 @@ public class CashBox {
         this.desc = desc;
         this.sum = sum;
     }
-    
+
+    public CashBox(int doctorId, String itemId, String desc, int sum) {
+        this.doctorId = doctorId;
+        this.itemId = itemId;
+        this.desc = desc;
+        this.sum = sum;
+    }
+
     public CashBox(CashType type, String desc, int sum) {
     	this.type = type;
     	this.desc = desc;
@@ -81,6 +97,14 @@ public class CashBox {
         return type;
     }
 
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
     public void setType(CashType type) {
         this.type = type;
     }
@@ -100,4 +124,22 @@ public class CashBox {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
+
+	public String getPatient() {
+		return patient;
+	}
+
+	public void setPatient(String patient) {
+		this.patient = patient;
+	}
+    
+    
 }

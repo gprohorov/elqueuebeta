@@ -17,7 +17,7 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
-    UtilService,
+    SettingsService,
     SortService,
     PatientService,
     DoctorService,
@@ -28,12 +28,15 @@ import {
     WorkplaceCommonService,
     WorkplaceDiagnosticService,
     HotelService,
-    FinanceService
+    FinanceService,
+    OutcomeService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
+
+import { SettingsFormComponent } from './settings/form.component';
 
 import { HotelMainComponent } from './hotel/main.component';
 
@@ -71,12 +74,15 @@ import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
-import { FinanceKassaOutcomeComponent } from './finance/kassa-outcome.component';
 import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
 import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal.component';
+
+import { FinanceOutcomeComponent } from './finance/outcome.component';
+import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
+import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
 
 import {
     WorkplaceMainComponent,
@@ -120,6 +126,12 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
     },
 
+    {
+        path: 'settings', component: SettingsFormComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+    },
+    
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -211,7 +223,7 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
     {
-        path: 'finance/kassa-outcome', component: FinanceKassaOutcomeComponent,
+        path: 'finance/outcome', component: FinanceOutcomeComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
     },
@@ -268,6 +280,7 @@ const appRoutes: Routes = [
         SortableTableDirective,
         SortableColumnComponent,
         LoginComponent,
+        SettingsFormComponent,
         NavComponent,
         HotelMainComponent,
         PatientIncomeModalComponent,
@@ -296,12 +309,14 @@ const appRoutes: Routes = [
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
-        FinanceKassaOutcomeComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
-        KassaAddOutcomeModalComponent
+        KassaAddOutcomeModalComponent,
+        FinanceOutcomeComponent,
+        FinanceOutcomeCategoryModalComponent,
+        FinanceOutcomeItemModalComponent
     ],
     providers: [
         AuthGuard,
@@ -310,7 +325,7 @@ const appRoutes: Routes = [
         AuthService,
         TokenStorage,
         UserStorage,
-        UtilService,
+        SettingsService,
         SortService,
         PatientService,
         DoctorService,
@@ -322,6 +337,7 @@ const appRoutes: Routes = [
         WorkplaceDiagnosticService,
         HotelService,
         FinanceService,
+        OutcomeService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [
@@ -334,7 +350,9 @@ const appRoutes: Routes = [
         DoctorSalaryHistoryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
-        KassaAddOutcomeModalComponent
+        KassaAddOutcomeModalComponent,
+        FinanceOutcomeCategoryModalComponent,
+        FinanceOutcomeItemModalComponent        
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

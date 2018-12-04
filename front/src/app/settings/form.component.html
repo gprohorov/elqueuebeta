@@ -1,0 +1,45 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row justify-content-md-center">
+    <div class="col-6">
+        <h2>Загальні налаштування</h2>
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !tax.valid }">
+                <label for="tax">Ставка податку в місяць (грн.)</label> 
+                <input type="number" class="form-control" name="tax" 
+                	[(ngModel)]="model.tax" #tax="ngModel" required />
+                <div *ngIf="f.submitted && !tax.valid" class="help-block">Поле обов`язкове</div>
+                <label for="canteen">Харчування лікарям в день (грн.)</label> 
+                <input type="number" class="form-control" name="canteen" 
+                	[(ngModel)]="model.canteen" #canteen="ngModel" required />
+                <div *ngIf="f.submitted && !canteen.valid" class="help-block">Поле обов`язкове</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !extractionItemId.valid }">
+                <label for="extractionItemId">Стаття витрат для обліку здачі каси</label> 
+                <select class="form-control" name="extractionItemId" [(ngModel)]="model.extractionItemId"
+	                #extractionItemId="ngModel" required>
+	                <optgroup *ngFor="let cat of outcomeItems" label="{{cat.name}}">
+		                <option *ngFor="let item of cat.items" [ngValue]="item.id">{{item.name}}</option>
+	                </optgroup>
+	                <option value="other">ІНШЕ (спеціальна категорія)</option>
+	            </select>
+                <div *ngIf="f.submitted && !extractionItemId.valid" class="help-block">Поле обов`язкове</div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !salaryItemId.valid }">
+                <label for="salaryItemId">Стаття витрат для обліку видачі зарплати</label> 
+                <select class="form-control" name="salaryItemId" [(ngModel)]="model.salaryItemId"
+	                #salaryItemId="ngModel" required>
+	                <optgroup *ngFor="let cat of outcomeItems" label="{{cat.name}}">
+		                <option *ngFor="let item of cat.items" [ngValue]="item.id">{{item.name}}</option>
+	                </optgroup>
+	                <option value="other">ІНШЕ (спеціальна категорія)</option>
+	            </select>
+                <div *ngIf="f.submitted && !salaryItemId.valid" class="help-block">Поле обов`язкове</div>
+            </div>
+            <div class="form-group mt-5">
+                <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+                <button [routerLink]="['/']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
+            </div>
+        </form>
+    </div>
+</div>

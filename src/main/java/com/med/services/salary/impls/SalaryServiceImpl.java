@@ -7,6 +7,7 @@ import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.interfaces.ISalaryService;
 import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+import com.med.services.settings.impls.SettingsServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -48,6 +49,9 @@ public class SalaryServiceImpl implements ISalaryService {
 
     @Autowired
     SalaryDTOServiceImpl salaryDTOService;
+    
+    @Autowired
+    SettingsServiceImpl settingsService;
 
     @PostConstruct
     void init() {
@@ -135,7 +139,7 @@ public class SalaryServiceImpl implements ISalaryService {
 
     // возвращает по доктору все его подробности по зарплате,
     // т.е строку зарплатной ведомости
-    //Depricated
+    //Depricated, see SalaryDTOService.generateRowOfDoctor
     @Override
     public SalaryDTO getSalaryByDoctor(int doctorId) {
 
@@ -243,19 +247,25 @@ public class SalaryServiceImpl implements ISalaryService {
     // начисление бонусов всем врачам
     public List<Salary> createWeekBonus(){
         List<Salary> list = new ArrayList<>();
-
         doctorService.getAll().stream().forEach(doctor -> {
-
            list.add( this.createWeekBonusesForDoctor(doctor.getId()));
         });
-
         return repository.saveAll(list);
     }
 
     // выдача зарплаты : отметка в ведомости и в кассе
-    public Response paySalary(Salary salary){
-
-        Response response = new Response(true,"");
+    public Response paySalary(Salary salary) {
+    	
+    	if (salary.getSum() > cashBoxService.getCashBox()) {
+    		return new Response(false, "В касі не вистачає коштів.");
+    	}
+    	
+    	Settings settings = settingsService.get();
+    	String salaryItemId = settings.getSalaryItemId();
+    	if (salaryItemId == null || salaryItemId == "null" || salaryItemId.isEmpty()) {
+    		return new Response(false, "Не налаштована стаття витрат для обліку зарплати.");
+    	}
+    	
         SalaryDTO dto = salaryDTOService.getAll().stream()
                 .filter(el->el.getClosed()==null)
                 .filter(el->el.getDoctorId()==salary.getDoctorId())
@@ -263,13 +273,10 @@ public class SalaryServiceImpl implements ISalaryService {
 
         int rest = dto.getActual();
         int sum = salary.getSum();
-       // int rest = this.getSalaryByDoctor(salary.getDoctorId()).getActual();
         int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
 
-        if (sum>rest+kredit) {
-            response.setStatus(false);
-            response.setMessage("Брак коштів");
-            return response;
+        if (sum > rest+kredit) {
+            return new Response(false, "Перевищено ліміт нарахованих грошей.");
         }
 
         salary.setDateTime(LocalDateTime.now());
@@ -281,17 +288,17 @@ public class SalaryServiceImpl implements ISalaryService {
                 , null
                 , salary.getDoctorId()
                 , CashType.SALLARY
-                ,null
+                ," з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
                 , -1*salary.getSum());
-       // cashBox.setType(CashType.SALLARY);
+        cashBox.setItemId(salaryItemId);
         cashBoxService.saveCash(cashBox);
 
         this.createSalary(salary);
         dto.setRecd(dto.getRecd()+salary.getSum());
         salaryDTOService.updateSalaryDTO(dto);
-        return response;
+        
+        return new Response(true, "");
     }
-
 
     // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
     // со всеми ставками, бонусами и тд

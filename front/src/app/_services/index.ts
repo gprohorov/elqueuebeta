@@ -1,6 +1,6 @@
 ﻿export * from './alert.service';
 export * from './auth.service';
-export * from './util.service';
+export * from './settings.service';
 export * from './sort.service';
 
 export * from './patient.service';
@@ -14,5 +14,5 @@ export * from './workplace/common.service';
 export * from './workplace/diagnostic.service';
 
 export * from './hotel.service';
-
 export * from './finance.service';
+export * from './outcome.service';

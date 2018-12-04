@@ -272,6 +272,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 
         int stavka = this.generateStavkaForDoctor(doctor,dto.getDays(),dto.getHours());
         dto.setStavka(stavka);
+        dto.setKredit(doctor.getKredit());
 
         LocalDate from = dto.getFrom();
         LocalDate to = dto.getTo();
@@ -291,6 +292,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     // суммируем данные по зарплате по врачу за период,
     // например, за месяц. А то у нас по неделям.
     // Период пока не указан. По умолч. с 29.10 по настоящее время
+    //
     public SalaryDTO getDoctorSummarySalary(int doctorId){
         SalaryDTO dto = new SalaryDTO();
 

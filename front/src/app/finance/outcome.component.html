@@ -1,0 +1,109 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="row mb-2">
+	<div class="col-auto"><h4>Витрати</h4></div>
+	<div class="col">
+		<button class="btn btn-success" (click)="showCreateCategory()">Створити категорію</button>
+	</div>
+	<div class="col-auto mr-2">
+	   	<div class="input-group" [style.width.px]="200">
+	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+	</div>
+	<div class="col-auto">
+	    <div class="input-group" [style.width.px]="210">
+	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
+	        	(change)="load()" [disabled]="loading" />
+	    </div>
+    </div>
+    <div class="col-auto">
+    	<button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        	[disabled]="loading" (click)="load()" title="Обновити"></button>
+    </div>
+</div>
+<div *ngIf="data && data.length > 0">
+	<h5 class="text-right">Всього: {{totlalSum}} грн.</h5>
+	<ngb-accordion (panelChange)="toggleCategory($event)" [destroyOnHide]="false">
+		<ngb-panel *ngFor="let cat of data" id="{{cat.id}}">
+			<ng-template ngbPanelTitle>
+				<button class="btn btn-light mr-5">{{cat.name}}</button>
+				<button class="btn btn-danger"
+					(click)="showDeleteCategory(cat.id)" *ngIf="!isLockedCategory(cat.id)">
+					<i class="fa fa-trash" aria-hidden="true" title="Видалити категорію"></i>
+				</button>
+				<button class="btn btn-primary" (click)="showUpdateCategory(cat)" *ngIf="cat.id">
+					<i class="fa fa-pencil" aria-hidden="true" title="Редагувати категорію"></i>
+				</button>
+				<button class="btn btn-success" (click)="showCreateItem(cat.id)" *ngIf="cat.id">
+					<i class="fa fa-plus" aria-hidden="true"
+						title="Добавити статтю витрат в категорію"></i>
+				</button>
+				<button class="btn btn-light pull-right">{{cat.sum}} грн.</button>
+			</ng-template>
+			<ng-template ngbPanelContent>
+				<ngb-accordion *ngIf="cat.id" (panelChange)="toggleAccordian($event)">
+					<ngb-panel *ngFor="let item of cat.items" id="{{item.id}}">
+						<ng-template ngbPanelTitle>
+							<button class="btn btn-light mr-5">{{item.name}}</button>
+							<button class="btn btn-danger"
+								(click)="showDeleteItem(item.id)" *ngIf="!isLocked(item.id)">
+								<i class="fa fa-trash" aria-hidden="true"
+									title="Видалити статтю витрат"></i>
+							</button>
+							<button class="btn btn-primary"
+								(click)="showUpdateItem(item)" *ngIf="!isLocked(item.id)">
+								<i class="fa fa-pencil" aria-hidden="true"
+									title="Редагувати статтю витрат"></i>
+							</button>
+							<button class="btn btn-light pull-right">{{item.sum}} грн.</button>
+						</ng-template>
+						<ng-template ngbPanelContent>
+							<div class="content table-responsive table-full-width table-sm">
+							    <table class="table table-bordered">
+							        <thead class="thead-light">
+							            <tr class="text-center">
+							                <th>Дата</th>
+							                <th>Фігурант</th>
+							                <th>Коментар</th>
+							                <th>Сума</th>
+							            </tr>
+							        </thead>
+							        <tbody *ngIf="itemsCache[item.id] && itemsCache[item.id].length > 0">
+							            <tr *ngFor="let i of itemsCache[item.id]">
+							                <td>{{i.dateTime | date: "dd.MM.yyyy HH:mm:ss"}}</td>
+							                <td>{{i.doctor}} {{i.patient}}</td>
+							                <td>{{i.desc}}</td>
+							                <td class="text-right text-nowrap">{{i.sum}} грн.</td>
+							            </tr>
+							        </tbody>
+							    </table>
+							</div>
+						</ng-template>
+					</ngb-panel>
+				</ngb-accordion>
+				<div *ngIf="!cat.id" class="content table-responsive table-full-width table-sm">
+				    <table class="table table-bordered">
+				        <thead class="thead-light">
+				            <tr class="text-center">
+				                <th>Дата</th>
+				                <th>Фігурант</th>
+				                <th>Коментар</th>
+				                <th>Сума</th>
+				            </tr>
+				        </thead>
+				        <tbody *ngIf="itemsCache.null && itemsCache.null.length > 0">
+				            <tr *ngFor="let i of itemsCache.null">
+				                <td>{{i.dateTime | date: "dd.MM.yyyy HH:mm:ss"}}</td>
+				                <td>{{i.doctor}} {{i.patient}}</td>
+				                <td>{{i.desc}}</td>
+				                <td class="text-right text-nowrap">{{i.sum}} грн.</td>
+				            </tr>
+				        </tbody>
+				    </table>
+				</div>
+			</ng-template>
+		</ngb-panel>
+	</ngb-accordion>
+</div>

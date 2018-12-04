@@ -26,10 +26,13 @@
     <table class="table table-bordered table-sm table-striped">
         <thead class="thead-light">
             <tr [style.font-size.rem]=".9" [style.width.px]="70">
-                <th scope="col" class="text-nowrap">№</th>
-                <th scope="col" *ngFor="let date of dates" [ngClass]="{'text-nowrap': true, 'text-light': true,
+                <th scope="col" class="text-center"><h5>№</h5></th>
+                <th scope="col" *ngFor="let date of dates" [ngClass]="{'text-center': true, 'text-light': true,
                     'bg-danger': date.we && !date.today, 'bg-secondary': !date.we && !date.today, 
-                    'bg-success': date.today}">{{date.str}}</th>
+                    'bg-success': date.today}">
+                    {{date.str.split(',')[0]}}
+                    <h5>{{date.str.split(' ')[1]}}</h5>
+                </th>
             </tr>
         </thead>
         <tbody>

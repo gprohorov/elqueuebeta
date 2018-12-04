@@ -37,9 +37,13 @@ export class KassaTozeroModalComponent implements IModalDialog {
         f.submitted = true;
         if (!f.form.valid) return false;
 
-        this.sub = this.financeService.toZero(this.data.sum).subscribe(() => {
-            this.alertService.success('Видано з каси ' + this.data.sum + ' грн.');
-            options.closeDialogSubject.next();
+        this.sub = this.financeService.toZero(this.data.sum).subscribe(resp => {
+            if (resp && resp.status) {
+                this.alertService.success('Видано з каси ' + this.data.sum + ' грн.');
+                options.closeDialogSubject.next();
+            } else {
+                this.alertService.error('Помилка видачі: ' + resp.message);
+            }
         });
     }
 

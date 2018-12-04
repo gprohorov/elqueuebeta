@@ -5,13 +5,15 @@
             <div class="input-group-prepend">
                 <div class="input-group-text">Стаття витрат</div>
             </div>
-            <select class="form-control" name="type" [(ngModel)]="data.type"
-                #type="ngModel" required>
-                <option *ngFor="let t of cashTypes" [ngValue]="t" title="{{t}}">
-                    {{cashType[t].text}}</option>
+            <select class="form-control" name="itemId" [(ngModel)]="data.itemId"
+                #itemId="ngModel" required>
+                <optgroup *ngFor="let cat of outcomeItems" label="{{cat.name}}">
+	                <option *ngFor="let item of cat.items" [ngValue]="item.id">{{item.name}}</option>
+                </optgroup>
+                <option value="other">ІНШЕ (спеціальна категорія)</option>
             </select>
         </div>
-        <div *ngIf="f.submitted && !type.valid" class="help-block text-danger">Поле
+        <div *ngIf="f.submitted && !itemId.valid" class="help-block text-danger">Поле
             обов`язкове</div>
         <div class="input-group mt-2">
             <div class="input-group-prepend">
