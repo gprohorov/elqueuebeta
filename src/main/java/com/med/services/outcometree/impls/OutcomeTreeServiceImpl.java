@@ -1,6 +1,7 @@
 package com.med.services.outcometree.impls;
 
 import com.med.model.CashBox;
+import com.med.model.CashType;
 import com.med.model.OutcomeTree;
 import com.med.model.OutcomeTreeSum;
 import com.med.repository.outcometree.OutcomeTreeRepository;
@@ -115,7 +116,7 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     	
     	// TODO: Make it By MongoRepository
     	List<CashBox> outcomes = cashBoxService.getAll().stream()
-    			.filter(cash->cash.getSum()<0)
+    			.filter(cash->!cash.getType().equals(CashType.PATIENT))
     			.filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
     			.filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
     			.collect(Collectors.toList());
@@ -148,7 +149,7 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     	List<CashBox> list = cashBoxService.getAll().stream()
 				.filter(cash -> cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
 				.filter(cash -> cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
-				.filter(cash -> cash.getSum() < 0 )
+				.filter(cash->!cash.getType().equals(CashType.PATIENT))
 			.filter(cash -> itemId.equals("null") ? cash.getItemId() == null : itemId.equals(cash.getItemId()) )
 				.collect(Collectors.toList());
     	list.forEach(item -> {

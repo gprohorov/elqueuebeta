@@ -49,6 +49,10 @@ public class CashBoxServiceImpl implements ICashBoxService {
         return repository.findAll();
     }
 
+    public CashBox createCash(CashBox cash) {
+    	return repository.save(cash);
+    }
+    
     @Override
     public Response saveCash(CashBox cash) {
     	if (Math.abs(cash.getSum()) > this.getCashBox()) {

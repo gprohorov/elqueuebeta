@@ -67,7 +67,7 @@ public class AccountingController {
             if (paymentType.equals(PaymentType.CASH)) {
                 CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
                 cash.setType(CashType.PATIENT);
-                cashBoxService.saveCash(cash);
+                cashBoxService.createCash(cash);
             }
         }
 
