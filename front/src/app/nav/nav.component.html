@@ -8,7 +8,50 @@
         <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
             <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти
                 на черзі</a>
-            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_HEAD']">
+            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active"
+                *ngxPermissionsOnly="['ROLE_HEAD']">Список пацієнтів</a>
+        </div>
+        <!-- Doctor interface section END -->
+        <!-- Administrator interface section START -->
+        <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
+            <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Процедури</a>
+            <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти</a>
+            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База пацієнтів</a>
+            <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
+            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
+                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    ngbDropdownToggle>Налаштування</a>
+                <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                    <a class="dropdown-item" routerLink="/settings" 
+                    	routerLinkActive="active">Загальні налаштування</a>
+                    <a class="dropdown-item" routerLink="/doctors" 
+                    	routerLinkActive="active">Список лікарів</a>
+                    <a class="dropdown-item" routerLink="/procedures" 
+                    	routerLinkActive="active">Список процедур</a>
+                </div>
+            </div>
+            <div class="nav-item dropdown" ngbDropdown 
+            	*ngxPermissionsOnly="['ROLE_SUPERADMIN']">
+                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    ngbDropdownToggle>Каса</a>
+                <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                    <button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopup()">
+                    	Видача з каси</button>
+                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">
+                    	Зарплата лікарям</button>
+                    <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()">
+                    	Здача каси</button>
+                </div>
+            </div>
+            <button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopup()"
+            	*ngxPermissionsOnly="['ROLE_ADMIN']">Видача з каси</button>
+            <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()"
+            	*ngxPermissionsOnly="['ROLE_ADMIN']">Зарплата лікарям</button>
+            <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()"
+            	*ngxPermissionsOnly="['ROLE_ADMIN']">Здача каси</button>
+            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
                 <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>Статистика</a>
@@ -36,7 +79,7 @@
                         routerLinkActive="active">Паціенти</a>
                 </div>
             </div>
-            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_HEAD']">
+            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
                 <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>Менеджер витрат</a>
@@ -49,44 +92,8 @@
                         routerLinkActive="active">Витрати</a>
                 </div>
             </div>
-            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active"
-                *ngxPermissionsOnly="['ROLE_HEAD']">Список пацієнтів</a>
-        </div>
-        <!-- Doctor interface section END -->
-        <!-- Administrator interface section START -->
-        <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
-            <a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Процедури</a>
-            <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти</a>
-            <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База пацієнтів</a>
-            <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
-            <div class="nav-item dropdown" ngbDropdown *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
-                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    ngbDropdownToggle>Налаштування</a>
-                <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                    <a class="dropdown-item" routerLink="/settings" 
-                    	routerLinkActive="active">Загальні налаштування</a>
-                    <a class="dropdown-item" routerLink="/doctors" 
-                    	routerLinkActive="active">Список лікарів</a>
-                    <a class="dropdown-item" routerLink="/procedures" 
-                    	routerLinkActive="active">Список процедур</a>
-                </div>
-            </div>
-            <div class="nav-item dropdown" ngbDropdown 
-            	*ngxPermissionsOnly="['ROLE_SUPERADMIN', 'ROLE_ADMIN']">
-                <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    ngbDropdownToggle>Каса</a>
-                <div class="dropdown-menu bg-light" ngbDropdownMenu>
-                    <button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopup()">
-                    	Видача з каси</button>
-                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopup()">
-                    	Зарплата лікарям</button>
-                    <button class="dropdown-item btn btn-primary" (click)="showKassaTozeroPopup()">
-                    	Здача каси</button>
-                </div>
-            </div>
-            <a class="dropdown-item" target="clientwindow" routerLink="/home" routerLinkActive="active">
+            <a class="dropdown-item" target="clientwindow" routerLink="/home"
+            	routerLinkActive="active" *ngxPermissionsOnly="['ROLE_ADMIN']">
             	Вікно клієнта</a>
         </div>
         <!-- Administrator interface section END -->
