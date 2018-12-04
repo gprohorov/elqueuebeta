@@ -61,6 +61,28 @@ public class CashBoxServiceImpl implements ICashBoxService {
         repository.save(cash);
         return new Response(true, "");
     }
+    
+    public Response saveCashSA(CashBox cash) {
+    	
+    	Settings settings = settingsService.get();
+    	String extractionItemId = settings.getExtractionItemId();
+    	if (extractionItemId == null || extractionItemId == "null" || extractionItemId.isEmpty()) {
+    		return new Response(false, "Не налаштована стаття для обліку зняття каси.");
+    	}
+    	
+    	CashBox cashBox = new CashBox(
+    			LocalDateTime.now()
+    			, null
+    			, 1
+    			, CashType.EXTRACTION
+    			, "Поповнення каси"
+    			, -1*cash.getSum());
+    	cashBox.setItemId(extractionItemId);
+    	repository.save(cashBox);
+    	
+    	repository.save(cash);
+    	return new Response(true, "");
+    }
 
     @Override
     public CashBox getCashBox(String id) {

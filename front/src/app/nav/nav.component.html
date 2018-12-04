@@ -84,6 +84,11 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>Менеджер витрат</a>
                 <div class="dropdown-menu bg-light" ngbDropdownMenu>
+                	<button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopupSA()">
+                    	Видача з каси (поза касою)</button>
+                    <button class="dropdown-item btn btn-primary" (click)="showGiveSalaryPopupSA()">
+                    	Зарплата лікарям (поза касою)</button>
+                   	<hr/>
                     <a class="dropdown-item" routerLink="/finance/salary"
                         routerLinkActive="active">Зарплати поточні</a>
                     <a class="dropdown-item" routerLink="/finance/salary-summary"

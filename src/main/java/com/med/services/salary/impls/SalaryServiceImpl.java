@@ -299,6 +299,65 @@ public class SalaryServiceImpl implements ISalaryService {
         
         return new Response(true, "");
     }
+    
+    // выдача зарплаты суперадмином с автоматической проводкой через кассу
+    public Response paySalarySA(Salary salary) {
+
+    	Settings settings = settingsService.get();
+    	String salaryItemId = settings.getSalaryItemId();
+    	if (salaryItemId == null || salaryItemId == "null" || salaryItemId.isEmpty()) {
+    		return new Response(false, "Не налаштована стаття витрат для обліку зарплати.");
+    	}
+    	String extractionItemId = settings.getExtractionItemId();
+    	if (extractionItemId == null || extractionItemId == "null" || extractionItemId.isEmpty()) {
+    		return new Response(false, "Не налаштована стаття для обліку зняття каси.");
+    	}
+    	
+    	SalaryDTO dto = salaryDTOService.getAll().stream()
+    			.filter(el->el.getClosed()==null)
+    			.filter(el->el.getDoctorId()==salary.getDoctorId())
+    			.findAny().orElse(new SalaryDTO());
+    	
+    	int rest = dto.getActual();
+    	int sum = salary.getSum();
+    	int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
+    	
+    	if (sum > rest+kredit) {
+    		return new Response(false, "Перевищено ліміт нарахованих грошей.");
+    	}
+    	
+    	salary.setDateTime(LocalDateTime.now());
+    	salary.setType(SalaryType.BUZUNAR);
+    	
+    	// kassa is up by this salary
+    	CashBox cashBoxUP = new CashBox(
+    			LocalDateTime.now()
+    			, null
+    			, 1
+    			, CashType.EXTRACTION
+    			, "Поповнення каси для видачі з/п " 
+					+ doctorService.getDoctor(salary.getDoctorId()).getFullName()
+    			, salary.getSum());
+    	cashBoxUP.setItemId(extractionItemId);
+    	cashBoxService.saveCash(cashBoxUP);
+    	
+    	// kassa is down by this salary
+    	CashBox cashBox = new CashBox(
+    			LocalDateTime.now()
+    			, null
+    			, salary.getDoctorId()
+    			, CashType.SALLARY
+    			," з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
+    			, -1*salary.getSum());
+    	cashBox.setItemId(salaryItemId);
+    	cashBoxService.saveCash(cashBox);
+    	
+    	this.createSalary(salary);
+    	dto.setRecd(dto.getRecd()+salary.getSum());
+    	salaryDTOService.updateSalaryDTO(dto);
+    	
+    	return new Response(true, "");
+    }
 
     // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
     // со всеми ставками, бонусами и тд

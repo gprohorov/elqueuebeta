@@ -39,6 +39,11 @@ public class CashBoxController {
     public Response createCash(@Valid @RequestBody CashBox cash) {
         return service.saveCash(cash);
     }
+    
+    @RequestMapping("/create-sa")
+    public Response createCashSA(@Valid @RequestBody CashBox cash) {
+    	return service.saveCashSA(cash);
+    }
 
     @RequestMapping("/current/details")
     public CurrentReport getReportDetail() {

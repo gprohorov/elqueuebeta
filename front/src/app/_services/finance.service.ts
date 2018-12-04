@@ -12,10 +12,12 @@ export class FinanceService {
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
     private giveSalaryUrl = config.api_path + '/salary/get';
+    private giveSalarySAUrl = config.api_path + '/salary/get-sa';
     private setSalaryUrl = config.api_path + '/salary/set';
     private kassaUrl = config.api_path + '/cashbox/kassa';
     private tozeroUrl = config.api_path + '/cashbox/tozero/';
     private kassaAddOutcomeUrl = config.api_path + '/cashbox/create';
+    private kassaAddOutcomeSAUrl = config.api_path + '/cashbox/create-sa';
     private kassaOutcomeUrl = config.api_path + '/cashbox/current/details';
 
     constructor(private http: HttpClient) { }
@@ -36,8 +38,14 @@ export class FinanceService {
             + '/' + doctor + '/' + from + '/' + to).pipe(catchError(this.handleError));
     }
 
-    giveSalary(data: any) {
-        return this.http.post(this.giveSalaryUrl, data).pipe(catchError(this.handleError));
+    kassaAddOutcome(data: any, SA: boolean) {
+        return this.http.post(SA ? this.kassaAddOutcomeSAUrl : this.kassaAddOutcomeUrl, data)
+            .pipe(catchError(this.handleError));
+    }
+
+    giveSalary(data: any, SA: boolean) {
+        return this.http.post(SA ? this.giveSalarySAUrl : this.giveSalaryUrl, data)
+            .pipe(catchError(this.handleError));
     }
     
     setSalary(data: any) {
@@ -50,10 +58,6 @@ export class FinanceService {
     
     toZero(sum: number) {
         return this.http.get(this.tozeroUrl + sum).pipe(catchError(this.handleError));
-    }
-
-    kassaAddOutcome(data: any) {
-        return this.http.post(this.kassaAddOutcomeUrl, data).pipe(catchError(this.handleError));
     }
     
     getKassaOutcome() {

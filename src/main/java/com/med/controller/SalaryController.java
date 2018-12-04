@@ -45,24 +45,16 @@ public class SalaryController {
         return service.createWeekSalary();
     }
 
-    // a doctor get a salary into buzunar
+    // a doctor get a salary into buzunar from kasa
     @RequestMapping("/get")
     public Response paySalary(@Valid @RequestBody Salary salary) {
-	/* salary.setDateTime(LocalDateTime.now());
-        salary.setType(SalaryType.BUZUNAR);
-        // kassa is down by this salary
-        cashBoxService.saveCash(new CashBox(
-                LocalDateTime.now()
-                , null
-                , salary.getDoctorId()
-                ,null
-                , -1*salary.getSum()));
-
-        service.createSalary(salary);
-
-        Response response = new Response(true, "");
-    */
         return service.paySalary(salary);
+    }
+    
+    // a doctor get a salary into buzunar from nechay personally
+    @RequestMapping("/get-sa")
+    public Response paySalarySA(@Valid @RequestBody Salary salary) {
+    	return service.paySalarySA(salary);
     }
 
     // i.e. nechay  insert bonus or a penalty

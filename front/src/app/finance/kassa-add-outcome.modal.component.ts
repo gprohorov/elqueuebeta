@@ -69,7 +69,7 @@ export class KassaAddOutcomeModalComponent implements IModalDialog {
             itemId: this.data.itemId == 'other' ? null : this.data.itemId,
             sum: this.data.sum * -1,
             desc: this.data.desc
-            }).subscribe(resp => {
+            }, options.data.SA).subscribe(resp => {
                 if (resp && resp.status) {
                     this.alertService.success('Видано з каси ' + this.data.sum + ' грн.');
                     options.closeDialogSubject.next();
