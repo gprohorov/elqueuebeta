@@ -38,7 +38,6 @@ public class StatisticsController {
 
     @RequestMapping("/cash/now")
     public Long getCashAvailable() {
-       // return Long.valueOf(cashBoxService.getCashBox());
        return service.getCashAvailable();
     }
 
@@ -92,48 +91,48 @@ public class StatisticsController {
     // Боржники (розширено)
     @RequestMapping("/patients/debetors-ext/{start}/{finish}")
     public List<DebetorDTO> getPatientsDebetsExt(
-            @PathVariable(value = "start") String start,
-            @PathVariable(value = "finish") String finish) {
+        @PathVariable(value = "start") String start,
+        @PathVariable(value = "finish") String finish) {
     	return service.getAllDebtorsExt(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
     // Пациенты extended
     @RequestMapping("/patients/ext/{start}/{finish}")
     public List<PatientDTO> getPatientsExt(
-            @PathVariable(value = "start") String start,
-            @PathVariable(value = "finish") String finish) {
+        @PathVariable(value = "start") String start,
+        @PathVariable(value = "finish") String finish) {
         return service.getPatientsStatistics(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
     @RequestMapping("/procedures/{start}/{finish}")
     public List<ProcedureStatistics> getProceduresStatistics(
-            @PathVariable(value = "start") String start,
-            @PathVariable(value = "finish") String finish) {
+        @PathVariable(value = "start") String start,
+        @PathVariable(value = "finish") String finish) {
         return service.getProceduresStatistics(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
     @RequestMapping("/patient/{id}/{begin}/{end}")
     public PatientDTO getPatientStatistics(
-            @PathVariable(value = "id") String id,
-            @PathVariable(value = "begin") String begin,
-            @PathVariable(value = "end") String end) {
+        @PathVariable(value = "id") String id,
+        @PathVariable(value = "begin") String begin,
+        @PathVariable(value = "end") String end) {
         return service.getPatientStatistics(id, LocalDate.parse(begin), LocalDate.parse(end));
     }
 
     @RequestMapping("/patient/list/{begin}/{end}")
     public List<PatientDTO> getPatientsStatistics(
-            @PathVariable(value = "begin") String begin,
-            @PathVariable(value = "end") String end) {
+        @PathVariable(value = "begin") String begin,
+        @PathVariable(value = "end") String end) {
         return service.getPatientsStatistics( LocalDate.parse(begin), LocalDate.parse(end));
     }
 
     @RequestMapping("/procedures/{start}/{finish}/{procedureId}")
     public List<DoctorPercent> getProcedureStatisticsByDoctors(
-            @PathVariable(value = "start") String start,
-            @PathVariable(value = "finish") String finish,
-            @PathVariable(value = "procedureId") int procedureId) {
+        @PathVariable(value = "start") String start,
+        @PathVariable(value = "finish") String finish,
+        @PathVariable(value = "procedureId") int procedureId) {
         return service.getProcedureStatisticsByDoctor(
-        		LocalDate.parse(start), LocalDate.parse(finish), procedureId);
+    		LocalDate.parse(start), LocalDate.parse(finish), procedureId);
     }
 
     @RequestMapping("/general/{day}")
@@ -143,8 +142,8 @@ public class StatisticsController {
 
     @RequestMapping("/general/list/{start}/{finish}")
     public List<GeneralStatisticsDTO> getGenralStatisticsFromTo(
-            @PathVariable(value = "start") String start,
-            @PathVariable(value = "finish") String finish) {
+        @PathVariable(value = "start") String start,
+        @PathVariable(value = "finish") String finish) {
         return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
 }

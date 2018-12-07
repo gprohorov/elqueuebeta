@@ -1,5 +1,12 @@
 package com.med.controller.workplace;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.model.TalonPatient;
@@ -7,30 +14,12 @@ import com.med.services.tail.Impls.TailServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
 import com.med.services.workplace.impls.WorkPlaceServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
-
-/**
- * Created by george on 3/9/18.
- */
 @RestController
 @RequestMapping("/api/workplace")
 @CrossOrigin("*")
 public class CommonController {
 
-/*
-    @Autowired
-    DoctorServiceImpl doctorService;
-
-    @Autowired
-    PatientServiceImpl patientService;
-
-    @Autowired
-    TalonServiceImpl talonService;
-*/
     @Autowired
     TailServiceImpl tailService;
 
@@ -43,33 +32,12 @@ public class CommonController {
     @Autowired
     TalonServiceImpl talonService;
 
+    /////////////////////////// START ////////////////////////////
 
-/*
-    @RequestMapping("/first/{procedureId}")
-    public Patient getFirstPatientInTail(
-           @PathVariable(value = "procedureId") int procedureId) {
-        return tailService.getFirstPatient(procedureId);
-    }
-
-    @RequestMapping("/setready/{procedureId}")
-    public Boolean setReady(@PathVariable(value = "procedureId") int procedureId) {
-       Doctor doctor = userService.getCurrentUserInfo();
-       List<Integer> allowed = doctor.getProcedureIds();
-       if (allowed.contains(procedureId)) {
-           workPlaceService.setReady(procedureId);
-       }
-       return null;
-    }
-*/
-
-    /////////////////////////// START////////////////////////////
-
-    //@RequestMapping("/start/{patientId}/{procedureId}")
     @RequestMapping("/start/{talonId}")
     public Talon start(@PathVariable(value = "talonId") String talonId) {
-        Talon talon = talonService.getTalon(talonId);
         int doctorId = userService.getCurrentUserInfo().getId();
-        if (this.isAlowed(talon.getProcedure().getId(), doctorId)) {
+        if (this.isAlowed(talonService.getTalon(talonId).getProcedure().getId(), doctorId)) {
             return workPlaceService.start(talonId, doctorId);
         } else { return null; }
     }
@@ -77,43 +45,39 @@ public class CommonController {
     //////////////////////////////// EXECUTE ///////////////////
 
     @GetMapping("/execute/{talonId}/{zones}")
-    public void execute(@PathVariable(value = "talonId") String talonId, @PathVariable(value = "zones") int zones) {
-        int doctorId = userService.getCurrentUserInfo().getId();
-        workPlaceService.execute(talonId, zones, doctorId);
+    public void execute(
+		@PathVariable(value = "talonId") String talonId, 
+		@PathVariable(value = "zones") int zones) {
+        workPlaceService.execute(talonId, zones, userService.getCurrentUserInfo().getId());
     }
-
 
     //////////////////////////////// CANCEL ////////////////////
 
     @GetMapping("/cancel/{talonId}")
     public void cancel(@PathVariable(value = "talonId") String talonId) {
-       workPlaceService.cancel(talonId, "");
+    	workPlaceService.cancel(talonId, "");
     }
 
-
     private boolean isAlowed(int procedureId, int doctorId) {
-         return  userService.getCurrentUserInfo().getProcedureIds()
-                 .contains(Integer.valueOf(procedureId));
+         return userService.getCurrentUserInfo().getProcedureIds().contains(Integer.valueOf(procedureId));
     }
 
     @RequestMapping("/tails")
     public List<Tail> getHotTails() {
-        int doctorId = userService.getCurrentUserInfo().getId();
-        return workPlaceService.getTailsForDoctor( doctorId);
+        return workPlaceService.getTailsForDoctor(userService.getCurrentUserInfo().getId());
     }
 
     @GetMapping("/patient/{patientId}/{procedureId}")
     public TalonPatient getTalonAndPatientNew(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "procedureId") int procedureId
-            ) {
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "procedureId") int procedureId) {
         return workPlaceService.getTalonPatient(patientId, procedureId);
     }
 
     @PostMapping("/comment/{talonId}")
     public Talon comment(
-            @PathVariable(value = "talonId") String talonId,
-            @Valid @RequestBody String comment) {
+        @PathVariable(value = "talonId") String talonId,
+        @Valid @RequestBody String comment) {
         return  workPlaceService.commentTalon(talonId, comment);
     }
     

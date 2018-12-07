@@ -1,23 +1,19 @@
 package com.med.controller;
 
-import com.med.model.Procedure;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.med.model.Procedure;
+import com.med.services.procedure.impls.ProcedureServiceImpl;
 
-/**
- * Created by george on 3/9/18.
- */
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")
 public class ProcedureController {
 
-
-
-    @Autowired
+	@Autowired
     ProcedureServiceImpl service;
 
     @RequestMapping("/procedure/list/")
@@ -25,42 +21,19 @@ public class ProcedureController {
         return service.getAll();
     }
 
-    // READ the Procedure by id
     @GetMapping("/procedure/get/{id}")
-    public Procedure showOneProcedure(@PathVariable(value = "id")  int procedureId) {
-
+    public Procedure showOneProcedure(@PathVariable(value = "id") int procedureId) {
         return service.getProcedure(procedureId);
     }
 
-    // CREATE the Procedure
     @PostMapping("/procedure/save")
     public Procedure saveProcedure(@RequestBody Procedure procedure) {
-
-//
         return service.saveProcedure(procedure);
     }
 
-    // DELETE the procedure by id
     @PostMapping("/procedure/delete/{id}")
-    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
-
+    public Procedure delProcedure(@PathVariable(value = "id") int procedureId) {
         return null;
-                //service.deleteProcedure(procedureId);
-
+        //service.deleteProcedure(procedureId);
     }
-
-/*
-    // UPDATE the procedure by id
-    @PostMapping("/procedure/update/")
-    public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
-      //  updates.setId(procedureId);
-//
-        return service.updateProcedure(updates);
-
-    }
-
-
-*/
-
 }
-

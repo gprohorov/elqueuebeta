@@ -335,18 +335,6 @@ public class RecordServiceImpl implements IRecordService {
                 .collect(Collectors.toList());
     }
 
-    public List<Koika> getFreeKoikasForDay(LocalDateTime localDateTime){
-        List<Koika> freeKoikas = koikaService.getAll();
-        List<Koika> notFreeKoikas = new ArrayList<>();
-        for (Koika koika : freeKoikas){
-            if (findByKoikaAndDate(koika, localDateTime) != null){
-                notFreeKoikas.add(koika);
-            }
-        }
-        freeKoikas.removeAll(notFreeKoikas);
-        return freeKoikas;
-    }
-
     //all Koikas from repository version
     public List<KoikaLine> getLines(int days){
         List<KoikaLine> koikaLines = new ArrayList<>();

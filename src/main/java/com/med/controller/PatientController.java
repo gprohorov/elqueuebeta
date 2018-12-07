@@ -1,6 +1,18 @@
 package com.med.controller;
 
-import com.med.model.*;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.med.model.Activity;
+import com.med.model.Patient;
+import com.med.model.PatientRegDTO;
+import com.med.model.Status;
+import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
 import com.med.model.balance.ReceiptToday;
@@ -10,16 +22,7 @@ import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.talon.impls.TalonServiceImpl;
 import com.med.services.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.List;
-
-/**
- * Created by george on 3/9/18.
- */
 @RequestMapping("/api/patient")
 @RestController
 @CrossOrigin("*")
@@ -73,7 +76,6 @@ public class PatientController {
     @PostMapping("/new/")
     public Patient newPatient(@Valid @RequestBody PatientRegDTO patient) {
         return service.registratePatient(patient);
-
     }
 
     // DELETE the patient by id
@@ -92,7 +94,6 @@ public class PatientController {
         return talonService.createTalon(patientId, procedureId, days);
     }
 
-     // final
     // create talon to date for patient on procedure
     @GetMapping("/create/talon/{patientId}/{procedureId}/{date}/{time}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,
@@ -101,25 +102,14 @@ public class PatientController {
                              @PathVariable(value = "time") int time) {
         return talonService.createTalon(patientId, procedureId, LocalDate.parse(date));
     }
-/*
 
-    // create talons list to date for patient according to therapy, default 9.00
-    @GetMapping("/create/talons/{patientId}/{date}/")
-    public List<Talon> createTalonsToDate(@PathVariable(value = "patientId") String patientId,
-                             @PathVariable(value = "date") String date) {
-        return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date));
-    }Hope1234
-*/
-       //*******************************************************************************
-      // create talon LIST to date for patient according to therapy, appointed to time
+    // create talon LIST to date for patient according to therapy, appointed to time
     @GetMapping("/create/talons/{patientId}/{date}/{time}")
     public List<Talon> createTalonsToDate(@PathVariable(value = "patientId") String patientId,
                              @PathVariable(value = "date") String date,
                              @PathVariable(value = "time") int time) {
-     //   return talonService.createTalonsForPatientToDate(patientId, LocalDate.parse(date), time);
         return service.assignPatientToDate(patientId, LocalDate.parse(date), time);
     }
-
 
     // create active talon to date for patient on procedure
     @GetMapping("/create/activetalon/{patientId}/{procedureId}/{date}/{time}/{activate}")
@@ -136,23 +126,19 @@ public class PatientController {
     public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
         // registration - id==1
         // today  plus 0
-
         return talonService.createTalon(patientId, 1, 0);
     }
 
-    // 27 aug
-    // create check to today for patient on registration
+    // 27 aug - create check to today for patient on registration
     @GetMapping("/create/receipt/{patientId}/{from}/{to}")
     public Receipt createReceiptFromTo(
             @PathVariable(value = "patientId") String patientId,
             @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to
-            )
-    {
+            @PathVariable(value = "to") String to) {
         return talonService.createReceipt(patientId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
 
     // getAll patients for today together with their's talons
     @GetMapping("/list/today")
@@ -160,9 +146,7 @@ public class PatientController {
         return service.getAllForToday();
     }
 
-
-    // 12.08.18
-    // getAll patients for the date together with their's talons
+    // 12.08.18 - getAll patients for the date together with their's talons
     @GetMapping("/list/date/{date}")
     public List<Patient> showPatientsForDate(@PathVariable(value = "date") String date) {
         return service.getAllForDate(LocalDate.parse(date));
@@ -174,6 +158,7 @@ public class PatientController {
         @PathVariable(value = "activity") Activity activity) {
         return  talonService.setActivity(talonId, activity);
     }
+    
     @GetMapping("/talon/set/outofturn/{talonId}/{out}")
     public Talon talonSetOutOfTurn(
         @PathVariable(value = "talonId") String talonId,
@@ -212,17 +197,9 @@ public class PatientController {
         return  service.patientBye(patientId);
     }
 
-
-    // 18 nov
-    // create check for today ONLY
+    // 18 nov - create check for today ONLY
     @GetMapping("/create/receipt/{patientId}/today")
-    public ReceiptToday getReceiptToday(
-            @PathVariable(value = "patientId") String patientId){
-
+    public ReceiptToday getReceiptToday(@PathVariable(value = "patientId") String patientId) {
         return accountingService.getTodayReceipt(patientId);
     }
-
-
-
-
 }

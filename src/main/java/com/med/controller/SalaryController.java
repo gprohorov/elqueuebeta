@@ -1,21 +1,24 @@
 package com.med.controller;
 
-import com.med.model.*;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by george on 29.10.18.
- */
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.med.model.AwardPenaltyDTO;
+import com.med.model.CashBox;
+import com.med.model.Response;
+import com.med.model.Salary;
+import com.med.model.SalaryDTO;
+import com.med.model.SalaryType;
+import com.med.services.cashbox.impls.CashBoxServiceImpl;
+import com.med.services.salary.impls.SalaryServiceImpl;
+import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+
 @RestController
 @RequestMapping("/api/salary")
 @CrossOrigin("*")
@@ -98,12 +101,11 @@ public class SalaryController {
         }
     }
     
-    //--------------------------------  17 nov
+    // 17 nov
     @RequestMapping("/list/summary/{from}/{to}")
     public List<SalaryDTO> showSummarySalaries(
             @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to
-    ) {
+            @PathVariable(value = "to") String to) {
         return salaryDTOService.getSummarySalaryList(LocalDate.parse(from), LocalDate.parse(to));
     }
 
