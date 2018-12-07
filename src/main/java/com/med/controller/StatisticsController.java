@@ -1,8 +1,16 @@
 package com.med.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.med.model.Patient;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
-import com.med.model.statistics.dto.accounting.CurrentReport;
 import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
 import com.med.model.statistics.dto.doctor.DoctorPercent;
 import com.med.model.statistics.dto.doctor.DoctorProcedureZoneFee;
@@ -13,18 +21,7 @@ import com.med.model.statistics.dto.procedure.ProcedureStatistics;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.statistics.impls.StatisticServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.List;
-
-/**
- * Created by george on 3/9/18.
- */
 @RestController
 @RequestMapping("/api/statistics")
 @CrossOrigin("*")
@@ -57,13 +54,7 @@ public class StatisticsController {
     public AvailableexecutedPart getCurrentReport() {
         return accountingService.getCurrentReport();
     }
-    @RequestMapping("/report/current/details")
-    public CurrentReport getCurrentReportDetails() {
-        return cashBoxService.getCurrentReportDetails();
-    }
-
-
-
+    
     // Лекари - загальна колькость процедур
     // Выводится по каждому врачу:
     //   1. Имя доктора
@@ -74,21 +65,13 @@ public class StatisticsController {
     public List<DoctorProcedureZoneFee> getDoctorsStatistics(
               @PathVariable(value = "start") String start,
               @PathVariable(value = "finish") String finish) {
-
-    	// TODO: Seems to be groupingBy inside is not working propertly. Duplicate doctors in table.
-        // Done!
-        
     	return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
-
-
-
 
     @RequestMapping("/doctors/current/")
     public List<DoctorCurrentStatistics> getDoctorsCurrentStatistics() {
     	return service.getDoctorsListCurrentStatictics();
     }
-
 
     @RequestMapping("/procedures/count")
     public Long getProceduresCount() {
@@ -122,7 +105,6 @@ public class StatisticsController {
         return service.getPatientsStatistics(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
-
     @RequestMapping("/procedures/{start}/{finish}")
     public List<ProcedureStatistics> getProceduresStatistics(
             @PathVariable(value = "start") String start,
@@ -134,33 +116,28 @@ public class StatisticsController {
     public PatientDTO getPatientStatistics(
             @PathVariable(value = "id") String id,
             @PathVariable(value = "begin") String begin,
-            @PathVariable(value = "end") String end)
-             {
+            @PathVariable(value = "end") String end) {
         return service.getPatientStatistics(id, LocalDate.parse(begin), LocalDate.parse(end));
     }
 
     @RequestMapping("/patient/list/{begin}/{end}")
     public List<PatientDTO> getPatientsStatistics(
             @PathVariable(value = "begin") String begin,
-            @PathVariable(value = "end") String end)
-    {
+            @PathVariable(value = "end") String end) {
         return service.getPatientsStatistics( LocalDate.parse(begin), LocalDate.parse(end));
     }
-
 
     @RequestMapping("/procedures/{start}/{finish}/{procedureId}")
     public List<DoctorPercent> getProcedureStatisticsByDoctors(
             @PathVariable(value = "start") String start,
             @PathVariable(value = "finish") String finish,
             @PathVariable(value = "procedureId") int procedureId) {
-        return service.getProcedureStatisticsByDoctor(LocalDate.parse(start)
-                , LocalDate.parse(finish)
-                , procedureId);
+        return service.getProcedureStatisticsByDoctor(
+        		LocalDate.parse(start), LocalDate.parse(finish), procedureId);
     }
 
     @RequestMapping("/general/{day}")
-    public GeneralStatisticsDTO getGeneralStatisticsByDay(
-            @PathVariable(value = "day") String day) {
+    public GeneralStatisticsDTO getGeneralStatisticsByDay(@PathVariable(value = "day") String day) {
         return service.getGeneralStatisticsDay(LocalDate.parse(day));
     }
 
@@ -170,7 +147,4 @@ public class StatisticsController {
             @PathVariable(value = "finish") String finish) {
         return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
-
-
-
 }

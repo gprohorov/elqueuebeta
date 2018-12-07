@@ -1,31 +1,20 @@
 package com.med.services.outcometree.impls;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.med.model.CashBox;
-import com.med.model.CashType;
 import com.med.model.OutcomeTree;
-import com.med.model.OutcomeTreeSum;
 import com.med.repository.outcometree.OutcomeTreeRepository;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.outcometree.interfaces.iOutcomeTreeService;
 import com.med.services.patient.Impls.PatientServiceImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.Size;
-
-import java.awt.Window.Type;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-/**
- * Created by george on 22.11.18.
- */
 @Service
 public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
 
@@ -43,9 +32,9 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
 
     @Override
     public List<OutcomeTree> getTree() {
-    	List<OutcomeTree> tree = repository.findAll().stream().filter( node -> node.getCatID() == null )
+    	List<OutcomeTree> tree = repository.findAll().stream().filter(node -> node.getCatID() == null)
         		.collect(Collectors.toList());
-        tree.forEach( node -> {
+        tree.forEach(node -> {
         	List<OutcomeTree> items = this._getItemsByCatID(node.getId());
         	node.setItems(items);
         });
@@ -83,9 +72,9 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     @Override
     public Boolean deleteNode(String id) {
     	OutcomeTree node = this.getNode(id);
-    	if ( node == null ) return false;
+    	if (node == null) return false;
 
-    	if ( node.getCatID() == null ) {
+    	if (node.getCatID() == null) {
     		// This is Category, so check for items
     		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
     		items.stream().forEach(item -> {
@@ -114,12 +103,7 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     
     public List<OutcomeTree> getTreeSum(LocalDate from, LocalDate to) {
     	
-    	// TODO: Make it By MongoRepository
-    	List<CashBox> outcomes = cashBoxService.getAll().stream()
-    			.filter(cash->!cash.getType().equals(CashType.PATIENT))
-    			.filter(cash->cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-    			.filter(cash->cash.getDateTime().toLocalDate().isBefore(to. plusDays(1)))
-    			.collect(Collectors.toList());
+    	List<CashBox> outcomes = cashBoxService.getAllFromToExceptTypePatient(from, to);
     	
     	final long[] totalSum = {0};
     	
@@ -145,13 +129,11 @@ public class OutcomeTreeServiceImpl implements iOutcomeTreeService {
     }
     
     public List<CashBox> getOutcomeListOfItem(String itemId, LocalDate from, LocalDate to) {
-    	// TODO: Make it By MongoRepository
-    	List<CashBox> list = cashBoxService.getAll().stream()
-				.filter(cash -> cash.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-				.filter(cash -> cash.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
-				.filter(cash->!cash.getType().equals(CashType.PATIENT))
-			.filter(cash -> itemId.equals("null") ? cash.getItemId() == null : itemId.equals(cash.getItemId()) )
-				.collect(Collectors.toList());
+    	List<CashBox> list = cashBoxService.getAllFromToExceptTypePatient(from, to).stream()
+			.filter(cash -> itemId.equals("null")
+				? cash.getItemId() == null 
+				: itemId.equals(cash.getItemId())
+    		).collect(Collectors.toList());
     	list.forEach(item -> {
     		if (item.getDoctorId() > 0) {
     			item.setDoctor( doctorService.getDoctor( item.getDoctorId() ).getFullName() );
