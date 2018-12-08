@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.med.model.Talon;
-import com.med.services.talon.impls.TalonServiceImpl;
-import com.med.services.user.UserService;
+import com.med.services.TalonService;
+import com.med.services.UserService;
 
 @RequestMapping("/api/talon")
 @RestController
@@ -19,7 +19,7 @@ import com.med.services.user.UserService;
 public class TalonController {
 
     @Autowired
-    TalonServiceImpl service;
+    TalonService service;
     
     @Autowired
 	UserService userService;

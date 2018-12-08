@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.med.datastorage.DataStorageTest;
 import com.med.model.SalaryDTO;
-import com.med.services.salary.impls.SalaryServiceImpl;
+import com.med.services.SalaryService;
 
 @RestController
 @RequestMapping("/api")
@@ -22,7 +22,7 @@ public class UtilController {
     DataStorageTest dataStorage;
 
     @Autowired
-    SalaryServiceImpl salaryService;
+    SalaryService salaryService;
 
     @GetMapping("/util/reset-db")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")

@@ -2,11 +2,11 @@ package com.med.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.tail.Impls.TailServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
+import com.med.services.DoctorService;
+import com.med.services.PatientService;
+import com.med.services.ProcedureService;
+import com.med.services.TailService;
+import com.med.services.TalonService;
 
 public class Workplace {
 	
@@ -17,19 +17,19 @@ public class Workplace {
     private Patient patient;
 
     @Autowired
-    DoctorServiceImpl doctorService;
+    DoctorService doctorService;
 
     @Autowired
-    ProcedureServiceImpl procedureService;
+    ProcedureService procedureService;
 
     @Autowired
-    TailServiceImpl tailService;
+    TailService tailService;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    TalonServiceImpl talonService;
+    TalonService talonService;
 
     public Workplace() {}
 

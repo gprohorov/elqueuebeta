@@ -17,11 +17,11 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
 import com.med.model.balance.ReceiptToday;
 import com.med.repository.AccountingRepository;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
-import com.med.services.user.UserService;
+import com.med.services.AccountingService;
+import com.med.services.PatientService;
+import com.med.services.TalonService;
+import com.med.services.UserService;
+import com.med.services.hotel.RecordService;
 
 @RequestMapping("/api/patient")
 @RestController
@@ -29,19 +29,19 @@ import com.med.services.user.UserService;
 public class PatientController {
 
     @Autowired
-    PatientServiceImpl service;
+    PatientService service;
 
     @Autowired
-    TalonServiceImpl talonService;
+    TalonService talonService;
 
     @Autowired
     AccountingRepository accountingRepository;
 
     @Autowired
-    AccountingServiceImpl accountingService;
+    AccountingService accountingService;
 
     @Autowired
-    RecordServiceImpl recordService;
+    RecordService recordService;
 
     @Autowired
     UserService userService;

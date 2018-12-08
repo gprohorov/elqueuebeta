@@ -14,8 +14,8 @@ import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
-import com.med.services.hotel.koika.impls.KoikaServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
+import com.med.services.hotel.KoikaService;
+import com.med.services.hotel.RecordService;
 
 @RestController
 @RequestMapping("/api/hotel")
@@ -23,10 +23,10 @@ import com.med.services.hotel.record.impls.RecordServiceImpl;
 public class HotelController {
 	
 	@Autowired
-    KoikaServiceImpl koikaService;
+    KoikaService koikaService;
 
     @Autowired
-    RecordServiceImpl service;
+    RecordService service;
 
     @RequestMapping("/koika/map/{start}")
     public List<KoikaRecord> showMap(@PathVariable(value = "start") String start) {

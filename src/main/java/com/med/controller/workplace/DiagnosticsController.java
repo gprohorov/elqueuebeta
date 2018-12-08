@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.med.model.PatientTalonTherapy;
 import com.med.model.Procedure;
 import com.med.model.Therapy;
-import com.med.services.talon.impls.TalonServiceImpl;
-import com.med.services.therapy.impls.TherapyServiceImpl;
+import com.med.services.TalonService;
+import com.med.services.TherapyService;
 
 @RestController
 @RequestMapping("/api/workplace/diagnostic")
@@ -17,10 +17,10 @@ import com.med.services.therapy.impls.TherapyServiceImpl;
 public class DiagnosticsController {
 
     @Autowired
-    TherapyServiceImpl service;
+    TherapyService service;
     
     @Autowired
-    TalonServiceImpl talonService;
+    TalonService talonService;
 
     @RequestMapping("/list/")
     public List<Therapy> showTherapys() {

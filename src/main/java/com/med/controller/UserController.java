@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.med.model.User;
-import com.med.services.user.UserService;
+import com.med.services.UserService;
 
 @RestController
 @RequestMapping("/api")

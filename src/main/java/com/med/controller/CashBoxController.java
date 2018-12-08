@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.med.model.CashBox;
 import com.med.model.Response;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
+import com.med.services.CashBoxService;
 
 @RestController
 @RequestMapping("/api/cashbox")
@@ -19,7 +19,7 @@ import com.med.services.cashbox.impls.CashBoxServiceImpl;
 public class CashBoxController {
 
     @Autowired
-    CashBoxServiceImpl service;
+    CashBoxService service;
 
     @RequestMapping("/kassa")
     public int getKassa() {

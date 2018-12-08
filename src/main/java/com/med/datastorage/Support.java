@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.med.services.hotel.record.impls.RecordServiceImpl;
+import com.med.services.hotel.RecordService;
 
 @Configuration
 public class Support {
@@ -13,7 +13,7 @@ public class Support {
     private LocalDate lastMonitoring;
 
     @Autowired
-    RecordServiceImpl recordService;
+    RecordService recordService;
 
     public void check() {
         System.out.println("----------------- Checking was called -----------------");

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.med.model.Doctor;
-import com.med.services.doctor.impls.DoctorServiceImpl;
+import com.med.services.DoctorService;
 
 @RestController
 @RequestMapping("/api")
@@ -16,7 +16,7 @@ import com.med.services.doctor.impls.DoctorServiceImpl;
 public class DoctorController {
 
     @Autowired
-    DoctorServiceImpl service;
+    DoctorService service;
 
     @RequestMapping("/doctor/list")
     public List<Doctor> showDoctors(){

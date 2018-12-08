@@ -13,10 +13,10 @@ import com.med.model.CashBox;
 import com.med.model.CashType;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.user.UserService;
+import com.med.services.AccountingService;
+import com.med.services.CashBoxService;
+import com.med.services.PatientService;
+import com.med.services.UserService;
 
 @RequestMapping("/api/income")
 @RestController
@@ -24,16 +24,16 @@ import com.med.services.user.UserService;
 public class AccountingController {
 
     @Autowired
-    AccountingServiceImpl service ;
+    AccountingService service;
 
     @Autowired
     UserService userService;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    CashBoxServiceImpl cashBoxService;
+    CashBoxService cashBoxService;
 
     @RequestMapping("/list")
     public List<Accounting> showAll() {

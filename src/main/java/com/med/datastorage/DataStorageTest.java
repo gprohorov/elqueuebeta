@@ -4,14 +4,15 @@ import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
 import com.med.repository.TalonRepository;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
-import com.med.services.hotel.koika.impls.KoikaServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+import com.med.services.AccountingService;
+import com.med.services.PatientService;
+import com.med.services.ProcedureService;
+import com.med.services.SalaryDTOService;
+import com.med.services.SalaryService;
+import com.med.services.hotel.ChamberService;
+import com.med.services.hotel.KoikaService;
+import com.med.services.hotel.RecordService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,28 +32,28 @@ public class DataStorageTest {
     TalonRepository talonRepository;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    ChamberServiceImpl chamberService;
+    ChamberService chamberService;
 
     @Autowired
-    KoikaServiceImpl koikaService;
+    KoikaService koikaService;
 
     @Autowired
-    RecordServiceImpl recordService;
+    RecordService recordService;
 
     @Autowired
-    AccountingServiceImpl accountingService;
+    AccountingService accountingService;
 
     @Autowired
-    ProcedureServiceImpl procedureService;
+    ProcedureService procedureService;
 
     @Autowired
-    SalaryServiceImpl salaryService;
+    SalaryService salaryService;
 
     @Autowired
-    SalaryDTOServiceImpl salaryDTOService;
+    SalaryDTOService salaryDTOService;
 
    @PostConstruct
     void init(){

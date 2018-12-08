@@ -18,9 +18,9 @@ import com.med.model.statistics.dto.general.GeneralStatisticsDTO;
 import com.med.model.statistics.dto.patient.DebetorDTO;
 import com.med.model.statistics.dto.patient.PatientDTO;
 import com.med.model.statistics.dto.procedure.ProcedureStatistics;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.statistics.impls.StatisticServiceImpl;
+import com.med.services.AccountingService;
+import com.med.services.CashBoxService;
+import com.med.services.StatisticService;
 
 @RestController
 @RequestMapping("/api/statistics")
@@ -28,13 +28,13 @@ import com.med.services.statistics.impls.StatisticServiceImpl;
 public class StatisticsController {
 
     @Autowired
-    AccountingServiceImpl accountingService;
+    AccountingService accountingService;
 
     @Autowired
-    StatisticServiceImpl service;
+    StatisticService service;
 
     @Autowired
-    CashBoxServiceImpl cashBoxService;
+    CashBoxService cashBoxService;
 
     @RequestMapping("/cash/now")
     public Long getCashAvailable() {

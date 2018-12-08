@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.model.TalonPatient;
-import com.med.services.tail.Impls.TailServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
-import com.med.services.user.UserService;
-import com.med.services.workplace.impls.WorkPlaceServiceImpl;
+import com.med.services.TailService;
+import com.med.services.TalonService;
+import com.med.services.UserService;
+import com.med.services.WorkPlaceService;
 
 @RestController
 @RequestMapping("/api/workplace")
@@ -21,16 +21,16 @@ import com.med.services.workplace.impls.WorkPlaceServiceImpl;
 public class CommonController {
 
     @Autowired
-    TailServiceImpl tailService;
+    TailService tailService;
 
     @Autowired
-    WorkPlaceServiceImpl workPlaceService;
+    WorkPlaceService workPlaceService;
 
     @Autowired
     UserService userService;
 
     @Autowired
-    TalonServiceImpl talonService;
+    TalonService talonService;
 
     /////////////////////////// START ////////////////////////////
 

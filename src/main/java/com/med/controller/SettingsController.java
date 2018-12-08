@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.med.model.Response;
 import com.med.model.Settings;
-import com.med.services.settings.impls.SettingsServiceImpl;
+import com.med.services.SettingsService;
 
 @RestController
 @RequestMapping("/api/settings")
@@ -15,7 +15,7 @@ import com.med.services.settings.impls.SettingsServiceImpl;
 public class SettingsController {
 
     @Autowired
-    SettingsServiceImpl service;
+    SettingsService service;
     
     @RequestMapping("/get")
     public Settings get() {

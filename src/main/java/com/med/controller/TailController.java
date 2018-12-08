@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.med.model.Tail;
-import com.med.services.tail.Impls.TailServiceImpl;
+import com.med.services.TailService;
 
 @RequestMapping("/api/tail")
 @RestController
@@ -14,7 +14,7 @@ import com.med.services.tail.Impls.TailServiceImpl;
 public class TailController {
 
     @Autowired
-    TailServiceImpl service;
+    TailService service;
 
     @RequestMapping("/list")
     public List<Tail> showTails(){

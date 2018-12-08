@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.med.model.Procedure;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
+import com.med.services.ProcedureService;
 
 @RestController
 @RequestMapping("/api")
@@ -14,7 +14,7 @@ import com.med.services.procedure.impls.ProcedureServiceImpl;
 public class ProcedureController {
 
 	@Autowired
-    ProcedureServiceImpl service;
+    ProcedureService service;
 
     @RequestMapping("/procedure/list/")
     public List<Procedure> showProcedures() {

@@ -14,8 +14,8 @@ import com.med.datastorage.Support;
 import com.med.model.Doctor;
 import com.med.model.LoginUser;
 import com.med.model.User;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.user.UserService;
+import com.med.services.DoctorService;
+import com.med.services.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -32,7 +32,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @Autowired
-    private DoctorServiceImpl doctorService;
+    private DoctorService doctorService;
 
     @Autowired
     private Support supportBean;

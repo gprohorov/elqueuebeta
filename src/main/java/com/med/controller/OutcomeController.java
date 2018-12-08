@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.med.model.CashBox;
 import com.med.model.OutcomeTree;
 import com.med.model.Response;
-import com.med.services.outcometree.impls.OutcomeTreeServiceImpl;
+import com.med.services.OutcomeTreeService;
 
 @RestController
 @RequestMapping("/api/outcome")
@@ -19,7 +19,7 @@ import com.med.services.outcometree.impls.OutcomeTreeServiceImpl;
 public class OutcomeController {
 
     @Autowired
-    OutcomeTreeServiceImpl service;
+    OutcomeTreeService service;
 
     @RequestMapping("/gettree")
     public List<OutcomeTree> getTree() {

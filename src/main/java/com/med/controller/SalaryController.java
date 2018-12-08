@@ -15,9 +15,9 @@ import com.med.model.Response;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
+import com.med.services.CashBoxService;
+import com.med.services.SalaryDTOService;
+import com.med.services.SalaryService;
 
 @RestController
 @RequestMapping("/api/salary")
@@ -25,13 +25,13 @@ import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 public class SalaryController {
 
     @Autowired
-    SalaryServiceImpl service;
+    SalaryService service;
 
     @Autowired
-    CashBoxServiceImpl cashBoxService;
+    CashBoxService cashBoxService;
 
     @Autowired
-    SalaryDTOServiceImpl salaryDTOService;
+    SalaryDTOService salaryDTOService;
 
     @RequestMapping("/list/old")
     public List<SalaryDTO> showSalaries() {
