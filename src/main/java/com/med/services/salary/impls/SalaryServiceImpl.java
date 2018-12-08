@@ -1,7 +1,7 @@
 package com.med.services.salary.impls;
 
 import com.med.model.*;
-import com.med.repository.salary.SalaryRepository;
+import com.med.repository.SalaryRepository;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;

@@ -1,7 +1,7 @@
 package com.med.services.settings.impls;
 
 import com.med.model.Settings;
-import com.med.repository.settings.SettingsRepository;
+import com.med.repository.SettingsRepository;
 import com.med.services.settings.interfaces.iSettingsService;
 
 import org.springframework.beans.factory.annotation.Autowired;

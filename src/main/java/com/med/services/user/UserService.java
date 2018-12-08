@@ -2,7 +2,7 @@ package com.med.services.user;
 
 import com.med.model.Doctor;
 import com.med.model.User;
-import com.med.repository.user.UserRepository;
+import com.med.repository.UserRepository;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

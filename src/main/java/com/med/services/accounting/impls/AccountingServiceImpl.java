@@ -8,7 +8,7 @@ import com.med.model.balance.ProcedureZonesSum;
 import com.med.model.balance.ReceiptToday;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
 import com.med.model.statistics.dto.patient.DebetorDTO;
-import com.med.repository.accounting.AccountingRepository;
+import com.med.repository.AccountingRepository;
 import com.med.services.accounting.interfaces.IAccountingService;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;

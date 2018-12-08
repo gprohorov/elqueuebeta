@@ -1,4 +1,4 @@
-package com.med.repository.cashbox;
+package com.med.repository;
 
 import java.time.LocalDate;
 import java.util.List;

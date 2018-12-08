@@ -1,8 +1,8 @@
 package com.med.services.salarydto.impls;
 
 import com.med.model.*;
-import com.med.repository.salary.SalaryRepository;
-import com.med.repository.salarydto.SalaryDTORepository;
+import com.med.repository.SalaryDTORepository;
+import com.med.repository.SalaryRepository;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;
 import com.med.services.salary.impls.SalaryServiceImpl;

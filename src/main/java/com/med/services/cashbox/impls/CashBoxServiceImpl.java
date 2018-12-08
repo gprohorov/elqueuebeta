@@ -14,7 +14,7 @@ import com.med.model.Response;
 import com.med.model.Salary;
 import com.med.model.SalaryType;
 import com.med.model.Settings;
-import com.med.repository.cashbox.CashRepository;
+import com.med.repository.CashRepository;
 import com.med.services.cashbox.interfaces.ICashBoxService;
 import com.med.services.salary.impls.SalaryServiceImpl;
 import com.med.services.salarydto.impls.SalaryDTOServiceImpl;

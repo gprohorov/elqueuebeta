@@ -1,4 +1,4 @@
-package com.med.repository.accounting;
+package com.med.repository;
 
 import java.time.LocalDate;
 import java.util.List;

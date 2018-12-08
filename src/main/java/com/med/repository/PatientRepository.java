@@ -1,4 +1,4 @@
-package com.med.repository.patient;
+package com.med.repository;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.med.model.CashBox;
 import com.med.model.OutcomeTree;
-import com.med.repository.outcometree.OutcomeTreeRepository;
+import com.med.repository.OutcomeTreeRepository;
 import com.med.services.cashbox.impls.CashBoxServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;
 import com.med.services.outcometree.interfaces.iOutcomeTreeService;

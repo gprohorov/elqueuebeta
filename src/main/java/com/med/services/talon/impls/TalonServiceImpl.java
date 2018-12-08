@@ -5,7 +5,7 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.balance.Receipt;
 import com.med.model.statistics.dto.procedure.ProcedureReceipt;
-import com.med.repository.talon.TalonRepository;
+import com.med.repository.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.card.impls.CardServiceImpl;
 import com.med.services.doctor.impls.DoctorServiceImpl;

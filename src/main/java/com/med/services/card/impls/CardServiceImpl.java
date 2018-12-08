@@ -1,7 +1,7 @@
 package com.med.services.card.impls;
 
 import com.med.model.Card;
-import com.med.repository.card.CardRepository;
+import com.med.repository.CardRepository;
 import com.med.services.card.interfaces.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -3,7 +3,7 @@ package com.med.services.therapy.impls;
 import com.med.model.*;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
-import com.med.repository.therapy.TherapyRepository;
+import com.med.repository.TherapyRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;
 import com.med.services.procedure.impls.ProcedureServiceImpl;

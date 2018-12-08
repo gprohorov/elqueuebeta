@@ -1,4 +1,4 @@
-package com.med.repository.accrual;
+package com.med.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

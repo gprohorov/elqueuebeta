@@ -1,7 +1,7 @@
 package com.med.services.accrual.impls;
 
 import com.med.model.Accrual;
-import com.med.repository.accrual.AccrualRepository;
+import com.med.repository.AccrualRepository;
 import com.med.services.accrual.interfaces.IAccrualService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

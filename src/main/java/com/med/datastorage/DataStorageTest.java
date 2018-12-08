@@ -3,7 +3,7 @@ package com.med.datastorage;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
-import com.med.repository.talon.TalonRepository;
+import com.med.repository.TalonRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
 import com.med.services.hotel.koika.impls.KoikaServiceImpl;

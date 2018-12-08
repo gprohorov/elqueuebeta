@@ -1,7 +1,7 @@
 package com.med.services.doctor.impls;
 
 import com.med.model.Doctor;
-import com.med.repository.doctor.DoctorRepository;
+import com.med.repository.DoctorRepository;
 import com.med.services.doctor.interfaces.IDoctorService;
 import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
 

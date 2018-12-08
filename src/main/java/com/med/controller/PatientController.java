@@ -16,7 +16,7 @@ import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
 import com.med.model.balance.ReceiptToday;
-import com.med.repository.accounting.AccountingRepository;
+import com.med.repository.AccountingRepository;
 import com.med.services.accounting.impls.AccountingServiceImpl;
 import com.med.services.hotel.record.impls.RecordServiceImpl;
 import com.med.services.patient.Impls.PatientServiceImpl;

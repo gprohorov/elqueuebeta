@@ -1,7 +1,7 @@
 package com.med.services.procedure.impls;
 
 import com.med.model.Procedure;
-import com.med.repository.procedure.ProcedureRepository;
+import com.med.repository.ProcedureRepository;
 import com.med.services.procedure.interfaces.IProcedureService;
 import com.med.services.tail.Impls.TailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
