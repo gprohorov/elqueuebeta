@@ -92,14 +92,24 @@ public class SalaryDTOService {
         dto.setName(doctor.getFullName());
         dto.setKredit(doctor.getKredit());
 
+        List<Integer> fullTimeList = doctorService.getAll().stream()
+            .filter(doc->doc.getProcedureIds().isEmpty())
+            .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+        fullTimeList.add(2); // for registratura
+
+        // int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
+
         int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
-        // TODO: Make by MongoRepository
-        List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1), to.plusDays(1))
-            .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-            .filter(talon -> talon.getDoctor().getId() == doctorId)
-            .collect(Collectors.toList());
+        List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
+               .stream()
+              // .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
+               .filter( talon -> talon.getDoctor()!= null )
+               .filter( talon -> talon.getDoctor().getId()==doctorId )
+               .filter( talon -> talon.getExecutionTime()!= null )
+
+                .collect(Collectors.toList());
         int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
         dto.setDays(days);
 
@@ -111,20 +121,22 @@ public class SalaryDTOService {
                 LocalDateTime end = entry.getValue().stream()
             		.max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
                 int hrs = (int) ChronoUnit.HOURS.between(begin, end);
-                hours[0] +=hrs;
+                hours[0] += hrs;
             });
         dto.setHours(hours[0]);
         
         // TODO: Remove hardcode
-        if (doctorId == 2 || doctorId == 1) { dto.setHours(days*8); }
+        if (doctorId == 2 || doctorId == 1) dto.setHours(days*8);
 
-        // TODO: Remove hardcode 
+        //TODO: hardcode
         if (doctorId > 16) {
-    		dto.setDays(6);
-            dto.setHours(40);
+        	dto.setDays(6);
+        	dto.setHours(40);
         }
 
         int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
+
+        if (fullTimeList.contains(doctorId)) stavka = 0;
         dto.setStavka(stavka);
 
         int accural = this.generateBonusesForDoctor(talons);
@@ -138,8 +150,8 @@ public class SalaryDTOService {
         return dto;
     }
 
-    private int generateStavkaForDoctor(Doctor doctor, int days, int hours) {
-        return doctor.getRate() * hours - TAX - days * CANTEEN;
+    private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
+        return doctor.getRate() * hours;
     }
 
     private int generateBonusesForDoctor(List<Talon> talons) {
@@ -154,7 +166,8 @@ public class SalaryDTOService {
             int zones = talon.getZones();
             int price = procedure.getSOCIAL();
             int percent = doctor.getPercents().stream()
-                .filter(item-> item.getProcedureId() == procedure.getId()).findAny().get().getProcent();
+                .filter(item-> item.getProcedureId() == procedure.getId())
+                .findAny().get().getProcent();
             double accural = zones * price * percent / 100;
             sum += accural;
         }
@@ -197,8 +210,10 @@ public class SalaryDTOService {
     // ПРИ ЭТОМ актуальная ведомость (за позпрошлую неделю закрывается,
     // а остатки из неё переносятся в новую таблу)
     // Новая ведомость заносится в базу и становится актуальной
+    //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
+    //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 30 16 ? * SAT")
+    @Scheduled(cron = "0 50 16 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
