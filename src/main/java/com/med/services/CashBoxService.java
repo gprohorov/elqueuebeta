@@ -3,7 +3,6 @@ package com.med.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class CashBoxService {
     @Autowired
     SettingsService settingsService; 
 
-    public List<CashBox> getAll(){
+    public List<CashBox> getAll() {
         return repository.findAll();
     }
     
@@ -80,8 +79,7 @@ public class CashBoxService {
     public int getTodayGiven() {
         return  repository.findAll().stream()
             .filter(el->el.getDateTime().toLocalDate().equals(LocalDate.now()))
-            .filter(el->el.getSum()<0)
-            .mapToInt(CashBox::getSum).sum();
+            .filter(el->el.getSum() < 0).mapToInt(CashBox::getSum).sum();
     }
 
     public Response toZero(int sum) {

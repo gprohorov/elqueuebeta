@@ -1,16 +1,14 @@
 package com.med.services;
 
-import com.med.model.Card;
-import com.med.repository.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by george on 3/9/18.
- */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.med.model.Card;
+import com.med.repository.CardRepository;
+
 @Component
 public class CardService {
 
@@ -18,9 +16,8 @@ public class CardService {
     CardRepository repository;
 
     public Card saveCard(Card card) {
-        if (card.getId()==0){
-         int id=   this.getAll().stream().mapToInt(Card::getId).max().getAsInt();
-            card.setId(id);
+        if (card.getId() == 0) {
+            card.setId(this.getAll().stream().mapToInt(Card::getId).max().getAsInt());
         }
         return repository.save(card);
     }
@@ -38,12 +35,16 @@ public class CardService {
         return repository.save(card);
     }
 
-    public List<Card> getAll(){return repository.findAll();}
+    public List<Card> getAll() {
+    	return repository.findAll();
+	}
 
-    public void saveAll(List<Card> cards){repository.saveAll(cards);}
+    public void saveAll(List<Card> cards) {
+    	repository.saveAll(cards);
+	}
 
-    public List<Integer> getFreeProcedures(){
-        return repository.findAll().stream().filter(card -> card.isAnytime()==true)
-                .mapToInt(Card::getProcedureId).boxed().collect(Collectors.toList());
+    public List<Integer> getFreeProcedures() {
+        return repository.findAll().stream().filter(card -> card.isAnytime() == true)
+            .mapToInt(Card::getProcedureId).boxed().collect(Collectors.toList());
     }
 }

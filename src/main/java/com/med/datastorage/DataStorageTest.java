@@ -65,6 +65,7 @@ public class DataStorageTest {
     }
 
     public void taskOne() {
+    	/*
         // salaryService.createWeekSalary();
         List<SalaryDTO> list = salaryService.getSalaryList();
         LocalDate from = LocalDate.of(2018,10,29);
@@ -80,41 +81,34 @@ public class DataStorageTest {
        //     item.setOpened(opened);
          //   salaryDTOService.createSalaryDTO(item);
         });
+		*/
+    }
 
-
-
-        }
-
-    public List<SalaryDTO> taskTwo(){
-
-
+    public List<SalaryDTO> taskTwo() {
         return salaryDTOService.createNewTable();
     }
 
-
-
-    public void reset(){
-        
-    }
+    public void reset() { }
 
   //  List<Salary> list = salaryService.getAll().stream()
      //       .filter(salary -> salary.getDoctorId()==doctorId)
 
-    public List<SalaryDTO> taskTree(int doctorId){
-    List<Salary> list = salaryService.getAll().stream()
-              .filter(salary -> salary.getDoctorId()==doctorId)
-            .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
-            .collect(Collectors.toList());
-    list.stream().forEach(salary -> {
-        System.out.println( salary.getDateTime().toLocalDate()
-                + "  "  + salary.getDateTime().getHour() + "." +
-                salary.getDateTime().getMinute() + "." +
-                salary.getDateTime().getSecond() + "."
-                + "  :   " + salary.getSum());
-    });
+    public List<SalaryDTO> taskTree(int doctorId) {
+	    List<Salary> list = salaryService.getAll().stream()
+	              .filter(salary -> salary.getDoctorId()==doctorId)
+	            .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
+	            .collect(Collectors.toList());
+	    list.stream().forEach(salary -> {
+	        System.out.println( salary.getDateTime().toLocalDate()
+	                + "  "  + salary.getDateTime().getHour() + "." +
+	                salary.getDateTime().getMinute() + "." +
+	                salary.getDateTime().getSecond() + "."
+	                + "  :   " + salary.getSum());
+	    });
         System.out.println(list.stream().mapToInt(Salary::getSum).sum());
         return null;
     }
+    
     public void resetPatientsTable() {
         System.out.println(" talon table updated");
     }

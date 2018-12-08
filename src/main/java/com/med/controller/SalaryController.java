@@ -43,11 +43,6 @@ public class SalaryController {
     	return salaryDTOService.getOpenTable();
     }
 
-    @RequestMapping("/create/week")
-    public List<Salary> createWeek() {
-        return service.createWeekSalary();
-    }
-
     // a doctor get a salary into buzunar from kasa
     @RequestMapping("/get")
     public Response paySalary(@Valid @RequestBody Salary salary) {
@@ -69,7 +64,6 @@ public class SalaryController {
     //      !!!       Do it!
     @RequestMapping("/set")
     public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
-        //System.out.println(dto);
         if (dto.getAward() != 0) {
             Salary salary = new Salary(
                     dto.getDoctorID()

@@ -27,15 +27,10 @@ public class OutcomeTreeService {
     PatientService patientService;
 
     public List<OutcomeTree> getTree() {
-    	List<OutcomeTree> tree = repository.findAll().stream().filter(node -> node.getCatID() == null)
-        		.collect(Collectors.toList());
-        tree.forEach(node -> {
-        	List<OutcomeTree> items = this._getItemsByCatID(node.getId());
-        	node.setItems(items);
-        });
-
+    	List<OutcomeTree> tree = repository.findAll().stream()
+			.filter(node -> node.getCatID() == null).collect(Collectors.toList());
+        tree.forEach(node -> { node.setItems(this._getItemsByCatID(node.getId())); });
         tree.add(new OutcomeTree("ІНШЕ (спеціальна категорія)", null));
-        
         return tree;
     }
 
@@ -44,20 +39,19 @@ public class OutcomeTreeService {
     }
 
     public OutcomeTree createNode(OutcomeTree node) {
-        if ( node.getId() != null || node.getName().isEmpty()) return null;
-        if ( node.getCatID() != null && !this._isCategory(node.getCatID()) ) return null;
+        if (node.getId() != null || node.getName().isEmpty()) return null;
+        if (node.getCatID() != null && !this._isCategory(node.getCatID())) return null;
         return repository.save(node);
     }
 
     public OutcomeTree updateNode(OutcomeTree node) {
-    	if ( node.getId() == null ) return null;
+    	if (node.getId() == null) return null;
         OutcomeTree src = this.getNode(node.getId());
-        if ( node.getName() == null || node.getName().isEmpty() ) return null;
-        if ( src == null ) return null;
-        if ( ( src.getCatID() == null && node.getCatID() != null )
-            || ( src.getCatID() != null && node.getCatID() == null ) ) return null;
-        if ( node.getCatID() != src.getCatID()
-            && !this._isCategory(node.getCatID()) ) return null;
+        if (node.getName() == null || node.getName().isEmpty()) return null;
+        if (src == null) return null;
+        if ((src.getCatID() == null && node.getCatID() != null)
+    		|| (src.getCatID() != null && node.getCatID() == null)) return null;
+        if (node.getCatID() != src.getCatID() && !this._isCategory(node.getCatID())) return null;
         return repository.save(node);
     }
     
@@ -69,14 +63,12 @@ public class OutcomeTreeService {
     		// This is Category, so check for items
     		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
     		items.stream().forEach(item -> {
-
     			List<CashBox> cbl = cashBoxService.findByItemId(item.getId());
     			cbl.stream().forEach(cb -> {
     				cb.setItemId(null);
     				cb.setDesc(cb.getDesc() + " (Було: " + node.getName() + " -> " + item.getName() + ")");
 				});
     			cashBoxService.saveAll(cbl);
-    			
     			repository.delete(item);
     		}); 
     	} else {
@@ -95,18 +87,17 @@ public class OutcomeTreeService {
     public List<OutcomeTree> getTreeSum(LocalDate from, LocalDate to) {
     	
     	List<CashBox> outcomes = cashBoxService.getAllFromToExceptTypePatient(from, to);
-    	
     	final long[] totalSum = {0};
     	
-    	List<OutcomeTree> tree = repository.findAll().stream().filter( node -> node.getCatID() == null )
-    			.collect(Collectors.toList());
-    	tree.forEach( node -> {
+    	List<OutcomeTree> tree = repository.findAll().stream()
+			.filter(node -> node.getCatID() == null).collect(Collectors.toList());
+    	tree.forEach(node -> {
     		List<OutcomeTree> items = this._getItemsByCatID(node.getId());
     		totalSum[0] = 0;
     		items.forEach(item -> {
     			item.setSum(outcomes.stream()
-    					.filter( outcome-> item.getId().equals( outcome.getItemId() ) )
-    					.mapToLong(CashBox::getSum).sum());
+					.filter(outcome-> item.getId().equals(outcome.getItemId()))
+					.mapToLong(CashBox::getSum).sum());
     			totalSum[0] += item.getSum();
     		});
     		node.setSum(totalSum[0]);
@@ -114,8 +105,7 @@ public class OutcomeTreeService {
     	});
     	
     	tree.add(new OutcomeTree("ІНШЕ (спеціальна категорія)", null, outcomes.stream()
-    			.filter( o -> o.getItemId() == null).mapToLong(CashBox::getSum).sum()));
-    	
+			.filter(o -> o.getItemId() == null).mapToLong(CashBox::getSum).sum()));
     	return tree;
     }
     
@@ -139,7 +129,7 @@ public class OutcomeTreeService {
 
     private Boolean _isCategory(String id) {
         OutcomeTree test = this.getNode(id);
-        return ( test != null && test.getCatID() == null );
+        return (test != null && test.getCatID() == null);
     }
     
     private List<OutcomeTree> _getItemsByCatID(String id) {

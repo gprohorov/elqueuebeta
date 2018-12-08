@@ -1,8 +1,8 @@
 package com.med.services;
 
-import com.med.model.Doctor;
-import com.med.model.User;
-import com.med.repository.UserRepository;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,35 +12,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import com.med.model.Doctor;
+import com.med.model.User;
+import com.med.repository.UserRepository;
 
-
-/**
- * Created by george on 30.04.18.
- */
 @Service
 public class UserService implements UserDetailsService {
+	
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     DoctorService doctorService;
-/*
-    @PostConstruct
-    void init() {
-        User user = new User(new ArrayList<Role>(Arrays.asList(Role.ROLE_ADMIN)),
-                new BCryptPasswordEncoder().encode("admin1"),
-                "admin1");
-        userRepository.save(user);
-    }
-*/
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.findOne(username);
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), getAuthority(user) );
+            user.getUsername(), user.getPassword(), getAuthority(user) );
     }
 
     public Optional<User> findById(String id) {
@@ -52,10 +40,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User findOne(String username) {
-        return userRepository.findAll()
-                .stream().filter(usr -> usr.getUsername().equals(username))
-                .findAny().orElseThrow(()
-                        -> new UsernameNotFoundException( username + " was not found") );
+        return userRepository.findAll().stream().filter(usr -> usr.getUsername().equals(username))
+            .findAny().orElseThrow(() -> new UsernameNotFoundException(username + " was not found") );
     }
 
     public Doctor getCurrentUserInfo() {
