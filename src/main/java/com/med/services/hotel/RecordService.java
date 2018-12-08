@@ -1,5 +1,21 @@
 package com.med.services.hotel;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.med.model.Patient;
 import com.med.model.Response;
 import com.med.model.balance.Accounting;
@@ -15,21 +31,8 @@ import com.med.repository.hotel.RecordRepository;
 import com.med.services.AccountingService;
 import com.med.services.PatientService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Service
 public class RecordService {
-
-    private  List<Record> records;
 
     @Autowired
     RecordRepository repository;
@@ -49,9 +52,8 @@ public class RecordService {
     
     public void cancelRecord(String recordId) {
         Record record = this.getRecord(recordId);
-        String patientId = record.getPatientId();
-        Patient patient = patientService.getPatient(patientId);
-        if (record.getState().equals(State.OCCUP))patient.setHotel(false);
+        Patient patient = patientService.getPatient(record.getPatientId());
+        if (record.getState().equals(State.OCCUP)) patient.setHotel(false);
         patientService.savePatient(patient);
     	repository.deleteById(recordId);
     }
@@ -70,10 +72,7 @@ public class RecordService {
         record.setState(recordDto.getState());
         record.setPrice(recordDto.getPrice());
 
-        if (recordDto.getState().equals(State.OCCUP) 
-    	//	&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1))
-    	//	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
-    		) {
+        if (recordDto.getState().equals(State.OCCUP)) {
         	Patient patient = patientService.getPatient(recordDto.getPatientId());
         	patient.setHotel(true);
             patientService.savePatient(patient);
@@ -103,84 +102,77 @@ public class RecordService {
         }
 
         if (recordDto.getState().equals(State.OCCUP)
-                && !recordDto.getStartDate().equals(LocalDate.now())
-                && recordDto.getId()==null
-                )
-        {
+            && !recordDto.getStartDate().equals(LocalDate.now())
+            && recordDto.getId() == null) {
             reject.setMessage("Поселення тiльки на поточний день");
             return reject;
         }
 
-        if (records.size()==0) response = ok;
+        if (records.size() == 0) response = ok;
 
-        if (records.size()==2) {
+        if (records.size() == 2) {
 
             Record occup = records.stream()
-                    .filter(record -> record.getState().equals(State.OCCUP))
-                    .findFirst().orElse(null);
+                .filter(record -> record.getState().equals(State.OCCUP))
+                .findFirst().orElse(null);
             Record booked = records.stream()
-                    .filter(record -> record.getState().equals(State.BOOK))
-                    .findFirst().orElse(null);
+                .filter(record -> record.getState().equals(State.BOOK))
+                .findFirst().orElse(null);
 
-
-            if (occup.getId().equals(recordDto.getId())){
-                if (recordDto.getFinishDate().isBefore(booked.getStart().toLocalDate()))
-                {return ok;}
-                else {
+            if (occup.getId().equals(recordDto.getId())) {
+                if (recordDto.getFinishDate().isBefore(booked.getStart().toLocalDate())) {
+                	return ok;
+            	} else {
                     reject.setMessage("Накладка поселення та бронювання");
-                }
-            }else { reject.setMessage("Бронювання та поселення принципово неможливе");
                     return reject;
+                }
+            } else { 
+            	reject.setMessage("Бронювання та поселення принципово неможливе");
             }
 
-            if (recordDto.getState().equals(State.BOOK) && recordDto.getId().equals(booked.getId())){
-                if (recordDto.getStartDate().isAfter(occup.getFinish().toLocalDate())){
+            if (recordDto.getState().equals(State.BOOK) && recordDto.getId().equals(booked.getId())) {
+                if (recordDto.getStartDate().isAfter(occup.getFinish().toLocalDate())) {
                     return ok;
-                }else reject.setMessage("Накладка по часу бронюваня та поселення");
-            } else reject.setMessage(" Два бронювання неможливе");
-
-
-            response = reject;
-            return response;
-
+                } else {
+                	reject.setMessage("Накладка по часу бронюваня та поселення");
+                	return reject;
+                }
+            } else {
+            	reject.setMessage("Два бронювання неможливе");
+            }
+            
+            return reject;
         }
 
-        if (records.size()==1){
+        if (records.size() == 1) {
 
             Record record = records.get(0);
+            if (recordDto.getId() != null && recordDto.getId().equals(record.getId())) return ok;
 
-            if(recordDto.getId()!= null && recordDto.getId().equals(record.getId())) return ok;
-
-            if (record.getState().equals(State.OCCUP)
-                    && recordDto.getState().equals(State.OCCUP)
-                    ) {
+            if (record.getState().equals(State.OCCUP) && recordDto.getState().equals(State.OCCUP)) {
                 if (recordDto.getStartDate().isBefore(record.getFinish().toLocalDate())) {
                     reject.setMessage("Overlay by two occupations");
                     return reject;
-                } else return ok;
+                } else {
+                	return ok;
+                }
             }
 
-            if (record.getState().equals(State.BOOK)
-                    && recordDto.getState().equals(State.BOOK)) {
+            if (record.getState().equals(State.BOOK) && recordDto.getState().equals(State.BOOK)) {
                 reject.setMessage("Two bookings");
-                response = reject;}
+                response = reject;
+            }
 
             if (record.getState().equals(State.OCCUP)
-                    && recordDto.getState().equals(State.BOOK)
-                    && record.getFinish().isBefore(recordDto.getStartDate().atStartOfDay())
-                    ) response = ok;
+        		&& recordDto.getState().equals(State.BOOK)
+                && record.getFinish().isBefore(recordDto.getStartDate().atStartOfDay()) ) response = ok;
 
-            if (record.getState().equals(State.BOOK)
-                    && recordDto.getState().equals(State.OCCUP)
-                    ){
-                if (recordDto.getFinishDate().isBefore(record.getStart().toLocalDate()))
-                    response = ok;
+            if (record.getState().equals(State.BOOK) && recordDto.getState().equals(State.OCCUP)) {
+                if (recordDto.getFinishDate().isBefore(record.getStart().toLocalDate())) response = ok;
             }
         }
-        System.out.println(response);
         return response;
     }
-
 
     public Response updateRecord(RecordDto recordDto) {
 
@@ -195,10 +187,7 @@ public class RecordService {
         record.setStringFinish(recordDto.getFinish());
         record.setState(recordDto.getState());
         record.setPrice(recordDto.getPrice());
-        if (recordDto.getState().equals(State.OCCUP)
-            //	&& recordDto.getStartDate().isBefore(LocalDate.now().plusDays(1))
-            //	&& recordDto.getFinishDate().isAfter(LocalDate.now().minusDays(1))
-                ) {
+        if (recordDto.getState().equals(State.OCCUP)) {
             Patient patient = patientService.getPatient(recordDto.getPatientId());
             patient.setHotel(true);
             patientService.savePatient(patient);
@@ -219,13 +208,12 @@ public class RecordService {
     public Record closeRecord(String patientId, PaymentType paymentType) {
         Record record = repository.findByPatientId(patientId).stream()
                 .filter(record1 -> record1.getState() == State.OCCUP)
-                .limit(1)
-                .collect(Collectors.toList()).get(0);
+                .limit(1).collect(Collectors.toList()).get(0);
         record.setFinish(LocalDateTime.now());
         record.setState(State.CLOSED);
         accountingService.createAccounting(new Accounting(record.getPatientId(), LocalDateTime.now(),
                 getSum(record), paymentType, record.getKoika().getId(), record.getDesc()));
-       return repository.save(record);
+        return repository.save(record);
     }
 
     public void deleteAll() {
@@ -236,9 +224,9 @@ public class RecordService {
         int days = (int)ChronoUnit.DAYS.between(record.getStart(), record.getFinish());
         int subtractPausedDays = 0;
         int sum = 0;
-        Optional<List<Record>> pausedRecordsOpt = getPausedRecordsFromTo(record.getPatientId(), record.getStart().toLocalDate(),
-                record.getFinish().toLocalDate());
-        if(pausedRecordsOpt.isPresent()){
+        Optional<List<Record>> pausedRecordsOpt = getPausedRecordsFromTo(record.getPatientId(), 
+        		record.getStart().toLocalDate(), record.getFinish().toLocalDate());
+        if (pausedRecordsOpt.isPresent()) {
             List<Record> pausedRecords = pausedRecordsOpt.get();
             for (Record r : pausedRecords){
                 if(r.getFinish().isAfter(LocalDateTime.now())){
@@ -250,30 +238,30 @@ public class RecordService {
             }
         }
         sum = (days - subtractPausedDays) * record.getPrice();
-        record.setDesc(formDescForClosedRecord(record.getKoika().getName(), days, subtractPausedDays, record.getPrice(), sum));
+        record.setDesc(formDescForClosedRecord(record.getKoika().getName(), days, 
+    		subtractPausedDays, record.getPrice(), sum));
         return -sum;
     }
 
-    private String formDescForClosedRecord(String koikaName, int recordDays, int pausedRecordDays,
-                                           int recordPrice, int sum) {
+    private String formDescForClosedRecord(
+		String koikaName, int recordDays, int pausedRecordDays, int recordPrice, int sum) {
         return "Ліжко " + koikaName + ": ("+recordDays +"[дні] - " + pausedRecordDays
                 + "[дні на паузі]) * " + recordPrice + "[ціна] = " + sum + "[сума]";
     }
 
     private Optional<List<Record>> getPausedRecordsFromTo(String patientId, LocalDate from, LocalDate to){
         return Optional.ofNullable(repository.findByPatientId(patientId).stream()
-                .filter(record->record.getStart().toLocalDate().isAfter(from.minusDays(1)))
-                .filter(record->record.getStart().toLocalDate().isBefore(to.plusDays(1)))
-                .filter(record1 -> record1.getState() == State.PAUSED)
-                .collect(Collectors.toList()));
+            .filter(record->record.getStart().toLocalDate().isAfter(from.minusDays(1)))
+            .filter(record->record.getStart().toLocalDate().isBefore(to.plusDays(1)))
+            .filter(record1 -> record1.getState() == State.PAUSED)
+            .collect(Collectors.toList()));
     }
 
-    public Record relocatePatient(Record record, PaymentType paymentType){     //get paymentType from Record?
+    public Record relocatePatient(Record record, PaymentType paymentType) {     //get paymentType from Record?
         Record oldRecord = repository.findByPatientId(record.getPatientId()).stream()
-                .filter(record1 -> record1.getState() == State.OCCUP)
-                .limit(1)
-                .collect(Collectors.toList()).get(0);
-        if  (oldRecord.getPrice() < record.getPrice()) {
+            .filter(record1 -> record1.getState() == State.OCCUP)
+            .limit(1).collect(Collectors.toList()).get(0);
+        if (oldRecord.getPrice() < record.getPrice()) {
             oldRecord.setFinish(oldRecord.getFinish().minusDays(1));
         } else {
             record.setStart(record.getStart().plusDays(1));
@@ -296,36 +284,34 @@ public class RecordService {
 
     public List<Record> getAllForPatientFromTo(String patientId, LocalDate start, LocalDate finish) {
         return repository.findByPatientId(patientId).stream()
-                .filter(record->record.getFinish() != null)
-                .filter(record->record.getStart().toLocalDate().isAfter(start.minusDays(1)))
-                .filter(record->record.getFinish().toLocalDate().isBefore(finish.plusDays(1)))
-                .collect(Collectors.toList());
+            .filter(record->record.getFinish() != null)
+            .filter(record->record.getStart().toLocalDate().isAfter(start.minusDays(1)))
+            .filter(record->record.getFinish().toLocalDate().isBefore(finish.plusDays(1)))
+            .collect(Collectors.toList());
     }
 
     public Record findByKoikaAndDate(Koika koika, LocalDateTime localDateTime) {
         return repository.findByKoika(koika).stream()
-                .filter(record -> record.getStart().isBefore(localDateTime))
-                .filter(record -> record.getFinish().isAfter(localDateTime))
-                .findFirst().orElse(null);
+            .filter(record -> record.getStart().isBefore(localDateTime))
+            .filter(record -> record.getFinish().isAfter(localDateTime))
+            .findFirst().orElse(null);
     }
 
     public List<Record> getAllForKoikaFromTo(Koika koika, LocalDate start, LocalDate finish) {
         return repository.findByKoika(koika).stream()
-                .filter(record -> record.getFinish() != null)
-                .filter(record->record.getFinish().toLocalDate().isAfter(start.minusDays(1)))
-                .filter(record->record.getStart().toLocalDate().isBefore(finish.plusDays(1)))
-                .collect(Collectors.toList());
+            .filter(record -> record.getFinish() != null)
+            .filter(record->record.getFinish().toLocalDate().isAfter(start.minusDays(1)))
+            .filter(record->record.getStart().toLocalDate().isBefore(finish.plusDays(1)))
+            .collect(Collectors.toList());
     }
 
     //all Koikas from repository version
-    public List<KoikaLine> getLines(int days){
+    public List<KoikaLine> getLines(int days) {
         List<KoikaLine> koikaLines = new ArrayList<>();
         LocalDate endDate = LocalDate.now().plusDays(days);
         List<Koika> allKoikas = koikaService.getAll();
-        // allKoikas.stream().sorted(Comparator.comparing(koika -> koika.getChamber().getName())).collect(Collectors.toList())
         Collections.sort(allKoikas, (a, b) -> a.compareTo(b));
-        // allKoikas.stream().sorted(Comparator.comparing(koika -> koika.getChamber().getName())).collect(Collectors.toList());
-        for (Koika koika : allKoikas){
+        for (Koika koika : allKoikas) {
             List<HotelDay> koikaHotelDays = new ArrayList<>();
             LocalDate dateWithFreeState = LocalDate.now();
             List<Record> recordsForKoika = getAllForKoikaFromTo(koika, LocalDate.now(),
@@ -334,18 +320,17 @@ public class RecordService {
                 Collections.sort(recordsForKoika, Comparator.comparing(Record::getStart));
                 for (Record record : recordsForKoika) {
                     LocalDate startDay = record.getStart().toLocalDate();
-     /*??????*/     koika.setPatient(patientService.getPatient(record.getPatientId()));
-                    if (startDay.isBefore(LocalDate.now()))
-                    {
+                	koika.setPatient(patientService.getPatient(record.getPatientId()));
+                    if (startDay.isBefore(LocalDate.now())) {
                         startDay = LocalDate.now();
                     }
                     LocalDate finishDay = record.getFinish().toLocalDate();
-                    if (finishDay.isAfter(endDate))
-                    {
+                    if (finishDay.isAfter(endDate)) {
                         finishDay = endDate;
                     }
-                    while (dateWithFreeState.isBefore(startDay)){
-                        koikaHotelDays.add(new HotelDay(dateWithFreeState, State.FREE));   // consider adding another state from Koika document
+                    while (dateWithFreeState.isBefore(startDay)) {
+                    	// consider adding another state from Koika document
+                        koikaHotelDays.add(new HotelDay(dateWithFreeState, State.FREE));
                         dateWithFreeState = dateWithFreeState.plusDays(1);
                     }
                     State stateFromRecord = record.getState();
@@ -356,8 +341,9 @@ public class RecordService {
                     dateWithFreeState = finishDay;
                 }
             }
-            while (dateWithFreeState.isBefore(endDate)){
-                koikaHotelDays.add(new HotelDay(dateWithFreeState, State.FREE));   // consider adding another state from Koika document
+            while (dateWithFreeState.isBefore(endDate)) {
+            	// consider adding another state from Koika document
+                koikaHotelDays.add(new HotelDay(dateWithFreeState, State.FREE));
                 dateWithFreeState = dateWithFreeState.plusDays(1);
             }
             koikaLines.add(new KoikaLine(koika, koikaHotelDays));
@@ -392,7 +378,7 @@ public class RecordService {
         int days = Period.between(this.getTheDateOfTheLastMonitoring(), LocalDate.now()).getDays();
         System.out.println(days);
         List<Accounting> accountings = new ArrayList<>();
-        for (int i = 0; i < days; i++ ){
+        for (int i = 0; i < days; i++) {
              accountings = this.generateAllHotelBillsForDate(LocalDate.now().minusDays(i));
              accountingService.saveAll(accountings);
         }
@@ -410,22 +396,20 @@ public class RecordService {
         List<Accounting> list = new ArrayList<>();
         System.out.println("generate bills for " + date.toString());
         repository.findByFinishGreaterThan(date.atTime(8,0).minusDays(1)).stream()
-                .filter(record -> record.getState().equals(State.OCCUP))
-                .forEach(record -> {
-                	Accounting accounting = this.createAccounting(record, date);
-                    list.add(accounting);
-                });
+            .filter(record -> record.getState().equals(State.OCCUP))
+            .forEach(record -> {
+            	Accounting accounting = this.createAccounting(record, date);
+                list.add(accounting);
+            });
 
         return list;
     }
     
     private Accounting createAccounting(Record record, LocalDate date) {
-    	System.out.println(record.getId());
         Accounting accounting = new Accounting();
         accounting.setPayment(PaymentType.HOTEL);
         accounting.setDate(date);
         accounting.setDateTime(date.atTime(8,0));
-        // accounting.setDoctorId(0);
         accounting.setPatientId(record.getPatientId());
         accounting.setKoikaId(record.getKoika().getId());
         accounting.setSum(-1*record.getPrice());

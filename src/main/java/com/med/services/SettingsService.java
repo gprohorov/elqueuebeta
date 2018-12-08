@@ -17,6 +17,6 @@ public class SettingsService {
     }
 
     public Boolean update(Settings model) {
-    	return repository.save(model) == null ? false : true;
+    	return (repository.save(model) != null);
     }
 }

@@ -1,17 +1,5 @@
 package com.med.services;
 
-import com.med.model.*;
-import com.med.model.balance.Accounting;
-import com.med.model.balance.PaymentType;
-import com.med.repository.AccountingRepository;
-import com.med.repository.PatientRepository;
-import com.med.services.hotel.RecordService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,9 +8,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-/**
- * Created by george on 3/9/18.
- */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.med.model.Activity;
+import com.med.model.Patient;
+import com.med.model.PatientRegDTO;
+import com.med.model.Status;
+import com.med.model.Talon;
+import com.med.model.Therapy;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
+import com.med.repository.AccountingRepository;
+import com.med.repository.PatientRepository;
+import com.med.services.hotel.RecordService;
+
 @Service
 public class PatientService {
 
@@ -47,37 +47,19 @@ public class PatientService {
 	@Autowired
 	ProcedureService procedureService;
 
-	private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
-
-	/*
-	 * @Autowired TailServiceImpl tailService;
-	 * 
-	 * @Autowired DataStorage dataStorage;
-	 * 
-	 * @PostConstruct void init() { patients = dataStorage.getPatients();
-	 * repository.saveAll(patients); }
-	 */
-
 	public void deleteAll(List<Patient> patients) {
 		repository.deleteAll(patients);
 	}
 
 	public Patient deletePatient(String id) {
 		Patient patient = this.getPatient(id);
-
-		List<Talon> talons = talonService.getAllTalonsForPatient(id);
-		talonService.deleteAll(talons);
-
-		List<Accounting> accountings = accountingService.getByPatientId(id);
-		accountingService.deleteAll(accountings);
-
+		talonService.deleteAll(talonService.getAllTalonsForPatient(id));
+		accountingService.deleteAll(accountingService.getByPatientId(id));
 		repository.deleteById(id);
-
 		return patient;
 	}
 
 	public Patient registratePatient(PatientRegDTO data) {
-
 		Patient patient = new Patient(data.getPerson());
 		patient.setRegistration(LocalDateTime.now());
 		if (data.isActivate()) {
@@ -85,18 +67,10 @@ public class PatientService {
 			patient.setLastActivity(LocalDateTime.now());
 		}
 		repository.save(patient);
-
-		/*
-		 * int appointment =
-		 * (data.getAppointed()!=0)?data.getAppointed():LocalDateTime.now().
-		 * getHour(); int prId = (data.getProcedureId()!=0) ?
-		 * data.getProcedureId() : 2; boolean actv=false;
-		 * 
-		 */
-
-		if (data.isActivate() && data.getDate() != null && data.getAppointed() > 0 && data.getProcedureId() > 0) {
-			talonService.createActiveTalon(patient.getId(), data.getProcedureId(), LocalDate.parse(data.getDate()),
-					data.getAppointed(), data.isActivate());
+		if (data.isActivate() && data.getDate() != null 
+			&& data.getAppointed() > 0 && data.getProcedureId() > 0) {
+			talonService.createActiveTalon(patient.getId(), data.getProcedureId(),
+				LocalDate.parse(data.getDate()), data.getAppointed(), data.isActivate());
 		}
 		return patient;
 	}
@@ -106,19 +80,16 @@ public class PatientService {
 	}
 
 	public Patient getPatient(String patientId) {
-
 		Patient patient = repository.findById(patientId).orElse(null);
 		Therapy therapy = therapyService.findTheLastTherapy(patientId);
-		if (therapy != null)
-			patient.setTherapy(therapy);
+		if (therapy != null) patient.setTherapy(therapy);
 		return patient;
 	}
 
 	public Patient getPatientWithTalons(String id) {
-		List<Talon> talons = new ArrayList<>();
 		Patient patient = repository.findById(id).orElse(null);
 		talonService.getTalonsForToday().stream().filter(talon -> talon.getPatientId().equals(id))
-				.forEach(talon -> patient.getTalons().add(talon));
+			.forEach(talon -> patient.getTalons().add(talon));
 		return patient;
 	}
 
@@ -137,36 +108,20 @@ public class PatientService {
 	}
 
 	public List<Patient> getAllForToday() {
-		long start = System.currentTimeMillis();
 		List<Patient> patients = new ArrayList<>();
 		List<Talon> talons = talonService.getTalonsForToday();
-		// logger.info(">>>> talons for today --- >>>>>>>> " +
-		// (System.currentTimeMillis() - start));
-
-		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream().forEach(entry -> {
-			Patient patient = this.getPatient(entry.getKey());
-			patient.setTalons(entry.getValue());
-			patient.setActivity(patient.calcActivity());
-			patient.setTherapy(null);
-			if (patient.getDelta() == null) {
-				patient.setStartActivity(LocalDateTime.now());
-				patient.setLastActivity(LocalDateTime.now());
-			}
-
-			/*
-			 * 
-			 * if (patient.getDelta()> 150){
-			 * patient.setActivity(Activity.NON_ACTIVE);
-			 * patient.setStartActivity(null); patient.setLastActivity(null); }
-			 */
-
-			patients.add(patient);
-		});
-
-		// logger.info(">>>> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " +
-		// (System.currentTimeMillis() - start));
-		logger.info(">>>>  patients for today --- >>>>>>>> " + (System.currentTimeMillis() - start));
-
+		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream()
+			.forEach(entry -> {
+				Patient patient = this.getPatient(entry.getKey());
+				patient.setTalons(entry.getValue());
+				patient.setActivity(patient.calcActivity());
+				patient.setTherapy(null);
+				if (patient.getDelta() == null) {
+					patient.setStartActivity(LocalDateTime.now());
+					patient.setLastActivity(LocalDateTime.now());
+				}
+				patients.add(patient);
+			});
 		return patients;
 	}
 
@@ -175,48 +130,36 @@ public class PatientService {
 	}
 
 	public Patient setStatus(String patientId, Status status) {
-
 		Patient patient = this.getPatient(patientId);
 		patient.setStatus(status);
 		return repository.save(patient);
-
 	}
 
 	public Accounting insertIncome(String patientId, int sum, String desc, PaymentType payment) {
-
-		Accounting accounting = new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc);
-		return accountingService.createAccounting(accounting);
-
+		return accountingService.createAccounting(
+			new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc));
 	}
 
 	public Integer getBalance(String patientId) {
-
 		Integer debet = accountingService.getSumlForPatient(patientId);
-		Integer kredit = talonService.getAllTalonsForPatient(patientId).stream().mapToInt(Talon::getSum).sum();
-
+		Integer kredit = talonService.getAllTalonsForPatient(patientId)
+			.stream().mapToInt(Talon::getSum).sum();
 		return debet + kredit;
 	}
 
 	//////////// ULTIMATE BALANCE ///////////////
 	public List<Accounting> getUltimateBalance(String patientId, LocalDate start, LocalDate finish) {
-
-		// return accountingRepository.findByPatientId(patientId);
 		return accountingRepository.findByPatientIdAndDateBetween(patientId, start, finish);
 	}
 
 	public List<Accounting> getUltimateBalanceShort(String patientId, int days) {
-		return this.getUltimateBalance(patientId, LocalDate.now().minusDays(days + 1), LocalDate.now().plusDays(1));
+		return this.getUltimateBalance(
+			patientId, LocalDate.now().minusDays(days + 1), LocalDate.now().plusDays(1));
 	}
 
 	public List<Accounting> getUltimateBalanceToday(String patientId) {
-		Therapy therapy = therapyService.findTheLastTherapy(patientId);
-		LocalDate start = LocalDate.now().minusDays(100);
-//		if (therapy!=null ){
-//			start = therapy.getStart().toLocalDate();
-//		}else {
-//			start=LocalDate.now().minusDays(100);
-//		}// kostil
-		return this.getUltimateBalance(patientId, start.minusDays(1), LocalDate.now().plusDays(1));
+		return this.getUltimateBalance(
+			patientId, LocalDate.now().minusDays(100), LocalDate.now().plusDays(1));
 	}
 
 	public List<Accounting> getBalanceForCurrentTherapy(String patientId) {
@@ -230,69 +173,41 @@ public class PatientService {
 
 	// !!! PATIENTS WITH TALONS FOR DATE !!!
 	public List<Patient> getAllForDate(LocalDate date) {
-
-		long start = System.currentTimeMillis();
-
 		List<Patient> patients = new ArrayList<>();
 		List<Talon> talons = talonService.getTalonsForDate(date);
-
-		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream().forEach(entry -> {
-			Patient patient = this.getPatient(entry.getKey());
-			if (patient != null) { /* kostil */
-				patient.setTalons(entry.getValue());
-				patient.setActivity(patient.calcActivity());
-
-				if (patient.getDelta() != null && patient.getDelta() > 300) {
-					// logger.info(patient.getPerson().getFullName());
-					patient.setStartActivity(LocalDateTime.now());
-					patient.setLastActivity(LocalDateTime.now());
-					repository.save(patient);
+		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream()
+			.forEach(entry -> {
+				Patient patient = this.getPatient(entry.getKey());
+				if (patient != null) {
+					patient.setTalons(entry.getValue());
+					patient.setActivity(patient.calcActivity());
+					if (patient.getDelta() != null && patient.getDelta() > 300) {
+						patient.setStartActivity(LocalDateTime.now());
+						patient.setLastActivity(LocalDateTime.now());
+						repository.save(patient);
+					}
+					patient.setTherapy(null);
+					patients.add(patient);
 				}
-				patient.setTherapy(null);
-				patients.add(patient);
-			}
-		});
-		String s = (date.equals(LocalDate.now())) ? "toaday" : date.toString();
-		logger.info(" patients for " + s + "  -  " + (System.currentTimeMillis() - start) + "ms");
-
+			});
 		return patients;
 	}
 
-	// talonService.createTalonsForPatientToDate(patientId,
-	// LocalDate.parse(date), time)
-
 	/////////////// assign to date //////////////////////////
-	// ********************************************************
 	public List<Talon> assignPatientToDate(String patientId, LocalDate date, int time) {
-
-		Patient patient = this.patientBye(patientId);
-		this.repository.save(patient);
-
-		List<Talon> talons = talonService.createTalonsForPatientToDate(patientId, date, time);
-
-		return talons;
-
+		this.repository.save(this.patientBye(patientId));
+		return talonService.createTalonsForPatientToDate(patientId, date, time);
 	}
 
 	public Patient patientBye(String patientId) {
-	//	logger.info(" patid  " + patientId);
 		Patient patient = this.getPatientWithTalons(patientId);
-	//	logger.info(patient.toString());
 		List<Talon> talons = patient.getTalons();
-
 		talons.stream().forEach(talon -> {
-
-			if (!talon.getActivity().equals(Activity.EXECUTED)) {
-				talon.setActivity(Activity.CANCELED);
-				logger.info("procedure " + talon.getProcedure().getName() + " cancelled by BYE");
-			}
+			if (!talon.getActivity().equals(Activity.EXECUTED)) talon.setActivity(Activity.CANCELED);
 		});
 		talonService.saveTalons(talons);
-
 		patient.setLastActivity(null);
 		patient.setStartActivity(null);
-
 		return repository.save(patient);
 	}
-
 }
