@@ -236,7 +236,7 @@ public class SalaryDTOService {
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
    // @Scheduled(cron = "0 30 16 ? * SAT")
-    @Scheduled(cron = "0 21 16 ? * SAT")
+    @Scheduled(cron = "0 50 16 ? * SAT")
     public List<SalaryDTO> createNewTable(){
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list =
