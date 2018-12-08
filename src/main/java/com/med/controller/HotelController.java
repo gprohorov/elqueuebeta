@@ -1,33 +1,32 @@
 package com.med.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import com.med.model.Response;
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 import com.med.model.hotel.dto.KoikaRecord;
 import com.med.model.hotel.dto.RecordDto;
-import com.med.services.hotel.koika.impls.KoikaServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.med.services.hotel.KoikaService;
+import com.med.services.hotel.RecordService;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
-/**
- * Created by george on 3/9/18.
- */
 @RestController
 @RequestMapping("/api/hotel")
 @CrossOrigin("*")
 public class HotelController {
 	
 	@Autowired
-    KoikaServiceImpl koikaService;
+    KoikaService koikaService;
 
     @Autowired
-    RecordServiceImpl service;
+    RecordService service;
 
     @RequestMapping("/koika/map/{start}")
     public List<KoikaRecord> showMap(@PathVariable(value = "start") String start) {
@@ -39,23 +38,16 @@ public class HotelController {
     	return koikaService.getAll();
     }
 
-    //show free koikas for today ---- WTF !!!??? ----
-    public List<Koika> showFreeKoikasForToday() {
-    	return service.getFreeKoikasForDay(LocalDateTime.now());
-	}
-
     @RequestMapping("/record/list")
     public List<Record> showAll() {
         return service.getAll();
     }
 
-    // CREATE a new Record
     @PostMapping("/record/create")
     public Response createRecord(@Valid @RequestBody RecordDto recordDto) {
         return service.createRecordFromDto(recordDto);
     }
     
-    // UPDATE the Record
     @PostMapping("/record/update")
     public Response updateRecord(@Valid @RequestBody RecordDto recordDto) {
     	return service.updateRecord(recordDto);

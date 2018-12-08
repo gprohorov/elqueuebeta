@@ -1,14 +1,11 @@
 package com.med.model.statistics.dto.doctor;
 
-/**
- * Created by george on 24.07.18.
- */
 public class DoctorPercent {
+	
     private String doctorName;
-    private  Long percent;
+    private Long percent;
 
-    public DoctorPercent() {
-    }
+    public DoctorPercent() {}
 
     public DoctorPercent(String doctorName, Long percent) {
         this.doctorName = doctorName;

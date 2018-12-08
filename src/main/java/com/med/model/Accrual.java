@@ -1,14 +1,9 @@
 package com.med.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 
-/**
- * Created by george on 18.10.18.
- */
-//@Document(collection = "accrual" )
 public class Accrual {
+	
     private String id;
     private LocalDateTime dateTime;
     private String talonId;
@@ -16,8 +11,7 @@ public class Accrual {
     private String desc;
     private int sum;
 
-    public Accrual() {
-    }
+    public Accrual() {}
 
     public Accrual(LocalDateTime dateTime, String talonId, int doctorId, String desc, int sum) {
         this.dateTime = dateTime;

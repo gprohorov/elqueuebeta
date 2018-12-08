@@ -1,14 +1,13 @@
 package com.med.model.hotel;
 
-import com.med.model.Category;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * Created by george on 22.05.18.
- */
+import com.med.model.Category;
+
 @Document
 public class Chamber {
+	
     @Id
     private int id;
     private String name;
@@ -17,8 +16,7 @@ public class Chamber {
     private String desc;
     private int beds;
 
-    public Chamber() {
-    }
+    public Chamber() {}
 
     public Chamber(int id, String name, Category category, int floor, String desc, int beds) {
         this.id = id;
@@ -79,13 +77,7 @@ public class Chamber {
 
     @Override
     public String toString() {
-        return "Chamber{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category=" + category +
-                ", floor=" + floor +
-                ", desc='" + desc + '\'' +
-                ", beds=" + beds +
-                '}';
+        return "Chamber{" + "id=" + id + ", name='" + name + '\'' + ", category=" + category +
+            ", floor=" + floor + ", desc='" + desc + '\'' + ", beds=" + beds + "}";
     }
 }

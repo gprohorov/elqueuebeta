@@ -18,7 +18,6 @@ export class FinanceService {
     private tozeroUrl = config.api_path + '/cashbox/tozero/';
     private kassaAddOutcomeUrl = config.api_path + '/cashbox/create';
     private kassaAddOutcomeSAUrl = config.api_path + '/cashbox/create-sa';
-    private kassaOutcomeUrl = config.api_path + '/cashbox/current/details';
 
     constructor(private http: HttpClient) { }
 
@@ -58,10 +57,6 @@ export class FinanceService {
     
     toZero(sum: number) {
         return this.http.get(this.tozeroUrl + sum).pipe(catchError(this.handleError));
-    }
-    
-    getKassaOutcome() {
-        return this.http.get(this.kassaOutcomeUrl).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

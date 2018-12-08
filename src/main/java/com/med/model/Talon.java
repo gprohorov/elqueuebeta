@@ -1,15 +1,12 @@
 package com.med.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 22.04.18.
- */
 @Document
 public class Talon {
 
@@ -29,9 +26,9 @@ public class Talon {
     private int sum;
     @Nullable
     private LastTalonInfo last = null;
-    /////////
     private Activity activity = Activity.NON_ACTIVE;
-
+    
+    public Talon() {}
 
     public Activity getActivity() {
         return activity;
@@ -49,11 +46,9 @@ public class Talon {
         this.last = last;
     }
 
-    public Talon() {
-    }
-
     // full
-    public Talon(String id, String patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+    public Talon(String id, String patientId, LocalDate date, Procedure procedure, int zones,
+    		String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.id = id;
         this.patientId = patientId;
         this.date = date;
@@ -64,8 +59,10 @@ public class Talon {
         this.doctor = doctor;
         this.sum = sum;
     }
+    
     // without id
-    public Talon(String patientId, LocalDate date, Procedure procedure, int zones, String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
+    public Talon(String patientId, LocalDate date, Procedure procedure, int zones,
+    		String desc, LocalDateTime executionTime, Doctor doctor, int sum) {
         this.patientId = patientId;
         this.date = date;
         this.procedure = procedure;
@@ -75,6 +72,7 @@ public class Talon {
         this.doctor = doctor;
         this.sum = sum;
     }
+    
     //  patient and procedure  for today
     public Talon(String patientId, Procedure procedure) {
         this.patientId = patientId;
@@ -85,7 +83,6 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
-
     }
 
     public Talon(String patientId, Procedure procedure, LocalDate date) {
@@ -98,7 +95,6 @@ public class Talon {
         this.doctor = null;
         this.sum = 0;
         this.appointed = 9;
-
     }
 
     public Talon(String patientId, Procedure procedure, LocalDate date, int appointed) {
@@ -111,8 +107,8 @@ public class Talon {
         this.doctor = null;
         this.sum = 0;
         this.appointed = appointed;
-
     }
+    
     public Talon(String patientId, Procedure procedure, int days) {
         this.patientId = patientId;
         this.date = LocalDate.now().plusDays(days);
@@ -122,7 +118,6 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
-
     }
 
     public int getAppointed() {
@@ -239,7 +234,6 @@ public class Talon {
                 ", status=" + status +
                 ", sum=" + sum +
                 ", activity=" + activity +
-                '}';
+                "}";
     }
 }
-

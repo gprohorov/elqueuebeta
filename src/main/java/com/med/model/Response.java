@@ -34,9 +34,6 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return "Response{" +
-				"status=" + status + '\n' +
-				"message='" + message + '\'' +
-				'}';
+		return "Response{" + "status=" + status + '\n' + "message='" + message + '\'' + "}";
 	}
 }

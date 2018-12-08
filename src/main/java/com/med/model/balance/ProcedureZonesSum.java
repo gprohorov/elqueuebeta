@@ -1,14 +1,11 @@
 package com.med.model.balance;
 
-/**
- * Created by george on 19.11.18.
- */
 public class ProcedureZonesSum {
-    String procedureZones;
+    
+	String procedureZones;
     int sum;
 
-    public ProcedureZonesSum() {
-    }
+    public ProcedureZonesSum() {}
 
     public ProcedureZonesSum(String procedureZones, int sum) {
         this.procedureZones = procedureZones;

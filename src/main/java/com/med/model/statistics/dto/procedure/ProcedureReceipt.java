@@ -1,8 +1,5 @@
 package com.med.model.statistics.dto.procedure;
 
-/**
- * Created by george on 27.08.18.
- */
 public class ProcedureReceipt {
 
     private String name;
@@ -11,8 +8,7 @@ public class ProcedureReceipt {
     private int zones;
     private long sum;
 
-    public ProcedureReceipt() {
-    }
+    public ProcedureReceipt() {}
 
     public String getName() {
         return name;
@@ -22,9 +18,13 @@ public class ProcedureReceipt {
         this.name = name;
     }
 
-    public int getAmount() { return amount; }
+    public int getAmount() {
+    	return amount;
+	}
 
-    public void setAmount(int amount) { this.amount = amount;}
+    public void setAmount(int amount) {
+    	this.amount = amount;
+	}
 
     public int getPrice() {
         return price;
@@ -49,5 +49,4 @@ public class ProcedureReceipt {
     public void setSum(long sum) {
         this.sum = sum;
     }
-
 }

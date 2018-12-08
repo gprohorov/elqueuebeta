@@ -1,16 +1,13 @@
 package com.med.model.hotel;
 
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 30.05.18.
- */
 @Document
 public class Record {
+	
     @Id
     private String id;
     private String patientId;
@@ -21,10 +18,10 @@ public class Record {
     private LocalDateTime finish;
     private State state;
 
-    public Record() {
-    }
+    public Record() {}
 
-    public Record(String patientId, String desc, Koika koika, int price, LocalDateTime start, LocalDateTime finish, State state) {
+    public Record(String patientId, String desc, Koika koika, int price,
+    		LocalDateTime start, LocalDateTime finish, State state) {
         this.patientId = patientId;
         this.desc = desc;
         this.koika = koika;
@@ -117,6 +114,6 @@ public class Record {
                 ", start=" + start +
                 ", finish=" + finish +
                 ", state=" + state +
-                '}';
+                "}";
     }
 }

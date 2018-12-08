@@ -6,10 +6,8 @@ import com.med.model.statistics.dto.procedure.ProcedureReceipt;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Created by george on 28.08.18.
- */
 public class Receipt {
+	
     private  String number;
     private Patient patient;
     private LocalDate start;
@@ -19,6 +17,8 @@ public class Receipt {
     private int discount;
     private int hotel;
     private int tips;
+    
+    public Receipt() {}
 
     public int getHotel() {
         return hotel;
@@ -34,9 +34,6 @@ public class Receipt {
 
     public void setHotel(int hotel) {
         this.hotel = hotel;
-    }
-
-    public Receipt() {
     }
 
     public Patient getPatient() {
@@ -70,8 +67,6 @@ public class Receipt {
     public void setNumber(String number) {
         this.number = number;
     }
-
-
 
     public List<ProcedureReceipt> getList() {
         return list;

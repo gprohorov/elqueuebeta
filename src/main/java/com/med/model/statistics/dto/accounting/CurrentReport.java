@@ -1,9 +1,7 @@
 package com.med.model.statistics.dto.accounting;
 
-/**
- * Created by george on 18.11.18.
- */
 public class CurrentReport {
+	
     private int payed;
     private int salary;
     private int extraction;

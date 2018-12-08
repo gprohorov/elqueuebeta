@@ -4,9 +4,6 @@ import java.time.LocalDate;
 
 import com.med.model.hotel.State;
 
-/**
- * Created by george on 25.07.18.
- */
 public class RecordDto {
 
 	private String id;
@@ -18,10 +15,10 @@ public class RecordDto {
     private String finish;
     private State state;
 
-    public RecordDto() {
-    }
+    public RecordDto() {}
     
-    public RecordDto(String patientId, String desc, int koikaId, int price, String start, String finish, State state) {
+    public RecordDto(String patientId, String desc, int koikaId, int price,
+    		String start, String finish, State state) {
     	this.patientId = patientId;
     	this.desc = desc;
     	this.koikaId = koikaId;

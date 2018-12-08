@@ -1,16 +1,13 @@
 package com.med.model;
 
-import com.med.model.SalaryType;
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 28.10.18.
- */
-@Document(collection = "salary" )
+@Document(collection = "salary")
 public class Salary {
+	
     @Id
     private String id;
     private int doctorId;
@@ -18,8 +15,7 @@ public class Salary {
     private SalaryType type;
     private int sum;
 
-    public Salary() {
-    }
+    public Salary() {}
 
     public Salary(int doctorId, LocalDateTime dateTime, SalaryType type, int sum) {
         this.doctorId = doctorId;

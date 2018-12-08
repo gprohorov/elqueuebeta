@@ -1,29 +1,23 @@
 package com.med.controller;
 
-import com.med.model.Tail;
-import com.med.services.tail.Impls.TailServiceImpl;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.med.model.Tail;
+import com.med.services.TailService;
 
-/**
- * Created by george on 3/9/18.
- */
 @RequestMapping("/api/tail")
 @RestController
 @CrossOrigin("*")
 public class TailController {
 
-
     @Autowired
-    TailServiceImpl service;
-
+    TailService service;
 
     @RequestMapping("/list")
     public List<Tail> showTails(){
         return service.getTails();
     }
-
-
 }

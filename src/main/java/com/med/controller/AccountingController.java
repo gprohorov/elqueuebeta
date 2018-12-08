@@ -1,56 +1,50 @@
 package com.med.controller;
 
-import com.med.model.CashBox;
-import com.med.model.CashType;
-import com.med.model.balance.Accounting;
-import com.med.model.balance.PaymentType;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.user.UserService;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.med.model.CashBox;
+import com.med.model.CashType;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
+import com.med.services.AccountingService;
+import com.med.services.CashBoxService;
+import com.med.services.PatientService;
+import com.med.services.UserService;
 
-/**
- * Created by george on 3/9/18.
- */
 @RequestMapping("/api/income")
 @RestController
 @CrossOrigin("*")
 public class AccountingController {
 
-
     @Autowired
-    AccountingServiceImpl service ;
+    AccountingService service;
 
     @Autowired
     UserService userService;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    CashBoxServiceImpl cashBoxService;
-
+    CashBoxService cashBoxService;
 
     @RequestMapping("/list")
-    public List<Accounting> showAll(){
-
+    public List<Accounting> showAll() {
         return service.getAll();
     }
-
 
     // CREATE a new Accounting
     @PostMapping("/create")
     public String create(@Valid @RequestBody String data) {
 
         JSONObject jsonObj = new JSONObject(data);
-
 
         String patientId = jsonObj.getString("patientId");
         PaymentType paymentType = PaymentType.valueOf(jsonObj.getString("paymentType"));
@@ -61,9 +55,9 @@ public class AccountingController {
       
         int doctorId = 1;
 
-//
         if (sum != 0) {
-            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
+            service.createAccounting(new Accounting(
+        		doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
             if (paymentType.equals(PaymentType.CASH)) {
                 CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
                 cash.setType(CashType.PATIENT);
@@ -72,20 +66,14 @@ public class AccountingController {
         }
 
         if (discount != 0) {
-            service.createAccounting(new Accounting(doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
+            service.createAccounting(new Accounting(
+        		doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
         }
         
-      if (closeDay) {
+        if (closeDay) {
             patientService.patientBye(patientId);
-      }
+        }
 
         return JSONObject.quote("OK");
     }
-/*
-
-    public List<Talon> setAllActivity(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "activity") Activity activity){
-*/
-
 }

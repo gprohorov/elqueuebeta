@@ -1,17 +1,14 @@
 package com.med.model.statistics.dto.accounting;
 
-/**
- * Created by george on 22.07.18.
- */
 public class AvailableexecutedPart {
+	
     private int payed;
     private int given;
     private int available;
     private int executed;
     private int percentage;
 
-    public AvailableexecutedPart() {
-    }
+    public AvailableexecutedPart() {}
 
     public AvailableexecutedPart(int payed, int given, int available, int executed, int percentage) {
         this.payed = payed;
@@ -65,6 +62,5 @@ public class AvailableexecutedPart {
 	public String toString() {
 		return "AvailableexecutedPart [payed=" + payed + ", given=" + given + ", available=" + available + ", executed="
 				+ executed + ", percentage=" + percentage + "]";
-	}
-    
+	}    
 }

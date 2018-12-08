@@ -7,7 +7,7 @@ echo ''
 echo 'Building Back-end...'
 echo ''
 cd ..
-mvn clean package -DskipTests
+mvn clean package
 
 echo ''
 echo 'Copying app to destination server...'
