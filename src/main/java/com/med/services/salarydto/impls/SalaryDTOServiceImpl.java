@@ -103,14 +103,24 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         dto.setName(doctor.getFullName());
         dto.setKredit(doctor.getKredit());
 
+        List<Integer> fullTimeList = doctorService.getAll().stream()
+                .filter(doc->doc.getProcedureIds().isEmpty())
+                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+        fullTimeList.add(2);   //  for registratura
+
+
       //  int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
 
         int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
         List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
-                .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-                .filter(talon -> talon.getDoctor().getId()==doctorId)
+               .stream()
+              // .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
+               .filter( talon -> talon.getDoctor()!= null )
+               .filter( talon -> talon.getDoctor().getId()==doctorId )
+               .filter( talon -> talon.getExecutionTime()!= null )
+
                 .collect(Collectors.toList());
         int days = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
         dto.setDays(days);
@@ -124,6 +134,7 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
                     hours[0] +=hrs;
                 });
         dto.setHours(hours[0]);
+
         if (doctorId==2 || doctorId==1){dto.setHours(days*8);}
 
         //TODO:  hardcode
@@ -131,10 +142,10 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
         {   dto.setDays(6);
             dto.setHours(40);}
 
-
-
-
         int stavka = this.generateStavkaForDoctor(doctor,dto.getDays(),dto.getHours());
+
+     //  if (doctorId==2 || doctorId>16){stavka=0;}
+       if ( fullTimeList.contains(doctorId) ){stavka=0;}
         dto.setStavka(stavka);
 
         int accural = this.generateBonusesForDoctor(talons);
@@ -157,7 +168,8 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
 */
 
     private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
-        return doctor.getRate()*hours - TAX - days*CANTEEN;
+      //  return doctor.getRate()*hours - TAX - days*CANTEEN;
+        return doctor.getRate()*hours;
     }
 
     private int generateBonusesForDoctor(List<Talon> talons){
@@ -228,8 +240,11 @@ public class SalaryDTOServiceImpl implements ISalaryDTOService {
     //  актуальная ведомость (за позпрошлую неделю закрывается,
     // а остатки из неё переносятся в новую таблу) Hope1234
     // Новая ведомость заносится в базу и становится актуальной
+    //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
+    //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 30 16 ? * SAT")
+   // @Scheduled(cron = "0 30 16 ? * SAT")
+    @Scheduled(cron = "0 21 16 ? * SAT")
     public List<SalaryDTO> createNewTable(){
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list =
