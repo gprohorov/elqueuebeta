@@ -37,8 +37,17 @@ public class SalaryDTOService {
     @Autowired
     ProcedureService procedureService;
 
+    @Autowired
+    SettingsService settingsService;
+
     private final int TAX = 400;
     private final int CANTEEN = 20;
+    private List<Integer> fullTimeList = doctorService.getAll().stream()
+            .filter(doc->doc.getProcedureIds().isEmpty())
+            .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+    {
+        fullTimeList.add(2);   //  for registratura
+    }
 
     public List<SalaryDTO> getAll(){
         return repository.findAll();
@@ -94,11 +103,6 @@ public class SalaryDTOService {
         Doctor doctor = doctorService.getDoctor(doctorId);
         dto.setName(doctor.getFullName());
         dto.setKredit(doctor.getKredit());
-
-        List<Integer> fullTimeList = doctorService.getAll().stream()
-                .filter(doc->doc.getProcedureIds().isEmpty())
-                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
-        fullTimeList.add(2);   //  for registratura
 
 
       //  int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
@@ -236,7 +240,8 @@ public class SalaryDTOService {
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
    // @Scheduled(cron = "0 30 16 ? * SAT")
-    @Scheduled(cron = "0 50 16 ? * SAT")
+
+    @Scheduled(cron = "0 34 16 ? * SAT")
     public List<SalaryDTO> createNewTable(){
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list =
@@ -368,6 +373,25 @@ public class SalaryDTOService {
         );
         return list;
     }
+    // Taxes and canteen injection
+    //  once a month on the 28th day at 16:39 ,   just after salary generation
+    @Scheduled(cron = "0 36 16 28 * ?")
+    public List<SalaryDTO> injectTaxesIntoSalaryList(){
+        Settings settings = settingsService.get();
+        List<SalaryDTO> list = this.getAll().stream()
+                .filter(el->el.getClosed()==null)
+                .collect(Collectors.toList());
+        list.stream().forEach(row->{
+            row.setStavka(row.getStavka() - settings.getTax() - settings.getCanteen());
+            if( fullTimeList.contains(row.getDoctorId()) ){
+                row.setStavka(doctorService.getDoctor(row.getDoctorId()).getRate());
+            }
+        });
+
+        return list;
+    }
+
+
 
 
 
