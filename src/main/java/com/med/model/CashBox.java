@@ -1,17 +1,15 @@
 package com.med.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 31.10.18.
- */
 @Document
 public class CashBox {
+	
     @Id
     private String id;
     private LocalDateTime dateTime = LocalDateTime.now();
@@ -27,6 +25,7 @@ public class CashBox {
     @Transient
     private String patient;
     
+    public CashBox() {}
 
     public CashBox(LocalDateTime dateTime, String patientId, int doctorId, String desc, int sum) {
         this.dateTime = dateTime;
@@ -36,7 +35,8 @@ public class CashBox {
         this.sum = sum;
     }
 
-    public CashBox(LocalDateTime dateTime, String patientId, int doctorId, CashType type, String desc, int sum) {
+    public CashBox(LocalDateTime dateTime, String patientId, int doctorId,
+    		CashType type, String desc, int sum) {
         this.dateTime = dateTime;
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -56,9 +56,6 @@ public class CashBox {
     	this.type = type;
     	this.desc = desc;
     	this.sum = sum;
-    }
-
-    public CashBox() {
     }
 
     public String getId() {
@@ -140,6 +137,4 @@ public class CashBox {
 	public void setPatient(String patient) {
 		this.patient = patient;
 	}
-    
-    
 }

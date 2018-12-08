@@ -1,15 +1,13 @@
 package com.med.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
-/**
- * Created by george on 3/31/18.
- */
 @Document
 public class Card {
+	
     @Id
     private int id;
     private int procedureId;
@@ -22,8 +20,7 @@ public class Card {
                                           // i.e massage after water-pulling. Because of gell.
     private List<Integer> mustBeDoneBefore; //  // these procedures must be done BEFORE this procedure
 
-    public Card() {
-    }
+    public Card() {}
 
     public List<Integer> getMustBeDoneBefore() {
         return mustBeDoneBefore;
@@ -33,7 +30,8 @@ public class Card {
         this.mustBeDoneBefore = mustBeDoneBefore;
     }
 
-    public Card(int id, int procedureId, String name, int days, boolean anytime, List<Integer> closeAfter, List<Integer> activateAfter, List<Integer> mustBeDoneBefore) {
+    public Card(int id, int procedureId, String name, int days, boolean anytime,
+    		List<Integer> closeAfter, List<Integer> activateAfter, List<Integer> mustBeDoneBefore) {
         this.id = id;
         this.procedureId = procedureId;
         this.name = name;
@@ -92,7 +90,6 @@ public class Card {
         this.anytime = anytime;
     }
 
-
     public List<Integer> getActivateAfter() {
         return activateAfter;
     }
@@ -112,6 +109,6 @@ public class Card {
                 ", closeAfter=" + closeAfter +
                 ", activateAfter=" + activateAfter +
                 ", mustBeDoneBefore=" + mustBeDoneBefore +
-                '}';
+                "}";
     }
 }

@@ -1,52 +1,52 @@
 package com.med.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Created by george on 28.10.18.
- */
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    // зкземляр этого класса в жизни является строкой зарплатной ведомости.
-    // Эту ведомость передают из бухгалтерии в кассу для выдачи зарплаты.
-    // Каждая строка соответствует какому-то врачу.
-    // Ведомость охватывает ТРИ недели.
-    // Прошлая неделя. За неё насчитывается: - ставка исходя из проработанных часов
-    //                                       - начисления за процедуры
-    // Позапрошлая неделя.  Если врач не выбрал зарплату за позапрошлую неделю, то
-    // этот остаток ему переносится в в ведомость в колонку rest
-    // Текущая неделя.  Можно врачу начислять премии и штрафы.  А также учитывать ,
-    // сколько он уже из кассы выгреб.
+// зкземляр этого класса в жизни является строкой зарплатной ведомости.
+// Эту ведомость передают из бухгалтерии в кассу для выдачи зарплаты.
+// Каждая строка соответствует какому-то врачу.
+// Ведомость охватывает ТРИ недели.
+// Прошлая неделя. За неё насчитывается: - ставка исходя из проработанных часов
+//                                       - начисления за процедуры
+// Позапрошлая неделя.  Если врач не выбрал зарплату за позапрошлую неделю, то
+// этот остаток ему переносится в в ведомость в колонку rest
+// Текущая неделя.  Можно врачу начислять премии и штрафы.  А также учитывать ,
+// сколько он уже из кассы выгреб.
 
-    @Document
+// ------------ Охеренно информативно, только нахер оно здесь??? bvh ------------ 
+
+@Document
 public class SalaryDTO {
+	
     @Id
     private String id;
-    private LocalDate from;  // с какого числа включительно
-    private LocalDate to;   //  по какое число включительно считаем зарплату
-    private int week;      // номер недели в году
+    private LocalDate from; // с какого числа включительно
+    private LocalDate to;   // по какое число включительно считаем зарплату
+    private int week;       // номер недели в году
     private LocalDateTime opened; // открыли зарплатную ведомость - можно выплачивать з/п
-    private LocalDateTime closed;  // з/п выплачена, ведомость закрыта, остатки в след. вед.
-    private String name;  // фамилия доктора
-    private int doctorId;  // его айдишник
-    private int days;     // сколько дней проработал (обычно 6 дней) за прошедшую неделю
-    private int hours;    // часов за прошедшую неделю
-    private int stavka;   // мин. начисления минус налог минус обед
-    private int accural;   // бонусы за процедуры
-    private int award;    // премии, могут добавляться в теч.текущей  недели
-    private int penalty;  // также и штрафы
-    private int kredit;   // сколько можно взять в долг
+    private LocalDateTime closed; // з/п выплачена, ведомость закрыта, остатки в след. вед.
+    private String name; // фамилия доктора
+    private int doctorId;// его айдишник
+    private int days;    // сколько дней проработал (обычно 6 дней) за прошедшую неделю
+    private int hours;   // часов за прошедшую неделю
+    private int stavka;  // мин. начисления минус налог минус обед
+    private int accural; // бонусы за процедуры
+    private int award;   // премии, могут добавляться в течение текущей недели
+    private int penalty; // также и штрафы
+    private int kredit;  // сколько можно взять в долг
     private int total;   // всего начислено за прошедшую неделю
     private int recd;    // всего уже получено в кассе за текущую  неделю
-    private int rest;    //  остаток в кассе, не выбранный зо позапрошлую неделю
-    private int actual;  // сумма, которую можно получитьв кассе, учитывая вышеизложенное
-                         // (не влезая в долг)
-                        //
+    private int rest;    // остаток в кассе, не выбранный за позапрошлую неделю
+    private int actual;  // сумма, которую можно получить в кассе, учитывая выше изложенное (не влезая в долг)
+    
+    public SalaryDTO() {}
 
-    public SalaryDTO(String name, int doctorId, int days, int hours, int stavka, int accural, int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
+    public SalaryDTO(String name, int doctorId, int days, int hours, int stavka, int accural,
+    		int award, int penalty, int kredit, int total, int recd, int rest, int actual) {
         this.name = name;
         this.doctorId = doctorId;
         this.days = days;
@@ -60,9 +60,6 @@ public class SalaryDTO {
         this.recd = recd;
         this.rest = rest;
         this.actual = actual;
-    }
-
-    public SalaryDTO() {
     }
 
     public int getDays() {
@@ -237,6 +234,6 @@ public class SalaryDTO {
                 ", recd=" + recd +
                 ", rest=" + rest +
                 ", actual=" + actual +
-                '}';
+                "}";
     }
 }

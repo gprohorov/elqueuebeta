@@ -1,17 +1,16 @@
 package com.med.model.hotel.dto;
 
-import com.med.model.hotel.Koika;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.med.model.hotel.Koika;
 
 public class KoikaLine {
 
     Koika koika;
     List<HotelDay> line = new ArrayList<>();
 
-    public KoikaLine() {
-    }
+    public KoikaLine() {}
 
     public KoikaLine(Koika koika, List<HotelDay> line) {
         this.koika = koika;
@@ -36,9 +35,6 @@ public class KoikaLine {
 
     @Override
     public String toString() {
-        return "KoikaLine{" +
-                "koika=" + koika.toString() +
-                ", line=" + line +
-                '}';
+        return "KoikaLine{" + "koika=" + koika.toString() + ", line=" + line +"}";
     }
 }

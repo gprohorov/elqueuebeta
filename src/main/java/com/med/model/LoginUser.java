@@ -1,9 +1,7 @@
 package com.med.model;
 
-/**
- * Created by george on 04.05.18.
- */
 public class LoginUser {
+	
     private String username;
     private String password;
 

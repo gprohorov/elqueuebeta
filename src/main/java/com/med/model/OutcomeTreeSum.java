@@ -1,20 +1,17 @@
 package com.med.model;
 
-/**
- * Created by george on 24.11.18.
- */
 public class OutcomeTreeSum {
+	
     private String category;
-    private  String name;
-    private  long sum;
+    private String name;
+    private long sum;
+    
+    public OutcomeTreeSum() {}
 
     public OutcomeTreeSum(String category, String name, long sum) {
         this.category = category;
         this.name = name;
         this.sum = sum;
-    }
-
-    public OutcomeTreeSum() {
     }
 
     public String getCategory() {

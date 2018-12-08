@@ -2,9 +2,6 @@ package com.med.model.statistics.dto.patient;
 
 import java.time.LocalDate;
 
-/**
- * Created by george on 29.07.18.
- */
 public class PatientDTO {
 
     private String name;
@@ -19,8 +16,6 @@ public class PatientDTO {
     private Integer discount;
     private Integer donation;
     private Integer debt;
-
-
 
     public Integer getCash() {
         return cash;
@@ -38,10 +33,7 @@ public class PatientDTO {
         this.card = card;
     }
 
-
-
     public PatientDTO() {
-
         this.days = 0;
         this.procedures = 0;
         this.zones = 0;
@@ -52,9 +44,6 @@ public class PatientDTO {
         this.donation = 0;
         this.debt = 0;
     }
-
-
-
 
     public String getName() {
         return name;
@@ -112,7 +101,6 @@ public class PatientDTO {
         this.bill = bill;
     }
 
-
     public Integer getDiscount() {
         return discount;
     }
@@ -121,9 +109,13 @@ public class PatientDTO {
         this.discount = discount;
     }
 
-    public Integer getDonation() {return donation;}
+    public Integer getDonation() {
+    	return donation;
+	}
 
-    public void setDonation(Integer donation) {this.donation = donation;}
+    public void setDonation(Integer donation) {
+    	this.donation = donation;
+	}
 
     public Integer getDebt() {
         return debt;

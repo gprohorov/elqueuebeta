@@ -1,17 +1,14 @@
 package com.med.model;
 
-/**
- * Created by george on 23.08.18.
- */
 public class PatientRegDTO {
+	
     private Person person;
     private int procedureId;
     private String date;
     private boolean activate;
     private int appointed;
 
-    public PatientRegDTO() {
-    }
+    public PatientRegDTO() {}
 
     public PatientRegDTO(Person person, int procedureId, String date, boolean activate, int appointed) {
         this.person = person;

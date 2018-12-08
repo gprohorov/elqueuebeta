@@ -10,15 +10,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 3/9/18.
- */
 @Document(collection = "patient")
-public class Patient { // implements Comparable<Patient> {
+public class Patient {
 
     @Id
     private String id;
-
     private Person person;
     @Transient
     @Nullable
@@ -39,12 +35,10 @@ public class Patient { // implements Comparable<Patient> {
     @Transient
     private Talon talon;
 
+    public Patient() {}
 
-
-    public Patient() {
-    }
-
-    public Patient(String id, Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
+    public Patient(String id, Person person, Therapy therapy, List<Talon> talons,
+    		LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
         this.id = id;
         this.person = person;
         this.therapy = therapy;
@@ -54,7 +48,8 @@ public class Patient { // implements Comparable<Patient> {
         this.status = status;
     }
 
-    public Patient(Person person, Therapy therapy, List<Talon> talons, LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
+    public Patient(Person person, Therapy therapy, List<Talon> talons,
+    		LocalDateTime lastActivity, LocalDateTime startActivity, Status status) {
         this.person = person;
         this.therapy = therapy;
         this.talons = talons;
@@ -171,29 +166,12 @@ public class Patient { // implements Comparable<Patient> {
     }
 
     public Long getDelta(){
-        Long delta =null;
-           if (this.getLastActivity() != null) {
-               delta = ChronoUnit.MINUTES.between(this.getLastActivity()
-                     , LocalDateTime.now());
-           }
-/*           if (delta > 300) {
-               this.setLastActivity(null);
-               this.setStartActivity(null);
-               delta = null;
-           }
-           */
-        return delta;
+    	return (this.getLastActivity() != null)
+			? ChronoUnit.MINUTES.between(this.getLastActivity(), LocalDateTime.now()) : null;
     }
 
     public int getAppointed() {
-
-
-        if (this.getTalons().isEmpty()) {
-            return this.appointed;
-        } else {
-            return this.getTalons().get(0).getAppointed();
-        }
-
+    	return (this.getTalons().isEmpty()) ? this.appointed : this.getTalons().get(0).getAppointed();
     }
 
     public void setAppointed(int appointed) {
@@ -210,80 +188,63 @@ public class Patient { // implements Comparable<Patient> {
 
     public Activity calcActivity() {
 
-        Activity activity = Activity.NULL;
-
-
+    	// -- Anybody hear about switch/case?
+    	// TODO: Rewrite this shit, bleat nahui... 
+    	
         if (this.getTalons().isEmpty()) {
-            return activity;
+            return Activity.NULL;
         }
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.INVITED))) {
-            activity = Activity.INVITED;
-            return activity;
+        	return Activity.INVITED;
         }
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.ON_PROCEDURE))) {
-            activity = Activity.ON_PROCEDURE;
-            return activity;
+        	return Activity.ON_PROCEDURE;
         }
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.ACTIVE))) {
-            activity = Activity.ACTIVE;
-            return activity;
+        	return Activity.ACTIVE;
         }
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).allMatch(ac -> ac.equals(Activity.NON_ACTIVE))) {
-            activity = Activity.NON_ACTIVE;
-            return activity;
+        	return Activity.NON_ACTIVE;
         }
-
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).allMatch(ac -> ac.equals(Activity.TEMPORARY_NA))) {
-            activity = Activity.TEMPORARY_NA;
-            return activity;
+        	return Activity.TEMPORARY_NA;
         }
-
 
         if (this.getTalons().stream()
                 .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.TEMPORARY_NA))
-                &&
+            &&
                 this.getTalons().stream()
-                        .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))
-                ) {
-            activity = Activity.TEMPORARY_NA;
-            return activity;
+                .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))) {
+        	return Activity.TEMPORARY_NA;
         }
 
         if (this.getTalons().stream()
-                .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED)                )
-                .filter(talon -> !talon.getActivity().equals(Activity.CANCELED))
-                .count() == 0
-                ) {
-            activity = Activity.GAMEOVER;
-            return activity;
+            .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED))
+            .filter(talon -> !talon.getActivity().equals(Activity.CANCELED))
+            .count() == 0) {
+        	return Activity.GAMEOVER;
         }
 
-        if (
+        if (this.getTalons().stream()
+                .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))
+            &&
                 this.getTalons().stream()
-                        .map(talon -> talon.getActivity()).noneMatch(ac -> ac.equals(Activity.ACTIVE))
-                        &&
-                        this.getTalons().stream()
-                                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.NON_ACTIVE))
-
-                ){
-        activity = Activity.STUCK;
-        return activity;
+                .map(talon -> talon.getActivity()).anyMatch(ac -> ac.equals(Activity.NON_ACTIVE)) ) {
+        	return Activity.STUCK;
         }
-
-
-
-        return activity;
-    }  // end of calculate activity
+        
+        return Activity.NULL;
+    }
 
     public int getActivityLevel() {
         return this.getActivity().getLevel();
@@ -293,9 +254,7 @@ public class Patient { // implements Comparable<Patient> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Patient)) return false;
-
         Patient patient = (Patient) o;
-
         return getId().equals(patient.getId());
     }
 
@@ -303,25 +262,6 @@ public class Patient { // implements Comparable<Patient> {
     public int hashCode() {
         return this.getId().hashCode();
     }
-
-
-/*
-    @Override
-    public int compareTo(Patient comparePatient) {
-
-        int compareStatus = comparePatient.getStatus().getLevel();
-
-        if (compareStatus != this.getStatus().getLevel()) {
-            return comparePatient
-                    .getStatus().getLevel() - this.getStatus().getLevel();
-        } else {
-              if(this.getLastActivity()!= null && comparePatient.getLastActivity()!=null) {
-                  return this.getLastActivity()
-                          .compareTo(comparePatient.getLastActivity());
-              } else return 0;
-        }
-    }
-*/
 
     @Override
     public String toString() {
@@ -334,6 +274,6 @@ public class Patient { // implements Comparable<Patient> {
                 ", startActivity=" + startActivity +
                 ", status=" + status +
                 ", balance=" + balance +
-                '}';
+                "}";
     }
 }

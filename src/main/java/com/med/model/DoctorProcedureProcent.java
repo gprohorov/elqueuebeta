@@ -1,14 +1,11 @@
 package com.med.model;
 
-/**
- * Created by george on 04.11.18.
- */
 public class DoctorProcedureProcent {
+	
     private Integer procedureId;
     private Integer procent;
 
-    public DoctorProcedureProcent() {
-    }
+    public DoctorProcedureProcent() {}
 
     public DoctorProcedureProcent(Integer procedureId, Integer procent) {
         this.procedureId = procedureId;

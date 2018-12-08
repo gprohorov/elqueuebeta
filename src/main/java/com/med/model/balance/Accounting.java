@@ -1,14 +1,11 @@
 package com.med.model.balance;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Created by george on 12.05.18.
- */
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document
 public class Accounting {
     @Id
@@ -23,10 +20,10 @@ public class Accounting {
     private String desc = "";
     private int koikaId;
 
-    public Accounting() {
-    }
+    public Accounting() {}
 
-    public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, int koikaId, String desc) {
+    public Accounting(String patientId, LocalDateTime dateTime, Integer sum,
+    		PaymentType payment, int koikaId, String desc) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.sum = sum;
@@ -35,7 +32,8 @@ public class Accounting {
         this.koikaId = koikaId;
     }
 
-    public Accounting(String patientId, LocalDateTime dateTime, Integer sum, PaymentType payment, String desc) {
+    public Accounting(String patientId, LocalDateTime dateTime, Integer sum,
+			PaymentType payment, String desc) {
         this.patientId = patientId;
         this.dateTime = dateTime;
         this.date = this.dateTime.toLocalDate();
@@ -44,7 +42,8 @@ public class Accounting {
         this.desc = desc;
     }
 
-    public Accounting(Integer doctorId, String patientId, LocalDateTime dateTime, String talonId, Integer sum, PaymentType payment, String desc) {
+    public Accounting(Integer doctorId, String patientId, LocalDateTime dateTime,
+    		String talonId, Integer sum, PaymentType payment, String desc) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.dateTime = dateTime;
@@ -63,9 +62,13 @@ public class Accounting {
         this.date = date;
     }
 
-    public String getTalonId() {return talonId;}
+    public String getTalonId() {
+    	return talonId;
+	}
 
-    public void setTalonId(String talonId) {this.talonId = talonId;}
+    public void setTalonId(String talonId) {
+    	this.talonId = talonId;
+	}
 
     public Integer getDoctorId() {
         return doctorId;
@@ -130,5 +133,4 @@ public class Accounting {
     public void setKoikaId(int koikaId) {
         this.koikaId = koikaId;
     }
-
 }
