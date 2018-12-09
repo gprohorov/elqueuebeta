@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.med.model.Activity;
+import com.med.model.Assignment;
 import com.med.model.Doctor;
 import com.med.model.LastTalonInfo;
 import com.med.model.Patient;
@@ -71,7 +72,8 @@ public class TalonService {
         return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), date));
     }
     
-    public Talon createActiveTalon(String patientId, int procedureId, LocalDate date, int time, Boolean activate) {
+    public Talon createActiveTalon(
+		String patientId, int procedureId, LocalDate date, int time, Boolean activate, Boolean schema) {
     	Talon talon = new Talon(patientId, procedureService.getProcedure(procedureId), date, time);
     	if (activate) {
     		talon.setActivity(Activity.ACTIVE);
@@ -81,6 +83,14 @@ public class TalonService {
 	    		patient.setLastActivity(LocalDateTime.now());
 	    		patientService.savePatient(patient);
     		}
+    	}
+    	if (schema) {
+    		Therapy therapy = therapyService.findTheLastTherapy(patientId);
+    		List<Assignment> assignments = therapy.getAssignments();
+    		ArrayList<ArrayList<Object>> picture = assignments.get(0).getPicture();
+    		assignments.add(new Assignment(procedureId, "", picture));
+    		therapy.setAssignments(assignments);
+    		therapyService.saveTherapy(therapy);
     	}
         return repository.save(talon);
     }

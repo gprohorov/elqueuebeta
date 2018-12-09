@@ -70,7 +70,7 @@ public class PatientService {
 		if (data.isActivate() && data.getDate() != null 
 			&& data.getAppointed() > 0 && data.getProcedureId() > 0) {
 			talonService.createActiveTalon(patient.getId(), data.getProcedureId(),
-				LocalDate.parse(data.getDate()), data.getAppointed(), data.isActivate());
+				LocalDate.parse(data.getDate()), data.getAppointed(), data.isActivate(), false);
 		}
 		return patient;
 	}
