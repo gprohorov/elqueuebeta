@@ -44,9 +44,10 @@ export class PatientService {
         return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number, activate: boolean) {
+    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number,
+        activate: boolean, schema?: boolean) {
         return this.http.get(this.assignProcedureUrl
-            + [patientId, procedureId, date, appointed, activate || false].join('/'))
+            + [patientId, procedureId, date, appointed, activate || false, schema || false].join('/'))
             .pipe(catchError(this.handleError));
     }
 
