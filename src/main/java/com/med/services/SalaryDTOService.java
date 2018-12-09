@@ -19,6 +19,8 @@ import com.med.model.SalaryDTO;
 import com.med.model.Talon;
 import com.med.repository.SalaryDTORepository;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class SalaryDTOService {
 
@@ -37,9 +39,17 @@ public class SalaryDTOService {
     @Autowired
     ProcedureService procedureService;
 
-    // TODO: Rewrite it to get from Settings
-    private final int TAX = 400;
-    private final int CANTEEN = 20;
+    private List<Integer> fullTimeList;
+
+    @PostConstruct
+    void init() {
+    fullTimeList = doctorService.getAll().stream()
+                .filter(doc -> doc.getProcedureIds().isEmpty())
+                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+        fullTimeList.add(2); // for registratura
+    }
+
+
 
     public List<SalaryDTO> getAll() {
         return repository.findAll();
@@ -58,8 +68,10 @@ public class SalaryDTOService {
     }
 
     public SalaryDTO getSalaryDTOByWeek(int week, int doctorId) {
-        //TODO
-        return null;
+        return repository.findAll().stream()
+                .filter(el->el.getWeek()==week)
+                .filter(el->el.getDoctorId()==doctorId)
+                .findFirst().orElse(new SalaryDTO());
     }
     
     // главврач генерит зарплату врачу за неделю.
@@ -91,14 +103,6 @@ public class SalaryDTOService {
         Doctor doctor = doctorService.getDoctor(doctorId);
         dto.setName(doctor.getFullName());
         dto.setKredit(doctor.getKredit());
-
-        List<Integer> fullTimeList = doctorService.getAll().stream()
-            .filter(doc->doc.getProcedureIds().isEmpty())
-            .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
-        fullTimeList.add(2); // for registratura
-
-        // int rest = this.getRestOfDoctorFromTheLastTable(doctorId);
-
         int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
@@ -125,11 +129,9 @@ public class SalaryDTOService {
             });
         dto.setHours(hours[0]);
         
-        // TODO: Remove hardcode
-        if (doctorId == 2 || doctorId == 1) dto.setHours(days*8);
 
         //TODO: hardcode
-        if (doctorId > 16) {
+        if (fullTimeList.contains(doctorId)) {
         	dto.setDays(6);
         	dto.setHours(40);
         }
