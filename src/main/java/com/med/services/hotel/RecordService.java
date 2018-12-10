@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Patient;
@@ -401,10 +402,25 @@ public class RecordService {
             	Accounting accounting = this.createAccounting(record, date);
                 list.add(accounting);
             });
-
         return list;
     }
-    
+
+   // @Scheduled(cron = "0 0 8 * * ?")
+    private List<Accounting> generateBillsForAllLodgers() {
+        List<Accounting> list = new ArrayList<>();
+        repository.findByFinishGreaterThan(LocalDate.now().atTime(8,0).minusDays(1)).stream()
+            .filter(record -> record.getState().equals(State.OCCUP))
+            .forEach(record -> {
+            	Accounting accounting = this.createAccounting(record, LocalDate.now());
+                list.add(accounting);
+            });
+        return accountingService.saveAll(list);
+    }
+
+
+
+
+
     private Accounting createAccounting(Record record, LocalDate date) {
         Accounting accounting = new Accounting();
         accounting.setPayment(PaymentType.HOTEL);
