@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,27 +135,29 @@ public class WorkPlaceService {
         accrualService.createAccrual(accrual);
 
         /////////////////  cancelling and activating approp. talons
-        this.cancelTalonsByCard(procedure,patient.getId());
-        this.activateTalonsByCard(procedure,patient.getId());
+        this.cancelTalonsByCard(procedure, patient.getId());
+        this.activateTalonsByCard(procedure, patient.getId());
 
         Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
         
-        // TODO: Remove hardcoded value!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO: Remove hardcoded value !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         ////////////////////// if YXT   -  comment to therapy
         if (procedure.getId() == 9) therapy.setNotes(therapy.getNotes() + "<br>"
     		+ " : УХТ " + LocalDate.now() + " " + zones + " зон.");
         
         if (picture.size() > 0) {
 	        List<Assignment> assignments = therapy.getAssignments();
-	        Assignment ass = assignments.stream()
-        		.filter(as -> as.getProcedureId() == talon.getProcedure().getId())
-        		.findFirst().orElse(new Assignment(talon.getProcedure().getId(), "", picture));
-        	int index = assignments.indexOf(ass);
-        	if (index > 0) {
-        		ass.setPicture(picture);
-        		assignments.set(index, ass); 
-        	}
-        	patient.getTherapy().setAssignments(assignments);
+	        if (assignments.stream().filter(
+        		as -> as.getProcedureId() == talon.getProcedure().getId()).count() > 0) {
+	        	Assignment a = assignments.stream().filter(
+            		as -> as.getProcedureId() == talon.getProcedure().getId()).findFirst().get();
+        		a.setPicture(picture);
+        		assignments.set(assignments.indexOf(a), a); 
+        		therapy.setAssignments(assignments);
+	        }
         }
         
         therapyService.saveTherapy(therapy);

@@ -21,6 +21,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     private cx: CanvasRenderingContext2D;
     private canvasImage = new Image;
     private canvasBuffer = [];
+    private isEditablePicture = false;
 
     loading = false;
     sub: Subscription;
@@ -74,12 +75,19 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.procedureStarted = ('ON_PROCEDURE' === this.item.talon.activity);
 
             setTimeout(() => {
-                this.canvasInit();
-                if (   this.item.patient.therapy 
-                    && this.item.patient.therapy.assignments[0]
-                    && this.item.patient.therapy.assignments[0].picture) {
-                    this.restoreCanvas(this.item.patient.therapy.assignments[0].picture);
-                }
+                if (this.item.patient.therapy 
+                    && this.item.patient.therapy.assignments
+                    && this.item.patient.therapy.assignments != null) {
+                    this.isEditablePicture = true;
+                    if (   this.item.patient.therapy 
+                        && this.item.patient.therapy.assignments
+                        && this.item.patient.therapy.assignments.length > 0
+                        && this.item.patient.therapy.assignments[0]
+                        && this.item.patient.therapy.assignments[0].picture) {
+                        this.restoreCanvas(this.item.patient.therapy.assignments[0].picture);
+                    }
+                } else {
+                    this.canvasInit();
             }, 0);
         });
     }
@@ -95,7 +103,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
             this.cx.drawImage(this.canvasImage, 0, 0);
             
-            this.captureEvents(canvasEl);
+            if (this.isEditablePicture) this.captureEvents(canvasEl);
         }
     }
 
