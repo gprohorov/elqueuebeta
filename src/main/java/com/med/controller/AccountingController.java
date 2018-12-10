@@ -18,7 +18,7 @@ import com.med.services.CashBoxService;
 import com.med.services.PatientService;
 import com.med.services.UserService;
 
-@RequestMapping("/api/income")
+@RequestMapping("/api/accounting")
 @RestController
 @CrossOrigin("*")
 public class AccountingController {

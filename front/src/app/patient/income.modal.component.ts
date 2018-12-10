@@ -102,7 +102,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
         f.submitted = true;
         if (!f.form.valid) return false;
         this.model.closeDay = this.model.closeDay || false;
-        this.sub = this.patientService.income(this.model).subscribe(() => {
+        this.sub = this.patientService.accounting(this.model).subscribe(() => {
             this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
                 + ' внесено ' + this.model.sum + ' грн.');
             options.closeDialogSubject.next();
