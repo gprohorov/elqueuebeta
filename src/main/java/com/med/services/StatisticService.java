@@ -16,7 +16,6 @@ import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Procedure;
 import com.med.model.Talon;
-import com.med.model.Therapy;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.doctor.DoctorCurrentStatistics;
@@ -46,9 +45,6 @@ public class StatisticService {
     @Autowired
     AccountingService accountingService;
 
-    @Autowired
-    TherapyService therapyService;
-
     public Long getCashAvailable() {
         return accountingService.getSumForDateCash(LocalDate.now());
     }
@@ -59,7 +55,7 @@ public class StatisticService {
 
         List<DoctorProcedureZoneFee> result = new ArrayList<>();
 
-        Map<String, List<Talon>> map =  talons.stream()
+        Map<String, List<Talon>> map = talons.stream()
             .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
             .collect(Collectors.groupingBy(talon->talon.getDoctor().getFullName()));
 
@@ -133,19 +129,19 @@ public class StatisticService {
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .mapToInt(Talon::getZones).sum();
 	
-	         Long fee = (long) talons.stream()
+	        Long fee = (long) talons.stream()
                 .filter(talon -> talon.getProcedure().getId() == procedure.getId())
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .mapToInt(Talon::getSum).sum();
 	
-	         statistics.setAssigned(assigned);
-	         statistics.setExecuted(executed);
-	         statistics.setCancelled(cancelled);
-	         statistics.setExpired(expired);
-	         statistics.setZones(zones);
-	         statistics.setFee(fee);
-	
-	         list.add(statistics);
+	        statistics.setAssigned(assigned);
+	        statistics.setExecuted(executed);
+	        statistics.setCancelled(cancelled);
+	        statistics.setExpired(expired);
+	        statistics.setZones(zones);
+	        statistics.setFee(fee);
+
+	        list.add(statistics);
 	     });
 	     return  list;
     }
@@ -298,8 +294,6 @@ public class StatisticService {
 
         PatientDTO statistics = new PatientDTO();
         statistics.setName(patientService.getPatient(patientId).getPerson().getFullName());
-
-        Therapy therapy = therapyService.findTheLastTherapy(patientId);
 
         List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
             .filter(talon -> talon.getProcedure().getId() > 3)

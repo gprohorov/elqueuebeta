@@ -102,14 +102,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
-        window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
         options.closeDialogSubject.subscribe(() => {
             this.load(item.id);
-            window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
             setTimeout(() => {
-                window.open('/#/home', 'clientwindow');
-            }, 10 * 1000);
+                window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
+            }, 0);
+            setTimeout(() => { window.open('/#/home', 'clientwindow'); }, 10 * 1000);
         });
+        setTimeout(() => {
+            window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
+        }, 0);
     }
 
     showAssignProceduresOnDatePopup(item: any) {

@@ -20,13 +20,13 @@ public class Support {
         System.out.println(this.getLastMonitoring());
         if (this.getLastMonitoring() == null || this.getLastMonitoring().isBefore(LocalDate.now())) {
             this.run();
+            this.setLastMonitoring(LocalDate.now());
         }
     }
 
     private void run() {
         // Your tasks here
         recordService.recalculate();
-        this.setLastMonitoring(LocalDate.now());
     }
 
     public LocalDate getLastMonitoring() {

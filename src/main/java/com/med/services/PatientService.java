@@ -21,7 +21,6 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.AccountingRepository;
 import com.med.repository.PatientRepository;
-import com.med.services.hotel.RecordService;
 
 @Service
 public class PatientService {
@@ -39,13 +38,7 @@ public class PatientService {
 	AccountingRepository accountingRepository;
 
 	@Autowired
-	RecordService recordService;
-
-	@Autowired
 	TherapyService therapyService;
-
-	@Autowired
-	ProcedureService procedureService;
 
 	public void deleteAll(List<Patient> patients) {
 		repository.deleteAll(patients);

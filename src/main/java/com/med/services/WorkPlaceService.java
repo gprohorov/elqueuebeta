@@ -3,12 +3,9 @@ package com.med.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,6 @@ import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.model.TalonPatient;
 import com.med.model.Therapy;
-import com.med.model.Workplace;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 
@@ -48,9 +44,6 @@ public class WorkPlaceService {
 
     @Autowired
     AccountingService accountingService;
-
-    @Autowired
-    CardService cardService;
 
     @Autowired
     TherapyService therapyService;

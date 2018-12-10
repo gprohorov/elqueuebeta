@@ -11,34 +11,34 @@ import com.med.model.Doctor;
 import com.med.services.DoctorService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/doctor")
 @CrossOrigin("*")
 public class DoctorController {
 
     @Autowired
     DoctorService service;
 
-    @RequestMapping("/doctor/list")
+    @RequestMapping("/list")
     public List<Doctor> showDoctors(){
         return service.getAll();
     }
 
-    @PostMapping("/doctor/create")
+    @PostMapping("/create")
     public Doctor createDoctor(@Valid @RequestBody Doctor doctor) {
         return service.createDoctor(doctor);
     }
     
-    @GetMapping("/doctor/get/{id}")
+    @GetMapping("/get/{id}")
     public Doctor showOneDoctor(@PathVariable(value = "id") int doctorId) {
         return service.getDoctor(doctorId);
     }
 
-    @PostMapping("/doctor/update/")
+    @PostMapping("/update/")
     public Doctor updateDoctor(@Valid @RequestBody Doctor updates) {
         return service.updateDoctor(updates);
     }
 
-    @GetMapping("/doctor/delete/{id}")
+    @GetMapping("/delete/{id}")
     public Doctor delDoctor(@PathVariable(value = "id") int doctorId) {
         return service.deleteDoctor(doctorId);
     }

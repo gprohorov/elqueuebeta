@@ -73,9 +73,10 @@ public class TherapyService {
 	}
 
 	public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-		Talon talon = talonService.getAll().stream().filter(tal -> tal.getPatientId().equals(patientId))
-				.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
-				.findFirst().orElse(this.talonService.createTalon(patientId, 2, 0));
+		Talon talon = talonService.getAll().stream()
+			.filter(tal -> tal.getPatientId().equals(patientId))
+			.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
+			.findFirst().orElse(this.talonService.createTalon(patientId, 2, 0));
 		Patient patient = patientService.getPatient(patientId);
 		Therapy therapy = this.findTheLastTherapy(patientId);
 		return new PatientTalonTherapy(patient, talon, therapy);
@@ -114,7 +115,7 @@ public class TherapyService {
 		talon.setActivity(Activity.TEMPORARY_NA);
 		Doctor doctor = userService.getCurrentUserInfo();
 		talon.setDesc(talon.getDesc() + "/n" + doctor.getFullName() + "cancelled "
-				+ LocalDateTime.now().toString());
+			+ LocalDateTime.now().toString());
 		tail.setPatientOnProcedure(null);
 		tail.setVacant(true);
 		talonService.saveTalon(talon);
@@ -238,29 +239,16 @@ public class TherapyService {
 		return talons;
 	}
 
-	private int getPrice(Status status){
-		int price ;
+	// TODO: Remove hardcoded value
+	private int getPrice(Status status) {
 		Procedure procedure = procedureService.getProcedure(3);
 		switch (status) {
-			case SOCIAL:
-				price = procedure.getSOCIAL();
-				break;
-			case VIP:
-				price = procedure.getVIP();
-				break;
-			case ALL_INCLUSIVE:
-				price = procedure.getALL_INCLUSIVE();
-				break;
-			case BUSINESS:
-				price = procedure.getBUSINESS();
-				break;
-			case FOREIGN:
-				price = procedure.getFOREIGN();
-				break;
-			default:
-				price = procedure.getSOCIAL();
-				break;
+			case SOCIAL: return procedure.getSOCIAL();
+			case VIP: return procedure.getVIP();
+			case ALL_INCLUSIVE: return procedure.getALL_INCLUSIVE();
+			case BUSINESS: return procedure.getBUSINESS();
+			case FOREIGN: return procedure.getFOREIGN();
+			default: return procedure.getSOCIAL();
 		}
-		return price;
 	}
 }
