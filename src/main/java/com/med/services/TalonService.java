@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,13 +43,7 @@ public class TalonService {
     DoctorService doctorService;
 
     @Autowired
-    CardService cardService;
-
-    @Autowired
     TherapyService therapyService;
-
-    @Autowired
-    WorkPlaceService workPlaceService;
 
     @Autowired
     AccountingService accountingService;

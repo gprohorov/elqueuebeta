@@ -21,18 +21,15 @@ import com.med.repository.AccountingRepository;
 
 @Service
 public class AccountingService {
+	
+	@Autowired
+	CashBoxService cashBoxService;
 
     @Autowired
     PatientService patientService;
 
     @Autowired
-    TalonService talonService;
-
-    @Autowired
     AccountingRepository repository;
-
-    @Autowired
-    CashBoxService cashBoxService;
 
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);

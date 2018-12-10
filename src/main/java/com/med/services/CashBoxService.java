@@ -25,9 +25,6 @@ public class CashBoxService {
     SalaryService salaryService;
 
     @Autowired
-    SalaryDTOService salaryDTOService;
-
-    @Autowired
     SettingsService settingsService; 
 
     public List<CashBox> getAll() {
@@ -59,7 +56,7 @@ public class CashBoxService {
     	}
     	
     	CashBox cashBox = new CashBox(LocalDateTime.now(), null, 1, CashType.EXTRACTION,
-			"Поповнення каси" , -1*cash.getSum());
+			"Поповнення каси" , -1 * cash.getSum());
     	cashBox.setItemId(extractionItemId);
     	repository.save(cashBox);
     	
@@ -73,13 +70,6 @@ public class CashBoxService {
 
     public int getCashBox() {
         return repository.findAll().stream().mapToInt(CashBox::getSum).sum();
-    }
-
-    // TODO: findAll to smth elegant
-    public int getTodayGiven() {
-        return  repository.findAll().stream()
-            .filter(el->el.getDateTime().toLocalDate().equals(LocalDate.now()))
-            .filter(el->el.getSum() < 0).mapToInt(CashBox::getSum).sum();
     }
 
     public Response toZero(int sum) {

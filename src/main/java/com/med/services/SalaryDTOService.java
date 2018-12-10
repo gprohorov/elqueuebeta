@@ -26,9 +26,6 @@ public class SalaryDTOService {
     SalaryDTORepository repository;
 
     @Autowired
-    SalaryService salaryService;
-
-    @Autowired
     TalonService talonService;
 
     @Autowired
@@ -36,10 +33,6 @@ public class SalaryDTOService {
 
     @Autowired
     ProcedureService procedureService;
-
-    // TODO: Rewrite it to get from Settings
-    private final int TAX = 400;
-    private final int CANTEEN = 20;
 
     public List<SalaryDTO> getAll() {
         return repository.findAll();

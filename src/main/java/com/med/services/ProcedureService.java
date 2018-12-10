@@ -1,12 +1,11 @@
 package com.med.services;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import com.med.model.Procedure;
 import com.med.repository.ProcedureRepository;
@@ -16,9 +15,6 @@ public class ProcedureService {
 
     @Autowired
     ProcedureRepository repository;
-
-    @Autowired
-    TailService tailService;
 
     public List<Procedure> getAll() {
         return repository.findAll(new Sort(Sort.Direction.ASC, "_id"));

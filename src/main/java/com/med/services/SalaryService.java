@@ -54,30 +54,12 @@ public class SalaryService {
     @Autowired
     SettingsService settingsService;
 
-    // TODO: Why is this needed for now??? WTF? 
-    @PostConstruct
-    void init() {
-        repository.save(new Salary(2, LocalDateTime.now(), SalaryType.WEEK, 0));
-        /* 
-        repository.deleteAll();
-		List<Salary> list = new ArrayList<>(
-		Arrays.asList(
-			new Salary(2, LocalDateTime.now(), SalaryType.WEEK, 1),
-			new Salary(2, LocalDateTime.now(), SalaryType.ACCURAL, 2),
-			new Salary(2, LocalDateTime.now(), SalaryType.PENALTY, 3),
-			new Salary(2, LocalDateTime.now(), SalaryType.REST, 4),
-			new Salary(2, LocalDateTime.now(), SalaryType.AWARD, 5))
-        );
-        repository.saveAll(list);
-        */
-    }
-
     // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
     public Salary createSalary(Salary salary) {
         return repository.save(salary);
     }
 
-    public List<Salary> getAll(){
+    public List<Salary> getAll() {
         return repository.findAll();
     }
 

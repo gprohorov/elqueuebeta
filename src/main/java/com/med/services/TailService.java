@@ -3,25 +3,22 @@ package com.med.services;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Activity;
 import com.med.model.Patient;
-import com.med.model.Procedure;
 import com.med.model.Tail;
 import com.med.model.Talon;
 
 @Service
 public class TailService {
 
-    private HashMap<Integer, Boolean> semafor = new HashMap();
+    private HashMap<Integer, Boolean> semafor = new HashMap<Integer, Boolean>();
 
     @Autowired
     ProcedureService procedureService;
