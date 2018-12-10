@@ -1,6 +1,10 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+//tslint:disable-next-line:import-blacklist
+import { Observable, pipe } from 'rxjs';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Status } from '../_storage/index';
@@ -16,6 +20,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     public canvas: ElementRef;
     private cx: CanvasRenderingContext2D;
     private canvasImage = new Image;
+    private canvasBuffer = [];
 
     loading = false;
     sub: Subscription;
@@ -70,13 +75,10 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
                 this.canvasInit();
-                if (this.item.patient.therapy && this.item.patient.therapy.assignments) {
-                    const procedure = this.item.patient.therapy.assignments.find(x => {
-                        return (x.procedureId === this.procedureId) ? x : false;
-                    });
-                    if (procedure && procedure.picture) {
-                        procedure.picture.forEach(x => { this.drawOnCanvas(x[0], x[1]); });
-                    }
+                if (   this.item.patient.therapy 
+                    && this.item.patient.therapy.assignments[0]
+                    && this.item.patient.therapy.assignments[0].picture) {
+                    this.restoreCanvas(this.item.patient.therapy.assignments[0].picture);
                 }
             }, 0);
         });
@@ -92,9 +94,88 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.cx.strokeStyle = 'blue';
 
             this.cx.drawImage(this.canvasImage, 0, 0);
+            
+            this.captureEvents(canvasEl);
         }
     }
 
+    private captureEvents(canvasEl: HTMLCanvasElement) {
+
+        // this will capture all mousedown events from the canvas element
+        fromEvent(canvasEl, 'mousedown').pipe(
+            switchMap((e: MouseEvent) => {
+                e.preventDefault();
+                // after a mouse down, we'll record all mouse moves
+                return fromEvent(canvasEl, 'mousemove').pipe(
+                    // we'll stop (and unsubscribe) once the user releases the mouse
+                    // this will trigger a 'mouseup' event
+                    takeUntil(Observable.fromEvent(canvasEl, 'mouseup')),
+                    // we'll also stop (and unsubscribe) once the mouse leaves the canvas (mouseleave event)
+                    takeUntil(Observable.fromEvent(canvasEl, 'mouseleave')),
+                    // pairwise lets us get the previous value to draw a line from
+                    // the previous point to the current point
+                    pairwise()
+                );
+            })
+        ).subscribe((res: [MouseEvent, MouseEvent]) => {
+            const rect = canvasEl.getBoundingClientRect();
+
+            // previous and current position with the offset
+            const prevPos = {
+                x: res[0].clientX - rect.left,
+                y: res[0].clientY - rect.top,
+                c: this.cx.strokeStyle
+            };
+
+            const currentPos = {
+                x: res[1].clientX - rect.left,
+                y: res[1].clientY - rect.top,
+                c: this.cx.strokeStyle
+            };
+
+            this.storePoints(prevPos, currentPos);
+        });
+
+        // this will capture all touch events from the canvas element
+        fromEvent(canvasEl, 'touchstart').pipe(
+            switchMap((e: TouchEvent) => {
+                e.preventDefault();
+                // after a touch start, we'll record all moves
+                return fromEvent(canvasEl, 'touchmove').pipe(
+                    // we'll stop (and unsubscribe) once the user stop touching
+                    // this will trigger a 'touchend' event
+                    takeUntil(Observable.fromEvent(canvasEl, 'touchend')),
+                    // pairwise lets us get the previous value to draw a line from
+                    // the previous point to the current point
+                    pairwise()
+                );
+            })
+        ).subscribe((res: [TouchEvent, TouchEvent]) => {
+            const rect = canvasEl.getBoundingClientRect();
+
+            // previous and current position with the offset
+            const prevPos = {
+                x: res[0].touches[0].clientX - rect.left,
+                y: res[0].touches[0].clientY - rect.top,
+                c: this.cx.strokeStyle
+            };
+
+            const currentPos = {
+                x: res[1].touches[0].clientX - rect.left,
+                y: res[1].touches[0].clientY - rect.top,
+                c: this.cx.strokeStyle
+            };
+
+            this.storePoints(prevPos, currentPos);
+        });
+    }
+    
+    private storePoints(prevPos, currentPos) {
+        if (!this.procedureStarted) return;
+        this.canvasBuffer.push([prevPos, currentPos]);
+        this.drawOnCanvas(prevPos, currentPos);
+    }
+    
     private drawOnCanvas(
         prevPos: { x: number, y: number, c: string },
         currentPos: { x: number, y: number, c: string }
@@ -118,6 +199,20 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         }
     }
 
+    public clearCanvas() {
+        this.restoreCanvas([]);
+    }
+    
+    public setColor(color) {
+        this.cx.strokeStyle = color;
+    }
+    
+    public restoreCanvas(picture) {
+        this.canvasInit();
+        this.canvasBuffer = picture;
+        this.canvasBuffer.forEach(x => { this.drawOnCanvas(x[0], x[1]); });
+    }
+        
     updateStatus(id: string, value: string) {
         if (confirm('Встановити статус "' + Status[value].text + '" ?')) {
             this.subTemp = this.patientsQueueService.updateStatus(id, value).subscribe(() => {
@@ -161,8 +256,8 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
 
     executeProcedure() {
         this.loading = true;
-        this.subProcedure = this.service.executeProcedure(this.item.talon.id, this.item.talon.zones)
-            .subscribe(() => {
+        this.subProcedure = this.service.executeProcedure(
+            this.item.talon.id, this.item.talon.zones, this.canvasBuffer).subscribe(() => {
                 this.alertService.success('Процедуру завершено.');
                 this.router.navigate(['workplace']);
             },

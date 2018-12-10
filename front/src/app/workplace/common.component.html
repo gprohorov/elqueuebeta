@@ -100,6 +100,14 @@
             <h4>Зони</h4>
         </div>
         <div class="card-body p-0">
+        	<div class="content">
+                <button class="btn btn-secondary btn-small" (click)="clearCanvas()"
+                    [disabled]="!procedureStarted">Очистити</button>
+                <button class="btn btn-primary btn-small" [style.width.px]="50"
+                    [disabled]="!procedureStarted" (click)="setColor('blue')">&nbsp;</button>
+                <button class="btn btn-danger btn-small" [style.width.px]="50"
+                    [disabled]="!procedureStarted" (click)="setColor('red')">&nbsp;</button>
+            </div>
             <canvas #canvas width="500" height="500"></canvas>
         </div>
     </div>

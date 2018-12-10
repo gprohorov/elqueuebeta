@@ -44,8 +44,9 @@ export class WorkplaceCommonService {
         return this.http.get(this.cancelProcedureUrl + talonId).pipe(catchError(this.handleError));
     }
 
-    executeProcedure(talonId: string, zones: number) {
-        return this.http.get(this.executeProcedureUrl + talonId + '/' + zones).pipe(catchError(this.handleError));
+    executeProcedure(talonId: string, zones: number, picture: any) {
+        return this.http.post(this.executeProcedureUrl + talonId + '/' + zones, picture)
+            .pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
