@@ -10,24 +10,24 @@ import com.med.model.User;
 import com.med.services.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @CrossOrigin("*")
 public class UserController {
 
     @Autowired
     UserService service;
 
-    @GetMapping("/user/list")
+    @GetMapping("/list")
     public List<User> listUser() {
         return service.findAll();
     }
     
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getOne(@PathVariable(value = "id") String id) {
         return service.findById(id).get();
     }
     
-    @GetMapping("/user/generatepass/{pass}")
+    @GetMapping("/generatepass/{pass}")
     public String generatePass(@PathVariable(value = "pass") String pass) {
     	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     	return encoder.encode(pass);

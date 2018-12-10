@@ -9,29 +9,29 @@ import com.med.model.Procedure;
 import com.med.services.ProcedureService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/procedure")
 @CrossOrigin("*")
 public class ProcedureController {
 
 	@Autowired
     ProcedureService service;
 
-    @RequestMapping("/procedure/list/")
+    @RequestMapping("/list/")
     public List<Procedure> showProcedures() {
         return service.getAll();
     }
 
-    @GetMapping("/procedure/get/{id}")
+    @GetMapping("/get/{id}")
     public Procedure showOneProcedure(@PathVariable(value = "id") int procedureId) {
         return service.getProcedure(procedureId);
     }
 
-    @PostMapping("/procedure/save")
+    @PostMapping("/save")
     public Procedure saveProcedure(@RequestBody Procedure procedure) {
         return service.saveProcedure(procedure);
     }
 
-    @PostMapping("/procedure/delete/{id}")
+    @PostMapping("/delete/{id}")
     public Procedure delProcedure(@PathVariable(value = "id") int procedureId) {
         return null;
         //service.deleteProcedure(procedureId);

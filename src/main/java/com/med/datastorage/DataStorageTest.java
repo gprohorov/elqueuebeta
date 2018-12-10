@@ -1,5 +1,11 @@
 package com.med.datastorage;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
@@ -13,18 +19,6 @@ import com.med.services.hotel.ChamberService;
 import com.med.services.hotel.KoikaService;
 import com.med.services.hotel.RecordService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-/**
- * Created by george on 3/9/18.
- */
 @Configuration
 public class DataStorageTest {
 
@@ -55,14 +49,7 @@ public class DataStorageTest {
     @Autowired
     SalaryDTOService salaryDTOService;
 
-   @PostConstruct
-    void init(){
-   }
-
-
-    public void launch(){
-
-    }
+    public void launch() {}
 
     public void taskOne() {
     	/*
@@ -90,29 +77,21 @@ public class DataStorageTest {
 
     public void reset() { }
 
-  //  List<Salary> list = salaryService.getAll().stream()
-     //       .filter(salary -> salary.getDoctorId()==doctorId)
-
-    public List<SalaryDTO> taskTree(int doctorId) {
+    public void taskTree(int doctorId) {
 	    List<Salary> list = salaryService.getAll().stream()
-	              .filter(salary -> salary.getDoctorId()==doctorId)
-	            .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
-	            .collect(Collectors.toList());
+    		.filter(salary -> salary.getDoctorId()==doctorId)
+	        .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
+            .collect(Collectors.toList());
 	    list.stream().forEach(salary -> {
-	        System.out.println( salary.getDateTime().toLocalDate()
-	                + "  "  + salary.getDateTime().getHour() + "." +
-	                salary.getDateTime().getMinute() + "." +
-	                salary.getDateTime().getSecond() + "."
-	                + "  :   " + salary.getSum());
+	        System.out.println(salary.getDateTime().toLocalDate() + "  " + 
+        		salary.getDateTime().getHour() + ":" +
+                salary.getDateTime().getMinute() + ":" +
+                salary.getDateTime().getSecond() + ":" + ", Sum: " + salary.getSum());
 	    });
         System.out.println(list.stream().mapToInt(Salary::getSum).sum());
-        return null;
     }
     
     public void resetPatientsTable() {
-        System.out.println(" talon table updated");
+        System.out.println("Talon table updated");
     }
-
-
-
 }
