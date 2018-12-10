@@ -3,14 +3,17 @@ package com.med.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Accrual;
 import com.med.model.Activity;
+import com.med.model.Assignment;
 import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Procedure;
@@ -83,10 +86,10 @@ public class WorkPlaceService {
     }
 
     ////////////////////////////////// EXECUTE //////////////////////////
-    public Talon execute(String talonId, int zones, int doctorId) {
+    public void execute(String talonId, int zones, int doctorId, ArrayList<ArrayList<Object>> picture) {
 
         Talon talon = talonService.getTalon(talonId);
-        if (talon == null) return null;
+        if (talon == null) return;
         
         Procedure procedure = talon.getProcedure();
         Patient patient = patientService.getPatient(talon.getPatientId());
@@ -132,19 +135,32 @@ public class WorkPlaceService {
         accrualService.createAccrual(accrual);
 
         /////////////////  cancelling and activating approp. talons
-        this.cancelTalonsByCard(procedure,patient.getId());
-        this.activateTalonsByCard(procedure,patient.getId());
+        this.cancelTalonsByCard(procedure, patient.getId());
+        this.activateTalonsByCard(procedure, patient.getId());
 
-        // TODO: Remove hardcoded value!!!
+        Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
+        
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO: Remove hardcoded value !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         ////////////////////// if YXT   -  comment to therapy
-        if (procedure.getId() == 9) {
-            Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
-            therapy.setNotes(
-        		therapy.getNotes() + "<br>" + " : YXT " + LocalDate.now() + " " + zones + "zn.");
-            therapyService.saveTherapy(therapy);
+        if (procedure.getId() == 9) therapy.setNotes(therapy.getNotes() + "<br>"
+    		+ " : УХТ " + LocalDate.now() + " " + zones + " зон.");
+        
+        if (picture.size() > 0) {
+	        List<Assignment> assignments = therapy.getAssignments();
+	        if (assignments.stream().filter(
+        		as -> as.getProcedureId() == talon.getProcedure().getId()).count() > 0) {
+	        	Assignment a = assignments.stream().filter(
+            		as -> as.getProcedureId() == talon.getProcedure().getId()).findFirst().get();
+        		a.setPicture(picture);
+        		assignments.set(assignments.indexOf(a), a); 
+        		therapy.setAssignments(assignments);
+	        }
         }
-
-        return null;
+        
+        therapyService.saveTherapy(therapy);
     }
 
     private int getPrice(Patient patient, int procedureId) {
@@ -233,7 +249,12 @@ public class WorkPlaceService {
     public TalonPatient getTalonPatient(String patientId, int procedureId) {
 
         Patient patient = patientService.getPatient(patientId);
-
+        List<Assignment> assignments = patient.getTherapy().getAssignments();
+        patient.getTherapy().setAssignments(null);
+        List<Assignment> ass = assignments.stream().filter(
+    		as -> as.getProcedureId() == procedureId).collect(Collectors.toList());
+        if (ass.size() > 0) patient.getTherapy().setAssignments(ass);
+        	
         Talon talon = talonService.getTalonsForToday().stream()
 	        .filter(tl -> tl.getPatientId().equals(patientId))
 	        .filter(tl -> tl.getProcedure().getId() == procedureId)

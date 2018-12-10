@@ -1,5 +1,6 @@
 package com.med.controller.workplace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -44,11 +45,11 @@ public class CommonController {
 
     //////////////////////////////// EXECUTE ///////////////////
 
-    @GetMapping("/execute/{talonId}/{zones}")
-    public void execute(
+    @PostMapping("/execute/{talonId}/{zones}")
+    public void execute(@Valid @RequestBody ArrayList<ArrayList<Object>> picture,
 		@PathVariable(value = "talonId") String talonId, 
 		@PathVariable(value = "zones") int zones) {
-        workPlaceService.execute(talonId, zones, userService.getCurrentUserInfo().getId());
+        workPlaceService.execute(talonId, zones, userService.getCurrentUserInfo().getId(), picture);
     }
 
     //////////////////////////////// CANCEL ////////////////////
