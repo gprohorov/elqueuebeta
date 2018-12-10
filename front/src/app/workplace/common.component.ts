@@ -88,6 +88,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
                     }
                 } else {
                     this.canvasInit();
+                }
             }, 0);
         });
     }
