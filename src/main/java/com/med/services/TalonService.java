@@ -103,10 +103,6 @@ public class TalonService {
             .findFirst().orElse(null);
     }
 
-    public List<Talon> getPatientTalons(String patientId) {
-    	return repository.findByPatientId(patientId);
-    }
-    
     public Talon getTalonByPatient(String patientId, Activity activity) {
         return this.getTalonsForToday().stream().filter(tal -> tal.getPatientId().equals(patientId))
             .filter(tal -> tal.getActivity().equals(activity)).findFirst().orElse(null);
@@ -169,8 +165,8 @@ public class TalonService {
 
     public void setAllActivity(String patientId, Activity activity) {
 
-    	List<Talon> talons = this.getTalonsForToday().stream()
-            .filter(talon -> talon.getPatientId().equals(patientId)).collect(Collectors.toList());
+    	List<Talon> talons = repository.findByDateAndPatientId(LocalDate.now(), patientId); 
+    	Patient patient = patientService.getPatient(patientId);
 
         if (activity.equals(Activity.ACTIVE)) {
           List<Integer> free = procedureService.getFreeProcedures();
@@ -179,7 +175,6 @@ public class TalonService {
             	  this.setActivity(talon.getId(), Activity.ACTIVE);
               }
           });
-          Patient patient = patientService.getPatient(patientId);
           patient.setDays(this.calculateDays(patientId));
           patientService.savePatient(patient);
         } else {
@@ -187,7 +182,6 @@ public class TalonService {
         }
 
 		if (activity.equals(Activity.NON_ACTIVE)) {
-			Patient patient = patientService.getPatient(patientId);
 		    patient.setStartActivity(null);
 		    patient.setLastActivity(null);
 		    patientService.savePatient(patient);
@@ -333,29 +327,15 @@ public class TalonService {
     }
 
     private int getPrice(Patient patient, int procedureId) {
-        int price;
         Procedure procedure = procedureService.getProcedure(procedureId);
         switch (patient.getStatus()) {
-            case SOCIAL:
-            	price = procedure.getSOCIAL();
-                break;
-            case VIP:
-            	price = procedure.getVIP();
-                break;
-            case ALL_INCLUSIVE:
-            	price = procedure.getALL_INCLUSIVE();
-                break;
-            case BUSINESS:
-            	price = procedure.getBUSINESS();
-                break;
-            case FOREIGN:
-            	price = procedure.getFOREIGN();
-                break;
-            default:
-            	price = procedure.getSOCIAL();
-                break;
+            case SOCIAL: return procedure.getSOCIAL();
+            case VIP: return procedure.getVIP();
+            case ALL_INCLUSIVE: return procedure.getALL_INCLUSIVE();
+            case BUSINESS: return procedure.getBUSINESS();
+            case FOREIGN: return procedure.getFOREIGN();
+            default: return procedure.getSOCIAL();
         }
-        return price;
     }
 
     private LastTalonInfo getLastExecuted(Talon talon) {

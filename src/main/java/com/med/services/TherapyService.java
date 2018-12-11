@@ -74,7 +74,7 @@ public class TherapyService {
 
 	// TODO: Remove harcoded value 
 	public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-		Talon talon = talonService.getPatientTalons(patientId).stream()
+		Talon talon = talonService.getAllTalonsForPatient(patientId).stream()
 			.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
 			.findFirst().orElse(this.talonService.createTalon(patientId, 2, 0));
 		Patient patient = patientService.getPatient(patientId);
