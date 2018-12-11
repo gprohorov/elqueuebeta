@@ -103,6 +103,10 @@ public class TalonService {
             .findFirst().orElse(null);
     }
 
+    public List<Talon> getPatientTalons(String patientId) {
+    	return repository.findByPatientId(patientId);
+    }
+    
     public Talon getTalonByPatient(String patientId, Activity activity) {
         return this.getTalonsForToday().stream().filter(tal -> tal.getPatientId().equals(patientId))
             .filter(tal -> tal.getActivity().equals(activity)).findFirst().orElse(null);
@@ -222,10 +226,10 @@ public class TalonService {
 
     public List<Procedure> getFilledProcedures() {
         List<Procedure> procedures = procedureService.getAll();
+        List<Talon> talons = this.getTalonsForToday();
         procedures.stream().forEach(procedure -> {
-            int nmbr = (int) this.getTalonsForToday().stream()
-                .filter(talon -> talon.getProcedure().equals(procedure)).count();
-            procedure.setToday(nmbr);
+            procedure.setToday((int) talons.stream()
+        		.filter(talon -> talon.getProcedure().equals(procedure)).count());
         });
         return procedures;
     }

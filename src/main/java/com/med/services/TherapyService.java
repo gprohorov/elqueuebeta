@@ -72,9 +72,9 @@ public class TherapyService {
 			.sorted(Comparator.comparing(Therapy::getStart).reversed()).findFirst().orElse(null);
 	}
 
+	// TODO: Remove harcoded value 
 	public PatientTalonTherapy getPatientTalonTherapy(String patientId) {
-		Talon talon = talonService.getAll().stream()
-			.filter(tal -> tal.getPatientId().equals(patientId))
+		Talon talon = talonService.getPatientTalons(patientId).stream()
 			.filter(tal -> tal.getProcedure().getProcedureType().equals(ProcedureType.DIAGNOSTIC))
 			.findFirst().orElse(this.talonService.createTalon(patientId, 2, 0));
 		Patient patient = patientService.getPatient(patientId);
