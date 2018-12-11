@@ -201,7 +201,7 @@ public class TherapyService {
 		});
 
 		for (Procedure procedure : procedures) {
-			talons.add(new Talon(therapy.getPatientId(), procedure, LocalDate.now().plusDays(1)));
+			talons.add(new Talon(therapy.getPatientId(), procedure, LocalDate.now()));
 		}
 
 		// TODO: Remove hardcoded value!!!
