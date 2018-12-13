@@ -144,11 +144,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     updateActivityAll(item: any, value: string) {
-        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
-            this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
-                this.load(item.id);
-            });
-        }
+        if (!confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) return;
+        this.loading = true;
+        this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
+            this.load(item.id);
+        });
     }
 
     updateOutOfTurn(id: string, value: boolean, item: any) {

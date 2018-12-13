@@ -165,29 +165,29 @@ public class TalonService {
 
     public void setAllActivity(String patientId, Activity activity) {
 
-    	List<Talon> talons = repository.findByDateAndPatientId(LocalDate.now(), patientId); 
+    	List<Talon> talons = repository.findByDateAndPatientId(LocalDate.now(), patientId);
     	Patient patient = patientService.getPatient(patientId);
-
-        if (activity.equals(Activity.ACTIVE)) {
-          List<Integer> free = procedureService.getFreeProcedures();
-          talons.stream().forEach(talon -> {
-              if (free.contains(Integer.valueOf(talon.getProcedureId()))) {
-            	  this.setActivity(talon.getId(), Activity.ACTIVE);
-              }
-          });
-          patient.setDays(this.calculateDays(patientId));
-          patientService.savePatient(patient);
-        } else {
-        	talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
-        }
-
+    	
+    	if (activity.equals(Activity.ACTIVE)) {
+    		patient.setDays(this.calculateDays(patientId));
+    		patientService.savePatient(patient);
+    		List<Integer> free = procedureService.getFreeProcedures();
+    		talons.stream().forEach(talon -> {
+				if (free.contains(Integer.valueOf(talon.getProcedureId()))) {
+					this.setActivity(talon.getId(), Activity.ACTIVE);
+				}
+    		});
+		} else {
+			talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
+		}
+	
 		if (activity.equals(Activity.NON_ACTIVE)) {
 		    patient.setStartActivity(null);
 		    patient.setLastActivity(null);
 		    patientService.savePatient(patient);
 		}
     }
-
+    
     public List<Patient> toPatientList(List<Talon> talons) {
         List<Patient> patients = new ArrayList<>();
         talons.stream().forEach(talon -> {
