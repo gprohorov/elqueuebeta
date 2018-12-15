@@ -206,7 +206,7 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 50 16 ? * SAT")
+    @Scheduled(cron = "0 50 18 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
