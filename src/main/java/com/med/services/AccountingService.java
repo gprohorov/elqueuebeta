@@ -36,7 +36,7 @@ public class AccountingService {
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
         patientService.savePatient(patient);
-        return accounting ;
+        return accounting;
     }
 
     public List<Accounting> saveAll(List<Accounting> accountings) {

@@ -46,7 +46,12 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, options);
     }
     
+    isValid() {
+        return (this.from && this.to && this.to >= this.from);
+    }
+
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.data = [];
         this.sub = this.service.getSalarySummary(this.from, this.to).subscribe(

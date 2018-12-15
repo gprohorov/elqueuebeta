@@ -88,7 +88,7 @@ public class TailService {
             ) ).collect(Collectors.toList());
 
         this.setAllSemafors(talonsForToday);
-
+        
         ///////////////////// extract ON_PROCEDURE patients from another tails
         List<Talon> talonsOnProcedure = talonsForToday.stream()
             .filter(talon -> (talon.getActivity().equals(Activity.ON_PROCEDURE)

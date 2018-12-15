@@ -4,13 +4,15 @@
         <div class="input-group-prepend">
             <div class="input-group-text">Початок</div>
         </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Кінець</div>
         </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
 </form>
 <div class="content table-responsive table-full-width">
@@ -19,12 +21,12 @@
         <thead class="thead-dark">
             <tr>
                 <th>Назва</th>
+                <th>Сума</th>
                 <th>Назначено</th>
                 <th>Зроблено</th>
                 <th>Скасовано</th>
                 <th>Пропущено</th>
                 <th>Зон</th>
-                <th>Сума</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of data">
@@ -33,12 +35,12 @@
                     [ngClass]="{'fa': true, 'fa-caret-right': !procedures[item.procedureId],
                     'fa-caret-down': procedures[item.procedureId] }"></i>
                     {{item.name}}</td>
+                <td class="text-right text-nowrap">{{item.fee}} грн.</td>
                 <td class="text-right text-nowrap">{{item.assigned}}</td>
                 <td class="text-right text-nowrap">{{item.executed}}</td>
                 <td class="text-right text-nowrap">{{item.cancelled}}</td>
                 <td class="text-right text-nowrap">{{item.expired}}</td>
                 <td class="text-right text-nowrap">{{item.zones}}</td>
-                <td class="text-right text-nowrap">{{item.fee}} грн.</td>
             </tr>
             <tr *ngIf="procedures[item.procedureId]">
                 <td colspan="7">
@@ -50,12 +52,12 @@
         </tbody>
         <tr>
             <td><strong>Всього:</strong></td>
+            <td class="text-right text-nowrap"><strong>{{sum}} грн.</strong></td>
             <td class="text-right text-nowrap"><strong>{{assigned}}</strong></td>
             <td class="text-right text-nowrap"><strong>{{executed}}</strong></td>
             <td class="text-right text-nowrap"><strong>{{cancelled}}</strong></td>
             <td class="text-right text-nowrap"><strong>{{expired}}</strong></td>
             <td class="text-right text-nowrap"><strong>{{zones}}</strong></td>
-            <td class="text-right text-nowrap"><strong>{{sum}} грн.</strong></td>
         </tr>
     </table>
 </div>

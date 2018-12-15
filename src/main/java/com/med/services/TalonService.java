@@ -165,31 +165,29 @@ public class TalonService {
 
     public void setAllActivity(String patientId, Activity activity) {
 
-    	List<Talon> talons = this.getTalonsForToday().stream()
-            .filter(talon -> talon.getPatientId().equals(patientId)).collect(Collectors.toList());
-
-        if (activity.equals(Activity.ACTIVE)) {
-          List<Integer> free = procedureService.getFreeProcedures();
-          talons.stream().forEach(talon -> {
-              if (free.contains(Integer.valueOf(talon.getProcedureId()))) {
-            	  this.setActivity(talon.getId(), Activity.ACTIVE);
-              }
-          });
-          Patient patient = patientService.getPatient(patientId);
-          patient.setDays(this.calculateDays(patientId));
-          patientService.savePatient(patient);
-        } else {
-        	talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
-        }
-
+    	List<Talon> talons = repository.findByDateAndPatientId(LocalDate.now(), patientId);
+    	Patient patient = patientService.getPatient(patientId);
+    	
+    	if (activity.equals(Activity.ACTIVE)) {
+    		patient.setDays(this.calculateDays(patientId));
+    		patientService.savePatient(patient);
+    		List<Integer> free = procedureService.getFreeProcedures();
+    		talons.stream().forEach(talon -> {
+				if (free.contains(Integer.valueOf(talon.getProcedureId()))) {
+					this.setActivity(talon.getId(), Activity.ACTIVE);
+				}
+    		});
+		} else {
+			talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
+		}
+	
 		if (activity.equals(Activity.NON_ACTIVE)) {
-			Patient patient = patientService.getPatient(patientId);
 		    patient.setStartActivity(null);
 		    patient.setLastActivity(null);
 		    patientService.savePatient(patient);
 		}
     }
-
+    
     public List<Patient> toPatientList(List<Talon> talons) {
         List<Patient> patients = new ArrayList<>();
         talons.stream().forEach(talon -> {
@@ -222,10 +220,10 @@ public class TalonService {
 
     public List<Procedure> getFilledProcedures() {
         List<Procedure> procedures = procedureService.getAll();
+        List<Talon> talons = this.getTalonsForToday();
         procedures.stream().forEach(procedure -> {
-            int nmbr = (int) this.getTalonsForToday().stream()
-                .filter(talon -> talon.getProcedure().equals(procedure)).count();
-            procedure.setToday(nmbr);
+            procedure.setToday((int) talons.stream()
+        		.filter(talon -> talon.getProcedure().equals(procedure)).count());
         });
         return procedures;
     }
@@ -329,29 +327,15 @@ public class TalonService {
     }
 
     private int getPrice(Patient patient, int procedureId) {
-        int price;
         Procedure procedure = procedureService.getProcedure(procedureId);
         switch (patient.getStatus()) {
-            case SOCIAL:
-            	price = procedure.getSOCIAL();
-                break;
-            case VIP:
-            	price = procedure.getVIP();
-                break;
-            case ALL_INCLUSIVE:
-            	price = procedure.getALL_INCLUSIVE();
-                break;
-            case BUSINESS:
-            	price = procedure.getBUSINESS();
-                break;
-            case FOREIGN:
-            	price = procedure.getFOREIGN();
-                break;
-            default:
-            	price = procedure.getSOCIAL();
-                break;
+            case SOCIAL: return procedure.getSOCIAL();
+            case VIP: return procedure.getVIP();
+            case ALL_INCLUSIVE: return procedure.getALL_INCLUSIVE();
+            case BUSINESS: return procedure.getBUSINESS();
+            case FOREIGN: return procedure.getFOREIGN();
+            default: return procedure.getSOCIAL();
         }
-        return price;
     }
 
     private LastTalonInfo getLastExecuted(Talon talon) {

@@ -4,13 +4,15 @@
         <div class="input-group-prepend">
             <div class="input-group-text">Початок</div>
         </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Кінець</div>
         </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
 </form>
 <div class="position-fixed" [style.right.px]="50">
@@ -23,9 +25,9 @@
         <thead class="thead-dark">
             <tr>
                 <th>ПІБ</th>
+                <th>Борг</th>
                 <th>Нараховано</th>
                 <th>Сплачено</th>
-                <th>Борг</th>
                 <th>Телефон</th>
                 <th>Початок</th>
                 <th>Завершення</th>
@@ -35,9 +37,9 @@
         <tbody>
             <tr *ngFor="let item of data;">
                 <td>{{item.patient.person.fullName}}</td>
+                <td class="text-right">{{item.debt}} грн.</td>
                 <td class="text-right">{{item.bill}} грн.</td>
                 <td class="text-right">{{item.payment}} грн.</td>
-                <td class="text-right">{{item.debt}} грн.</td>
                 <td>{{item.patient.person.cellPhone}}</td>
                 <td>{{item.start | date:"dd.MM.yyyy"}}</td>
                 <td>{{item.finish | date:"dd.MM.yyyy"}}</td>
@@ -45,9 +47,10 @@
             </tr>
             <tr>
                 <td><strong>Всього:</strong></td>
+                <td class="text-right"><strong>{{totalDebt}} грн.</strong></td>
                 <td class="text-right"><strong>{{totalBill}} грн.</strong></td>
                 <td class="text-right"><strong>{{totalPayment}} грн.</strong></td>
-                <td class="text-right"><strong>{{totalDebt}} грн.</strong></td>
+                <td colspan="4"></td>
             </tr>
         </tbody>
     </table>

@@ -4,7 +4,7 @@
     [disabled]="loading" (click)="load()" title="Обновити"></button>
 <div class="content" *ngIf="item?.patient">
     <h2 class="title">Діагностика</h2>
-    <h4 class="title mb-5">{{item.patient.person.fullName}} ({{item?.dayOfCure}} день)</h4>
+    <h4 class="title mb-5">{{item.patient.person.fullName}} ({{item?.patient.days}} день)</h4>
     <form name="form" #f="ngForm" novalidate (ngSubmit)="f.form.valid">
         <div class="row">
             <div class="col-8">

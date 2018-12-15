@@ -8,14 +8,14 @@
 	   	<div class="input-group" [style.width.px]="200">
 	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
 	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
-	        	(change)="load()" [disabled]="loading" />
+	        	 [ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
 	    </div>
 	</div>
 	<div class="col-auto">
 	    <div class="input-group" [style.width.px]="210">
 	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
 	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
-	        	(change)="load()" [disabled]="loading" />
+	        	 [ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
 	    </div>
     </div>
     <div class="col-auto">

@@ -80,18 +80,17 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.model.procedureIds = this.procedures.filter(x => x.checked).map(x => x.value);
         this.model.percents = this.procedures.map(x => { return { procedureId: x.value, procent: x.procent }; });
-        this.service.update(this.model).subscribe(
-            () => {
-                this.alertService.success('Операція пройшла успішно', true);
-                if (this.authService.isSuperadmin()) {
-                    this.router.navigate(['doctors']); 
-                } else { 
-                    this.router.navigate(['finance/salary']); 
-                }
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            });
+        this.service.update(this.model).subscribe(() => {
+            this.alertService.success('Операція пройшла успішно', true);
+            if (this.authService.isSuperadmin()) {
+                this.router.navigate(['doctors']); 
+            } else { 
+                this.router.navigate(['finance/salary']); 
+            }
+        },
+        error => {
+            this.alertService.error(error);
+            this.loading = false;
+        });
     }
 }
