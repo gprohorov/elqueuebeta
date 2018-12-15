@@ -58,7 +58,12 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
         if (this.subSettings) this.subSettings.unsubscribe();
     }
 
+    isValid() {
+        return (this.from && this.to && this.to >= this.from);
+    }
+    
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.totlalSum = 0;
         this.data = [];

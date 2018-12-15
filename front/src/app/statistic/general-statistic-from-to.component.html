@@ -4,13 +4,15 @@
         <div class="input-group-prepend">
             <div class="input-group-text">Початок</div>
         </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+        <input type="date" class="form-control" [ngClass]="{'is-invalid': !isValid()}"
+        	name="start" [(ngModel)]="start" (change)="load()" />
     </div>
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Кінець</div>
         </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+        <input type="date" class="form-control" [ngClass]="{'is-invalid': !isValid()}"
+        	name="finish" [(ngModel)]="finish" (change)="load()" />
     </div>
 </form>
 <h4>Загальна статистика</h4>
@@ -18,10 +20,9 @@
     <thead class="thead-dark">
         <tr>
             <th>Дата</th>
+            <th>Розрахунки: <span class="text-nowrap">касa + карта = всього</span></th>
             <th>Кількість пацієнтів</th>
             <th>Кількість лікарів</th>
-            <th>Готівка в касі</th>
-            <th>Розрахунки картою</th>
             <th>Нараховано</th>
             <th>Знижки</th>
             <th>Борг</th>
@@ -29,24 +30,22 @@
     </thead>
     <tbody>
         <tr *ngFor="let item of data;">
-            <td>{{item.date | date: "dd.MM.yyyy"}}</td>
+            <td class="text-nowrap">{{item.date | date: "dd.MM.yyyy"}}</td>
+            <td class="text-nowrap text-right">{{item.cash}} + {{item.card}} = {{item.cash + item.card}} грн.</td>
             <td>{{item.patients}}</td>
             <td>{{item.doctors}}</td>
-            <td class="text-right">{{item.cash}} грн.</td>
-            <td class="text-right">{{item.card}} грн.</td>
-            <td class="text-right">{{item.bill}} грн.</td>
-            <td class="text-right">{{item.discount}} грн.</td>
-            <td class="text-right">{{item.debt}} грн.</td>
+            <td class="text-nowrap text-right">{{item.bill}} грн.</td>
+            <td class="text-nowrap text-right">{{item.discount}} грн.</td>
+            <td class="text-nowrap text-right">{{item.debt}} грн.</td>
         </tr>
         <tr>
             <td><strong>Всього:</strong></td>
+            <td class="text-nowrap text-right"><strong>{{cash}} + {{card}} = {{cash + card}} грн.</strong></td>
             <td><strong>{{patients}}</strong></td>
             <td><strong>{{doctors}}</strong></td>
-            <td class="text-right"><strong>{{cash}} грн.</strong></td>
-            <td class="text-right"><strong>{{card}} грн.</strong></td>
-            <td class="text-right"><strong>{{bill}} грн.</strong></td>
-            <td class="text-right"><strong>{{discount}} грн.</strong></td>
-            <td class="text-right"><strong>{{debt}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{bill}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{discount}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{debt}} грн.</strong></td>
         </tr>
     </tbody>
 </table>

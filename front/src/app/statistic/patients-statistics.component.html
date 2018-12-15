@@ -4,13 +4,15 @@
         <div class="input-group-prepend">
             <div class="input-group-text">Початок</div>
         </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
+        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
     <div class="input-group mr-2">
         <div class="input-group-prepend">
             <div class="input-group-text">Кінець</div>
         </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
+        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()"
+        	[ngClass]="{'is-invalid': !isValid()}" />
     </div>
 </form>
 <div class="position-fixed" [style.right.px]="50">

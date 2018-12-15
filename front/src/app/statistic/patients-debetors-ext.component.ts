@@ -30,7 +30,12 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
+    isValid() {
+        return (this.start && this.finish && this.finish >= this.start);
+    }
+
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.sub = this.service.getPatientsDebetorsExt(this.start, this.finish).subscribe(data => {
             this.data = data;

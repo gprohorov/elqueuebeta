@@ -7,12 +7,12 @@
 	    <div class="input-group col mr-2">
 	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
 	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
-	        	(change)="load()" [disabled]="loading" />
+	        	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
 	    </div>
 	    <div class="input-group col">
 	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
 	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
-	        	(change)="load()" [disabled]="loading" />
+	        	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
 	    </div>
     </div>
 </form>

@@ -46,8 +46,13 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
                 this.loading = false;
             });
     }
+    
+    isValid() {
+        return (this.start && this.finish && this.finish >= this.start);
+    }
 
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.sub = this.service.getProceduresStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;
