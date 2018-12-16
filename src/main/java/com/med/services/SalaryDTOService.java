@@ -38,6 +38,8 @@ public class SalaryDTOService {
 
     @Autowired
     ProcedureService procedureService;
+    @Autowired
+    SettingsService settingsService;
 
     private List<Integer> fullTimeList;
 
@@ -47,6 +49,8 @@ public class SalaryDTOService {
                 .filter(doc -> doc.getProcedureIds().isEmpty())
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // for registratura
+
+
     }
 
 
@@ -153,7 +157,8 @@ public class SalaryDTOService {
     }
 
     private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
-        return doctor.getRate() * hours;
+        return doctor.getRate() * hours - settingsService.get().getTax()*2/9
+                - settingsService.get().getCanteen()*((days==0)?0:days-1);
     }
 
     private int generateBonusesForDoctor(List<Talon> talons) {
@@ -215,10 +220,10 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 50 18 ? * SAT")
+    @Scheduled(cron = "0 0 18 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
-        List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
+        List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(7), today.plusDays(0));
         // TODO: Make by MongoRepository
         List<SalaryDTO> expiredList = repository.findAll().stream()
             .filter(row->row.getClosed() == null).collect(Collectors.toList());
@@ -341,5 +346,35 @@ public class SalaryDTOService {
 	            list.add(this.getDoctorSummarySalary(doctor.getId()));
 	        });
         return list;
+    }
+
+    //  инжекция разных кверей. Так, на всякий случай.
+    public List<SalaryDTO> inject() {
+      /*  List<SalaryDTO> list = repository.findAll().stream()
+                .filter(dto->dto.getWeek()==49)
+                .collect(Collectors.toList());
+        repository.deleteAll(list);
+
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==48)
+                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
+                .forEach(dto->{
+                    dto.setStavka(dto.getStavka()-450);
+                    dto.setClosed(null);
+                    this.updateSalaryDTO(dto);
+                });
+
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==48)
+                .forEach(dto->{
+                    dto.setClosed(null);
+                    this.updateSalaryDTO(dto);
+                });
+
+
+        System.out.println("INJECTION");
+
+        return this.createNewTable();*/
+      return null;
     }
 }

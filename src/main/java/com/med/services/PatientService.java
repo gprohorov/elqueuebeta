@@ -4,11 +4,13 @@ import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Activity;
@@ -21,6 +23,8 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.AccountingRepository;
 import com.med.repository.PatientRepository;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class PatientService {
@@ -39,6 +43,11 @@ public class PatientService {
 
 	@Autowired
 	TherapyService therapyService;
+
+	@PostConstruct
+	void init(){
+//this.setDaysToZero();
+	}
 
 	public void deleteAll(List<Patient> patients) {
 		repository.deleteAll(patients);
@@ -202,5 +211,30 @@ public class PatientService {
 		patient.setLastActivity(null);
 		patient.setStartActivity(null);
 		return repository.save(patient);
+	}
+
+
+
+	private LocalDate getLastVisit(Patient patient){
+		List<Talon> talons = talonService.getAllTalonsForPatient(patient.getId())
+				.stream()
+				.filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+				.collect(Collectors.toList());
+		if (talons.isEmpty()) return LocalDate.now().minusDays(100);
+	return  talons.stream().sorted(Comparator.comparing(Talon::getDate).reversed())
+				.findFirst().get().getDate();
+	}
+	// Если не появлялся более 5 дней,   days -> 0
+	// проверка по субботам в 23.00
+	@Scheduled(cron = "0 0 23 ? * SAT")
+	private void setDaysToZero(){
+		System.out.println("TOZERO");
+		repository.findAll().stream()
+				.forEach(patient -> {
+					if ( this.getLastVisit(patient).isBefore(LocalDate.now().minusDays(5)))
+					{ patient.setDays(0);
+						repository.save(patient);
+					}
+				});
 	}
 }

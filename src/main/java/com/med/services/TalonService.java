@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.med.model.Activity;
@@ -169,7 +170,7 @@ public class TalonService {
     	Patient patient = patientService.getPatient(patientId);
     	
     	if (activity.equals(Activity.ACTIVE)) {
-    		patient.setDays(this.calculateDays(patientId));
+    		//patient.setDays(this.calculateDays(patientId));
     		patientService.savePatient(patient);
     		List<Integer> free = procedureService.getFreeProcedures();
     		talons.stream().forEach(talon -> {
@@ -395,4 +396,26 @@ public class TalonService {
     		talons.stream().min(Comparator.comparing(Talon::getDate)).get().getDate(),
     		LocalDate.now()).getDays() + 1;
     }
+
+    private Patient setDaysToPatientOfToday(Patient patient){
+        List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo(patient.getId()
+        , LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)).stream()
+                .filter(talon -> talon.getProcedureId() >=2)
+                .collect(Collectors.toList());
+
+        if (talons.size()>0) {
+            patient.setDays(patient.getDays() + 1);
+            return patientService.savePatient(patient);
+        }
+        return null;
+    }
+
+    //     В 21.00   каждый день, каждому сегодняшнему пациенту добавляем день
+@Scheduled(cron = "0 0 21 * * *")
+    private void incrementDaysForAllPatientsOfToday(){
+        System.out.println("DAYS");
+         patientService.getAllForToday().stream()
+            .forEach(patient -> this.setDaysToPatientOfToday(patient));
+    }
+
 }

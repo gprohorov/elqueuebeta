@@ -115,4 +115,9 @@ public class SalaryController {
         @PathVariable(value = "to") String to) {
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
+
+    @RequestMapping("/inject")
+    public List<SalaryDTO> inject() {
+        return salaryDTOService.inject();
+    }
 }
