@@ -38,8 +38,8 @@ export class FinanceOutcomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-        this.from = new Date().toISOString().split('T').shift();
-        this.to = new Date().toISOString().split('T').shift();
+        this.from = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.to = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.subSettings = this.settingsService.get().subscribe(
             data => {
                 this.settings = data;

@@ -18,8 +18,8 @@ export class PatientsDebetorsExtComponent implements OnInit, OnDestroy {
     totalDebt = 0;
 
     constructor(private service: StatisticService) {
-        this.start = new Date().toISOString().split('T').shift();
-        this.finish = new Date().toISOString().split('T').shift();
+        this.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.finish = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     }
 
     ngOnInit() {

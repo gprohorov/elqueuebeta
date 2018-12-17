@@ -29,7 +29,7 @@
             </button>
             <span class="masonry-list-item badge badge-{{Activity[item.activity].cssClass}}"
                 title="{{item.person.fullName}} ({{Status[item.status].text}})"
-                [ngStyle]="{'cursor': 'pointer'}" (click)="executeProcedure(item.talon.id, item.person.fullName, group.procedureName)">
+                [ngStyle]="{'cursor': 'pointer'}" (click)="executeProcedure(item.talon.id, item, group)">
                 {{item.person.fullName}} </span> <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta
                 != null ? item.delta + ' хв.' : ''}}</span>
         </div>

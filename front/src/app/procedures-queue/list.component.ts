@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { NgxMasonryOptions } from '../_helpers/index';
 import { Status, Activity } from '../_storage/index';
-import { AlertService, PatientsQueueService } from '../_services/index';
+import { AlertService, AuthService, PatientsQueueService } from '../_services/index';
 
 @Component({
     templateUrl: './list.component.html',
@@ -31,6 +31,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
     constructor(
         private alertService: AlertService,
+        private authService: AuthService,
         private service: PatientsQueueService
     ) { }
 
@@ -63,10 +64,15 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
         }
     }
 
-    executeProcedure(talonId: string, patientName: string, procedureName: string) {
-        if (confirm('Виконати процедуру "' + procedureName + '" для пацієнта "' + patientName + '" ?')) {
+    executeProcedure(talonId: string, patient: any, group: any) {
+        if (this.authService.isSuperadmin()) {
+            window.open('/#/workplace/' + (group.procedureType == 'DIAGNOSTIC'
+                ? 'diagnostic/' + patient.id : 'common/' + patient.id + '/' + group.procedureId), '_blank');
+        } else if (confirm('Виконати процедуру "' + group.procedureName
+            + '" для пацієнта "' + patient.person.fullName + '" ?')) {
             this.subTemp = this.service.executeProcedure(talonId).subscribe(() => {
-                this.alertService.info('Процедуру "' + procedureName + '" для пацієнта "' + patientName + '" виконано.');
+                this.alertService.info('Процедуру "' + group.procedureName
+                    + '" для пацієнта "' + patient.person.fullName + '" виконано.');
                 this.load();
             });
         }

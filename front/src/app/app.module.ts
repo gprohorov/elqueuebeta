@@ -98,7 +98,7 @@ const appRoutes: Routes = [
             permissions: {
                 except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR', 'ROLE_HEAD'],
                 redirectTo: {
-                    ROLE_SUPERADMIN: 'patients-queue',
+                    ROLE_SUPERADMIN: 'procedures-queue',
                     ROLE_ADMIN: 'patients-queue',
                     ROLE_DOCTOR: 'workplace',
                     default: 'login'
@@ -231,17 +231,17 @@ const appRoutes: Routes = [
     {
         path: 'workplace', component: WorkplaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     {
         path: 'workplace/common/:patientId/:procedureId', component: WorkplaceCommonComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     {
         path: 'workplace/diagnostic/:patientId', component: WorkplaceDiagnosticComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     
     {

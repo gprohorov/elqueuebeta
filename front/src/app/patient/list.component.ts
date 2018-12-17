@@ -17,7 +17,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     sub: Subscription;
     subToday: Subscription;
     subDelete: Subscription;
-    date: string = (new Date()).toISOString().split('T')[0];
+    date: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     items: Patient[];
     todayItems: any[] = [];
     loading = false;

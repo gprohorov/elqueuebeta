@@ -6,7 +6,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.med.model.Tail;
 import com.med.model.Talon;
@@ -37,10 +43,12 @@ public class CommonController {
 
     @RequestMapping("/start/{talonId}")
     public Talon start(@PathVariable(value = "talonId") String talonId) {
-        int doctorId = userService.getCurrentUserInfo().getId();
-        if (this.isAlowed(talonService.getTalon(talonId).getProcedure().getId(), doctorId)) {
+    	int doctorId = userService.getCurrentUserInfo().getId();
+    	if (userService.isSuperAdmin() 
+			|| this.isAlowed(talonService.getTalon(talonId).getProcedure().getId(), doctorId)) {
             return workPlaceService.start(talonId, doctorId);
-        } else { return null; }
+        }
+    	return null;
     }
 
     //////////////////////////////// EXECUTE ///////////////////

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Doctor;
+import com.med.model.Role;
 import com.med.model.User;
 import com.med.repository.UserRepository;
 
@@ -45,12 +46,29 @@ public class UserService implements UserDetailsService {
     }
 
     public Doctor getCurrentUserInfo() {
-        return doctorService.getDoctorByUserId(
+        if (this.isSuperAdmin()) return doctorService.getDoctor(1);
+        if (this.isAdmin()) return doctorService.getDoctor(2);
+    	return doctorService.getDoctorByUserId(
             this.findOne(SecurityContextHolder.getContext().getAuthentication().getName()).getId()
         );
     }
     
     public List<SimpleGrantedAuthority> getAuthority(User user) {
         return Arrays.asList(new SimpleGrantedAuthority(user.getAuthorities().get(0).name()));
+    }
+    
+    public Boolean isSuperAdmin() {
+    	return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+			.contains(new SimpleGrantedAuthority(Role.ROLE_SUPERADMIN.getAuthority()));
+    }
+    
+    public Boolean isAdmin() {
+    	return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+			.contains(new SimpleGrantedAuthority(Role.ROLE_ADMIN.getAuthority()));
+    }
+    
+    public Boolean isDoctor() {
+    	return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+			.contains(new SimpleGrantedAuthority(Role.ROLE_DOCTOR.getAuthority()));
     }
 }

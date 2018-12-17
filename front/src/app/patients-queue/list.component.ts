@@ -27,7 +27,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     hotelPatients: number;
     activePatients: number;
     notActivePatients: number;
-    date: string = (new Date()).toISOString().split('T')[0];
+    date: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     filters: any = 'all'; // possible values: 'all', 'active', 'notactive', 'hotel'
     Status = Status;
     Statuses = Object.keys(Status);

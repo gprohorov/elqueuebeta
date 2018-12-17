@@ -25,7 +25,7 @@ export class CheckComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.date = new Date().toISOString().split('T').shift();
+        this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.loading = true;
         this.sub = this.service.getCheck(this.patientId)

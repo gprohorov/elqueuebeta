@@ -212,7 +212,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         prevPos: { x: number, y: number, c: string },
         currentPos: { x: number, y: number, c: string }
     ) {
-        // incase the context is not set
+        // in case the context is not set
         if (!this.cx) { return; }
 
         // start our drawing path
@@ -223,7 +223,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
             this.cx.strokeStyle = prevPos.c;
             // sets the start point
             this.cx.moveTo(prevPos.x, prevPos.y); // from
-            // draws a line from the start pos until the current position
+            // draws a line from the start position until the current position
             this.cx.lineTo(currentPos.x, currentPos.y);
 
             // strokes the current path with the styles we set earlier
