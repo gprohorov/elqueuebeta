@@ -203,8 +203,8 @@ public class PatientService {
 	}
 	
 	// Если не появлялся более 5 дней, days -> 0
-	// проверка по субботам в 23.00
-	@Scheduled(cron = "0 0 23 ? * SAT")
+	// проверка  в 20.00
+	@Scheduled(cron = "0 0 20 * * *")
 	private void setDaysToZero() {
 		repository.findAll().stream().forEach(patient -> {
 			if (this.getLastVisit(patient).isBefore(LocalDate.now().minusDays(5))) { 
