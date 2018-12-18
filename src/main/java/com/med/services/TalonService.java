@@ -397,25 +397,21 @@ public class TalonService {
     		LocalDate.now()).getDays() + 1;
     }
 
-    private Patient setDaysToPatientOfToday(Patient patient){
-        List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo(patient.getId()
-        , LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)).stream()
-                .filter(talon -> talon.getProcedureId() > 3 )
-                .collect(Collectors.toList());
+    private Patient setDaysToPatientOfToday(Patient patient) {
+        List<Talon> talons = this.getAllExecutedTalonsForPatientFromTo(
+    		patient.getId(), LocalDate.now().minusDays(1), LocalDate.now().plusDays(1)
+		).stream().filter(talon -> talon.getProcedureId() >= 2).collect(Collectors.toList());
 
-        if (talons.size()>0) {
+        if (talons.size() > 0) {
             patient.setDays(patient.getDays() + 1);
             return patientService.savePatient(patient);
         }
         return null;
     }
 
-    //     В 21.00   каждый день, каждому сегодняшнему пациенту добавляем день
-@Scheduled(cron = "0 0 21 * * *")
-    private void incrementDaysForAllPatientsOfToday(){
-        System.out.println("DAYS");
-         patientService.getAllForToday().stream()
-            .forEach(patient -> this.setDaysToPatientOfToday(patient));
+    // В 21.00 каждый день, каждому сегодняшнему пациенту добавляем день
+    @Scheduled(cron = "0 0 21 * * *")
+    private void incrementDaysForAllPatientsOfToday() {
+    	patientService.getAllForToday().stream().forEach(patient -> this.setDaysToPatientOfToday(patient));
     }
-
 }

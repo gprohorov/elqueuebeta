@@ -30,7 +30,7 @@ public class Patient {
     private Status status = Status.SOCIAL;
     private int balance;
     private LocalDateTime registration;
-    private int days=0;
+    private int days = 0;
     private boolean isHotel;
     @Transient
     private Talon talon;
@@ -165,9 +165,9 @@ public class Patient {
         this.status = status;
     }
 
-    public Long getDelta(){
-    	return (this.getLastActivity() != null)
-			? ChronoUnit.MINUTES.between(this.getLastActivity(), LocalDateTime.now()) : null;
+    public Long getDelta() {
+    	return (this.getLastActivity() == null) ? null
+			: ChronoUnit.MINUTES.between(this.getLastActivity(), LocalDateTime.now());
     }
 
     public int getAppointed() {
@@ -266,7 +266,7 @@ public class Patient {
     @Override
     public String toString() {
         return "Patient{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", person=" + person +
                 ", therapy=" + therapy +
                 ", talons=" + talons +

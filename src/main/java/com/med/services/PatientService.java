@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -43,11 +44,6 @@ public class PatientService {
 
 	@Autowired
 	TherapyService therapyService;
-
-	@PostConstruct
-	void init(){
-//this.setDaysToZero();
-	}
 
 	public void deleteAll(List<Patient> patients) {
 		repository.deleteAll(patients);
@@ -110,21 +106,7 @@ public class PatientService {
 	}
 
 	public List<Patient> getAllForToday() {
-		List<Patient> patients = new ArrayList<>();
-		List<Talon> talons = talonService.getTalonsForToday();
-		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream()
-			.forEach(entry -> {
-				Patient patient = this.getPatient(entry.getKey());
-				patient.setTalons(entry.getValue());
-				patient.setActivity(patient.calcActivity());
-				patient.setTherapy(null);
-				if (patient.getDelta() == null) {
-					patient.setStartActivity(LocalDateTime.now());
-					patient.setLastActivity(LocalDateTime.now());
-				}
-				patients.add(patient);
-			});
-		return patients;
+		return this.getAllForDate(LocalDate.now());
 	}
 
 	public List<Patient> saveAll(List<Patient> patients) {
@@ -213,28 +195,22 @@ public class PatientService {
 		return repository.save(patient);
 	}
 
-
-
-	private LocalDate getLastVisit(Patient patient){
-		List<Talon> talons = talonService.getAllTalonsForPatient(patient.getId())
-				.stream()
-				.filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-				.collect(Collectors.toList());
+	private LocalDate getLastVisit(Patient patient) {
+		List<Talon> talons = talonService.getAllTalonsForPatient(patient.getId()).stream()
+			.filter(talon -> talon.getActivity().equals(Activity.EXECUTED)).collect(Collectors.toList());
 		if (talons.isEmpty()) return LocalDate.now().minusDays(100);
-	return  talons.stream().sorted(Comparator.comparing(Talon::getDate).reversed())
-				.findFirst().get().getDate();
+		return talons.stream().sorted(Comparator.comparing(Talon::getDate).reversed()).findFirst().get().getDate();
 	}
-	// Если не появлялся более 5 дней,   days -> 0
-	// проверка  в 20.00
-	@Scheduled(cron = "0 0 20 * * *")
-	private void setDaysToZero(){
-		System.out.println("TOZERO");
-		repository.findAll().stream()
-				.forEach(patient -> {
-					if ( this.getLastVisit(patient).isBefore(LocalDate.now().minusDays(5)))
-					{ patient.setDays(0);
-						repository.save(patient);
-					}
-				});
+	
+	// Если не появлялся более 5 дней, days -> 0
+	// проверка по субботам в 23.00
+	@Scheduled(cron = "0 0 23 ? * SAT")
+	private void setDaysToZero() {
+		repository.findAll().stream().forEach(patient -> {
+			if (this.getLastVisit(patient).isBefore(LocalDate.now().minusDays(5))) { 
+				patient.setDays(0);
+				repository.save(patient);
+			}
+		});
 	}
 }
