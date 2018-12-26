@@ -405,7 +405,7 @@ public class RecordService {
         return list;
     }
 
-   // @Scheduled(cron = "0 0 8 * * ?")
+   @Scheduled(cron = "0 0 8 * * *")
     private List<Accounting> generateBillsForAllLodgers() {
         List<Accounting> list = new ArrayList<>();
         repository.findByFinishGreaterThan(LocalDate.now().atTime(8,0).minusDays(1)).stream()

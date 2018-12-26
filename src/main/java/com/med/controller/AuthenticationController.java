@@ -39,7 +39,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-        supportBean.check();
+       // supportBean.check();
         final Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
         );

@@ -223,8 +223,8 @@ public class SalaryDTOService {
     @Scheduled(cron = "0 0 18 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
-        List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(7), today.plusDays(0));
-        // TODO: Make by MongoRepository
+        List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
+        // TODO: Make by MongoRepository Hope1234
         List<SalaryDTO> expiredList = repository.findAll().stream()
             .filter(row->row.getClosed() == null).collect(Collectors.toList());
         expiredList.stream().forEach(row -> row.setClosed(LocalDateTime.now()));
