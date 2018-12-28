@@ -48,7 +48,7 @@ public class SalaryDTOService {
     fullTimeList = doctorService.getAll().stream()
                 .filter(doc -> doc.getProcedureIds().isEmpty())
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
-        fullTimeList.add(2); // for registratura
+        fullTimeList.add(2); // для Иры.
 
 
     }
@@ -182,6 +182,7 @@ public class SalaryDTOService {
     }
 
     public SalaryDTO recalculateDTO(SalaryDTO dto) {
+
         dto.setTotal(dto.getRest() + dto.getStavka() + dto.getAward()
             + dto.getAccural() - dto.getPenalty());
         dto.setActual(dto.getTotal() - dto.getRecd());
@@ -220,7 +221,7 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 0 18 ? * SAT")
+    @Scheduled(cron = "0 0 12 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -261,12 +262,16 @@ public class SalaryDTOService {
         if (dto == null) return null;
 
         int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
+        if (fullTimeList.contains(doctorId)) {
+            if (dto.getStavka()==0) stavka = 0;
+            else stavka = doctor.getRate();
+        }
         dto.setStavka(stavka);
         dto.setKredit(doctor.getKredit());
 
         LocalDate from = dto.getFrom();
         LocalDate to = dto.getTo();
-        // TODO: Make by MongoRepository
+        // TODO: Make by MongoRepository Hope1234
         List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1), to.plusDays(1))
             .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
             .filter(talon -> talon.getDoctor().getId() == doctorId)
@@ -295,7 +300,7 @@ public class SalaryDTOService {
             .filter(el -> el.getWeek() == startWeek).findAny().get().getFrom();
         dto.setFrom(startDate);
 
-        // TODO: Make by MongoRepository
+        // TODO: Make by MongoRepository Hope1234
         LocalDate endDate = this.getAll().stream()
             .filter(el -> el.getWeek() == endWeek).findAny().get().getTo();
         dto.setTo(endDate);
@@ -371,10 +376,30 @@ public class SalaryDTOService {
                     this.updateSalaryDTO(dto);
                 });
 
-
+                Hope1234
         System.out.println("INJECTION");
 
         return this.createNewTable();*/
       return null;
     }
+//  каждый месяц 28 числа в 16.00  начисляем зп хоздвору
+    @Scheduled(cron = "0 0 16 28 * ?")
+    public List<SalaryDTO> injectSalaryForKhozDvor() {
+
+        List<SalaryDTO> list = this.getOpenTable().stream()
+                .filter(item-> fullTimeList.contains(item.getDoctorId()))
+                .collect(Collectors.toList());
+        list.stream().forEach(item->{
+            int stavka = doctorService.getDoctor(item.getDoctorId()).getRate();
+            item.setStavka(stavka);
+            item = this.recalculateDTO(item);
+        });
+        return repository.saveAll(list);
+    }
+
+
+
+
+
+
 }
