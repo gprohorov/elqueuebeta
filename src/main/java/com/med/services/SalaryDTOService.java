@@ -225,7 +225,7 @@ public class SalaryDTOService {
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
-        // TODO: Make by MongoRepository Hope1234
+        // TODO: Make by MongoRepository
         List<SalaryDTO> expiredList = repository.findAll().stream()
             .filter(row->row.getClosed() == null).collect(Collectors.toList());
         expiredList.stream().forEach(row -> row.setClosed(LocalDateTime.now()));
@@ -300,7 +300,7 @@ public class SalaryDTOService {
             .filter(el -> el.getWeek() == startWeek).findAny().get().getFrom();
         dto.setFrom(startDate);
 
-        // TODO: Make by MongoRepository Hope1234
+        // TODO: Make by MongoRepository
         LocalDate endDate = this.getAll().stream()
             .filter(el -> el.getWeek() == endWeek).findAny().get().getTo();
         dto.setTo(endDate);
@@ -348,8 +348,8 @@ public class SalaryDTOService {
     public List<SalaryDTO> getSummarySalaryList(LocalDate from, LocalDate to) {
         List<SalaryDTO> list = new ArrayList<>();
         doctorService.getAll().stream().forEach(doctor -> {
-	            list.add(this.getDoctorSummarySalary(doctor.getId()));
-	        });
+            list.add(this.getDoctorSummarySalary(doctor.getId()));
+        });
         return list;
     }
 
@@ -382,6 +382,7 @@ public class SalaryDTOService {
         return this.createNewTable();*/
       return null;
     }
+    
 //  каждый месяц 28 числа в 16.00  начисляем зп хоздвору
     @Scheduled(cron = "0 0 16 28 * ?")
     public List<SalaryDTO> injectSalaryForKhozDvor() {
@@ -396,10 +397,4 @@ public class SalaryDTOService {
         });
         return repository.saveAll(list);
     }
-
-
-
-
-
-
 }

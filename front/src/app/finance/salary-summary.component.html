@@ -26,6 +26,9 @@
             <tr class="text-center">
                 <th></th>
                 <th>Прізвище</th>
+                <th>Отримати</th>
+                <th>Нараховано</th>
+                <th>Виплачено</th>
                 <th>Днів</th>
                 <th>Годин</th>
                 <th>Ставка</th>
@@ -34,9 +37,6 @@
                 <th>Залишок</th>
                 <th>Ліміт</th>
                 <th>Премія</th>
-                <th>Нараховано</th>
-                <th>Виплачено</th>
-                <th>Отримати</th>
             </tr>
         </thead>
         <tbody *ngIf="data.length > 0">
@@ -48,6 +48,9 @@
 	                </button>
                 </td>
                 <td class="text-nowrap" title="{{item.name}}">{{item.lastName}}</td>
+                <td class="text-right text-nowrap">{{item.actual}} грн.</td>
+                <td class="text-right text-nowrap">{{item.total}} грн.</td>
+                <td class="text-right text-nowrap">{{item.recd}} грн.</td>
                 <td class="text-right text-nowrap">{{item.days}}</td>
                 <td class="text-right text-nowrap">{{item.hours}}</td>
                 <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
@@ -56,15 +59,13 @@
                 <td class="text-right text-nowrap">{{item.rest}} грн.</td>
                 <td class="text-right text-nowrap">{{item.kredit}} грн.</td>
                 <td class="text-right text-nowrap">{{item.award}} грн.</td>
-                <td class="text-right text-nowrap">{{item.total}} грн.</td>
-                <td class="text-right text-nowrap">{{item.recd}} грн.</td>
-                <td class="text-right text-nowrap">{{item.actual}} грн.</td>
             </tr>
 	        <tr>
-	            <td colspan="10"><strong>Всього:</strong></td>
+	            <td colspan="2"><strong>Всього:</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
 	            <td class="text-right text-nowrap"><strong>{{totalSummary}} грн.</strong></td>
 	            <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
-	            <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
+	            <td colspan="8"></td>
 	        </tr>
         </tbody>
         <tr *ngIf="data.length === 0"><td colspan="13" class="text-center text-danger">
