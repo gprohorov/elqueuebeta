@@ -221,7 +221,7 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 0 12 ? * SAT")
+    @Scheduled(cron = "0 0 13 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -349,6 +349,7 @@ public class SalaryDTOService {
         List<SalaryDTO> list = new ArrayList<>();
         doctorService.getAll().stream().forEach(doctor -> {
             list.add(this.getDoctorSummarySalary(doctor.getId()));
+           //  list.add(this.getDoctorSummarySalary(doctor.getId(), from, to));
         });
         return list;
     }
@@ -397,4 +398,56 @@ public class SalaryDTOService {
         });
         return repository.saveAll(list);
     }
+    //  полный отчет по доктору за указанный период
+    // не совсем корректно, ведь у нас дискретность - неделя
+    public SalaryDTO getDoctorSummarySalary(int doctorId, LocalDate from, LocalDate to){
+        SalaryDTO dto = new SalaryDTO();
+        dto.setDoctorId(doctorId);
+        dto.setName(doctorService.getDoctor(doctorId).getFullName());
+
+        int startWeek = from.getDayOfYear()/7;
+        int endWeek = to.getDayOfYear()/7;
+
+         dto.setFrom(from);
+         dto.setTo(to);
+
+        // TODO: Make by MongoRepository
+        List<SalaryDTO> list = this.getAll().stream()
+                .filter(el -> el.getDoctorId() == doctorId)
+                .filter(el -> (el.getWeek() >= startWeek && el.getWeek() <= endWeek))
+                .collect(Collectors.toList());
+
+        int hours = list.stream().mapToInt(SalaryDTO::getHours).sum();
+        dto.setHours(hours);
+
+        int days = list.stream().mapToInt(SalaryDTO::getDays).sum();
+        dto.setDays(days);
+
+        int stavka = list.stream().mapToInt(SalaryDTO::getStavka).sum();
+        dto.setStavka(stavka);
+
+        int accural = list.stream().mapToInt(SalaryDTO::getAccural).sum();
+        dto.setAccural(accural);
+
+        int award = list.stream().mapToInt(SalaryDTO::getAward).sum();
+        dto.setAward(award);
+
+        int penalty = list.stream().mapToInt(SalaryDTO::getPenalty).sum();
+        dto.setPenalty(penalty);
+
+        int kredit = doctorService.getDoctor(doctorId).getKredit();
+        dto.setKredit(kredit);
+
+        int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
+        dto.setRecd(recd);
+
+        int total = stavka + accural + award - penalty;
+        dto.setTotal(total);
+
+        int actual = total - recd;
+        dto.setActual(actual);
+
+        return  dto;
+    }
+
 }
