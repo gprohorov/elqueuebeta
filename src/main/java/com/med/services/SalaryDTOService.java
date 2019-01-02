@@ -335,8 +335,10 @@ public class SalaryDTOService {
         int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
         dto.setRecd(recd);
 
-        int total = stavka + accural + award - penalty;
+
+        int total = stavka + accural + award  - penalty;
         dto.setTotal(total);
+        System.out.println(dto.getName() + "  " + dto.getRest());
 
         int actual = total - recd;
         dto.setActual(actual);
@@ -348,8 +350,8 @@ public class SalaryDTOService {
     public List<SalaryDTO> getSummarySalaryList(LocalDate from, LocalDate to) {
         List<SalaryDTO> list = new ArrayList<>();
         doctorService.getAll().stream().forEach(doctor -> {
-            list.add(this.getDoctorSummarySalary(doctor.getId()));
-           //  list.add(this.getDoctorSummarySalary(doctor.getId(), from, to));
+          //  list.add(this.getDoctorSummarySalary(doctor.getId()));
+             list.add(this.getDoctorSummarySalary(doctor.getId(), from, to));
         });
         return list;
     }
@@ -441,7 +443,12 @@ public class SalaryDTOService {
         int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
         dto.setRecd(recd);
 
-        int total = stavka + accural + award - penalty;
+
+        int rest = list.stream().sorted(Comparator.comparing(SalaryDTO::getFrom)).findFirst()
+                .get().getRest();
+        dto.setRest(rest);
+
+        int total = stavka + accural + award + rest - penalty;
         dto.setTotal(total);
 
         int actual = total - recd;
