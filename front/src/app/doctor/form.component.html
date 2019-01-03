@@ -8,6 +8,14 @@
                     [(value)]="model.active" [(ngModel)]="model.active" #active="ngModel" />
                     <label class="form-check-label">Активний</label> 
             </div>
+            <div class="form-group">
+                <label for="fullName">Аккаунт</label>
+                <select class="form-control" name="userId" [(ngModel)]="model.userId"
+	                #userId="ngModel">
+	                <option value="null">Не вибрано</option>
+	                <option *ngFor="let user of users" [ngValue]="user.id">{{user.name}}</option>
+	            </select>
+            </div>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !fullName.valid }">
                 <label for="fullName">ПІБ (прізвище, ім`я та по-батькові)</label> <input type="text"
                     class="form-control" name="fullName" [(ngModel)]="model.fullName"

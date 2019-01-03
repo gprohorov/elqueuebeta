@@ -8,7 +8,7 @@ import { config } from '../../config';
 @Injectable()
 export class UserService {
   // Define the routes we are going to interact with
-  private listUrl   = config.api_path + '/user/list/';
+  private listUrl   = config.api_path + '/user/list';
   private getUrl    = config.api_path + '/user/get/';
   private updateUrl = config.api_path + '/user/update/';
   private deleteUrl = config.api_path + '/user/delete/';

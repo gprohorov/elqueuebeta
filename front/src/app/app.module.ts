@@ -17,6 +17,7 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
+    UserService,
     SettingsService,
     SortService,
     PatientService,
@@ -323,6 +324,7 @@ const appRoutes: Routes = [
         NgxPermissionsGuard,
         AlertService,
         AuthService,
+        UserService,
         TokenStorage,
         UserStorage,
         SettingsService,
