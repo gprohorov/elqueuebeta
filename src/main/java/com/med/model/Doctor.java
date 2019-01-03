@@ -15,6 +15,7 @@ public class Doctor {
     private String fullName;
     private String speciality;
     private String cellPhone;
+    private boolean isActive;
     private List<Integer> procedureIds = new ArrayList<>();
     private List<DoctorProcedureProcent> percents =  new ArrayList<>();
     private int rate;
@@ -38,6 +39,17 @@ public class Doctor {
         this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
+        this.procedureIds = procedureIds;
+        this.rate = rate;
+        this.kredit = kredit;
+        this.userId = userId;
+    }
+
+    public Doctor(String fullName, String speciality, String cellPhone, boolean isActive, List<Integer> procedureIds, int rate, int kredit, String userId) {
+        this.fullName = fullName;
+        this.speciality = speciality;
+        this.cellPhone = cellPhone;
+        this.isActive = isActive;
         this.procedureIds = procedureIds;
         this.rate = rate;
         this.kredit = kredit;
@@ -114,6 +126,14 @@ public class Doctor {
 
     public void setPercents(List<DoctorProcedureProcent> percents) {
         this.percents = percents;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     @Override
