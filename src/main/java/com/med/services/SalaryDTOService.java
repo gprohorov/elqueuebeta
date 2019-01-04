@@ -410,6 +410,7 @@ public class SalaryDTOService {
 
         int startWeek = from.getDayOfYear()/7;
         int endWeek = to.getDayOfYear()/7;
+      //  if (endWeek <43 ) endWeek = endWeek + 52; Hope1234
 
          dto.setFrom(from);
          dto.setTo(to);
@@ -417,7 +418,9 @@ public class SalaryDTOService {
         // TODO: Make by MongoRepository
         List<SalaryDTO> list = this.getAll().stream()
                 .filter(el -> el.getDoctorId() == doctorId)
-                .filter(el -> (el.getWeek() >= startWeek && el.getWeek() <= endWeek))
+               // .filter(el -> (el.getWeek() >= startWeek && el.getWeek() <= endWeek))
+                .filter(el -> el.getFrom().isAfter(from.minusDays(1)))
+                .filter(el -> el.getFrom().isBefore(to.plusDays(1)))
                 .collect(Collectors.toList());
 
         int hours = list.stream().mapToInt(SalaryDTO::getHours).sum();
