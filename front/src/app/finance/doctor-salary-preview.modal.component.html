@@ -27,10 +27,11 @@
 	 [style.height.px]="200">
     <table class="table table-sm mt-3">
         <tbody *ngIf="!loading">
-            <tr *ngFor="let item of data">
-                <td>header</td>
-                <td class="text-right">0 грн.</td>
-            </tr>
+            <tr><th>Днів</th><td class="text-right">{{data.days}}</td></tr>
+            <tr><th>Годин</th><td class="text-right">{{data.hours}}</td></tr>
+            <tr><th>Ставка</th><td class="text-right">{{data.stavka}} грн.</td></tr>
+            <tr><th>Бонуси</th><td class="text-right">{{data.accural}} грн.</td></tr>
+            <tr><th>Нараховано</th><td class="text-right">{{data.total}} грн.</td></tr>
         </tbody>
     </table>
 </div>
