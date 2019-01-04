@@ -470,8 +470,8 @@ public class SalaryDTOService {
         dto.setName(doctor.getFullName());
         List<Talon> talons = talonService.getAllTallonsBetween(from, to)
                 .stream()
-                .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
                 .collect(Collectors.toList());
 
         List<LocalDate> dateList = talons.stream()
