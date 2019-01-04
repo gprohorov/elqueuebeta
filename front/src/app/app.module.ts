@@ -79,6 +79,7 @@ import { CheckComponent } from './check/main.component';
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
 import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
+import { DoctorSalaryPreviewModalComponent } from './finance/doctor-salary-preview.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
 import { KassaTozeroModalComponent } from './finance/kassa-tozero.modal.component';
@@ -326,6 +327,7 @@ const appRoutes: Routes = [
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
         DoctorSalaryHistoryModalComponent,
+        DoctorSalaryPreviewModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
@@ -365,6 +367,7 @@ const appRoutes: Routes = [
         CreatePatientModalComponent,
         GiveSalaryModalComponent,
         DoctorSalaryHistoryModalComponent,
+        DoctorSalaryPreviewModalComponent,
         SetSalaryModalComponent,
         KassaTozeroModalComponent,
         KassaAddOutcomeModalComponent,

@@ -147,14 +147,4 @@ public class StatisticsController {
         @PathVariable(value = "finish") String finish) {
         return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
-
-    @RequestMapping("/salary/doctor/{doctorId}/{from}/{to}")
-    public DoctorPeriodSalary getDoctorSalaryForPeriod(
-        @PathVariable(value = "doctorId") int doctorId,
-        @PathVariable(value = "from") String from,
-        @PathVariable(value = "to") String to) {
-        return service.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
-    }
-
-
 }

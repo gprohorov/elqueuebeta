@@ -28,12 +28,6 @@ export class SetSalaryModalComponent implements IModalDialog {
             penalty: 0
         };
         options.actionButtons = [{
-            text: 'Редагувати Лікаря',
-            buttonClass: 'btn btn-info mr-5',
-            onAction: () => {
-                this.router.navigate(['/doctor-form', { id: this.data.doctorID }]);
-            }
-        }, {
             text: 'Призначити',
             onAction: () => {
                 return this.submit(this.myForm, options);
@@ -55,6 +49,10 @@ export class SetSalaryModalComponent implements IModalDialog {
         });
     }
 
+    editDoctor() {
+        window.open('/#/doctor-form;id=' + this.data.doctorID, '_blank');
+    }
+    
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
     }

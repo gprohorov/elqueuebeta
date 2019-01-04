@@ -15,6 +15,7 @@ import com.med.model.Response;
 import com.med.model.Salary;
 import com.med.model.SalaryDTO;
 import com.med.model.SalaryType;
+import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.services.CashBoxService;
 import com.med.services.SalaryDTOService;
 import com.med.services.SalaryService;
@@ -108,7 +109,7 @@ public class SalaryController {
         return salaryDTOService.getTableByWeek(week);
     }
 
-    @RequestMapping("list/payment/{doctor}/{from}/{to}")
+    @RequestMapping("/list/payment/{doctor}/{from}/{to}")
     public List<CashBox> getPaymentsForDoctor(
         @PathVariable(value = "doctor") int doctorId,
         @PathVariable(value = "from") String from,
@@ -120,4 +121,13 @@ public class SalaryController {
     public List<SalaryDTO> inject() {
         return salaryDTOService.inject();
     }
+    
+    @RequestMapping("/doctor/{doctorId}/{from}/{to}")
+    public DoctorPeriodSalary getDoctorSalaryForPeriod(
+        @PathVariable(value = "doctorId") int doctorId,
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
+        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
+    }
+
 }

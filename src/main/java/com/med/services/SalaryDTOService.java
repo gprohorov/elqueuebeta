@@ -1,5 +1,6 @@
 package com.med.services;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,6 +18,7 @@ import com.med.model.Doctor;
 import com.med.model.Procedure;
 import com.med.model.SalaryDTO;
 import com.med.model.Talon;
+import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.SalaryDTORepository;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +40,7 @@ public class SalaryDTOService {
 
     @Autowired
     ProcedureService procedureService;
+    
     @Autowired
     SettingsService settingsService;
 
@@ -461,4 +464,59 @@ public class SalaryDTOService {
         return  dto;
     }
 
+    public DoctorPeriodSalary getDoctorSalaryForPeriod(int doctorId, LocalDate from, LocalDate to){
+        DoctorPeriodSalary dto = new DoctorPeriodSalary(doctorId, from, to);
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        dto.setName(doctor.getFullName());
+        List<Talon> talons = talonService.getAllTallonsBetween(from, to)
+                .stream()
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
+
+        List<LocalDate> dateList = talons.stream()
+                .map(talon -> talon.getDate())
+                .collect(Collectors.toList());
+
+        int days = (int) dateList.stream().distinct().count();
+        dto.setDays(days);
+
+        final int[] hours = {0};
+        talons.stream().collect(Collectors.groupingBy(Talon::getDate)).entrySet()
+                .forEach(entry -> {
+                    LocalDateTime begin = entry.getValue().stream()
+                            .min(Comparator.comparing(Talon::getStart)).get().getStart();
+                    LocalDateTime end = entry.getValue().stream()
+                            .max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
+                    int hrs = (int) ChronoUnit.HOURS.between(begin, end);
+                    hours[0] += hrs;
+                });
+        dto.setHours(hours[0]);
+
+        int daysWithoutSaturdays = (int) dateList.stream()
+                .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
+                .count();
+        int daysTax = (int) ChronoUnit.DAYS.between(from, to);
+        int stavka = dto.getHours() * doctor.getRate()
+                - daysTax * settingsService.get().getTax()/30
+                - daysWithoutSaturdays * settingsService.get().getCanteen();
+        dto.setStavka(stavka);
+
+        double bonuses = 0;
+
+        for (Talon talon:talons){
+            Procedure procedure = procedureService.getProcedure(talon.getProcedureId());
+            int zones = talon.getZones();
+            int price = procedure.getSOCIAL();
+            int percent = doctor.getPercents().stream()
+                    .filter(item-> item.getProcedureId() == procedure.getId())
+                    .findAny().get().getProcent();
+            double accural = zones * price * percent / 100;
+            bonuses += accural;
+        }
+        dto.setAccural((int) bonuses);
+        dto.setTotal( dto.getStavka() + dto.getAccural() );
+        return dto;
+    }
+    
 }

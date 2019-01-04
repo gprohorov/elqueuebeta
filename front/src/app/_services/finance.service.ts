@@ -11,6 +11,7 @@ export class FinanceService {
     private salaryUrl = config.api_path + '/salary/list';
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
+    private getDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor';
     private giveSalaryUrl = config.api_path + '/salary/get';
     private giveSalarySAUrl = config.api_path + '/salary/get-sa';
     private setSalaryUrl = config.api_path + '/salary/set';
@@ -34,6 +35,11 @@ export class FinanceService {
     
     getDoctorSalaryHistory(doctor: number, from: string, to: string) {
         return this.http.get(this.getDoctorSalaryHistoryUrl
+            + '/' + doctor + '/' + from + '/' + to).pipe(catchError(this.handleError));
+    }
+    
+    getDoctorSalaryPreview(doctor: number, from: string, to: string) {
+        return this.http.get(this.getDoctorSalaryPreviewUrl
             + '/' + doctor + '/' + from + '/' + to).pipe(catchError(this.handleError));
     }
 
