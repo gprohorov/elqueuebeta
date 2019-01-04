@@ -55,7 +55,12 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     }
 
     changeWeek(weeks: number) {
-        this.week += weeks; 
+        this.week += weeks;
+        if (this.week > 51) {
+            this.week = this.week % 51;
+        } else if (this.week < 1) {
+            this.week = 51;
+        }
         this.load();
     }
     
