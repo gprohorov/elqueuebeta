@@ -55,4 +55,13 @@ public class DoctorService {
     	return repository.findAll().stream().sorted(Comparator.comparing(Doctor::getId))
             .collect(Collectors.toList());
     }
+
+    public List<Doctor> getAllActive() {
+    	return repository.findAll().stream()
+                .filter(doctor -> doctor.isActive())
+                .sorted(Comparator.comparing(Doctor::getId))
+            .collect(Collectors.toList());
+    }
+
+
 }

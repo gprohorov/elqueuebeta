@@ -3,6 +3,7 @@ package com.med.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -146,4 +147,14 @@ public class StatisticsController {
         @PathVariable(value = "finish") String finish) {
         return service.getGeneralStatisticsFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
+
+    @RequestMapping("/salary/doctor/{doctorId}/{from}/{to}")
+    public DoctorPeriodSalary getDoctorSalaryForPeriod(
+        @PathVariable(value = "doctorId") int doctorId,
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
+        return service.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+
 }

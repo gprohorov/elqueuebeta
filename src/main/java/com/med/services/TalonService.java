@@ -291,11 +291,13 @@ public class TalonService {
         Procedure procedure = talon.getProcedure();
 
         // TODO: Remove hardcoded procedure, use procedure type instead (make it first)
+        //  3 - means that this procedure is Manual Therapy
         if (procedure.getId() != 3) return null;
 
         Patient patient = patientService.getPatient(talon.getPatientId());
         patient.setLastActivity(LocalDateTime.now());
 
+        // 0 means that this doctor is Nechay
         Doctor doctor = doctorService.getAll().get(0);
 
         talon.setActivity(Activity.EXECUTED);

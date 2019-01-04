@@ -45,7 +45,7 @@ public class SalaryDTOService {
 
     @PostConstruct
     void init() {
-    fullTimeList = doctorService.getAll().stream()
+    fullTimeList = doctorService.getAllActive().stream()
                 .filter(doc -> doc.getProcedureIds().isEmpty())
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
@@ -166,6 +166,7 @@ public class SalaryDTOService {
         double sum = 0;
 
         // TODO:  must be refactored.  to doctor = talon.getDoctor
+        // impossible without streams !!!
         Doctor doctor = doctorService.getDoctor(talons.get(0).getDoctor().getId());
         for (Talon talon:talons) {
             // TODO:  must be refactored.  to procedure = talon.getProcedure.
@@ -191,7 +192,7 @@ public class SalaryDTOService {
 
     public List<SalaryDTO> generateSalaryWeekTable(LocalDate start, LocalDate finish) {
         List<SalaryDTO> table = new ArrayList<>();
-        doctorService.getAll().stream().forEach(doctor -> {
+        doctorService.getAllActive().stream().forEach(doctor -> {
             table.add(this.generateRowOfDoctor(doctor.getId()));
         });
         return table;
@@ -349,7 +350,7 @@ public class SalaryDTOService {
     // итог по всем врачам за период
     public List<SalaryDTO> getSummarySalaryList(LocalDate from, LocalDate to) {
         List<SalaryDTO> list = new ArrayList<>();
-        doctorService.getAll().stream().forEach(doctor -> {
+        doctorService.getAllActive().stream().forEach(doctor -> {
           //  list.add(this.getDoctorSummarySalary(doctor.getId()));
              list.add(this.getDoctorSummarySalary(doctor.getId(), from, to));
         });

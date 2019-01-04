@@ -139,7 +139,7 @@ public class SalaryService {
     // начисление бонусов всем врачам
     public List<Salary> createWeekBonus(){
         List<Salary> list = new ArrayList<>();
-        doctorService.getAll().stream().forEach(doctor -> {
+        doctorService.getAllActive().stream().forEach(doctor -> {
            list.add( this.createWeekBonusesForDoctor(doctor.getId()));
         });
         return repository.saveAll(list);
@@ -267,7 +267,7 @@ public class SalaryService {
     //  обычно генерится в субботу после 15.00, когда все свалят
     // DEPRICATED
     public List<SalaryDTO> getSalaryList() {
-    	List<Integer> doctorIds = doctorService.getAll()
+    	List<Integer> doctorIds = doctorService.getAllActive()
                 .stream().mapToInt(Doctor::getId).boxed()
                 .collect(Collectors.toList());
 
