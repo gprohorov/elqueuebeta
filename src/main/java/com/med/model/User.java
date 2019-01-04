@@ -25,7 +25,6 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String username;
 
-    @JsonIgnore
     private boolean enabled;
 
     @Transient

@@ -19,31 +19,17 @@ export class UserService {
     return this.http.get(this.listUrl).pipe(catchError(this.handleError));
   }
 
-  /*
-  get(id: number) {
-    return this.http
-      .get<Doctor>(this.getUrl + id)
-      .pipe(
-        catchError(this.handleError)
-      );
+  get(id: string) {
+    return this.http.get(this.getUrl + id).pipe(catchError(this.handleError));
   }
 
-  update(model: Doctor) {
-    return this.http
-      .post(this.updateUrl, model)
-      .pipe(
-        catchError(this.handleError)
-      );
+  update(model: any) {
+    return this.http.post(this.updateUrl, model).pipe(catchError(this.handleError));
   }
 
-  delete(id: number) {
-    return this.http
-      .get(this.deleteUrl + id)
-      .pipe(
-        catchError(this.handleError)
-     );
+  delete(id: string) {
+    return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
   }
-  */
 
   // Implement a method to handle errors if any
   private handleError(err: HttpErrorResponse | any) {
