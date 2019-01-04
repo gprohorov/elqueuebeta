@@ -17,6 +17,7 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
+    UserService,
     SettingsService,
     SortService,
     PatientService,
@@ -46,6 +47,9 @@ import { PatientAssignHotelModalComponent } from './patient/assign-hotel.modal.c
 import { PatientAssignProceduresOnDateModalComponent } from './patient/assign-procedures-on-date.modal.component';
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
+
+import { UserListComponent } from './user/list.component';
+import { UserFormComponent } from './user/form.component';
 
 import { DoctorListComponent } from './doctor/list.component';
 import { DoctorFormComponent } from './doctor/form.component';
@@ -128,6 +132,17 @@ const appRoutes: Routes = [
 
     {
         path: 'settings', component: SettingsFormComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    
+    {
+        path: 'users', component: UserListComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'user-form', component: UserFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
@@ -290,6 +305,7 @@ const appRoutes: Routes = [
         CreatePatientModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
+        UserListComponent, UserFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
@@ -323,6 +339,7 @@ const appRoutes: Routes = [
         NgxPermissionsGuard,
         AlertService,
         AuthService,
+        UserService,
         TokenStorage,
         UserStorage,
         SettingsService,

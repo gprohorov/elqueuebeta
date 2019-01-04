@@ -1,0 +1,38 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row mb-3">
+    <div class="col-auto">
+        <h3>Список аккаунтів</h3>
+    </div>
+    <div class="col-auto mr-auto">
+        <button class="btn btn-success" [routerLink]="['/user-form']">Створити</button>
+    </div>
+    <div class="col-auto">
+        <button [disabled]="loading" (click)="load()" title="Обновити"
+            [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
+    </div>
+</div>
+<div class="content table-responsive table-full-width">
+    <table class="table table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items">
+                <td>{{item.id}}</td>
+                <td>{{item.username}}</td>
+                <td>{{getRoles(item.authorities)}}</td>
+                <td align="right">
+                    <button class="btn btn-primary btn-sm"
+                        [routerLink]="['/user-form', { id: item.id }]">Редагувати</button>
+                    <button class="btn btn-danger btn-sm" 
+                    	(click)="delete(item.id, item.username)">Видалити</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

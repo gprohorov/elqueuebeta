@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document
 public class User implements UserDetails {
 	
-    @JsonIgnore
     @Id
     private String id;
 
@@ -26,7 +25,6 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String username;
 
-    @JsonIgnore
     private boolean enabled;
 
     @Transient

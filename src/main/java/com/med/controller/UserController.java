@@ -22,9 +22,14 @@ public class UserController {
         return service.findAll();
     }
     
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public User getOne(@PathVariable(value = "id") String id) {
         return service.findById(id).get();
+    }
+    
+    @GetMapping("/delete/{id}")
+    public void delete(@PathVariable(value = "id") String id) {
+    	service.deleteById(id);
     }
     
     @GetMapping("/generatepass/{pass}")

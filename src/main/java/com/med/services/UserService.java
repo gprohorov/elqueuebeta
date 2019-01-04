@@ -35,6 +35,18 @@ public class UserService implements UserDetailsService {
     public Optional<User> findById(String id) {
         return userRepository.findById(id);
     }
+    
+    public void deleteById(String id) {
+    	User user = userRepository.findById(id).orElse(null);
+    	if (user == null) return;
+    	if (user.getAuthorities().contains(Role.ROLE_SUPERADMIN)) return;
+    	userRepository.deleteById(id);
+    	Doctor doctor = doctorService.getDoctorByUserId(id);
+    	if (doctor != null) { 
+    		doctor.setUserId(null);
+    		doctorService.updateDoctor(doctor);
+    	}
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Doctor } from '../_models/index';
-import { AuthService, AlertService, DoctorService, ProcedureService } from '../_services/index';
+import { AuthService, AlertService, DoctorService, ProcedureService, UserService } from '../_services/index';
 
 @Component({
     templateUrl: './form.component.html'
@@ -13,9 +13,11 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
     loading = false;
 
     model: Doctor = new Doctor();
-    sub: Subscription;
     procedures: any[];
+    users: any[];
+    sub: Subscription;
     subProcedures: Subscription;
+    subUsers: Subscription;
 
     constructor(
         public authService: AuthService,
@@ -23,19 +25,38 @@ export class DoctorFormComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private service: DoctorService,
-        private procedureService: ProcedureService
+        private procedureService: ProcedureService,
+        private userService: UserService
     ) { }
 
     ngOnInit() {
-        this.loadProcedures();
+        this.loadUsers();
     }
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
         if (this.subProcedures) this.subProcedures.unsubscribe();
+        if (this.subUsers) this.subUsers.unsubscribe();
     }
 
+    loadUsers() {
+        this.loading = true;
+        this.subUsers = this.userService.getAll().subscribe(
+            data => {
+                this.loading = false;
+                this.users = data.map(x => ({ 
+                    id: x.id, name: x.username + ' (' + x.authorities.join(', ') + ')' 
+                }));
+                this.loadProcedures();
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+    }
+    
     loadProcedures() {
+        this.loading = true;
         this.subProcedures = this.procedureService.getAll().subscribe(
             data => {
                 this.loading = false;
