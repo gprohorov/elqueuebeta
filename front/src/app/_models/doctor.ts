@@ -8,4 +8,5 @@ export class Doctor {
   active: boolean;
   procedureIds: number[];
   percents: any[];
+  userId: string;
 }
