@@ -53,6 +53,7 @@ public class SalaryDTOService {
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
 
+      //  this.inject();
 
     }
 
@@ -225,7 +226,7 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 0 13 ? * SAT")
+    @Scheduled(cron = "0 0 18 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -362,11 +363,11 @@ public class SalaryDTOService {
 
     //  инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
-      /*  List<SalaryDTO> list = repository.findAll().stream()
-                .filter(dto->dto.getWeek()==49)
+       List<SalaryDTO> list = repository.findAll().stream()
+                .filter(dto->dto.getWeek()==52)
                 .collect(Collectors.toList());
         repository.deleteAll(list);
-
+ /*
         repository.findAll().stream()
                 .filter(dto->dto.getWeek()==48)
                 .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
@@ -374,19 +375,20 @@ public class SalaryDTOService {
                     dto.setStavka(dto.getStavka()-450);
                     dto.setClosed(null);
                     this.updateSalaryDTO(dto);
-                });
 
+                });
+*/
         repository.findAll().stream()
-                .filter(dto->dto.getWeek()==48)
+                .filter(dto->dto.getWeek()==51)
                 .forEach(dto->{
                     dto.setClosed(null);
                     this.updateSalaryDTO(dto);
                 });
 
-                Hope1234
+
         System.out.println("INJECTION");
 
-        return this.createNewTable();*/
+      //  return this.createNewTable();
       return null;
     }
     
@@ -493,9 +495,10 @@ public class SalaryDTOService {
                 });
         dto.setHours(hours[0]);
 
-        int daysWithoutSaturdays = (int) dateList.stream()
+        int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from, to);
+      //  int daysTax = days;
         int stavka = dto.getHours() * doctor.getRate()
             - daysTax * settingsService.get().getTax()/30
             - daysWithoutSaturdays * settingsService.get().getCanteen();
