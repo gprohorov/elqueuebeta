@@ -22,9 +22,19 @@ public class UserController {
         return service.findAll();
     }
     
+    @GetMapping("/list-with-doctors")
+    public List<User> findAllWithDoctors() {
+    	return service.findAllWithDoctors();
+    }
+    
     @GetMapping("/get/{id}")
     public User getOne(@PathVariable(value = "id") String id) {
         return service.findById(id).get();
+    }
+    
+    @GetMapping("/get-with-doctor/{id}")
+    public User getWithDoctor(@PathVariable(value = "id") String id) {
+    	return service.findByIdWithDoctor(id);
     }
     
     @GetMapping("/delete/{id}")
