@@ -2,6 +2,7 @@ package com.med.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -101,7 +102,12 @@ public class SalaryController {
     public List<SalaryDTO> showSummarySalaries(
             @PathVariable(value = "from") String from,
             @PathVariable(value = "to") String to) {
-        return salaryDTOService.getSummarySalaryList(LocalDate.parse(from), LocalDate.parse(to));
+        LocalDate newYearDay = LocalDate.of(2019, Month.JANUARY,1);
+        LocalDate begin = LocalDate.parse(from);
+        if  (begin.isAfter(newYearDay.minusDays(1))&&begin.isBefore(newYearDay.plusDays(4))  ){
+            begin = newYearDay.minusDays(1);
+        }
+        return salaryDTOService.getSummarySalaryList(begin, LocalDate.parse(to));
     }
 
     @RequestMapping("/list/{week}")
