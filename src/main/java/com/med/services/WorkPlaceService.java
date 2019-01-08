@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.med.model.Accrual;
 import com.med.model.Activity;
 import com.med.model.Assignment;
 import com.med.model.Doctor;
@@ -50,9 +49,6 @@ public class WorkPlaceService {
     @Autowired
     TherapyService therapyService;
 
-    @Autowired
-    AccrualService accrualService;
-
     public Patient getFirstFromTail(int procedureId) {
         return tailService.getTail(procedureId).getPatients().stream().findFirst().orElse(null);
     }
@@ -61,6 +57,7 @@ public class WorkPlaceService {
     public Talon start(String talonId, int doctorId) {
 
         Talon talon = talonService.getTalon(talonId);
+        if (talon == null || talon.getActivity().equals(Activity.ON_PROCEDURE)) return null;
 
         Patient patient = patientService.getPatientWithTalons(talon.getPatientId());
         if (! (patient.calcActivity().equals(Activity.ACTIVE)
@@ -88,7 +85,7 @@ public class WorkPlaceService {
     public void execute(String talonId, int zones, int doctorId, ArrayList<ArrayList<Object>> picture) {
 
         Talon talon = talonService.getTalon(talonId);
-        if (talon == null) return;
+        if (talon == null || talon.getActivity().equals(Activity.EXECUTED)) return;
         
         Procedure procedure = talon.getProcedure();
         Patient patient = patientService.getPatient(talon.getPatientId());
@@ -124,14 +121,6 @@ public class WorkPlaceService {
                 , PaymentType.PROC
                 , descr);
         accountingService.createAccounting(accounting);
-
-        Accrual accrual = new Accrual();
-        accrual.setDateTime(LocalDateTime.now());
-        accrual.setTalonId(talon.getId());
-        accrual.setDoctorId(talon.getDoctor().getId());
-        accrual.setDesc(descr);
-        accrual.setSum(talon.getProcedure().getSOCIAL() / 10);
-        accrualService.createAccrual(accrual);
 
         /////////////////  cancelling and activating approp. talons
         this.cancelTalonsByCard(procedure, patient.getId());
