@@ -130,30 +130,10 @@ public class AccountingService {
         return report;
     }
 
-
     public List<Accounting> getAllFrom(LocalDate date) {
         return this.getAll().stream()
             .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(date))
             .collect(Collectors.toList());
-    }
-
-    public Integer getSumlFrom(LocalDate date) {
-        return this.getAll().stream()
-            .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(date))
-            .mapToInt(Accounting::getSum).sum();
-    }
-
-    public Integer getSumlForPatientFrom(String patientId, LocalDate date) {
-        return this.getAll().stream()
-            .filter(accounting -> accounting.getPatientId().equals(patientId))
-            .filter(accounting -> accounting.getDateTime().toLocalDate().isAfter(date))
-            .mapToInt(Accounting::getSum).sum();
-    }
-
-    public Integer getSumlForPatient(String patientId) {
-        return this.getAll().stream()
-            .filter(accounting -> accounting.getPatientId().equals(patientId))
-            .mapToInt(Accounting::getSum).sum();
     }
 
     public List<DebetorDTO> getDebetorsExt(LocalDate start, LocalDate finish) {
@@ -208,21 +188,22 @@ public class AccountingService {
 
     public ReceiptToday getTodayReceipt(String patientId) {
         ReceiptToday receipt = new ReceiptToday();
+        Patient patient = patientService.getPatient(patientId);
         List<ProcedureZonesSum> list = new ArrayList<>();
         List<Accounting> accountings = this.getAllIncomesForPatientFromTo(
     		patientId, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
         receipt.setDate(LocalDate.now());
         receipt.setPatientId(patientId);
-        receipt.setPatientName(patientService.getPatient(patientId).getPerson().getFullName());
+        receipt.setPatientName(patient.getPerson().getFullName());
         accountings.stream().filter(accounting -> accounting.getSum() < 0).forEach(accounting -> {
             list.add( new ProcedureZonesSum(accounting.getDesc(), accounting.getSum()));
         });
         receipt.setList(list);
         int sum = list.stream().mapToInt(ProcedureZonesSum::getSum).sum();
         receipt.setProceduresSum(sum);
-        int totalDebt = this.getSumlForPatient(patientId);
-        receipt.setTotalToPay(totalDebt);
-        receipt.setDebt(totalDebt - sum);
+        receipt.setPayed(accountings.stream().filter(accounting -> accounting.getSum() > 0)
+    		.mapToInt(Accounting::getSum).sum());
+        receipt.setBalance(patient.getBalance());
 
         return receipt;
     }

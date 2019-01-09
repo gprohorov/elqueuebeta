@@ -10,6 +10,7 @@ import { PatientService} from '../_services/index';
 export class CheckComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    timeOut: any;
     data: any;
     loading = false;
 
@@ -37,14 +38,12 @@ export class CheckComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.timeOut) clearTimeout(this.timeOut); 
     }
 
     setTimer() {
-        setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
-    }
-    
-    abs(x) {
-        return Math.abs(x);
+        if (this.timeOut) clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
     }
 }

@@ -124,11 +124,8 @@ public class PatientService {
 			new Accounting(patientId, LocalDateTime.now(), sum, PaymentType.CASH, desc));
 	}
 
-	public Integer getBalance(String patientId) {
-		Integer debet = accountingService.getSumlForPatient(patientId);
-		Integer kredit = talonService.getAllTalonsForPatient(patientId)
-			.stream().mapToInt(Talon::getSum).sum();
-		return debet + kredit;
+	public Integer recalcBalance(String patientId) {
+		return accountingRepository.findByPatientId(patientId).stream().mapToInt(Accounting::getSum).sum();
 	}
 
 	//////////// ULTIMATE BALANCE ///////////////

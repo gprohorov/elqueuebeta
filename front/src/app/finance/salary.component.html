@@ -1,5 +1,5 @@
 <app-loader [loader]="loading"></app-loader>
-<div class="position-fixed" [style.right.px]="50">
+<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
@@ -23,7 +23,7 @@
 </div>
 <div class="content table-responsive table-full-width table-sm">
     <table class="table table-bordered">
-        <thead class="thead-dark">
+        <thead class="thead-dark small">
             <tr class="text-center">
                 <th></th>
                 <th>Прізвище</th>

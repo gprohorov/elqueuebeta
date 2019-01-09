@@ -394,6 +394,7 @@ public class SalaryDTOService {
         });
         return repository.saveAll(list);
     }
+    
     //  полный отчет по доктору за указанный период
     // не совсем корректно, ведь у нас дискретность - неделя
     public SalaryDTO getDoctorSummarySalary(int doctorId, LocalDate from, LocalDate to){
@@ -403,22 +404,22 @@ public class SalaryDTOService {
 
         int startWeek = from.getDayOfYear()/7;
         int endWeek = to.getDayOfYear()/7;
-      //  if (endWeek <43 ) endWeek = endWeek + 52;
+        //  if (endWeek <43 ) endWeek = endWeek + 52;
 
-         dto.setFrom(from);
-         dto.setTo(to);
-      //  System.out.println(from);
-      //  System.out.println(to);
+        dto.setFrom(from);
+        dto.setTo(to);
+        // System.out.println(from);
+        // System.out.println(to);
         // if (from.isAfter(LocalDate.now().minusDays(7))) from = LocalDate.now();
 
         // TODO: Make by MongoRepository
 
         List<SalaryDTO> list = this.getAll().stream()
-                .filter(el -> el.getDoctorId() == doctorId)
-               // .filter(el -> (el.getWeek() >= startWeek && el.getWeek() <= endWeek))
-                .filter(el -> el.getFrom().isAfter(from.minusDays(1)))
-                .filter(el -> el.getTo().isBefore(to.plusDays(1)))
-                .collect(Collectors.toList());
+            .filter(el -> el.getDoctorId() == doctorId)
+            //.filter(el -> (el.getWeek() >= startWeek && el.getWeek() <= endWeek))
+            .filter(el -> el.getFrom().isAfter(from.minusDays(1)))
+            .filter(el -> el.getTo().isBefore(to.plusDays(1)))
+            .collect(Collectors.toList());
 
         int hours = list.stream().mapToInt(SalaryDTO::getHours).sum();
         dto.setHours(hours);
@@ -444,11 +445,9 @@ public class SalaryDTOService {
         int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
         dto.setRecd(recd);
 
-
-
-          int  rest = list.stream().sorted(Comparator.comparing(SalaryDTO::getFrom)).findFirst()
-                    .orElse(new SalaryDTO()).getRest();
-            dto.setRest(rest);
+        int rest = list.stream().sorted(Comparator.comparing(SalaryDTO::getFrom)).findFirst()
+            .orElse(new SalaryDTO()).getRest();
+        dto.setRest(rest);
 
         int total = stavka + accural + award + rest - penalty;
         dto.setTotal(total);
@@ -465,9 +464,9 @@ public class SalaryDTOService {
         dto.setName(doctor.getFullName());
         List<Talon> talons = talonService.getAllTallonsBetween(from, to)
                 .stream()
-                .filter( talon -> talon.getDoctor()!= null )
-                .filter( talon -> talon.getDoctor().getId()==doctorId )
-                .filter( talon -> talon.getExecutionTime()!= null )
+                .filter( talon -> talon.getDoctor() != null )
+                .filter( talon -> talon.getDoctor().getId() == doctorId )
+                .filter( talon -> talon.getExecutionTime() != null )
                 .collect(Collectors.toList());
 
         List<LocalDate> dateList = talons.stream()
@@ -493,7 +492,7 @@ public class SalaryDTOService {
         int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
-      //  int daysTax = days;
+        // int daysTax = days;
         int stavka = dto.getHours() * doctor.getRate()
             - daysTax * settingsService.get().getTax()/30
             - daysWithoutSaturdays * settingsService.get().getCanteen();
@@ -501,7 +500,7 @@ public class SalaryDTOService {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
             stavka = (doctor.getRate() / 30) * daysTax;
-         }
+        }
         dto.setStavka(stavka);
 
         double bonuses = 0;
@@ -511,8 +510,8 @@ public class SalaryDTOService {
             int zones = talon.getZones();
             int price = procedure.getSOCIAL();
             int percent = doctor.getPercents().stream()
-                    .filter(item-> item.getProcedureId() == procedure.getId())
-                    .findAny().get().getProcent();
+                .filter(item-> item.getProcedureId() == procedure.getId())
+                .findAny().get().getProcent();
             double accural = zones * price * percent / 100;
             bonuses += accural;
         }
@@ -523,11 +522,11 @@ public class SalaryDTOService {
 
     //  инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
+    	/*
         List<SalaryDTO> list = repository.findAll().stream()
-                .filter(dto->dto.getWeek()==52)
-                .collect(Collectors.toList());
+            .filter(dto->dto.getWeek()==52)
+            .collect(Collectors.toList());
         repository.deleteAll(list);
- /*
         repository.findAll().stream()
                 .filter(dto->dto.getWeek()==48)
                 .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
@@ -537,7 +536,6 @@ public class SalaryDTOService {
                     this.updateSalaryDTO(dto);
 
                 });
-*/
         repository.findAll().stream()
                 .filter(dto->dto.getWeek()==51)
                 .forEach(dto->{
@@ -549,6 +547,7 @@ public class SalaryDTOService {
         System.out.println("INJECTION");
 
          this.createNewTable();
+    	 */
         return null;
     }
 }
