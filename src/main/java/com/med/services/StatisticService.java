@@ -296,6 +296,7 @@ public class StatisticService {
 
         PatientDTO statistics = new PatientDTO();
         statistics.setName(patientService.getPatient(patientId).getPerson().getFullName());
+        statistics.setBalance(patientService.getPatient(patientId).getBalance());
 
         List<Talon> talons = talonService.getAllTalonsForPatient(patientId).stream()
             .filter(talon -> talon.getProcedure().getId() > 3)

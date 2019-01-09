@@ -16,6 +16,7 @@ public class PatientDTO {
     private Integer discount;
     private Integer donation;
     private Integer debt;
+    private Integer balance;
 
     public Integer getCash() {
         return cash;
@@ -124,4 +125,12 @@ public class PatientDTO {
     public void setDebt(Integer debt) {
         this.debt = debt;
     }
+
+	public Integer getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Integer balance) {
+		this.balance = balance;
+	}
 }
