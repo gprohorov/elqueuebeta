@@ -104,7 +104,7 @@ public class SalaryController {
             @PathVariable(value = "to") String to) {
         LocalDate newYearDay = LocalDate.of(2019, Month.JANUARY,1);
         LocalDate begin = LocalDate.parse(from);
-        if  (begin.isAfter(newYearDay.minusDays(1))&&begin.isBefore(newYearDay.plusDays(4))  ){
+        if  (begin.isAfter(newYearDay.minusDays(1))&&begin.isBefore(newYearDay.plusDays(10))  ){
             begin = newYearDay.minusDays(1);
         }
         return salaryDTOService.getSummarySalaryList(begin, LocalDate.parse(to));
