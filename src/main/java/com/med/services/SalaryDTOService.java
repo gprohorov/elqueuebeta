@@ -237,12 +237,12 @@ public class SalaryDTOService {
     // в субботу, когда все свалят,
     // генерится зарплатная ведомость за прошедшую неделю (пн-сб)
     // ПРИ ЭТОМ актуальная ведомость (за позпрошлую неделю закрывается,
-    // а остатки из неё переносятся в новую таблу) Hope1234
+    // а остатки из неё переносятся в новую таблу)
     // Новая ведомость заносится в базу и становится актуальной
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-   // @Scheduled(cron = "0 5 18 ? * SAT")
+     @Scheduled(cron = "0 0 16 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -407,7 +407,9 @@ public class SalaryDTOService {
 
          dto.setFrom(from);
          dto.setTo(to);
-       // if (from.isAfter(LocalDate.now().minusDays(7))) from = LocalDate.now();
+      //  System.out.println(from);
+      //  System.out.println(to);
+        // if (from.isAfter(LocalDate.now().minusDays(7))) from = LocalDate.now();
 
         // TODO: Make by MongoRepository
 
@@ -445,7 +447,7 @@ public class SalaryDTOService {
 
 
           int  rest = list.stream().sorted(Comparator.comparing(SalaryDTO::getFrom)).findFirst()
-                    .get().getRest();
+                    .orElse(new SalaryDTO()).getRest();
             dto.setRest(rest);
 
         int total = stavka + accural + award + rest - penalty;
