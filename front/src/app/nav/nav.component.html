@@ -20,12 +20,19 @@
             <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти</a>
             <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База пацієнтів</a>
             <a class="dropdown-item" routerLink="/hotel" routerLinkActive="active">Готель</a>
-            <button class="dropdown-item btn btn-primary"
-            	(click)="showKassaAddOutcomePopup()">Видача з каси</button>
-            <button class="dropdown-item btn btn-primary"
-            	(click)="showGiveSalaryPopup()">Зарплата лікарям</button>
-            <button class="dropdown-item btn btn-primary"
-            	(click)="showKassaTozeroPopup()">Здача каси</button>
+            <div class="nav-item dropdown" ngbDropdown>
+	            <a class="dropdown-item dropdown-toggler" [ngStyle]="{'cursor': 'pointer'}"
+	                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+	                ngbDropdownToggle>Каса</a>
+	            <div class="dropdown-menu bg-light" ngbDropdownMenu>
+		            <button class="dropdown-item btn btn-primary"
+		            	(click)="showKassaAddOutcomePopup()">Видача з каси</button>
+		            <button class="dropdown-item btn btn-primary"
+		            	(click)="showGiveSalaryPopup()">Зарплата лікарям</button>
+		            <button class="dropdown-item btn btn-primary"
+		            	(click)="showKassaTozeroPopup()">Здача каси</button>
+            	</div>
+           	</div>
             <a class="dropdown-item" target="clientwindow" routerLink="/home"
             	routerLinkActive="active">Вікно клієнта</a>
         </div>
