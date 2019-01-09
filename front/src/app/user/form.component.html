@@ -2,8 +2,10 @@
 <div class="row justify-content-md-center">
     <div class="col-6">
         <h2>Редагування аккаунта</h2>
+        <label>Лікар:</label>
+        <a href="/#/doctor-form;id={{model.info?.id}}" target="_blank">{{model.info?.fullName}}</a>        
         <form name="form" (ngSubmit)="f.form.valid && submit(f)" #f="ngForm" novalidate>
-        	<div class="form-check mt-4 mb-4">
+        	<div class="form-check mt-4 mb-2">
                 <input type="checkbox" class="form-check-input" [name]="enabled"
                     [(value)]="model.enabled" [(ngModel)]="model.enabled" #enabled="ngModel" />
                     <label class="form-check-label">Включений</label> 
@@ -15,24 +17,21 @@
                 <div *ngIf="f.submitted && !username.valid" class="help-block text-danger">
                     обов`язково</div>
             </div>
-            <!-- 
-            <div class="form-group">
-                <label>Процедури</label>
-                <div class="row m-1" *ngFor="let procedure of procedures">
-	                <div class="col form-check">
-	                    <input type="checkbox" class="form-check-input" [name]="procedure.value"
-	                        [(value)]="procedure.checked" [(ngModel)]="procedure.checked" /> <label
-	                        class="form-check-label">{{procedure.name}}</label> 
-	                </div>
-	                <div class="col form-inline"> 
-						<input [style.width.px]="150" type="number" class="form-control"
-	                    	[name]="'percents_' + procedure.value" [(ngModel)]="procedure.procent"/> 
-	                    	<label class="ml-2">%</label> 
-	                </div>
-                </div>
-            </div>
-             -->
-            <div class="form-group">
+            <div class="card">
+            	<div class="card-header">Ролі</div>
+            	<div class="card-body">
+		            <div class="form-group">
+		                <div class="row m-1" *ngFor="let role of roles">
+			                <div class="col form-check">
+			                    <input type="checkbox" class="form-check-input" [name]="role.name"
+			                        [(value)]="role.checked" [(ngModel)]="role.checked" />
+			                        <label class="form-check-label">{{role.name}}</label> 
+			                </div>
+		                </div>
+		            </div>
+            	</div>
+           	</div>
+            <div class="form-group mt-3">
                 <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
                 <button [routerLink]="['/users']" class="btn btn-link">Скасувати</button>
                 <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>

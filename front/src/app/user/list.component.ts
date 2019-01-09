@@ -36,7 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.sub = this.service.getAll().subscribe(data => {
+        this.sub = this.service.getAllWithDoctors().subscribe(data => {
             this.items = data;
             this.loading = false;
         });

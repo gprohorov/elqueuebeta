@@ -36,6 +36,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
     
+    public User findByIdWithDoctor(String id) {
+    	User user = userRepository.findById(id).get();
+    	user.setInfo(doctorService.getDoctorByUserId(id));
+    	return user;
+    }
+    
     public void deleteById(String id) {
     	User user = userRepository.findById(id).orElse(null);
     	if (user == null) return;
@@ -50,6 +56,12 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+    
+    public List<User> findAllWithDoctors() {
+    	List<User> users = userRepository.findAll();
+    	users.stream().forEach(user -> { user.setInfo(doctorService.getDoctorByUserId(user.getId())); });
+    	return users;
     }
 
     public User findOne(String username) {

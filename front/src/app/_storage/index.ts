@@ -1,4 +1,5 @@
-﻿export * from './status';
+﻿export * from './roles';
+export * from './status';
 export * from './HotelState';
 export * from './activity';
 export * from './procedure-type';

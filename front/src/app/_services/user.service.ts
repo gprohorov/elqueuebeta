@@ -8,19 +8,29 @@ import { config } from '../../config';
 @Injectable()
 export class UserService {
   // Define the routes we are going to interact with
-  private listUrl   = config.api_path + '/user/list';
-  private getUrl    = config.api_path + '/user/get/';
-  private updateUrl = config.api_path + '/user/update/';
-  private deleteUrl = config.api_path + '/user/delete/';
+  private listUrl               = config.api_path + '/user/list';
+  private listWithDoctorsUrl    = config.api_path + '/user/list-with-doctors';
+  private getUrl                = config.api_path + '/user/get/';
+  private getWithDoctorUrl      = config.api_path + '/user/get-with-doctor/';
+  private updateUrl             = config.api_path + '/user/update/';
+  private deleteUrl             = config.api_path + '/user/delete/';
 
   constructor(private http: HttpClient) { }
 
   getAll() {
     return this.http.get(this.listUrl).pipe(catchError(this.handleError));
   }
+  
+  getAllWithDoctors() {
+    return this.http.get(this.listWithDoctorsUrl).pipe(catchError(this.handleError));
+  }
 
   get(id: string) {
     return this.http.get(this.getUrl + id).pipe(catchError(this.handleError));
+  }
+  
+  getWithDoctor(id: string) {
+    return this.http.get(this.getWithDoctorUrl + id).pipe(catchError(this.handleError));
   }
 
   update(model: any) {

@@ -4,13 +4,17 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { AlertService, UserService } from '../_services/index';
 
+import { User, Doctor } from '../_models/index';
+import { Roles } from '../_storage/index';
+
 @Component({
     templateUrl: './form.component.html'
 })
 export class UserFormComponent implements OnInit, OnDestroy {
 
     loading = false;
-    model: any;
+    model: User = new User();
+    roles: any[] = [];
     sub: Subscription;
 
     constructor(
@@ -21,6 +25,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        Roles.forEach(x => {
+            this.roles.push({ name: x, checked: false });
+        });
         const id = this.route.snapshot.paramMap.get('id');
         this.load(id);
     }
@@ -31,9 +38,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     load(id: string) {
         this.loading = true;
-        this.sub = this.service.get(id).subscribe(
+        this.sub = this.service.getWithDoctor(id).subscribe(
             data => {
                 this.model = data;
+                this.roles = [];
+                Roles.forEach(x => {
+                    this.roles.push({ name: x, checked: this.model.authorities.includes(x) });
+                });
                 this.loading = false;
             },
             error => {
