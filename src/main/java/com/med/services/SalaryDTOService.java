@@ -54,7 +54,7 @@ public class SalaryDTOService {
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
 
-     this.inject();
+    // this.inject();
 
     }
 
@@ -107,8 +107,10 @@ public class SalaryDTOService {
       //  System.out.println(from);
         dto.setTo(to);
     //    System.out.println(to);
-
-        dto.setWeek(from.getDayOfYear() / 7 );
+        int week = repository.findAll().stream()
+                .filter(el->el.getClosed()==null).findAny()
+                .get().getWeek();
+        dto.setWeek( week + 1 );
         dto.setDoctorId(doctorId);
 
         Doctor doctor = doctorService.getDoctor(doctorId);
@@ -519,6 +521,9 @@ public class SalaryDTOService {
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }
+
+
+
 
     //  инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
