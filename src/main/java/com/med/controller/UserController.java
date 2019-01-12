@@ -2,10 +2,13 @@ package com.med.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.med.model.Response;
 import com.med.model.User;
 import com.med.services.UserService;
 
@@ -40,6 +43,11 @@ public class UserController {
     @GetMapping("/delete/{id}")
     public void delete(@PathVariable(value = "id") String id) {
     	service.deleteById(id);
+    }
+    
+    @PostMapping("/update/")
+    public void update(@Valid @RequestBody User model) {
+    	service.update(model);
     }
     
     @GetMapping("/generatepass/{pass}")

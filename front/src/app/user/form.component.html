@@ -17,6 +17,12 @@
                 <div *ngIf="f.submitted && !username.valid" class="help-block text-danger">
                     обов`язково</div>
             </div>
+            <div class="form-group">
+                <label for="username">Пароль</label> <input type="text"
+                    class="form-control" name="password" [(ngModel)]="model.password"
+                    #password="ngModel"  />
+                <div class="text-secondary">* щоб залишити без змін не заповнюйте</div>
+            </div>
             <div class="card">
             	<div class="card-header">Ролі</div>
             	<div class="card-body">

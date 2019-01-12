@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Doctor;
@@ -54,6 +55,19 @@ public class UserService implements UserDetailsService {
     	}
     }
 
+    public void update (User model) {
+    	User user = model.getId() != null ? this.findById(model.getId()).get() : new User(); 
+		if (model.getPassword() != null) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			String pass = encoder.encode(model.getPassword());
+			user.setPassword(pass);
+		}
+		user.setEnabled(model.isEnabled());
+		user.setUsername(model.getUsername());
+		user.setAuthorities(model.getAuthorities());
+		userRepository.save(user);
+    }
+    
     public List<User> findAll() {
         return userRepository.findAll();
     }

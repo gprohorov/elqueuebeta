@@ -29,7 +29,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
             this.roles.push({ name: x, checked: false });
         });
         const id = this.route.snapshot.paramMap.get('id');
-        this.load(id);
+        if (id) this.load(id);
     }
 
     ngOnDestroy() {
@@ -55,6 +55,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     submit(f) {
         this.loading = true;
+        this.model.info = null;
+        this.model.authorities = [];
+        this.roles.forEach( x => {
+            if (x.checked) this.model.authorities.push(x.name);
+        });
         this.service.update(this.model).subscribe(() => {
             this.alertService.success('Операція пройшла успішно', true);
             this.router.navigate(['users']); 

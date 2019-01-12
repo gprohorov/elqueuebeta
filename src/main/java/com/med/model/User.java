@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document
 public class User implements UserDetails {
@@ -19,7 +20,7 @@ public class User implements UserDetails {
 
     private ArrayList<Role> authorities;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Indexed(unique = true)
