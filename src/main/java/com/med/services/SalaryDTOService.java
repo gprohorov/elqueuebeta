@@ -54,7 +54,7 @@ public class SalaryDTOService {
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
 
-    //  this.inject();
+     this.inject();
 
     }
 
@@ -108,7 +108,7 @@ public class SalaryDTOService {
         dto.setTo(to);
     //    System.out.println(to);
 
-        dto.setWeek(from.getDayOfYear() / 7);
+        dto.setWeek(from.getDayOfYear() / 7 );
         dto.setDoctorId(doctorId);
 
         Doctor doctor = doctorService.getDoctor(doctorId);
@@ -380,8 +380,8 @@ public class SalaryDTOService {
 
 
     
-//  каждый месяц 28 числа в 16.00  начисляем зп хоздвору
-    @Scheduled(cron = "0 0 16 28 * ?")
+//  каждый месяц 28 числа в 16.10  начисляем зп хоздвору
+    @Scheduled(cron = "0 10 16 28 * ?")
     public List<SalaryDTO> injectSalaryForKhozDvor() {
 
         List<SalaryDTO> list = this.getOpenTable().stream()
@@ -536,18 +536,19 @@ public class SalaryDTOService {
                     this.updateSalaryDTO(dto);
 
                 });
+       */
         repository.findAll().stream()
-                .filter(dto->dto.getWeek()==51)
+                .filter(dto->dto.getWeek()==1)
                 .forEach(dto->{
-                    dto.setClosed(null);
-                    this.updateSalaryDTO(dto);
+                    dto.setWeek(53);
+                    repository.save(dto);
                 });
 
 
         System.out.println("INJECTION");
 
-         this.createNewTable();
-    	 */
+     //    this.createNewTable();
+
         return null;
     }
 }
