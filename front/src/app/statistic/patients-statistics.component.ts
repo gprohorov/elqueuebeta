@@ -13,6 +13,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
     data: any;
     start: string;
     finish: string;
+    totalBalance = 0;
     totalBill = 0;
     totalCash = 0;
     totalCard = 0;
@@ -58,6 +59,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
             this.totalDiscounters = data.filter( x => x.discount ).length;
             this.totalDebitors = data.filter( x => x.debt ).length;
             
+            this.totalBalance = 0;
             this.totalBill = 0;
             this.totalCash = 0;
             this.totalCard = 0;
@@ -65,6 +67,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
             this.totalDonation = 0;
             this.totalDebt = 0;
             data.forEach( currentValue => {
+                this.totalBalance += currentValue.balance;
                 this.totalBill += currentValue.bill;
                 this.totalCash += currentValue.cash;
                 this.totalCard += currentValue.card;

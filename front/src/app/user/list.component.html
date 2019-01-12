@@ -23,7 +23,10 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of items">
-                <td>{{item.username}}</td>
+                <td><i class="fa fa-user-circle" aria-hidden="true" 
+               		title="{{item.enabled ? 'Включений' : 'Виключений'}}" 
+               		[ngClass]="{'text-success': item.enabled, 'text-danger': !item.enabled}"></i>
+                	&nbsp;{{item.username}}</td>
                 <td>{{getRoles(item.authorities)}}</td>
                 <td><a href="/#/doctor-form;id={{item.info?.id}}" target="_blank">
                 	{{item.info?.fullName}}</a></td>
