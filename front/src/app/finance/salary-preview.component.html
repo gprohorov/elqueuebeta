@@ -1,0 +1,106 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row justify-content-md-center">
+    <div class="col-6">
+        <h2>Розрахунок за вказаними ставками</h2>
+        <h4>Лікар: {{model.fullName}}</h4>
+        <form name="form" #f="ngForm" novalidate>
+		    <div class="row mt-4 mb-4">
+		    	<div class="col">
+				   	<div class="input-group mb-4" [style.width.px]="200">
+				        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+				        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+				        	[ngClass]="{'is-invalid': !isValid()}" [disabled]="loading" />
+				    </div>
+			        <h6>Спеціальність: {{model.speciality}}</h6>
+			        <h6>Кредит: {{model.kredit}} грн.</h6>
+			        <h6>Базова ставка: {{model.rate}} грн.</h6>
+		        </div>
+		        <div class="col ml-auto">
+		        	<div class="input-group mb-4" [style.width.px]="210">
+				        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+				        <input type="date" class="form-control" name="to" [(ngModel)]="to"
+				        	[ngClass]="{'is-invalid': !isValid()}" [disabled]="loading" />
+				    </div>
+		            <div class="input-group" [style.width.px]="230">
+		                <label>Ставка для розрахунку (грн.)</label>
+		                <input type="number" class="form-control" name="rate" [(ngModel)]="rate"
+		                    [disabled]="loading" />
+		            </div>
+	            </div>
+            </div>
+            <div class="form-group card">
+            	<div class="card-header">Процедури</div>
+           		<div class="card-body">
+	                <div class="row mb-2">
+	                	<div class="col-6">
+	                		<strong>Назва</strong>
+	                	</div>
+	                	<div class="col-2">
+	                		<strong>Базова ставка</strong>
+	                	</div>
+	                	<div class="col">
+	                		<strong>Ставка для розрахунку</strong>
+	                	</div>
+	                </div>
+	                <div class="row" *ngFor="let procedure of procedures">
+		                <div class="col-6">{{procedure.name}}</div>
+		                <div class="col-2">{{procedure.procent}} %</div>
+		                <div class="col-auto form-inline">
+							<input [style.width.px]="80" type="number" class="form-control"
+		                    	[name]="'percents_' + procedure.id" [(ngModel)]="procedure.procent"
+		                    	[disabled]="loading" /> 
+	                    	<label class="ml-2">%</label> 
+		                </div>
+	                </div>
+                </div>
+            </div>
+            <div class="form-group card">
+            	<div class="card-header">Дані за базовими ставками</div>
+           		<div class="card-body">
+		            <table class="table table-sm text-center">
+		            	<thead>
+				    		<tr><th>Днів</th><th>Годин</th><th>Ставка</th><th>Бонуси</th><th>Нараховано</th></tr>
+				    	</thead>
+				    	<tbody>
+			            	<tr *ngIf="dataBase">
+			            		<td>{{dataBase.days}}</td>
+			            		<td>{{dataBase.hours}}</td>
+			            		<td>{{dataBase.stavka}} грн.</td>
+		            			<td>{{dataBase.accural}} грн.</td>
+			            		<td>{{dataBase.total}} грн.</td>
+			            	</tr>
+				    	</tbody>
+				    </table>
+			    </div>
+		    </div>
+            <div class="form-group card">
+            	<div class="card-header">Дані розрахунку за вказаними ставками</div>
+           		<div class="card-body">
+		            <table class="table table-sm text-center">
+		            	<thead>
+				    		<tr><th>Днів</th><th>Годин</th><th>Ставка</th><th>Бонуси</th><th>Нараховано</th></tr>
+				    	</thead>
+				    	<tbody>
+			            	<tr *ngIf="dataCalc">
+			            		<td>{{dataCalc.days}}</td>
+			            		<td>{{dataCalc.hours}}</td>
+			            		<td>{{dataCalc.stavka}} грн.</td>
+		            			<td>{{dataCalc.accural}} грн.</td>
+			            		<td>{{dataCalc.total}} грн.</td>
+			            	</tr>
+				    	</tbody>
+				    </table>
+			    </div>
+		    </div>
+            <div class="form-group">
+            	<button class="btn btn-primary" [disabled]="loading" (click)="sendCalc()">
+            		Розрахувати</button>
+            	<button class="btn btn-success" [disabled]="loading" (click)="save()">
+            		Зберегти встановлені значення</button>
+                <button [routerLink]="['/finance/salary-summary']" class="btn btn-link">
+                	Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
+            </div>
+        </form>
+    </div>
+</div>

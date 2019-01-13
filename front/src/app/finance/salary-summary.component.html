@@ -42,6 +42,10 @@
         <tbody *ngIf="data.length > 0">
             <tr *ngFor="let item of data">
                 <td class="text-nowrap">
+                	<a class="btn btn-success" title="Розрахунок за вибраними ставками"
+                		[routerLink]="['/finance/salary-preview/', { id: item.doctorId, from: from, to: to }]">
+	                    <i class="fa fa-eye" aria-hidden="true"></i>
+	                </a>
                 	<button class="btn btn-success" title="Розрахунок за поточними ставками" 
 	                	(click)="showDoctorSalaryPreviewPopup(item)">
 	                    <i class="fa fa-binoculars" aria-hidden="true"></i>

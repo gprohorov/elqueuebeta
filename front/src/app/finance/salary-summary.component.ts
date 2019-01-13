@@ -29,8 +29,10 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         private service: FinanceService) { }
 
     ngOnInit() {
-        this.from = '2018-10-29';
-        this.to = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        const today = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
+            .toISOString().slice(0, -14); 
+        this.from = today;
+        this.to = today;
         this.load();
     }
 

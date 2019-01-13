@@ -100,14 +100,17 @@ public class SalaryController {
     // 17 nov
     @RequestMapping("/list/summary/{from}/{to}")
     public List<SalaryDTO> showSummarySalaries(
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to) {
-        LocalDate newYearDay = LocalDate.of(2019, Month.JANUARY,1);
-        LocalDate begin = LocalDate.parse(from);
-        if  (begin.isAfter(newYearDay.minusDays(1))&&begin.isBefore(newYearDay.plusDays(10))  ){
-            begin = newYearDay.minusDays(1);
-        }
-        return salaryDTOService.getSummarySalaryList(begin, LocalDate.parse(to));
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
+        return salaryDTOService.getSummarySalaryList(LocalDate.parse(from), LocalDate.parse(to));
+    }
+    
+    @RequestMapping("/doctor/summary/{doctor}/{from}/{to}")
+    public SalaryDTO showDoctorSummarySalary(
+		@PathVariable(value = "doctor") int doctorId,
+		@PathVariable(value = "from") String from,
+		@PathVariable(value = "to") String to) {
+    	return salaryDTOService.getDoctorSummarySalary(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/list/{week}")
@@ -136,4 +139,9 @@ public class SalaryController {
         return salaryDTOService.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
+    @RequestMapping("/doctor/preview")
+    public void getDoctorSalaryPreview(@Valid @RequestBody Object body) {
+    	System.out.println(body);
+    }
+    
 }

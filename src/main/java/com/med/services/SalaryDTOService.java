@@ -399,7 +399,7 @@ public class SalaryDTOService {
     
     //  полный отчет по доктору за указанный период
     // не совсем корректно, ведь у нас дискретность - неделя
-    public SalaryDTO getDoctorSummarySalary(int doctorId, LocalDate from, LocalDate to){
+    public SalaryDTO getDoctorSummarySalary(int doctorId, LocalDate from, LocalDate to) {
         SalaryDTO dto = new SalaryDTO();
         dto.setDoctorId(doctorId);
         dto.setName(doctorService.getDoctor(doctorId).getFullName());
