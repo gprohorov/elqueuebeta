@@ -37,6 +37,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        this.id = parseInt(this.route.snapshot.paramMap.get('id'));
         const today = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
             .toISOString().slice(0, -14); 
         this.from = this.route.snapshot.paramMap.get('from') || today;
@@ -61,7 +62,6 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
             data => {
                 this.loading = false;
                 this.proceduresTemp = data.map(x => ({ id: x.id, name: x.name, procent: 10 }) );
-                this.id = parseInt(this.route.snapshot.paramMap.get('id'));
                 if (this.id > 0) this.load(this.id);
             },
             error => {
@@ -79,7 +79,10 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         if (this.model.percents) {
             this.model.percents.forEach(r => {
                 const p = this.procedures.find(x => x.id === r.procedureId);
-                if (p) p.procent = r.procent;
+                if (p) {
+                    p.procent = r.procent;
+                    p.procentNew = r.procent;
+                }
             });
         }
     }
@@ -118,7 +121,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
     
     sendCalc() {
         this.loading = true;
-        this.model.percents = this.procedures.map(x => { return { procedureId: x.id, procent: x.procent }; });
+        this.model.percents = this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; });
         this.subCalcValues = this.financeService.getDoctorSalaryPreviewNew({
             id: this.id,
             from: this.from,
