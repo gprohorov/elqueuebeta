@@ -7,9 +7,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.core.JsonParser;
 import com.med.model.AwardPenaltyDTO;
 import com.med.model.CashBox;
 import com.med.model.Response;
@@ -140,8 +144,23 @@ public class SalaryController {
     }
 
     @RequestMapping("/doctor/preview")
-    public void getDoctorSalaryPreview(@Valid @RequestBody Object body) {
-    	System.out.println(body);
+    public void getDoctorSalaryPreview(@Valid @RequestBody String data) {
+    	
+    	JSONObject j = new JSONObject(data);
+    	
+    	int doctorId = j.getInt("id");
+    	LocalDate from = LocalDate.parse(j.getString("from"));  
+    	LocalDate to = LocalDate.parse(j.getString("to"));
+    	int rate = j.getInt("rate");
+    	List percents = j.getJSONArray("percents").toList();
+    	
+    	System.out.println(
+			"Doctor ID: " + doctorId + "\n" +
+			"From: " + from + "\n" +
+			"To: " + to + "\n" +
+			"Rate: " + rate + "\n" + 
+			"Percents: " + percents
+        );
     }
     
 }
