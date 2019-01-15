@@ -477,7 +477,7 @@ public class SalaryDTOService {
 
         int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
-        int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
+        int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1)) - 1;
         // int daysTax = days;
         int stavka = dto.getHours() * doctor.getRate()
             - daysTax * settingsService.get().getTax() / 30
@@ -580,11 +580,15 @@ public class SalaryDTOService {
 
         int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
-        int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
+        int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1))-1;
         // int daysTax = days;
         int stavka = dto.getHours() * rate
                 - daysTax * settingsService.get().getTax() / 30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
+        System.out.println(daysTax);
+        System.out.println(dto.getHours() * rate);
+        System.out.println(daysTax * settingsService.get().getTax() / 30);
+        System.out.println(daysWithoutSaturdays * settingsService.get().getCanteen());
         if (doctorId == 2) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
