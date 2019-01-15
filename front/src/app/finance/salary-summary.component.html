@@ -41,19 +41,13 @@
         </thead>
         <tbody *ngIf="data.length > 0">
             <tr *ngFor="let item of data">
-                <td class="text-nowrap">
+                <td>
                 	<a class="btn btn-success" title="Розрахунок за вибраними ставками"
                 		[routerLink]="['/finance/salary-preview/', { id: item.doctorId, from: from, to: to }]">
-	                    <i class="fa fa-eye" aria-hidden="true"></i>
-	                </a>
-                	<button class="btn btn-success" title="Розрахунок за поточними ставками" 
-	                	(click)="showDoctorSalaryPreviewPopup(item)">
-	                    <i class="fa fa-binoculars" aria-hidden="true"></i>
-	                </button>
+	                    <i class="fa fa-eye" aria-hidden="true"></i></a>
 	                <button class="btn btn-info" title="Історія виплат" 
 	                	(click)="showSalaryHistoryPopup(item)">
-	                    <i class="fa fa-usd" aria-hidden="true"></i>
-	                </button>
+	                    <i class="fa fa-usd" aria-hidden="true"></i></button>
                 </td>
                 <td class="text-nowrap" title="{{item.name}}">{{item.lastName}}</td>
                 <td class="text-right text-nowrap">{{item.actual}} грн.</td>

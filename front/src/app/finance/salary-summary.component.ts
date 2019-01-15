@@ -5,7 +5,6 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import { AlertService, FinanceService } from '../_services/index';
 
 import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
-import { DoctorSalaryPreviewModalComponent } from './doctor-salary-preview.modal.component';
 
 @Component({
     templateUrl: './salary-summary.component.html'
@@ -42,15 +41,6 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
 
     editDoctor(id) {
         window.open('/#/doctor-form;id=' + id, '_blank');
-    }
-    
-    showDoctorSalaryPreviewPopup(doctor: any) {
-        const options: any = {
-            title: 'Розрахунок за поточними ставками',
-            childComponent: DoctorSalaryPreviewModalComponent,
-            data: doctor
-        };
-        this.modalService.openDialog(this.viewRef, options);
     }
     
     showSalaryHistoryPopup(doctor: any) {

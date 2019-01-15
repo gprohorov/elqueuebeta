@@ -11,9 +11,8 @@ export class FinanceService {
     private salaryUrl = config.api_path + '/salary/list';
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
-    private getDoctorSalaryBaseUrl = config.api_path + '/salary/doctor/summary';
-    private getDoctorSalaryPreviewOldUrl = config.api_path + '/salary/doctor';
-    private getDoctorSalaryPreviewNewUrl = config.api_path + '/salary/doctor/preview';
+    private getDoctorSalaryBaseUrl = config.api_path + '/salary/doctor';
+    private getDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor/preview';
     private giveSalaryUrl = config.api_path + '/salary/get';
     private giveSalarySAUrl = config.api_path + '/salary/get-sa';
     private setSalaryUrl = config.api_path + '/salary/set';
@@ -45,13 +44,8 @@ export class FinanceService {
             + '/' + doctor + '/' + from + '/' + to).pipe(catchError(this.handleError));
     }
     
-    getDoctorSalaryPreview(doctor: number, from: string, to: string) {
-        return this.http.get(this.getDoctorSalaryPreviewOldUrl
-            + '/' + doctor + '/' + from + '/' + to).pipe(catchError(this.handleError));
-    }
-    
-    getDoctorSalaryPreviewNew(data: any) {
-        return this.http.post(this.getDoctorSalaryPreviewNewUrl, data).pipe(catchError(this.handleError));
+    getDoctorSalaryPreview(data: any) {
+        return this.http.post(this.getDoctorSalaryPreviewUrl, data).pipe(catchError(this.handleError));
     }
 
     kassaAddOutcome(data: any, SA: boolean) {

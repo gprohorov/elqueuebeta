@@ -122,7 +122,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
     sendCalc() {
         this.loading = true;
         this.model.percents = this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; });
-        this.subCalcValues = this.financeService.getDoctorSalaryPreviewNew({
+        this.subCalcValues = this.financeService.getDoctorSalaryPreview({
             id: this.id,
             from: this.from,
             to: this.to,
