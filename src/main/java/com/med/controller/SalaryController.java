@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.med.model.statistics.dto.doctor.DoctorForecast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +145,7 @@ public class SalaryController {
     }
 
     @RequestMapping("/doctor/preview")
-    public void getDoctorSalaryPreview(@Valid @RequestBody String data) {
+    public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
     	
     	JSONObject j = new JSONObject(data);
     	
@@ -161,6 +162,7 @@ public class SalaryController {
 			"Rate: " + rate + "\n" + 
 			"Percents: " + percents
         );
+        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, from, to);
     }
     
 }

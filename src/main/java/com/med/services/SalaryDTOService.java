@@ -9,6 +9,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,6 @@ import com.med.model.SalaryDTO;
 import com.med.model.Talon;
 import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.SalaryDTORepository;
-
-import javax.annotation.PostConstruct;
 
 @Service
 public class SalaryDTOService {
@@ -48,9 +48,9 @@ public class SalaryDTOService {
 
     @PostConstruct
     void init() {
-    fullTimeList = doctorService.getAllActive().stream()
-                .filter(doc -> doc.getProcedureIds().isEmpty())
-                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+    	fullTimeList = doctorService.getAllActive().stream()
+            .filter(doc -> doc.getProcedureIds().isEmpty())
+            .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
     }
 
@@ -145,7 +145,7 @@ public class SalaryDTOService {
             });
         dto.setHours(hours[0]);
 
-        //TODO: hardcode
+        // TODO: hardcode
         if (fullTimeList.contains(doctorId)) {
         	dto.setDays(6);
         	dto.setHours(40);
@@ -170,9 +170,9 @@ public class SalaryDTOService {
         return dto;
     }
 
-    private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
-        return doctor.getRate() * hours - settingsService.get().getTax()*2/9
-            - settingsService.get().getCanteen()*((days==0)?0:days-1);
+    private int generateStavkaForDoctor(Doctor doctor, int days, int hours) {
+        return doctor.getRate() * hours - settingsService.get().getTax() * 2 / 9
+            - settingsService.get().getCanteen() * ((days == 0) ? 0 : days - 1);
     }
 
     private int generateBonusesForDoctor(List<Talon> talons) {
@@ -349,10 +349,8 @@ public class SalaryDTOService {
         int recd = list.stream().mapToInt(SalaryDTO::getRecd).sum();
         dto.setRecd(recd);
 
-
         int total = stavka + accural + award  - penalty;
         dto.setTotal(total);
-        System.out.println(dto.getName() + "  " + dto.getRest());
 
         int actual = total - recd;
         dto.setActual(actual);
@@ -372,13 +370,11 @@ public class SalaryDTOService {
     // каждый месяц 28 числа в 16.10  начисляем зп хоздвору
     @Scheduled(cron = "0 10 16 28 * ?")
     public List<SalaryDTO> injectSalaryForKhozDvor() {
-
         List<SalaryDTO> list = this.getOpenTable().stream()
-                .filter(item-> fullTimeList.contains(item.getDoctorId()))
-                .collect(Collectors.toList());
-        list.stream().forEach(item->{
-            int stavka = doctorService.getDoctor(item.getDoctorId()).getRate();
-            item.setStavka(stavka);
+            .filter(item-> fullTimeList.contains(item.getDoctorId()))
+            .collect(Collectors.toList());
+        list.stream().forEach(item -> {
+            item.setStavka(doctorService.getDoctor(item.getDoctorId()).getRate());
             item = this.recalculateDTO(item);
         });
         return repository.saveAll(list);
@@ -391,8 +387,8 @@ public class SalaryDTOService {
         dto.setDoctorId(doctorId);
         dto.setName(doctorService.getDoctor(doctorId).getFullName());
 
-        int startWeek = from.getDayOfYear()/7;
-        int endWeek = to.getDayOfYear()/7;
+        // int startWeek = from.getDayOfYear()/7;
+        // int endWeek = to.getDayOfYear()/7;
         //  if (endWeek <43 ) endWeek = endWeek + 52;
 
         dto.setFrom(from);
@@ -507,7 +503,7 @@ public class SalaryDTOService {
         return dto;
     }
 
-    //  инжекция разных кверей. Так, на всякий случай.
+    // инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
     	/*
         List<SalaryDTO> list = repository.findAll().stream()
@@ -522,7 +518,6 @@ public class SalaryDTOService {
                     dto.setClosed(null);
                     this.updateSalaryDTO(dto);
                 });
-       */
         repository.findAll().stream()
                 .filter(dto->dto.getWeek()==1)
                 .forEach(dto->{
@@ -530,8 +525,7 @@ public class SalaryDTOService {
                     repository.save(dto);
                 });
 
-        System.out.println("INJECTION");
-        // this.createNewTable();
+    	*/
         return null;
     }
 }
