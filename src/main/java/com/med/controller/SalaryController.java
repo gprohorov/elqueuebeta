@@ -145,7 +145,7 @@ public class SalaryController {
     }
 
     @RequestMapping("/doctor/preview")
-    public JSONObject getDoctorSalaryPreview(@Valid @RequestBody String data) {
+    public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
     	
     	JSONObject j = new JSONObject(data);
     	
@@ -162,8 +162,7 @@ public class SalaryController {
 			"Rate: " + rate + "\n" + 
 			"Percents: " + percents
         );
-   // return SalaryDTOService.getForecast(doctorId, from, to );
-        return null;
+        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, from, to);
     }
     
 }
