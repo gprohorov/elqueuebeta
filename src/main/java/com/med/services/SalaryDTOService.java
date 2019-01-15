@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.med.model.statistics.dto.doctor.DoctorForecast;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -521,10 +523,7 @@ public class SalaryDTOService {
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }
-
-
-
-
+    
     //  инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
     	/*
@@ -552,8 +551,9 @@ public class SalaryDTOService {
 
         System.out.println("INJECTION");
 
-     //    this.createNewTable();
+        //    this.createNewTable();
 
         return null;
     }
+
 }
