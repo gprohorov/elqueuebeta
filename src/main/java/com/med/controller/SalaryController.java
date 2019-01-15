@@ -2,19 +2,18 @@ package com.med.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import com.med.model.statistics.dto.doctor.DoctorForecast;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.core.JsonParser;
 import com.med.model.AwardPenaltyDTO;
 import com.med.model.CashBox;
 import com.med.model.Response;
@@ -68,7 +67,7 @@ public class SalaryController {
         return service.createSalary(salary);
     }
 
-    //      !!!       Do it!
+    // !!! Do it !!!
     @RequestMapping("/set")
     public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
         if (dto.getAward() != 0) {
@@ -146,23 +145,6 @@ public class SalaryController {
 
     @RequestMapping("/doctor/preview")
     public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
-    	
-    	JSONObject j = new JSONObject(data);
-    	
-    	int doctorId = j.getInt("id");
-    	LocalDate from = LocalDate.parse(j.getString("from"));  
-    	LocalDate to = LocalDate.parse(j.getString("to"));
-    	int rate = j.getInt("rate");
-    	List percents = j.getJSONArray("percents").toList();
-    	
-    	System.out.println(
-			"Doctor ID: " + doctorId + "\n" +
-			"From: " + from + "\n" +
-			"To: " + to + "\n" +
-			"Rate: " + rate + "\n" + 
-			"Percents: " + percents
-        );
-        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, from, to);
+        return salaryDTOService.getDoctorSalaryByJSON(new JSONObject(data));
     }
-    
 }

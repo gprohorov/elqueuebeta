@@ -11,12 +11,15 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.med.model.Activity;
 import com.med.model.Doctor;
+import com.med.model.DoctorProcedureProcent;
 import com.med.model.Procedure;
 import com.med.model.SalaryDTO;
 import com.med.model.Talon;
@@ -528,4 +531,75 @@ public class SalaryDTOService {
     	*/
         return null;
     }
+
+    public DoctorPeriodSalary getDoctorSalaryByJSON(JSONObject object) {
+
+        int doctorId = object.getInt("id");
+        LocalDate from = LocalDate.parse(object.getString("from"));
+        LocalDate to = LocalDate.parse(object.getString("to"));
+        int rate = object.getInt("rate");
+        JSONArray percents = object.getJSONArray("percents");
+        List<DoctorProcedureProcent> procedureProcentList = new ArrayList<>();
+        percents.forEach(o -> {
+            JSONObject obj = new JSONObject(o.toString());
+            DoctorProcedureProcent dpp = new DoctorProcedureProcent();
+            dpp.setProcedureId(obj.getInt("procedureId"));
+            dpp.setProcent(obj.getInt("procent"));
+            procedureProcentList.add(dpp);
+        });
+
+        DoctorPeriodSalary dto = new DoctorPeriodSalary(doctorId, from, to);
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        dto.setName(doctor.getFullName());
+        List<Talon> talons = talonService.getAllTallonsBetween(from, to)
+                .stream()
+                .filter( talon -> talon.getDoctor() != null )
+                .filter( talon -> talon.getDoctor().getId() == doctorId )
+                .filter( talon -> talon.getExecutionTime() != null )
+                .collect(Collectors.toList());
+
+        List<LocalDate> dateList = talons.stream()
+                .map(talon -> talon.getDate())
+                .collect(Collectors.toList());
+
+        int days = (int) dateList.stream().distinct().count();
+        dto.setDays(days);
+
+        final int[] hours = {0};
+        talons.stream().collect(Collectors.groupingBy(Talon::getDate)).entrySet()
+                .forEach(entry -> {
+                    LocalDateTime begin = entry.getValue().stream()
+                            .min(Comparator.comparing(Talon::getStart)).get().getStart();
+                    LocalDateTime end = entry.getValue().stream()
+                            .max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
+                    int hrs = (int) ChronoUnit.HOURS.between(begin, end);
+                    hours[0] += hrs;
+                });
+        dto.setHours(hours[0]);
+        if(doctorId==1) dto.setHours(days*8);
+
+        int daysWithoutSaturdays = (int) dateList.stream().distinct()
+            .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
+        int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
+        // int daysTax = days;
+
+        dto.setStavka(rate);
+
+        double bonuses = 0;
+
+        for (Talon talon:talons) {
+            Procedure procedure = procedureService.getProcedure(talon.getProcedureId());
+            int zones = talon.getZones();
+            int price = procedure.getSOCIAL();
+            int percent = procedureProcentList.stream()
+                   .filter(item-> item.getProcedureId() == procedure.getId())
+                   .findAny().get().getProcent();
+            double accural = zones * price * percent / 100;
+            bonuses += accural;
+        }
+        dto.setAccural((int) bonuses);
+        dto.setTotal( dto.getStavka() + dto.getAccural() );
+        return dto;
+    }
+
 }
