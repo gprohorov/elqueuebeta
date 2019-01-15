@@ -582,8 +582,15 @@ public class SalaryDTOService {
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
         // int daysTax = days;
-
-        dto.setStavka(rate);
+        int stavka = dto.getHours() * rate
+                - daysTax * settingsService.get().getTax() / 30
+                - daysWithoutSaturdays * settingsService.get().getCanteen();
+        if (doctorId == 2) {
+            dto.setDays(daysTax);
+            dto.setHours(daysTax*8);
+            stavka = (rate / 30) * daysTax;
+        }
+        dto.setStavka(stavka);
 
         double bonuses = 0;
 
