@@ -3,7 +3,6 @@ package com.med.services;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -53,12 +52,7 @@ public class SalaryDTOService {
                 .filter(doc -> doc.getProcedureIds().isEmpty())
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
-
-    // this.inject();
-
     }
-
-
 
     public List<SalaryDTO> getAll() {
         return repository.findAll();
@@ -104,12 +98,12 @@ public class SalaryDTOService {
         LocalDate to = LocalDate.now();
 
         dto.setFrom(from);
-      //  System.out.println(from);
+        // System.out.println(from);
         dto.setTo(to);
-    //    System.out.println(to);
+        // System.out.println(to);
         int week = repository.findAll().stream()
-                .filter(el->el.getClosed()==null).findAny()
-                .get().getWeek();
+            .filter(el->el.getClosed()==null).findAny()
+            .get().getWeek();
         dto.setWeek( week + 1 );
         dto.setDoctorId(doctorId);
 
@@ -120,24 +114,23 @@ public class SalaryDTOService {
         dto.setRest(rest);
 
         List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
-               .stream()
-              // .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
-               .filter( talon -> talon.getDoctor()!= null )
-               .filter( talon -> talon.getDoctor().getId()==doctorId )
-               .filter( talon -> talon.getExecutionTime()!= null )
-                .collect(Collectors.toList());
+           .stream()
+           // .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
+           .filter( talon -> talon.getDoctor()!= null )
+           .filter( talon -> talon.getDoctor().getId()==doctorId )
+           .filter( talon -> talon.getExecutionTime()!= null )
+           .collect(Collectors.toList());
         List<LocalDate> daysList = talons.stream()
-                .map(talon -> talon.getDate()).distinct().collect(Collectors.toList());
-    //    System.out.println(daysList);
+            .map(talon -> talon.getDate()).distinct().collect(Collectors.toList());
 
         // int daysWork = (int) talons.stream().map(talon -> talon.getDate()).distinct().count();
         int daysWork = daysList.size();
-     //   System.out.println(daysWork);
+        // System.out.println(daysWork);
         int daysWithoutSaturdays = (int) daysList.stream()
-                .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
-     //   System.out.println(daysWithoutSaturdays);
+            .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
+        // System.out.println(daysWithoutSaturdays);
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
-     //   System.out.println(daysTax);
+        // System.out.println(daysTax);
         dto.setDays(daysWork);
 
         final int[] hours = {0};
@@ -151,7 +144,6 @@ public class SalaryDTOService {
                 hours[0] += hrs;
             });
         dto.setHours(hours[0]);
-        
 
         //TODO: hardcode
         if (fullTimeList.contains(doctorId)) {
@@ -159,7 +151,7 @@ public class SalaryDTOService {
         	dto.setHours(40);
         }
 
-      //  int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
+        // int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
         int stavka = dto.getHours() * doctor.getRate()
                 - daysTax * settingsService.get().getTax()/30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
@@ -180,7 +172,7 @@ public class SalaryDTOService {
 
     private int generateStavkaForDoctor(Doctor doctor,int days, int hours){
         return doctor.getRate() * hours - settingsService.get().getTax()*2/9
-                - settingsService.get().getCanteen()*((days==0)?0:days-1);
+            - settingsService.get().getCanteen()*((days==0)?0:days-1);
     }
 
     private int generateBonusesForDoctor(List<Talon> talons) {
@@ -205,7 +197,6 @@ public class SalaryDTOService {
     }
 
     public SalaryDTO recalculateDTO(SalaryDTO dto) {
-
         dto.setTotal(dto.getRest() + dto.getStavka() + dto.getAward()
             + dto.getAccural() - dto.getPenalty());
         dto.setActual(dto.getTotal() - dto.getRecd());
@@ -244,7 +235,7 @@ public class SalaryDTOService {
     //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
     //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-     @Scheduled(cron = "0 0 16 ? * SAT")
+    @Scheduled(cron = "0 0 16 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -286,7 +277,7 @@ public class SalaryDTOService {
 
         int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
         if (fullTimeList.contains(doctorId)) {
-            if (dto.getStavka()==0) stavka = 0;
+            if (dto.getStavka() == 0) stavka = 0;
             else stavka = doctor.getRate();
         }
         dto.setStavka(stavka);
@@ -294,7 +285,7 @@ public class SalaryDTOService {
 
         LocalDate from = dto.getFrom();
         LocalDate to = dto.getTo();
-        // TODO: Make by MongoRepository Hope1234
+
         List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1), to.plusDays(1))
             .stream().filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
             .filter(talon -> talon.getDoctor().getId() == doctorId)
@@ -371,18 +362,14 @@ public class SalaryDTOService {
 
     // итог по всем врачам за период
     public List<SalaryDTO> getSummarySalaryList(LocalDate from, LocalDate to) {
-
         List<SalaryDTO> list = new ArrayList<>();
         doctorService.getAllActive().stream().forEach(doctor -> {
-          //  list.add(this.getDoctorSummarySalary(doctor.getId()));
              list.add(this.getDoctorSummarySalary(doctor.getId(), from, to));
         });
         return list;
     }
 
-
-    
-//  каждый месяц 28 числа в 16.10  начисляем зп хоздвору
+    // каждый месяц 28 числа в 16.10  начисляем зп хоздвору
     @Scheduled(cron = "0 10 16 28 * ?")
     public List<SalaryDTO> injectSalaryForKhozDvor() {
 
@@ -465,40 +452,38 @@ public class SalaryDTOService {
         Doctor doctor = doctorService.getDoctor(doctorId);
         dto.setName(doctor.getFullName());
         List<Talon> talons = talonService.getAllTallonsBetween(from, to)
-                .stream()
-                .filter( talon -> talon.getDoctor() != null )
-                .filter( talon -> talon.getDoctor().getId() == doctorId )
-                .filter( talon -> talon.getExecutionTime() != null )
-                .collect(Collectors.toList());
+            .stream()
+            .filter( talon -> talon.getDoctor() != null )
+            .filter( talon -> talon.getDoctor().getId() == doctorId )
+            .filter( talon -> talon.getExecutionTime() != null )
+            .collect(Collectors.toList());
 
-        List<LocalDate> dateList = talons.stream()
-                .map(talon -> talon.getDate())
-                .collect(Collectors.toList());
+        List<LocalDate> dateList = talons.stream().map(talon -> talon.getDate()).collect(Collectors.toList());
 
         int days = (int) dateList.stream().distinct().count();
         dto.setDays(days);
 
         final int[] hours = {0};
         talons.stream().collect(Collectors.groupingBy(Talon::getDate)).entrySet()
-                .forEach(entry -> {
-                    LocalDateTime begin = entry.getValue().stream()
-                        .min(Comparator.comparing(Talon::getStart)).get().getStart();
-                    LocalDateTime end = entry.getValue().stream()
-                        .max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
-                    int hrs = (int) ChronoUnit.HOURS.between(begin, end);
-                    hours[0] += hrs;
-                });
+            .forEach(entry -> {
+                LocalDateTime begin = entry.getValue().stream()
+                    .min(Comparator.comparing(Talon::getStart)).get().getStart();
+                LocalDateTime end = entry.getValue().stream()
+                    .max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
+                int hrs = (int) ChronoUnit.HOURS.between(begin, end);
+                hours[0] += hrs;
+            });
         dto.setHours(hours[0]);
-        if(doctorId==1) dto.setHours(days*8);
+        if (doctorId == 1) dto.setHours(days * 8);
 
         int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1));
         // int daysTax = days;
         int stavka = dto.getHours() * doctor.getRate()
-            - daysTax * settingsService.get().getTax()/30
+            - daysTax * settingsService.get().getTax() / 30
             - daysWithoutSaturdays * settingsService.get().getCanteen();
-        if (doctorId==2) {
+        if (doctorId == 2) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
             stavka = (doctor.getRate() / 30) * daysTax;
@@ -522,9 +507,6 @@ public class SalaryDTOService {
         return dto;
     }
 
-
-
-
     //  инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {
     	/*
@@ -539,7 +521,6 @@ public class SalaryDTOService {
                     dto.setStavka(dto.getStavka()-450);
                     dto.setClosed(null);
                     this.updateSalaryDTO(dto);
-
                 });
        */
         repository.findAll().stream()
@@ -549,11 +530,8 @@ public class SalaryDTOService {
                     repository.save(dto);
                 });
 
-
         System.out.println("INJECTION");
-
-     //    this.createNewTable();
-
+        // this.createNewTable();
         return null;
     }
 }

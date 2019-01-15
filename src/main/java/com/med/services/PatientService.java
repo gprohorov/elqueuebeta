@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,6 @@ import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.AccountingRepository;
 import com.med.repository.PatientRepository;
-
-import javax.annotation.PostConstruct;
 
 @Service
 public class PatientService {
