@@ -162,7 +162,7 @@ public class SalaryController {
 			"Rate: " + rate + "\n" + 
 			"Percents: " + percents
         );
-        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, from, to);
+        return salaryDTOService.getDoctorSalaryByJSON(j);
     }
     
 }
