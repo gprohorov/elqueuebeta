@@ -14,8 +14,8 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
     loading = false;
     sub: Subscription;
     data: any;
-    from: string;
-    to: string;
+    from: any;
+    to: any;
 
     totalRecd = 0;
     totalSummary = 0;
@@ -29,10 +29,10 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const date = new Date();
-        this.from = new Date((new Date(date.getFullYear(), date.getMonth(), 1)
+        this.from = (new Date((new Date(date.getFullYear(), date.getMonth(), 1)).valueOf() 
             - date.getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.to = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
-        .toISOString().slice(0, -14);
+            .toISOString().slice(0, -14);
         this.load();
     }
 
