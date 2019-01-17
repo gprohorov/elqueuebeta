@@ -13,6 +13,7 @@ export class FinanceService {
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
     private getDoctorSalaryBaseUrl = config.api_path + '/salary/doctor';
     private getDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor/preview';
+    private saveDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor/preview/save';
     private giveSalaryUrl = config.api_path + '/salary/get';
     private giveSalarySAUrl = config.api_path + '/salary/get-sa';
     private setSalaryUrl = config.api_path + '/salary/set';
@@ -46,6 +47,10 @@ export class FinanceService {
     
     getDoctorSalaryPreview(data: any) {
         return this.http.post(this.getDoctorSalaryPreviewUrl, data).pipe(catchError(this.handleError));
+    }
+    
+    saveDoctorSalaryPreview(data: any) {
+        return this.http.post(this.saveDoctorSalaryPreviewUrl, data).pipe(catchError(this.handleError));
     }
 
     kassaAddOutcome(data: any, SA: boolean) {
