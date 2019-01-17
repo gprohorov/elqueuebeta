@@ -3,6 +3,12 @@
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
+<div class="input-group pull-right mr-4" [style.width.px]="250">
+    <div class="input-group-prepend">
+        <div class="input-group-text">Дата</div>
+    </div>
+    <input type="date" class="form-control" name="date" [(ngModel)]="date" (change)="load()" />
+</div>
 <div class="content table-responsive table-full-width" *ngIf="data">
     <h4>Статистика по лікарям поточна з підсумком</h4>
     <table class="table table-bordered">

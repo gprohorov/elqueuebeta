@@ -225,8 +225,8 @@ public class StatisticService {
     }
 
     /////////////////////////////////////// CURRENT DOCTOR
-    public DoctorCurrentStatistics getOneDoctorCurrentStatistics(int doctorId) {
-        List<Talon> talons = talonService.getTalonsForDate(LocalDate.now()).stream()
+    public DoctorCurrentStatistics getOneDoctorCurrentStatistics(int doctorId, LocalDate date) {
+        List<Talon> talons = talonService.getTalonsForDate(date).stream()
             .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)
                         || talon.getActivity().equals(Activity.ON_PROCEDURE)))
             .filter(talon -> talon.getDoctor().getId() == doctorId).collect(Collectors.toList());
@@ -279,10 +279,10 @@ public class StatisticService {
         return statistics;
     }
 
-    public List<DoctorCurrentStatistics> getDoctorsListCurrentStatictics() {
+    public List<DoctorCurrentStatistics> getDoctorsListCurrentStatictics(LocalDate date) {
         List<DoctorCurrentStatistics> list = new ArrayList<>();
         doctorService.getAllActive().stream().forEach(doctor -> {
-            DoctorCurrentStatistics statistics = this.getOneDoctorCurrentStatistics(doctor.getId());
+            DoctorCurrentStatistics statistics = this.getOneDoctorCurrentStatistics(doctor.getId(), date);
             list.add(statistics);
         });
         return list;
