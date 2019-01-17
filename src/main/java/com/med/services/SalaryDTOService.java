@@ -506,31 +506,6 @@ public class SalaryDTOService {
         return dto;
     }
 
-    // инжекция разных кверей. Так, на всякий случай.
-    public List<SalaryDTO> inject() {
-    	/*
-        List<SalaryDTO> list = repository.findAll().stream()
-            .filter(dto->dto.getWeek()==52)
-            .collect(Collectors.toList());
-        repository.deleteAll(list);
-        repository.findAll().stream()
-                .filter(dto->dto.getWeek()==48)
-                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
-                .forEach(dto->{
-                    dto.setStavka(dto.getStavka()-450);
-                    dto.setClosed(null);
-                    this.updateSalaryDTO(dto);
-                });
-        repository.findAll().stream()
-                .filter(dto->dto.getWeek()==1)
-                .forEach(dto->{
-                    dto.setWeek(53);
-                    repository.save(dto);
-                });
-
-    	*/
-        return null;
-    }
 
     public DoctorPeriodSalary getDoctorSalaryByJSON(JSONObject object) {
 
@@ -585,10 +560,7 @@ public class SalaryDTOService {
         int stavka = dto.getHours() * rate
                 - daysTax * settingsService.get().getTax() / 30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
-        System.out.println(daysTax);
-        System.out.println(dto.getHours() * rate);
-        System.out.println(daysTax * settingsService.get().getTax() / 30);
-        System.out.println(daysWithoutSaturdays * settingsService.get().getCanteen());
+ 
         if (doctorId == 2) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
@@ -613,4 +585,29 @@ public class SalaryDTOService {
         return dto;
     }
 
+    // инжекция разных кверей. Так, на всякий случай.
+    public List<SalaryDTO> inject() {
+    	/*
+        List<SalaryDTO> list = repository.findAll().stream()
+            .filter(dto->dto.getWeek()==52)
+            .collect(Collectors.toList());
+        repository.deleteAll(list);
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==48)
+                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
+                .forEach(dto->{
+                    dto.setStavka(dto.getStavka()-450);
+                    dto.setClosed(null);
+                    this.updateSalaryDTO(dto);
+                });
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==1)
+                .forEach(dto->{
+                    dto.setWeek(53);
+                    repository.save(dto);
+                });
+
+    	*/
+        return null;
+    }
 }
