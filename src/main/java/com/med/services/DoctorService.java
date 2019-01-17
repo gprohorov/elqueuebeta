@@ -62,6 +62,15 @@ public class DoctorService {
                 .sorted(Comparator.comparing(Doctor::getId))
             .collect(Collectors.toList());
     }
+    // Без хоздвора.
+    public List<Doctor> getAllActiveDoctors() {
+    	return repository.findAll().stream()
+                .filter(doctor -> doctor.isActive())
+                .filter(doctor -> !doctor.getProcedureIds().isEmpty())
+                .sorted(Comparator.comparing(Doctor::getId))
+            .collect(Collectors.toList());
+    }
+
 
 
 }

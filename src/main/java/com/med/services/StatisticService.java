@@ -235,8 +235,13 @@ public class StatisticService {
         statistics.setName(this.getLastName(doctorService.getDoctor(doctorId).getFullName()));
 
         if (!talons.isEmpty()) {
-            LocalDateTime start = talons.stream().map(talon -> talon.getStart()).findFirst().orElse(null);
+          //  LocalDateTime start = talons.stream().map(talon -> talon.getStart()).findFirst().orElse(null);
+            LocalDateTime start = talons.stream()
+                    .sorted(Comparator.comparing(Talon::getStart)).findFirst()
+                    .get().getStart();
+
             statistics.setStartWork(start);
+
             Talon lastTalon = talons.stream()
                 .sorted(Comparator.comparing(Talon::getStart).reversed()).findFirst().orElse(null);
             
@@ -281,7 +286,7 @@ public class StatisticService {
 
     public List<DoctorCurrentStatistics> getDoctorsListCurrentStatictics(LocalDate date) {
         List<DoctorCurrentStatistics> list = new ArrayList<>();
-        doctorService.getAllActive().stream().forEach(doctor -> {
+        doctorService.getAllActiveDoctors().stream().forEach(doctor -> {
             DoctorCurrentStatistics statistics = this.getOneDoctorCurrentStatistics(doctor.getId(), date);
             list.add(statistics);
         });
