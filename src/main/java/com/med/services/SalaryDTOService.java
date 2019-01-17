@@ -584,6 +584,26 @@ public class SalaryDTOService {
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }
+    
+    public void saveDoctorSalaryByJSON(JSONObject object) {
+
+        int doctorId = object.getInt("id");
+        int rate = object.getInt("rate");
+        JSONArray percents = object.getJSONArray("percents");
+        List<DoctorProcedureProcent> procedureProcentList = new ArrayList<>();
+        percents.forEach(o -> {
+            JSONObject obj = new JSONObject(o.toString());
+            DoctorProcedureProcent dpp = new DoctorProcedureProcent();
+            dpp.setProcedureId(obj.getInt("procedureId"));
+            dpp.setProcent(obj.getInt("procent"));
+            procedureProcentList.add(dpp);
+        });
+        
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        doctor.setRate(rate);
+        doctor.setPercents(procedureProcentList);
+        doctorService.updateDoctor(doctor);
+    }
 
     // инжекция разных кверей. Так, на всякий случай.
     public List<SalaryDTO> inject() {

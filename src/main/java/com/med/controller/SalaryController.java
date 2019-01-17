@@ -147,4 +147,9 @@ public class SalaryController {
     public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
         return salaryDTOService.getDoctorSalaryByJSON(new JSONObject(data));
     }
+    
+    @RequestMapping("/doctor/preview/save")
+    public void saveDoctorSalaryPreview(@Valid @RequestBody String data) {
+    	salaryDTOService.saveDoctorSalaryByJSON(new JSONObject(data));
+    }
 }

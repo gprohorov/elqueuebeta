@@ -68,9 +68,10 @@ public class StatisticsController {
     	return service.getDoctorsProceduresFromTo(LocalDate.parse(start), LocalDate.parse(finish));
     }
 
-    @RequestMapping("/doctors/current/")
-    public List<DoctorCurrentStatistics> getDoctorsCurrentStatistics() {
-    	return service.getDoctorsListCurrentStatictics();
+    @RequestMapping("/doctors/current/{date}")
+    public List<DoctorCurrentStatistics> getDoctorsCurrentStatistics(
+		@PathVariable(value = "date") String date) {
+    	return service.getDoctorsListCurrentStatictics(LocalDate.parse(date));
     }
 
     @RequestMapping("/procedures/count")
