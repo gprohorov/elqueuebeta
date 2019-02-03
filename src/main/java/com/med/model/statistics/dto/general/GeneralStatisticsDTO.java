@@ -2,23 +2,21 @@ package com.med.model.statistics.dto.general;
 
 import java.time.LocalDate;
 
-/**
- * Created by george on 30.07.18.
- */
 public class GeneralStatisticsDTO {
+	
     private LocalDate date;
     private int patients;
     private int doctors;
-    private long  cash;
-    private long  card;
-    private long  bill;
-    private long  discount;
-    private long  debt;
+    private long cash;
+    private long card;
+    private long bill;
+    private long discount;
+    private long debt;
 
-    public GeneralStatisticsDTO() {
-    }
+    public GeneralStatisticsDTO() {}
 
-    public GeneralStatisticsDTO(LocalDate date, int patients, int doctors, long cash, long card, long bill, long discount, long debt) {
+    public GeneralStatisticsDTO(LocalDate date, int patients, int doctors,
+    		long cash, long card, long bill, long discount, long debt) {
         this.date = date;
         this.patients = patients;
         this.doctors = doctors;
@@ -104,6 +102,6 @@ public class GeneralStatisticsDTO {
                 ", bill=" + bill +
                 ", discount=" + discount +
                 ", debt=" + debt +
-                '}';
+                "}";
     }
 }

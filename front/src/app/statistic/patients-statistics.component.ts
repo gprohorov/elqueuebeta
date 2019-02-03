@@ -13,16 +13,23 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
     data: any;
     start: string;
     finish: string;
+    totalBalance = 0;
     totalBill = 0;
     totalCash = 0;
     totalCard = 0;
     totalDiscount = 0;
     totalDonation = 0;
     totalDebt = 0;
+    
+    totalPatients = 0;
+    totalDiscounters = 0;
+    totalDebitors = 0;
+    
+    filters: any = 'all'; // possible values: 'all', 'discount', 'debit'
 
     constructor(private service: StatisticService) {
-        this.start = new Date().toISOString().split('T').shift();
-        this.finish = new Date().toISOString().split('T').shift();
+        this.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.finish = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     }
 
     ngOnInit() {
@@ -32,11 +39,27 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
+    
+    isValid() {
+        return (this.start && this.finish && this.finish >= this.start);
+    }
 
+    isHiddenRow(item: any) {
+        return (item.discount === 0 && this.filters === 'discount')
+            || (item.debt === 0 && this.filters === 'debit');
+    }
+    
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.sub = this.service.getPatientsStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;
+            
+            this.totalPatients = data.length;
+            this.totalDiscounters = data.filter( x => x.discount ).length;
+            this.totalDebitors = data.filter( x => x.debt ).length;
+            
+            this.totalBalance = 0;
             this.totalBill = 0;
             this.totalCash = 0;
             this.totalCard = 0;
@@ -44,6 +67,7 @@ export class PatientsStatisticsComponent implements OnInit, OnDestroy {
             this.totalDonation = 0;
             this.totalDebt = 0;
             data.forEach( currentValue => {
+                this.totalBalance += currentValue.balance;
                 this.totalBill += currentValue.bill;
                 this.totalCash += currentValue.cash;
                 this.totalCard += currentValue.card;

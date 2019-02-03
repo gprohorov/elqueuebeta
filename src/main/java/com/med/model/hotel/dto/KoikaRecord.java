@@ -1,20 +1,16 @@
 package com.med.model.hotel.dto;
 
+import java.util.List;
+
 import com.med.model.hotel.Koika;
 import com.med.model.hotel.Record;
 
-import java.util.List;
-
-/**
- * Created by george on 27.07.18.
- */
 public class KoikaRecord {
 
-   private Koika koika;
-   List<Record> records;
+	private Koika koika;
+	List<Record> records;
 
-    public KoikaRecord() {
-    }
+    public KoikaRecord() {}
 
     public KoikaRecord(Koika koika, List<Record> records) {
         this.koika = koika;

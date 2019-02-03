@@ -5,11 +5,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * Created by george on 3/9/18.
- */
-@Document(collection = "procedure" )
+@Document(collection = "procedure")
 public class Procedure {
+	
     @Id
     private int id;
     private String name;
@@ -33,10 +31,10 @@ public class Procedure {
     @Transient
     private int today;
 
-    public Procedure() {
-    }
+    public Procedure() {}
 
-    public Procedure(int id, String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
+    public Procedure(int id, String name, int cabinet, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
         this.id = id;
         this.name = name;
         this.cabinet = cabinet;
@@ -49,7 +47,8 @@ public class Procedure {
         this.card = card;
     }
 
-    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, int number, Card card) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, int number, Card card) {
         this.name = name;
         this.cabinet = cabinet;
         this.FOREIGN = FOREIGN;
@@ -62,7 +61,8 @@ public class Procedure {
         this.card = card;
     }
 
-    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, Card card) {
         this.name = name;
         this.cabinet = cabinet;
         this.FOREIGN = FOREIGN;
@@ -74,7 +74,8 @@ public class Procedure {
         this.card = card;
     }
 
-    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned) {
         this.name = name;
         this.cabinet = cabinet;
         this.FOREIGN = FOREIGN;
@@ -83,10 +84,11 @@ public class Procedure {
         this.ALL_INCLUSIVE = ALL_INCLUSIVE;
         this.SOCIAL = SOCIAL;
         this.zoned = zoned;
-
     }
 
-    public Procedure(String name, int cabinet, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned, int number, Card card, ProcedureType procedureType) {
+    public Procedure(String name, int cabinet, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, boolean zoned,
+    		int number, Card card, ProcedureType procedureType) {
         this.name = name;
         this.cabinet = cabinet;
         this.FOREIGN = FOREIGN;
@@ -100,7 +102,9 @@ public class Procedure {
         this.procedureType = procedureType;
     }
 
-    public Procedure(String name, int cabinet, Boolean freeChoice, int FOREIGN, int VIP, int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, int percent, boolean zoned, int number, Card card, ProcedureType procedureType, int today) {
+    public Procedure(String name, int cabinet, Boolean freeChoice, int FOREIGN, int VIP,
+    		int BUSINESS, int ALL_INCLUSIVE, int SOCIAL, int percent, boolean zoned,
+    		int number, Card card, ProcedureType procedureType, int today) {
         this.name = name;
         this.cabinet = cabinet;
         this.freeChoice = freeChoice;
@@ -255,9 +259,7 @@ public class Procedure {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Procedure procedure = (Procedure) o;
-
         return getId() == procedure.getId();
     }
 
@@ -282,6 +284,6 @@ public class Procedure {
                 ", card=" + card +
                 ", procedureType=" + procedureType +
                 ", today=" + today +
-                '}';
+                "}";
     }
 }

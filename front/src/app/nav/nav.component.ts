@@ -41,10 +41,35 @@ export class NavComponent implements OnInit, OnDestroy {
       this.navbarOpen = !this.navbarOpen;
     }
 
+    showKassaAddOutcomePopupSA() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача з каси',
+            childComponent: KassaAddOutcomeModalComponent,
+            data: { SA: true }
+        });
+    }
+
+    showGiveSalaryPopupSA() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача зарплати лікарю',
+            childComponent: GiveSalaryModalComponent,
+            data: { SA: true }
+        });
+    }
+
+    showKassaAddOutcomePopup() {
+        this.modalService.openDialog(this.viewRef, {
+            title: 'Видача з каси',
+            childComponent: KassaAddOutcomeModalComponent,
+            data: { SA: false }
+        });
+    }
+    
     showGiveSalaryPopup() {
         this.modalService.openDialog(this.viewRef, {
             title: 'Видача зарплати лікарю',
-            childComponent: GiveSalaryModalComponent
+            childComponent: GiveSalaryModalComponent,
+            data: { SA: false }
         });
     }
 
@@ -52,13 +77,6 @@ export class NavComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, {
             title: 'Здача каси',
             childComponent: KassaTozeroModalComponent
-        });
-    }
-
-    showKassaAddOutcomePopup() {
-        this.modalService.openDialog(this.viewRef, {
-            title: 'Видача з каси',
-            childComponent: KassaAddOutcomeModalComponent
         });
     }
 }

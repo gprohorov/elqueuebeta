@@ -1,46 +1,32 @@
 package com.med.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by george on 3/9/18.
- */
 @Document
 public class Doctor {
 
     @Id
     private int id;
-
     private String fullName;
-
     private String speciality;
     private String cellPhone;
+    private boolean isActive;
     private List<Integer> procedureIds = new ArrayList<>();
-    private List<DoctorProcedureProcent>    percents =  new ArrayList<>();
+    private List<DoctorProcedureProcent> percents =  new ArrayList<>();
     private int rate;
     private int kredit;
-
-    public List<Integer> getProcedureIds() {
-        return procedureIds;
-    }
-
-    public void setProcedureIds(List<Integer> procedureIds) {
-        this.procedureIds = procedureIds;
-    }
-
     @Nullable
     private String userId;
-//    private User user;
+    
+    public Doctor() {}
 
-    public Doctor() {
-    }
-
-    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, String userId) {
+    public Doctor(String fullName, String speciality, String cellPhone,
+    		List<Integer> procedureIds, String userId) {
         this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
@@ -48,10 +34,22 @@ public class Doctor {
         this.userId = userId;
     }
 
-    public Doctor(String fullName, String speciality, String cellPhone, List<Integer> procedureIds, int rate, int kredit,  String userId) {
+    public Doctor(String fullName, String speciality, String cellPhone,
+    		List<Integer> procedureIds, int rate, int kredit,  String userId) {
         this.fullName = fullName;
         this.speciality = speciality;
         this.cellPhone = cellPhone;
+        this.procedureIds = procedureIds;
+        this.rate = rate;
+        this.kredit = kredit;
+        this.userId = userId;
+    }
+
+    public Doctor(String fullName, String speciality, String cellPhone, boolean isActive, List<Integer> procedureIds, int rate, int kredit, String userId) {
+        this.fullName = fullName;
+        this.speciality = speciality;
+        this.cellPhone = cellPhone;
+        this.isActive = isActive;
         this.procedureIds = procedureIds;
         this.rate = rate;
         this.kredit = kredit;
@@ -62,6 +60,14 @@ public class Doctor {
         return rate;
     }
 
+    public List<Integer> getProcedureIds() {
+    	return procedureIds;
+    }
+    
+    public void setProcedureIds(List<Integer> procedureIds) {
+    	this.procedureIds = procedureIds;
+    }
+    
     public void setRate(int rate) {
         this.rate = rate;
     }
@@ -122,13 +128,19 @@ public class Doctor {
         this.percents = percents;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Doctor)) return false;
-
         Doctor doctor = (Doctor) o;
-
         return getId() == doctor.getId();
     }
 

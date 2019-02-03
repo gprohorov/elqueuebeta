@@ -1,21 +1,46 @@
 ﻿<app-loader [loader]="loading"></app-loader>
-<form class="form-inline mb-3">
-    <div class="input-group mr-2">
-        <div class="input-group-prepend">
-            <div class="input-group-text">Початок</div>
-        </div>
-        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()" />
-    </div>
-    <div class="input-group mr-2">
-        <div class="input-group-prepend">
-            <div class="input-group-text">Кінець</div>
-        </div>
-        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()" />
-    </div>
-</form>
 <div class="position-fixed" [style.right.px]="50">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="row">
+    <div class="col-auto">
+        <div class="btn-group mb-3" role="group">
+            <button type="button"
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'all', 'btn-secondary': filters != 'all'}"
+                (click)="filters = 'all'">
+                Усі <span class="badge badge-light ml-3">{{totalPatients}}</span>
+            </button>
+            <button type="button" 
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'discount', 'btn-secondary': filters != 'discount'}"
+                (click)="filters = 'discount'">
+                Знижки <span class="badge badge-light ml-3">{{totalDiscounters}}</span>
+            </button>
+            <button type="button" 
+                [ngClass]="{'btn': true, 'btn-primary': filters == 'debit', 'btn-secondary': filters != 'debit'}"
+                (click)="filters = 'debit'">
+                Борги <span class="badge badge-light ml-3">{{totalDebitors}}</span>
+            </button>
+        </div>
+    </div>
+    <div class="col">
+	    <form class="form-inline mb-3">
+		    <div class="input-group mr-2">
+		        <div class="input-group-prepend">
+		            <div class="input-group-text">Початок</div>
+		        </div>
+		        <input type="date" class="form-control" name="start" [(ngModel)]="start" (change)="load()"
+		        	[ngClass]="{'is-invalid': !isValid()}" />
+		    </div>
+		    <div class="input-group mr-2">
+		        <div class="input-group-prepend">
+		            <div class="input-group-text">Кінець</div>
+		        </div>
+		        <input type="date" class="form-control" name="finish" [(ngModel)]="finish" (change)="load()"
+		        	[ngClass]="{'is-invalid': !isValid()}" />
+		    </div>
+		</form>
+    </div>
 </div>
 <div class="content table-responsive table-full-width">
     <h4>Пацієнти</h4>
@@ -23,38 +48,41 @@
         <thead class="thead-dark">
             <tr>
                 <th>ПІБ</th>
+                <th>Баланс</th>
+                <th>Борг</th>
                 <th>Нараховано</th>
                 <th>Готівка</th>
                 <th>Карта</th>
                 <th>Знижка</th>
                 <th>Дар</th>
-                <th>Борг</th>
                 <th>Початок</th>
                 <th>Завершення</th>
                 <th>Днів (зон)</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of data;">
+            <tr *ngFor="let item of data;" [hidden]="isHiddenRow(item)">
                 <td>{{item.name}}</td>
-                <td class="text-right">{{item.bill}} грн.</td>
-                <td class="text-right">{{item.cash}} грн.</td>
-                <td class="text-right">{{item.card}} грн.</td>
-                <td class="text-right">{{item.discount}} грн.</td>
-                <td class="text-right">{{item.donation}} грн.</td>
-                <td class="text-right">{{item.debt}} грн.</td>
+                <td class="text-right text-nowrap">{{item.balance}} грн.</td>
+                <td class="text-right text-nowrap">{{item.debt}} грн.</td>
+                <td class="text-right text-nowrap">{{item.bill}} грн.</td>
+                <td class="text-right text-nowrap">{{item.cash}} грн.</td>
+                <td class="text-right text-nowrap">{{item.card}} грн.</td>
+                <td class="text-right text-nowrap">{{item.discount}} грн.</td>
+                <td class="text-right text-nowrap">{{item.donation}} грн.</td>
                 <td>{{item.start | date:"dd.MM.yyyy"}}</td>
                 <td>{{item.finish | date:"dd.MM.yyyy"}}</td>
                 <td>{{item.days}} ({{item.zones}})</td>
             </tr>
             <tr>
                 <td><strong>Всього:</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalBalance}} грн.</strong></td>
+                <td class="text-right"><strong class="text-nowrap">{{totalDebt}} грн.</strong></td>
                 <td class="text-right"><strong class="text-nowrap">{{totalBill}} грн.</strong></td>
                 <td class="text-right"><strong class="text-nowrap">{{totalCash}} грн.</strong></td>
                 <td class="text-right"><strong class="text-nowrap">{{totalCard}} грн.</strong></td>
                 <td class="text-right"><strong class="text-nowrap">{{totalDiscount}} грн.</strong></td>
                 <td class="text-right"><strong class="text-nowrap">{{totalDonation}} грн.</strong></td>
-                <td class="text-right"><strong class="text-nowrap">{{totalDebt}} грн.</strong></td>
             </tr>
         </tbody>
     </table>

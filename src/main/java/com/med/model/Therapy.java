@@ -1,14 +1,12 @@
 package com.med.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.annotation.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by george on 3/9/18.
- */
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document
 public class Therapy {
 
@@ -22,12 +20,13 @@ public class Therapy {
     private String notes;
     private List<Assignment> assignments;
     private int days;
-    
     @Transient
     private Boolean manualTherapy;
+    
+    public Therapy() {}
 
-
-    public Therapy(String patientId, String diag, String codeDiag, String notes, List<Assignment> assignments, int days) {
+    public Therapy(String patientId, String diag, String codeDiag, String notes,
+    		List<Assignment> assignments, int days) {
         this.patientId = patientId;
         this.start = LocalDateTime.now();
         this.diag = diag;
@@ -42,9 +41,6 @@ public class Therapy {
         this.start = LocalDateTime.now();
         this.assignments = assignments;
         this.days = days;
-    }
-
-    public Therapy() {
     }
 
     public String getId() {
@@ -139,6 +135,6 @@ public class Therapy {
                 ", notes='" + notes + '\'' +
                 ", assignments=" + assignments +
                 ", days=" + days +
-                '}';
+                "}";
     }
 }

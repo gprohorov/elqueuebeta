@@ -41,7 +41,12 @@ export class DoctorSalaryHistoryModalComponent implements IModalDialog {
         return sum;
     }
     
+    isValid() {
+        return (this.from && this.to && this.to >= this.from);
+    }
+
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.data = [];
         this.sub = this.financeService.getDoctorSalaryHistory(this.doctor, this.from, this.to)

@@ -1,8 +1,5 @@
 package com.med.model;
 
-/**
- * Created by george on 3/9/18.
- */
 public enum Action {
     //Patient
     REGISTRATED,
@@ -15,7 +12,6 @@ public enum Action {
     REMOVED,
     ADVANCE,
     PAY,
-
 
    //Doctor
     ABSENT,

@@ -26,7 +26,12 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of items">
-                <td>{{item.fullName}}</td>
+                <td>
+                	<i class="fa fa-user-circle" aria-hidden="true" 
+                		title="{{item.active ? 'Активний' : 'Не активний'}}" 
+                		[ngClass]="{'text-success': item.active, 'text-danger': !item.active}"></i>
+                	&nbsp;{{item.fullName}}
+               	</td>
                 <td>{{item.cellPhone}}</td>
                 <td>{{item.speciality}}</td>
                 <td>{{item.rate}}</td>

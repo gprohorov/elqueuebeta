@@ -11,13 +11,14 @@ export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     loading = false;
-    patientId: string;
+    date: string;
     data: any;
 
     constructor(private route: ActivatedRoute, private service: StatisticService) { }
 
     ngOnInit() {
-        this.patientId = this.route.snapshot.paramMap.get('patientId');
+        this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
+            .toISOString().slice(0, -14);
         this.load();
     }
 
@@ -32,7 +33,7 @@ export class DoctorsStatisticsComponent implements OnInit, OnDestroy {
 
     load() {
         this.loading = true;
-        this.sub = this.service.getDoctorsCurrentStatistics().subscribe(data => {
+        this.sub = this.service.getDoctorsCurrentStatistics(this.date).subscribe(data => {
             this.data = data;
             this.loading = false;
         });

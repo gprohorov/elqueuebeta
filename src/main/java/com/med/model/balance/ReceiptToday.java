@@ -1,14 +1,8 @@
 package com.med.model.balance;
 
-import com.med.model.Patient;
-import com.med.model.statistics.dto.procedure.ProcedureReceipt;
-
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Created by george on 19.11.18.
- */
 public class ReceiptToday {
 
     private String patientId;
@@ -16,12 +10,10 @@ public class ReceiptToday {
     private LocalDate date;
     private List<ProcedureZonesSum> list; // список имен процедур + кол-во зон + сумма
     private int proceduresSum;  // сумма за все процедуры и готель ЗА СЕГОДНЯ
-    private int debt;   //   должок
-    private int totalToPay;   //  всего к оплате
+    private int payed;
+    private int balance;
 
-    public ReceiptToday() {
-    }
-
+    public ReceiptToday() {}
 
     public String getPatientId() {
         return patientId;
@@ -63,19 +55,19 @@ public class ReceiptToday {
         this.proceduresSum = proceduresSum;
     }
 
-    public int getDebt() {
-        return debt;
-    }
+	public int getPayed() {
+		return payed;
+	}
 
-    public void setDebt(int debt) {
-        this.debt = debt;
-    }
+	public void setPayed(int payed) {
+		this.payed = payed;
+	}
 
-    public int getTotalToPay() {
-        return totalToPay;
-    }
+	public int getBalance() {
+		return balance;
+	}
 
-    public void setTotalToPay(int totalToPay) {
-        this.totalToPay = totalToPay;
-    }
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
 }

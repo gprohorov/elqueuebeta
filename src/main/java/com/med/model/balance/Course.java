@@ -2,9 +2,6 @@ package com.med.model.balance;
 
 import com.med.model.Procedure;
 
-/**
- * Created by george on 16.06.18.
- */
 public class Course {
 
     private Procedure procedure;
@@ -12,9 +9,7 @@ public class Course {
     private long zones;
     private long summa;
 
-
-    public Course() {
-    }
+    public Course() {}
 
     public Course(Procedure procedure, long times, long zones, long summa) {
         this.procedure = procedure;

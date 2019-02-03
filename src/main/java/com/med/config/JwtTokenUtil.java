@@ -1,20 +1,22 @@
 package com.med.config;
 
-import com.med.model.User;
-import com.med.services.user.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import static com.med.config.Constants.ACCESS_TOKEN_VALIDITY_SECONDS;
+import static com.med.config.Constants.SIGNING_KEY;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Function;
 
-import static com.med.config.Constants.ACCESS_TOKEN_VALIDITY_SECONDS;
-import static com.med.config.Constants.SIGNING_KEY;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import com.med.model.User;
+import com.med.services.UserService;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -36,10 +38,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SIGNING_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey(SIGNING_KEY).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -58,19 +57,16 @@ public class JwtTokenUtil implements Serializable {
         claims.put("scopes", userService.getAuthority(user));
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuer("Mednean")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
-                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
-                .compact();
+            .setClaims(claims)
+            .setIssuer("Mednean")
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
+            .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
+            .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        return (
-              username.equals(userDetails.getUsername())
-                    && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
 }

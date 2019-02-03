@@ -1,0 +1,47 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row justify-content-md-center">
+    <div class="col-6">
+        <h2>Редагування аккаунта</h2>
+        <label>Лікар:</label>
+        <a href="/#/doctor-form;id={{model.info?.id}}" target="_blank">{{model.info?.fullName}}</a>        
+        <form name="form" (ngSubmit)="f.form.valid && submit(f)" #f="ngForm" novalidate>
+        	<div class="form-check mt-4 mb-2">
+                <input type="checkbox" class="form-check-input" [name]="enabled"
+                    [(value)]="model.enabled" [(ngModel)]="model.enabled" #enabled="ngModel" />
+                    <label class="form-check-label">Включений</label> 
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                <label for="username">Ім`я користувача</label> <input type="text"
+                    class="form-control" name="username" [(ngModel)]="model.username"
+                    #username="ngModel" required />
+                <div *ngIf="f.submitted && !username.valid" class="help-block text-danger">
+                    обов`язково</div>
+            </div>
+            <div class="form-group">
+                <label for="username">Пароль</label> <input type="text"
+                    class="form-control" name="password" [(ngModel)]="model.password"
+                    #password="ngModel"  />
+                <div class="text-secondary">* щоб залишити без змін не заповнюйте</div>
+            </div>
+            <div class="card">
+            	<div class="card-header">Ролі</div>
+            	<div class="card-body">
+		            <div class="form-group">
+		                <div class="row m-1" *ngFor="let role of roles">
+			                <div class="col form-check">
+			                    <input type="checkbox" class="form-check-input" [name]="role.name"
+			                        [(value)]="role.checked" [(ngModel)]="role.checked" />
+			                        <label class="form-check-label">{{role.name}}</label> 
+			                </div>
+		                </div>
+		            </div>
+            	</div>
+           	</div>
+            <div class="form-group mt-3">
+                <button [disabled]="loading" class="btn btn-primary">Зберегти</button>
+                <button [routerLink]="['/users']" class="btn btn-link">Скасувати</button>
+                <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
+            </div>
+        </form>
+    </div>
+</div>

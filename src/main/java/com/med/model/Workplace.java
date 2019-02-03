@@ -1,44 +1,37 @@
 package com.med.model;
 
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.tail.Impls.TailServiceImpl;
-import com.med.services.talon.impls.TalonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by george on 17.05.18.
- */
+import com.med.services.DoctorService;
+import com.med.services.PatientService;
+import com.med.services.ProcedureService;
+import com.med.services.TailService;
+import com.med.services.TalonService;
+
 public class Workplace {
+	
     private Doctor doctor;
     private Procedure procedure;
     private Tail tail;
     private Talon talon;
     private Patient patient;
 
-
+    @Autowired
+    DoctorService doctorService;
 
     @Autowired
-    DoctorServiceImpl doctorService;
+    ProcedureService procedureService;
 
     @Autowired
-    ProcedureServiceImpl procedureService;
+    TailService tailService;
 
     @Autowired
-    TailServiceImpl tailService;
+    PatientService patientService;
 
     @Autowired
-    PatientServiceImpl patientService;
+    TalonService talonService;
 
-    @Autowired
-    TalonServiceImpl talonService;
-
-
-
-
-    public Workplace() {
-    }
+    public Workplace() {}
 
     public Workplace(int doctorId, int procedureId) {
         this.doctor = doctorService.getDoctor(doctorId);
@@ -72,13 +65,8 @@ public class Workplace {
     }
 
     public void setTalon(Talon talon) {
-
         this.talon = talon;
-        if(talon!=null ){
-        this.patient = patientService.getPatient(talon.getPatientId());
-        }else {
-            this.patient=null;
-        }
+    	this.patient = (talon != null) ? patientService.getPatient(talon.getPatientId()) : null;
     }
 
     public Patient getPatient() {
@@ -89,13 +77,12 @@ public class Workplace {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Workplace)) return false;
-
         Workplace workplace = (Workplace) o;
-
         if (!getDoctor().equals(workplace.getDoctor())) return false;
         return getProcedure().equals(workplace.getProcedure());
     }
 
+    // WTF ?!!
     @Override
     public int hashCode() {
         int result = getDoctor().hashCode();

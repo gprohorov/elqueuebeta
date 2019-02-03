@@ -1,7 +1,6 @@
 package com.med.model.hotel.dto;
 
 import com.med.model.hotel.State;
-
 import java.time.LocalDate;
 
 public class HotelDay {
@@ -9,8 +8,7 @@ public class HotelDay {
     private LocalDate date;
     private State state;
 
-    public HotelDay() {
-    }
+    public HotelDay() {}
 
     public HotelDay(LocalDate date, State state) {
         this.date = date;
@@ -35,9 +33,6 @@ public class HotelDay {
 
     @Override
     public String toString() {
-        return "HotelDay{" +
-                "date=" + date +
-                ", state=" + state +
-                '}';
+        return "HotelDay{" + "date=" + date + ", state=" + state + "}";
     }
 }

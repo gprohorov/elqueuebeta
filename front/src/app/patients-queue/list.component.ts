@@ -27,7 +27,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     hotelPatients: number;
     activePatients: number;
     notActivePatients: number;
-    date: string = (new Date()).toISOString().split('T')[0];
+    date: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     filters: any = 'all'; // possible values: 'all', 'active', 'notactive', 'hotel'
     Status = Status;
     Statuses = Object.keys(Status);
@@ -102,14 +102,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             closeDialogSubject: null
         };
         this.modalService.openDialog(this.viewRef, options);
-        window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
         options.closeDialogSubject.subscribe(() => {
             this.load(item.id);
-            window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
             setTimeout(() => {
-                window.open('/#/home', 'clientwindow');
-            }, 10 * 1000);
+                window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
+            }, 0);
+            setTimeout(() => { window.open('/#/home', 'clientwindow'); }, 10 * 1000);
         });
+        setTimeout(() => {
+            window.open('/#/check/' + item.id, 'clientwindow').location.reload(true);
+        }, 0);
     }
 
     showAssignProceduresOnDatePopup(item: any) {
@@ -142,11 +144,11 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     }
 
     updateActivityAll(item: any, value: string) {
-        if (confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) {
-            this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
-                this.load(item.id);
-            });
-        }
+        if (!confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) return;
+        this.loading = true;
+        this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
+            this.load(item.id);
+        });
     }
 
     updateOutOfTurn(id: string, value: boolean, item: any) {

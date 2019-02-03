@@ -1,38 +1,32 @@
 package com.med.datastorage;
 
-import com.med.services.hotel.record.impls.RecordServiceImpl;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-
-/**
- * Created by george on 13.09.18.
- */
+import com.med.services.hotel.RecordService;
 
 @Configuration
 public class Support {
 
     private LocalDate lastMonitoring;
 
-
     @Autowired
-    RecordServiceImpl recordService;
-
+    RecordService recordService;
 
     public void check() {
-        System.out.println("-----------------Checking was called");
+        System.out.println("----------------- Checking was called -----------------");
         System.out.println(this.getLastMonitoring());
-        if (this.getLastMonitoring() == null
-                || this.getLastMonitoring().isBefore(LocalDate.now())) {
+        if (this.getLastMonitoring() == null || this.getLastMonitoring().isBefore(LocalDate.now())) {
             this.run();
+            this.setLastMonitoring(LocalDate.now());
         }
     }
 
     private void run() {
         // Your tasks here
         recordService.recalculate();
-        this.setLastMonitoring(LocalDate.now());
     }
 
     public LocalDate getLastMonitoring() {

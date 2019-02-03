@@ -1,0 +1,1 @@
+export const Roles = ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD', 'ROLE_DOCTOR', 'ROLE_USER'];

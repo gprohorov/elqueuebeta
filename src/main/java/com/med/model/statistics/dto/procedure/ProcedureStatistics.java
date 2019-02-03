@@ -1,9 +1,7 @@
 package com.med.model.statistics.dto.procedure;
 
-/**
- * Created by george on 23.07.18.
- */
 public class ProcedureStatistics {
+	
 	private int procedureId;
     private String name;
     private Long assigned;
@@ -14,10 +12,10 @@ public class ProcedureStatistics {
     private Long fee;
 
 
-    public ProcedureStatistics() {
-    }
+    public ProcedureStatistics() {}
 
-    public ProcedureStatistics(int procedureId, String name, Long assigned, Long executed, Long cancelled, Long expired, Long zones, Long fee) {
+    public ProcedureStatistics(int procedureId, String name, 
+    		Long assigned, Long executed, Long cancelled, Long expired, Long zones, Long fee) {
         this.procedureId = procedureId;
         this.name = name;
         this.assigned = assigned;

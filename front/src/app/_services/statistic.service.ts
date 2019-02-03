@@ -66,8 +66,8 @@ export class StatisticService {
         .pipe(catchError(this.handleError));
     }
 
-    getDoctorsCurrentStatistics() {
-        return this.http.get(this.doctorStatisticsUrl).pipe(catchError(this.handleError));
+    getDoctorsCurrentStatistics(date: string) {
+        return this.http.get(this.doctorStatisticsUrl + date).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

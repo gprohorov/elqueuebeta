@@ -1,29 +1,24 @@
 package com.med.datastorage;
 
-import com.med.model.Salary;
-import com.med.model.SalaryDTO;
-import com.med.model.SalaryType;
-import com.med.repository.talon.TalonRepository;
-import com.med.services.accounting.impls.AccountingServiceImpl;
-import com.med.services.hotel.chamber.impls.ChamberServiceImpl;
-import com.med.services.hotel.koika.impls.KoikaServiceImpl;
-import com.med.services.hotel.record.impls.RecordServiceImpl;
-import com.med.services.patient.Impls.PatientServiceImpl;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by george on 3/9/18.
- */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import com.med.model.Salary;
+import com.med.model.SalaryDTO;
+import com.med.model.SalaryType;
+import com.med.repository.TalonRepository;
+import com.med.services.AccountingService;
+import com.med.services.PatientService;
+import com.med.services.ProcedureService;
+import com.med.services.SalaryDTOService;
+import com.med.services.SalaryService;
+import com.med.services.hotel.ChamberService;
+import com.med.services.hotel.KoikaService;
+import com.med.services.hotel.RecordService;
+
 @Configuration
 public class DataStorageTest {
 
@@ -31,39 +26,33 @@ public class DataStorageTest {
     TalonRepository talonRepository;
 
     @Autowired
-    PatientServiceImpl patientService;
+    PatientService patientService;
 
     @Autowired
-    ChamberServiceImpl chamberService;
+    ChamberService chamberService;
 
     @Autowired
-    KoikaServiceImpl koikaService;
+    KoikaService koikaService;
 
     @Autowired
-    RecordServiceImpl recordService;
+    RecordService recordService;
 
     @Autowired
-    AccountingServiceImpl accountingService;
+    AccountingService accountingService;
 
     @Autowired
-    ProcedureServiceImpl procedureService;
+    ProcedureService procedureService;
 
     @Autowired
-    SalaryServiceImpl salaryService;
+    SalaryService salaryService;
 
     @Autowired
-    SalaryDTOServiceImpl salaryDTOService;
+    SalaryDTOService salaryDTOService;
 
-   @PostConstruct
-    void init(){
-   }
-
-
-    public void launch(){
-
-    }
+    public void launch() {}
 
     public void taskOne() {
+    	/*
         // salaryService.createWeekSalary();
         List<SalaryDTO> list = salaryService.getSalaryList();
         LocalDate from = LocalDate.of(2018,10,29);
@@ -79,45 +68,30 @@ public class DataStorageTest {
        //     item.setOpened(opened);
          //   salaryDTOService.createSalaryDTO(item);
         });
+		*/
+    }
 
-
-
-        }
-
-    public List<SalaryDTO> taskTwo(){
-
-
+    public List<SalaryDTO> taskTwo() {
         return salaryDTOService.createNewTable();
     }
 
+    public void reset() { }
 
-
-    public void reset(){
-        
-    }
-
-  //  List<Salary> list = salaryService.getAll().stream()
-     //       .filter(salary -> salary.getDoctorId()==doctorId)
-
-    public List<SalaryDTO> taskTree(int doctorId){
-    List<Salary> list = salaryService.getAll().stream()
-              .filter(salary -> salary.getDoctorId()==doctorId)
-            .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
+    public void taskTree(int doctorId) {
+	    List<Salary> list = salaryService.getAll().stream()
+    		.filter(salary -> salary.getDoctorId()==doctorId)
+	        .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
             .collect(Collectors.toList());
-    list.stream().forEach(salary -> {
-        System.out.println( salary.getDateTime().toLocalDate()
-                + "  "  + salary.getDateTime().getHour() + "." +
-                salary.getDateTime().getMinute() + "." +
-                salary.getDateTime().getSecond() + "."
-                + "  :   " + salary.getSum());
-    });
+	    list.stream().forEach(salary -> {
+	        System.out.println(salary.getDateTime().toLocalDate() + "  " + 
+        		salary.getDateTime().getHour() + ":" +
+                salary.getDateTime().getMinute() + ":" +
+                salary.getDateTime().getSecond() + ":" + ", Sum: " + salary.getSum());
+	    });
         System.out.println(list.stream().mapToInt(Salary::getSum).sum());
-        return null;
     }
+    
     public void resetPatientsTable() {
-        System.out.println(" talon table updated");
+        System.out.println("Talon table updated");
     }
-
-
-
 }

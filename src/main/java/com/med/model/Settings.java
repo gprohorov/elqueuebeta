@@ -3,9 +3,6 @@ package com.med.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * Created by george on 22.05.18.
- */
 @Document
 public class Settings {
     
@@ -16,7 +13,7 @@ public class Settings {
     private String extractionItemId;
     private String salaryItemId;
 
-    public Settings() { }
+    public Settings() {}
 
 	public Settings(int tax, int canteen, String extractionItemId, String salaryItemId) {
 		this.tax = tax;
@@ -67,8 +64,7 @@ public class Settings {
 
 	@Override
 	public String toString() {
-		return "Settings [id=" + id + ", tax=" + tax + ", canteen=" + canteen + ", extractionItemId=" + extractionItemId
-				+ ", salaryItemId=" + salaryItemId + "]";
+		return "Settings [id=" + id + ", tax=" + tax + ", canteen=" + canteen
+				+ ", extractionItemId=" + extractionItemId + ", salaryItemId=" + salaryItemId + "]";
 	}
-	
 }

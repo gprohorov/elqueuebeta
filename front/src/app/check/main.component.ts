@@ -10,6 +10,7 @@ import { PatientService} from '../_services/index';
 export class CheckComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
+    timeOut: any;
     data: any;
     loading = false;
 
@@ -25,7 +26,7 @@ export class CheckComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.date = new Date().toISOString().split('T').shift();
+        this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.loading = true;
         this.sub = this.service.getCheck(this.patientId)
@@ -37,14 +38,12 @@ export class CheckComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.sub) this.sub.unsubscribe();
+        if (this.timeOut) clearTimeout(this.timeOut); 
     }
 
     setTimer() {
-        setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
-    }
-    
-    abs(x) {
-        return Math.abs(x);
+        if (this.timeOut) clearTimeout(this.timeOut);
+        this.timeOut = setTimeout(() => { this.router.navigate(['home']); }, 3 * 60 * 1000);
     }
 }

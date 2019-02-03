@@ -25,8 +25,8 @@ export class ReceiptComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-        this.start = new Date().toISOString().split('T').shift();
-        this.finish = new Date().toISOString().split('T').shift();
+        this.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.finish = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.sub = this.service.getReceipt(this.patientId, this.start, this.finish)
             .subscribe(data => { this.data = data; this.loading = false; });

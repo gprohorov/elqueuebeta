@@ -55,7 +55,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
     }
 
     changeWeek(weeks: number) {
-        this.week += weeks; 
+        this.week += weeks;
         this.load();
     }
     
@@ -67,7 +67,7 @@ export class FinanceSalaryComponent implements OnInit, OnDestroy {
                 this.totalSummary = 0;
                 this.totalRecd = 0;
                 this.totalActual = 0;
-                if (this.week === null) this.week = this.data[0].week;
+                this.week = this.data[0].week;
                 data.forEach( currentValue => {
                     currentValue.lastName = currentValue.name.split(' ')[0];
                     this.totalRecd += currentValue.recd;

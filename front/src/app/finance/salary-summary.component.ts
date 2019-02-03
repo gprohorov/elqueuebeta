@@ -14,8 +14,8 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
     loading = false;
     sub: Subscription;
     data: any;
-    from: string;
-    to: string;
+    from: any;
+    to: any;
 
     totalRecd = 0;
     totalSummary = 0;
@@ -28,8 +28,11 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         private service: FinanceService) { }
 
     ngOnInit() {
-        this.from = '2018-10-29';
-        this.to = new Date().toISOString().split('T').shift();
+        const date = new Date();
+        this.from = (new Date((new Date(date.getFullYear(), date.getMonth(), 1)).valueOf() 
+            - date.getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.to = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
+            .toISOString().slice(0, -14);
         this.load();
     }
 
@@ -37,6 +40,10 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         if (this.sub) this.sub.unsubscribe();
     }
 
+    editDoctor(id) {
+        window.open('/#/doctor-form;id=' + id, '_blank');
+    }
+    
     showSalaryHistoryPopup(doctor: any) {
         const options: any = {
             title: 'Історія виплат',
@@ -46,7 +53,12 @@ export class FinanceSalarySummaryComponent implements OnInit, OnDestroy {
         this.modalService.openDialog(this.viewRef, options);
     }
     
+    isValid() {
+        return (this.from && this.to && this.to >= this.from);
+    }
+
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.data = [];
         this.sub = this.service.getSalarySummary(this.from, this.to).subscribe(

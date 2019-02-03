@@ -1,22 +1,18 @@
 package com.med.model.lodging;
 
-/**
- * Created by george on 26.08.18.
- */
 public class Room {
+	
     private int id;
     private  String name;
     private String desc;
     private int price;
 
-    public Room() {
-    }
+    public Room() {}
 
     public Room(int id, String name, String desc, int price) {
         this.id = id;
         this.name = name;
         this.desc = desc;
-
         this.price = price;
     }
 

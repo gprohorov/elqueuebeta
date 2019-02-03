@@ -1,6 +1,7 @@
 package com.med.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -8,27 +9,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-/**
- * Created by george on 27.04.18.
- */
 @Document
 public class User implements UserDetails {
-    @JsonIgnore
+	
     @Id
     private String id;
 
     private ArrayList<Role> authorities;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Indexed(unique = true)
     private String username;
 
-    @JsonIgnore
     private boolean enabled;
 
     @Transient
@@ -38,14 +35,10 @@ public class User implements UserDetails {
     @Nullable
     private Doctor info;
 
-    public User() { }
+    public User() {}
 
-    public User(ArrayList<Role> authorities,
-                String password,
-                String username,
-                boolean enabled,
-                String token,
-                Doctor info) {
+    public User(ArrayList<Role> authorities, String password, String username, boolean enabled,
+    		String token, Doctor info) {
         this.authorities = authorities;
         this.password = password;
         this.username = username;
@@ -140,6 +133,6 @@ public class User implements UserDetails {
                 ", enabled=" + enabled +
                 ", token='" + token + '\'' +
                 ", info=" + info +
-                '}';
+                "}";
     }
 }

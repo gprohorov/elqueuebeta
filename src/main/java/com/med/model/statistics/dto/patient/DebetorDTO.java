@@ -1,12 +1,9 @@
 package com.med.model.statistics.dto.patient;
 
-import com.med.model.Patient;
-
 import java.time.LocalDate;
 
-/**
- * Created by george on 29.07.18.
- */
+import com.med.model.Patient;
+
 public class DebetorDTO {
 
     private Patient patient;
@@ -17,10 +14,10 @@ public class DebetorDTO {
     private Integer payment;
     private Integer debt;
 
-    public DebetorDTO() {
-    }
+    public DebetorDTO() {}
 
-    public DebetorDTO(Patient patient, LocalDate start, LocalDate finish, LocalDate lastPaymentDate, Integer bill, Integer payment, Integer debt) {
+    public DebetorDTO(Patient patient, LocalDate start, LocalDate finish,
+    		LocalDate lastPaymentDate, Integer bill, Integer payment, Integer debt) {
         this.patient = patient;
         this.start = start;
         this.finish = finish;

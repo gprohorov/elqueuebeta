@@ -1,8 +1,5 @@
 package com.med.model;
 
-/**
- * Created by george on 29.06.18.
- */
 public class PatientTalonTherapy {
 
     private Patient patient;

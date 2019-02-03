@@ -1,38 +1,58 @@
 package com.med.controller;
 
-import com.med.model.User;
-import com.med.services.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.util.List;
 
-/**
- * Created by george on 3/9/18.
- */
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import com.med.model.Response;
+import com.med.model.User;
+import com.med.services.UserService;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @CrossOrigin("*")
 public class UserController {
 
     @Autowired
     UserService service;
 
-    @GetMapping("/user/list")
-    public List<User> listUser(){
+    @GetMapping("/list")
+    public List<User> listUser() {
         return service.findAll();
     }
     
-    @GetMapping("/users/{id}")
-    public User getOne(@PathVariable(value = "id") String id){
+    @GetMapping("/list-with-doctors")
+    public List<User> findAllWithDoctors() {
+    	return service.findAllWithDoctors();
+    }
+    
+    @GetMapping("/get/{id}")
+    public User getOne(@PathVariable(value = "id") String id) {
         return service.findById(id).get();
     }
     
-    @GetMapping("/user/generatepass/{pass}")
-    public String generatePass(@PathVariable(value = "pass") String pass){
+    @GetMapping("/get-with-doctor/{id}")
+    public User getWithDoctor(@PathVariable(value = "id") String id) {
+    	return service.findByIdWithDoctor(id);
+    }
+    
+    @GetMapping("/delete/{id}")
+    public void delete(@PathVariable(value = "id") String id) {
+    	service.deleteById(id);
+    }
+    
+    @PostMapping("/update/")
+    public void update(@Valid @RequestBody User model) {
+    	service.update(model);
+    }
+    
+    @GetMapping("/generatepass/{pass}")
+    public String generatePass(@PathVariable(value = "pass") String pass) {
     	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     	return encoder.encode(pass);
     }
-
 }

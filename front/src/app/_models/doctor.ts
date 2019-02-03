@@ -5,6 +5,8 @@ export class Doctor {
   speciality: string;
   rate: number;
   kredit: number;
+  active: boolean;
   procedureIds: number[];
   percents: any[];
+  userId: string;
 }

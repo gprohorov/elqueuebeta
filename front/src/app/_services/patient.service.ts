@@ -17,7 +17,7 @@ export class PatientService {
     private deleteUrl = config.api_path + '/patient/delete/';
     private assignProcedureUrl = config.api_path + '/patient/create/activetalon/';
     private assignProceduresOnDateUrl = config.api_path + '/patient/create/talons/';
-    private incomeUrl = config.api_path + '/income/create';
+    private accountingUrl = config.api_path + '/accounting/create';
     private getBalanceUrl = config.api_path + '/patient/balance/today/';
     private receiptUrl = config.api_path + '/patient/create/receipt/';
     private checkUrl = config.api_path + '/patient/create/receipt/';
@@ -44,9 +44,10 @@ export class PatientService {
         return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
     }
 
-    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number, activate: boolean) {
+    assignProcedure(patientId: string, procedureId: number, date: string, appointed: number,
+        activate: boolean, schema?: boolean) {
         return this.http.get(this.assignProcedureUrl
-            + [patientId, procedureId, date, appointed, activate || false].join('/'))
+            + [patientId, procedureId, date, appointed, activate || false, schema || false].join('/'))
             .pipe(catchError(this.handleError));
     }
 
@@ -55,8 +56,8 @@ export class PatientService {
             .pipe(catchError(this.handleError));
     }
 
-    income(data: any) {
-        return this.http.post(this.incomeUrl, data).pipe(catchError(this.handleError));
+    accounting(data: any) {
+        return this.http.post(this.accountingUrl, data).pipe(catchError(this.handleError));
     }
 
     getBalance(patientId: string) {

@@ -3,10 +3,8 @@ package com.med.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 10.04.18.
- */
 public class Tail {
+	
     private int procedureId;
     private String procedureName;
     private List<Patient> patients = new ArrayList<>();
@@ -15,10 +13,10 @@ public class Tail {
     private ProcedureType procedureType;
     private Boolean freeChoice = true;
 
-    public Tail() {
-    }
+    public Tail() {}
 
-    public Tail(int procedureId, String procedureName, ProcedureType procedureType, List<Patient> patients, boolean vacant) {
+    public Tail(int procedureId, String procedureName, ProcedureType procedureType,
+    		List<Patient> patients, boolean vacant) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.patients = patients;
@@ -94,8 +92,4 @@ public class Tail {
         }
         return patient;
     }
-
-/*    public Patient getFirst() {
-        return this.getPatients().stream().findFirst().orElse(null);
-    }*/
 }

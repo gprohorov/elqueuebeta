@@ -44,7 +44,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
 
         this.sub = this.financeService.giveSalary({
             doctorId: this.data.doctorId, 
-            sum: this.data.sum}).subscribe(resp => {
+            sum: this.data.sum}, options.data.SA).subscribe(resp => {
                 if (resp && resp.status) {
                     this.alertService.success('Зарплату видано.');
                     options.closeDialogSubject.next();

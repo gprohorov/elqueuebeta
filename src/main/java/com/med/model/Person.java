@@ -2,24 +2,19 @@ package com.med.model;
 
 import java.time.LocalDate;
 
-/**
- * Created by george on 3/9/18.
- */
 public class Person {
 
     private String fullName;
-
     private String cellPhone;
     private String town;
     private String address;
     private boolean gender;
     private LocalDate dateOfBirth;
 
-    public Person() {
-    }
+    public Person() {}
 
-
-    public Person(String fullName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth) {
+    public Person(String fullName, String cellPhone, String town, String address,
+    		boolean gender, LocalDate dateOfBirth) {
         this.fullName = fullName;
         this.cellPhone = cellPhone;
         this.town = town;
@@ -28,8 +23,6 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
     }
 
-
-
     public String getFullName() {
         return fullName;
     }
@@ -37,8 +30,6 @@ public class Person {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
-
 
     public String getCellPhone() {
         return cellPhone;
@@ -79,5 +70,4 @@ public class Person {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
 }

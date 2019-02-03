@@ -5,6 +5,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/")
 @RestController
-public class GenericController {
-	
-}
+public class GenericController { }

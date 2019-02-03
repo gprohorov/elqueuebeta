@@ -17,6 +17,7 @@ import { CashType, TokenStorage, UserStorage } from './_storage/index';
 import {
     AlertService,
     AuthService,
+    UserService,
     SettingsService,
     SortService,
     PatientService,
@@ -47,6 +48,9 @@ import { PatientAssignProceduresOnDateModalComponent } from './patient/assign-pr
 import { PatientListComponent } from './patient/list.component';
 import { PatientFormComponent } from './patient/form.component';
 
+import { UserListComponent } from './user/list.component';
+import { UserFormComponent } from './user/form.component';
+
 import { DoctorListComponent } from './doctor/list.component';
 import { DoctorFormComponent } from './doctor/form.component';
 
@@ -74,6 +78,7 @@ import { CheckComponent } from './check/main.component';
 
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
+import { FinanceSalaryPreviewComponent } from './finance/salary-preview.component';
 import { DoctorSalaryHistoryModalComponent } from './finance/doctor-salary-history.modal.component';
 import { GiveSalaryModalComponent } from './finance/give-salary.modal.component';
 import { SetSalaryModalComponent } from './finance/set-salary.modal.component';
@@ -96,9 +101,9 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: {
             permissions: {
-                except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR'],
+                except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR', 'ROLE_HEAD'],
                 redirectTo: {
-                    ROLE_SUPERADMIN: 'patients-queue',
+                    ROLE_SUPERADMIN: 'procedures-queue',
                     ROLE_ADMIN: 'patients-queue',
                     ROLE_DOCTOR: 'workplace',
                     default: 'login'
@@ -129,29 +134,40 @@ const appRoutes: Routes = [
     {
         path: 'settings', component: SettingsFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    
+    {
+        path: 'users', component: UserListComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'user-form', component: UserFormComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'doctor-form', component: DoctorFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'procedures', component: ProcedureListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'procedure-form', component: ProcedureFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
 
     {
@@ -169,79 +185,84 @@ const appRoutes: Routes = [
     {
         path: 'statistic/general-from-to', component: GeneralStatisticFromToComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/cash-summary', component: CashSummaryComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/doctors-procedures-from-to', component: DoctorsProceduresFromToComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/procedures-statistics', component: ProceduresStatisticsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/patients-debetors', component: PatientsDebetorsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/patients-debetors-ext', component: PatientsDebetorsExtComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/patient/:patientId', component: PatientStatisticsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/doctors', component: DoctorsStatisticsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'statistic/patients', component: PatientsStatisticsComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'finance/salary', component: FinanceSalaryComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'finance/salary-summary', component: FinanceSalarySummaryComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
         path: 'finance/outcome', component: FinanceOutcomeComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/salary-preview', component: FinanceSalaryPreviewComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     {
         path: 'workplace/common/:patientId/:procedureId', component: WorkplaceCommonComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     {
         path: 'workplace/diagnostic/:patientId', component: WorkplaceDiagnosticComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_DOCTOR'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
     
     {
@@ -290,6 +311,7 @@ const appRoutes: Routes = [
         CreatePatientModalComponent,
         PatientListComponent, PatientFormComponent,
         DoctorListComponent, DoctorFormComponent,
+        UserListComponent, UserFormComponent,
         ProcedureListComponent, ProcedureFormComponent,
         PatientsQueueListComponent,
         ProceduresQueueListComponent,
@@ -309,6 +331,7 @@ const appRoutes: Routes = [
         WorkplaceDiagnosticComponent,
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
+        FinanceSalaryPreviewComponent,
         DoctorSalaryHistoryModalComponent,
         GiveSalaryModalComponent,
         SetSalaryModalComponent,
@@ -323,6 +346,7 @@ const appRoutes: Routes = [
         NgxPermissionsGuard,
         AlertService,
         AuthService,
+        UserService,
         TokenStorage,
         UserStorage,
         SettingsService,

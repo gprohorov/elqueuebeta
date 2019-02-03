@@ -17,7 +17,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     sub: Subscription;
     subToday: Subscription;
     subDelete: Subscription;
-    date: string = (new Date()).toISOString().split('T')[0];
+    date: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     items: Patient[];
     todayItems: any[] = [];
     loading = false;
@@ -67,11 +67,13 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     showIncomePopup(patient: any) {
-        this.modalService.openDialog(this.viewRef, {
+        const options: any = {
             title: 'Пацієнт: ' + patient.person.fullName,
             childComponent: PatientIncomeModalComponent,
             data: patient
-        });
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(); });
     }
 
     delete(id: number, name: string) {

@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 14.06.18.
- */
 public class Balance {
 
     private String patientId;
@@ -14,13 +11,12 @@ public class Balance {
     private LocalDate finish;
     private List<Accounting> accountings = new ArrayList<>();
 
+    public Balance() {}
+    
     public Balance(String patientId, LocalDate start, LocalDate finish) {
         this.patientId = patientId;
         this.start = start;
         this.finish = finish;
-    }
-
-    public Balance() {
     }
 
     public String getPatientId() {
@@ -55,26 +51,3 @@ public class Balance {
         this.accountings = accountings;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

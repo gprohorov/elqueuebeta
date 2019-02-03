@@ -1,33 +1,28 @@
 package com.med.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
-import java.util.List;
-import java.time.LocalDateTime;
-
-/**
- * Created by george on 22.11.18.
- */
 @Document
 public class OutcomeTree {
+	
     @Id
     private String id;
     private LocalDateTime createTime = LocalDateTime.now();
     private String name;
-    
     @Nullable
     private String catID;
-    
     @Transient
     private long sum;
-    
     @Transient
     private List<OutcomeTree> items;
     
-    public OutcomeTree() { }
+    public OutcomeTree() {}
 
     public OutcomeTree(String name, String catID) {
         this.name = name;
@@ -90,6 +85,7 @@ public class OutcomeTree {
 
 	@Override
 	public String toString() {
-		return "OutcomeTree [id=" + id + ", createTime=" + createTime + ", name=" + name + ", catID=" + catID + "]";
+		return "OutcomeTree [id=" + id + ", createTime=" + createTime
+				+ ", name=" + name + ", catID=" + catID + "]";
 	}
 }

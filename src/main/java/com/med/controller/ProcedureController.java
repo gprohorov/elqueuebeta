@@ -1,66 +1,39 @@
 package com.med.controller;
 
-import com.med.model.Procedure;
-import com.med.services.procedure.impls.ProcedureServiceImpl;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.med.model.Procedure;
+import com.med.services.ProcedureService;
 
-/**
- * Created by george on 3/9/18.
- */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/procedure")
 @CrossOrigin("*")
 public class ProcedureController {
 
+	@Autowired
+    ProcedureService service;
 
-
-    @Autowired
-    ProcedureServiceImpl service;
-
-    @RequestMapping("/procedure/list/")
+    @RequestMapping("/list/")
     public List<Procedure> showProcedures() {
         return service.getAll();
     }
 
-    // READ the Procedure by id
-    @GetMapping("/procedure/get/{id}")
-    public Procedure showOneProcedure(@PathVariable(value = "id")  int procedureId) {
-
+    @GetMapping("/get/{id}")
+    public Procedure showOneProcedure(@PathVariable(value = "id") int procedureId) {
         return service.getProcedure(procedureId);
     }
 
-    // CREATE the Procedure
-    @PostMapping("/procedure/save")
+    @PostMapping("/save")
     public Procedure saveProcedure(@RequestBody Procedure procedure) {
-
-//
         return service.saveProcedure(procedure);
     }
 
-    // DELETE the procedure by id
-    @PostMapping("/procedure/delete/{id}")
-    public Procedure delProcedure(@PathVariable(value = "id")  int procedureId)  {
-
+    @PostMapping("/delete/{id}")
+    public Procedure delProcedure(@PathVariable(value = "id") int procedureId) {
         return null;
-                //service.deleteProcedure(procedureId);
-
+        //service.deleteProcedure(procedureId);
     }
-
-/*
-    // UPDATE the procedure by id
-    @PostMapping("/procedure/update/")
-    public Procedure updateProcedure(@Valid @RequestBody Procedure updates)  {
-      //  updates.setId(procedureId);
-//
-        return service.updateProcedure(updates);
-
-    }
-
-
-*/
-
 }
-

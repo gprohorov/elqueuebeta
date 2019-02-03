@@ -3,9 +3,6 @@ package com.med.model.statistics.dto.doctor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by george on 20.08.18.
- */
 public class DoctorCurrentStatistics {
 
     private String name;
@@ -17,10 +14,11 @@ public class DoctorCurrentStatistics {
     private LocalDateTime lastActivity;
     private Long fee;
 
-    public DoctorCurrentStatistics() {
-    }
+    public DoctorCurrentStatistics() {}
 
-    public DoctorCurrentStatistics(String name, List<ProcedureCount> procedureMap, Long zonesCount, List<String> patients, String currentPatient, LocalDateTime startWork, LocalDateTime lastActivity, Long fee) {
+    public DoctorCurrentStatistics(String name, List<ProcedureCount> procedureMap,
+    		Long zonesCount, List<String> patients, String currentPatient,
+    		LocalDateTime startWork, LocalDateTime lastActivity, Long fee) {
         this.name = name;
         this.procedureMap = procedureMap;
         this.zonesCount = zonesCount;

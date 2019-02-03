@@ -1,5 +1,5 @@
 <app-loader [loader]="loading"></app-loader>
-<div class="position-fixed" [style.right.px]="50">
+<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
     <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
         [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
@@ -9,23 +9,21 @@
 	    	<span *ngIf="data.length > 0">
 	    		з {{data[0].from | date:"dd.MM"}} по {{data[0].to | date:"dd.MM"}}
 	    	</span>
+	    	<span *ngIf="data.length == 0"> ...</span>
 	    </h4>
     </div>
     <div class="col-auto form-inline">
-    	<h4>Тиждень:</h4>
         <button class="btn btn-success ml-2" (click)="changeWeek(-1)">
-            <i class="fa fa-arrow-left"></i>
+            <i class="fa fa-arrow-left"></i> попередній тиждень
         </button>
-        <input type="number" class="form-control ml-2 mr-2 text-center" name="week" [(ngModel)]="week"
-            [(ngValue)]="week" (change)="load()" [style.width.px]="60" />
-        <button class="btn btn-success" (click)="changeWeek(1)">
-            <i class="fa fa-arrow-right"></i>
+        <button class="btn btn-success ml-2" (click)="changeWeek(1)">
+            наступний тиждень <i class="fa fa-arrow-right"></i>
         </button>
     </div>
 </div>
 <div class="content table-responsive table-full-width table-sm">
     <table class="table table-bordered">
-        <thead class="thead-dark">
+        <thead class="thead-dark small">
             <tr class="text-center">
                 <th></th>
                 <th>Прізвище</th>

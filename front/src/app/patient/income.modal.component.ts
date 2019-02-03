@@ -23,10 +23,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
     details: any = [];
 
     @ViewChild('f') myForm;
-    constructor(
-        private alertService: AlertService,
-        private patientService: PatientService
-    ) { }
+    constructor(private alertService: AlertService, private patientService: PatientService) {}
 
     dialogInit(_reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
         this.data = options.data;
@@ -36,7 +33,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
             text: 'Виписка',
             buttonClass: 'btn btn-info mr-5',
             onAction: () => {
-                window.open('/#/receipt/' + this.model.patientId, '_blank');
+                setTimeout(() => { window.open('/#/receipt/' + this.model.patientId, '_blank'); }, 0);
             }
         }, {
             text: 'Внести',
@@ -91,10 +88,14 @@ export class PatientIncomeModalComponent implements IModalDialog {
     }
 
     getDesc(item) {
-        if (item.payment === 'DISCOUNT') return 'Знижка' + (item.desc === '' ? '' : ' (' + item.desc + ')');
-        if (item.payment === 'CASH') return 'Внесення готівки' + (item.desc === '' ? '' : ' (' + item.desc + ')');
-        if (item.payment === 'CARD') return 'Внесення з картки' + (item.desc === '' ? '' : ' (' + item.desc + ')');
-        if (item.payment === 'WIRED') return 'Внесення по перерахунку' + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'DISCOUNT') return 'Знижка'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'CASH') return 'Внесення готівки'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'CARD') return 'Внесення з картки'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'WIRED') return 'Внесення по перерахунку'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
         return item.desc;
     }
 
@@ -102,7 +103,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
         f.submitted = true;
         if (!f.form.valid) return false;
         this.model.closeDay = this.model.closeDay || false;
-        this.sub = this.patientService.income(this.model).subscribe(() => {
+        this.sub = this.patientService.accounting(this.model).subscribe(() => {
             this.alertService.success('На рахунок пацієнта ' + this.data.person.fullName
                 + ' внесено ' + this.model.sum + ' грн.');
             options.closeDialogSubject.next();

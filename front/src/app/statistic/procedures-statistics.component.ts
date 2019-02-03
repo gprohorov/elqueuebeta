@@ -25,8 +25,8 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
     sum = 0;
 
     constructor(private service: StatisticService) {
-        this.start = new Date().toISOString().split('T').shift();
-        this.finish = new Date().toISOString().split('T').shift();
+        this.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
+        this.finish = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     }
 
     ngOnInit() {
@@ -46,8 +46,13 @@ export class ProceduresStatisticsComponent implements OnInit, OnDestroy {
                 this.loading = false;
             });
     }
+    
+    isValid() {
+        return (this.start && this.finish && this.finish >= this.start);
+    }
 
     load() {
+        if (!this.isValid()) return;
         this.loading = true;
         this.sub = this.service.getProceduresStatistics(this.start, this.finish).subscribe(data => {
             this.data = data;

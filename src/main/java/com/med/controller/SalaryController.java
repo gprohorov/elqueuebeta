@@ -1,34 +1,43 @@
 package com.med.controller;
 
-import com.med.model.*;
-import com.med.services.cashbox.impls.CashBoxServiceImpl;
-import com.med.services.doctor.impls.DoctorServiceImpl;
-import com.med.services.salary.impls.SalaryServiceImpl;
-import com.med.services.salarydto.impls.SalaryDTOServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by george on 29.10.18.
- */
+import javax.validation.Valid;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.med.model.AwardPenaltyDTO;
+import com.med.model.CashBox;
+import com.med.model.Response;
+import com.med.model.Salary;
+import com.med.model.SalaryDTO;
+import com.med.model.SalaryType;
+import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
+import com.med.services.CashBoxService;
+import com.med.services.SalaryDTOService;
+import com.med.services.SalaryService;
+
 @RestController
 @RequestMapping("/api/salary")
 @CrossOrigin("*")
 public class SalaryController {
 
     @Autowired
-    SalaryServiceImpl service;
+    SalaryService service;
 
     @Autowired
-    CashBoxServiceImpl cashBoxService;
+    CashBoxService cashBoxService;
 
     @Autowired
-    SalaryDTOServiceImpl salaryDTOService;
+    SalaryDTOService salaryDTOService;
 
     @RequestMapping("/list/old")
     public List<SalaryDTO> showSalaries() {
@@ -40,29 +49,16 @@ public class SalaryController {
     	return salaryDTOService.getOpenTable();
     }
 
-    @RequestMapping("/create/week")
-    public List<Salary> createWeek() {
-        return service.createWeekSalary();
-    }
-
-    // a doctor get a salary into buzunar
+    // a doctor get a salary into buzunar from kasa
     @RequestMapping("/get")
     public Response paySalary(@Valid @RequestBody Salary salary) {
-	/* salary.setDateTime(LocalDateTime.now());
-        salary.setType(SalaryType.BUZUNAR);
-        // kassa is down by this salary
-        cashBoxService.saveCash(new CashBox(
-                LocalDateTime.now()
-                , null
-                , salary.getDoctorId()
-                ,null
-                , -1*salary.getSum()));
-
-        service.createSalary(salary);
-
-        Response response = new Response(true, "");
-    */
         return service.paySalary(salary);
+    }
+    
+    // a doctor get a salary into buzunar from nechay personally
+    @RequestMapping("/get-sa")
+    public Response paySalarySA(@Valid @RequestBody Salary salary) {
+    	return service.paySalarySA(salary);
     }
 
     // i.e. nechay  insert bonus or a penalty
@@ -71,10 +67,9 @@ public class SalaryController {
         return service.createSalary(salary);
     }
 
-    //      !!!       Do it!
+    // !!! Do it !!!
     @RequestMapping("/set")
     public void insertPenalty(@Valid @RequestBody AwardPenaltyDTO dto) {
-        //System.out.println(dto);
         if (dto.getAward() != 0) {
             Salary salary = new Salary(
                     dto.getDoctorID()
@@ -106,13 +101,20 @@ public class SalaryController {
         }
     }
     
-    //--------------------------------  17 nov
+    // 17 nov
     @RequestMapping("/list/summary/{from}/{to}")
     public List<SalaryDTO> showSummarySalaries(
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to
-    ) {
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
         return salaryDTOService.getSummarySalaryList(LocalDate.parse(from), LocalDate.parse(to));
+    }
+    
+    @RequestMapping("/doctor/summary/{doctor}/{from}/{to}")
+    public SalaryDTO showDoctorSummarySalary(
+		@PathVariable(value = "doctor") int doctorId,
+		@PathVariable(value = "from") String from,
+		@PathVariable(value = "to") String to) {
+    	return salaryDTOService.getDoctorSummarySalary(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/list/{week}")
@@ -120,11 +122,34 @@ public class SalaryController {
         return salaryDTOService.getTableByWeek(week);
     }
 
-    @RequestMapping("list/payment/{doctor}/{from}/{to}")
+    @RequestMapping("/list/payment/{doctor}/{from}/{to}")
     public List<CashBox> getPaymentsForDoctor(
         @PathVariable(value = "doctor") int doctorId,
         @PathVariable(value = "from") String from,
         @PathVariable(value = "to") String to) {
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/inject")
+    public List<SalaryDTO> inject() {
+        return salaryDTOService.inject();
+    }
+    
+    @RequestMapping("/doctor/{doctorId}/{from}/{to}")
+    public DoctorPeriodSalary getDoctorSalaryForPeriod(
+        @PathVariable(value = "doctorId") int doctorId,
+        @PathVariable(value = "from") String from,
+        @PathVariable(value = "to") String to) {
+        return salaryDTOService.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
+    }
+
+    @RequestMapping("/doctor/preview")
+    public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
+        return salaryDTOService.getDoctorSalaryByJSON(new JSONObject(data));
+    }
+    
+    @RequestMapping("/doctor/preview/save")
+    public void saveDoctorSalaryPreview(@Valid @RequestBody String data) {
+    	salaryDTOService.saveDoctorSalaryByJSON(new JSONObject(data));
     }
 }
