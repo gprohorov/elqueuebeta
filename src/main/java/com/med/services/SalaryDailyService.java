@@ -37,6 +37,7 @@ public class SalaryDailyService {
     @PostConstruct
     void init(){
        this.generateSalariesForToday();
+       this.createSalariesForKhozDvor(3);
     }
 
     public SalaryDaily createSalaryDaily(SalaryDaily salaryDaily){
@@ -103,15 +104,18 @@ public class SalaryDailyService {
                 .collect(Collectors.toList());
         khozdvor.add(2);
         khozdvor.stream().forEach(item->{
-            for (int i =1; i<4; i++){
+            for (int i =1; i<=days; i++){
                 SalaryDaily salaryDaily = new SalaryDaily();
                 salaryDaily.setDoctorId(item);
                 salaryDaily.setName(doctorService.getDoctor(item).getFullName());
-                salaryDaily.setDate(LocalDate.now());
+                salaryDaily.setDate(LocalDate.now().minusDays(i));
+                salaryDaily.setStavka(doctorService.getDoctor(item).getRate()/30
+                - setting.get().getTax()/30);
+                list.add(salaryDaily);
             }
         });
 
-        return null;
+        return repository.saveAll(list);
     }
 
 
