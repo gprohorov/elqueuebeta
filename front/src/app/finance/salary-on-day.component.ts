@@ -33,6 +33,12 @@ export class FinanceSalaryOnDayComponent implements OnInit, OnDestroy {
         if (this.sub) this.sub.unsubscribe();
     }
 
+    changeDay(days: number) {
+        const date = new Date(this.date);
+        this.date = (new Date(date.setDate(date.getDate() + days))).toISOString().slice(0, -14);
+        this.load();
+    }
+    
     load() {
         this.data = [];
         this.sub = this.service.getSalaryOnDay(this.date).subscribe(

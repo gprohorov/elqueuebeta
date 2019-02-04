@@ -7,9 +7,15 @@
    	<div class="col">
 	    <h4>Зарплати за день</h4>
     </div>
-    <div class="col-auto">
+    <div class="col-auto form-inline">
+        <button class="btn btn-success mr-2" (click)="changeDay(-1)">
+            <i class="fa fa-arrow-left"></i> попередній день
+        </button>
         <input type="date" class="form-control" name="date" [(ngModel)]="date" 
 	        	(change)="load()" [disabled]="loading" />
+        <button class="btn btn-success ml-2" (click)="changeDay(1)">
+            наступний день <i class="fa fa-arrow-right"></i>
+        </button>
     </div>
 </div>
 <div class="content table-responsive table-full-width table-sm">
