@@ -1,0 +1,43 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="row mb-2">
+   	<div class="col">
+	    <h4>Зарплати за день</h4>
+    </div>
+    <div class="col-auto">
+        <input type="date" class="form-control" name="date" [(ngModel)]="date" 
+	        	(change)="load()" [disabled]="loading" />
+    </div>
+</div>
+<div class="content table-responsive table-full-width table-sm">
+    <table class="table table-bordered">
+        <thead class="thead-dark small">
+            <tr class="text-center">
+                <th>Доктор</th>
+                <th>Ставка</th>
+                <th>Бонуси</th>
+                <th>Нараховано</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="data.length > 0">
+            <tr *ngFor="let item of data">
+                <td class="text-nowrap" title="{{item.name}}">{{item.name}}</td>
+                <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
+                <td class="text-right text-nowrap">{{item.bonuses}} грн.</td>
+                <td class="text-right text-nowrap">{{item.total}} грн.</td>
+            </tr>
+	        <tr>
+	            <td><strong>Всього:</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalStavka}} грн.</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalBonuses}} грн.</strong></td>
+	            <td class="text-right text-nowrap"><strong>{{totalTotal}} грн.</strong></td>
+	        </tr>
+        </tbody>
+        <tr *ngIf="data.length === 0"><td colspan="4" class="text-center text-danger">
+        	<strong>Данні відсутні ...</strong>
+        </td></tr>
+    </table>
+</div>

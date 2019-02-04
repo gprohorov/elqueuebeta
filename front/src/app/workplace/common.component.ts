@@ -78,7 +78,6 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
                 if (this.item.patient.therapy 
                     && this.item.patient.therapy.assignments
                     && this.item.patient.therapy.assignments != null) {
-                    this.isEditablePicture = true;
                     if (   this.item.patient.therapy 
                         && this.item.patient.therapy.assignments
                         && this.item.patient.therapy.assignments.length > 0
@@ -103,8 +102,6 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.cx.strokeStyle = 'blue';
 
             this.cx.drawImage(this.canvasImage, 0, 0);
-            
-            if (this.isEditablePicture) this.captureEvents(canvasEl);
         }
     }
 
@@ -314,5 +311,10 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
                 this.alertService.error(error);
                 this.loading = false;
             });
+    }
+    
+    editPicture() {
+        this.isEditablePicture = true;
+        this.captureEvents(this.canvas.nativeElement);
     }
 }

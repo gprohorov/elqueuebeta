@@ -84,7 +84,7 @@ public class SalaryController {
             salaryDTOService.updateSalaryDTO(record);
         }
 
-        if (dto.getPenalty() !=0 ) {
+        if (dto.getPenalty() != 0 ) {
             Salary salary = new Salary(
                     dto.getDoctorID()
                     , LocalDateTime.now()
@@ -151,11 +151,9 @@ public class SalaryController {
     public void saveDoctorSalaryPreview(@Valid @RequestBody String data) {
     	salaryDTOService.saveDoctorSalaryByJSON(new JSONObject(data));
     }
+    
     @RequestMapping("/date/{date}")
-    public List<SalaryDaily> getSalariesForDate(
-            @PathVariable(value = "date") String date){
+    public List<SalaryDaily> getSalariesForDate(@PathVariable(value = "date") String date) {
         return salaryDailyService.getSalariesForDate(LocalDate.parse(date));
     }
-
-
 }
