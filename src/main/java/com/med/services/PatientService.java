@@ -152,7 +152,9 @@ public class PatientService {
 	// !!! PATIENTS WITH TALONS FOR DATE !!!
 	public List<Patient> getAllForDate(LocalDate date) {
 		List<Patient> patients = new ArrayList<>();
+	//	final long start = System.currentTimeMillis();
 		List<Talon> talons = talonService.getTalonsForDate(date);
+	//	System.out.println( System.currentTimeMillis() - start);
 		talons.stream().collect(Collectors.groupingBy(Talon::getPatientId)).entrySet().stream()
 			.forEach(entry -> {
 				Patient patient = this.getPatient(entry.getKey());
@@ -168,6 +170,7 @@ public class PatientService {
 					patients.add(patient);
 				}
 			});
+		//System.out.println( System.currentTimeMillis() - start);
 		return patients;
 	}
 

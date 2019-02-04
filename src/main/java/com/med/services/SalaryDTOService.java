@@ -155,8 +155,12 @@ public class SalaryDTOService {
         }
 
         // int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
-        int stavka = dto.getHours() * doctor.getRate()
+/*        int stavka = dto.getHours() * doctor.getRate()
                 - daysTax * settingsService.get().getTax()/30
+                - daysWithoutSaturdays * settingsService.get().getCanteen();
+        */
+        int stavka =    doctor.getRate() *7/30
+                - 7 * settingsService.get().getTax()/30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
         dto.setStavka(stavka);
         if (fullTimeList.contains(doctorId)) stavka = 0;
@@ -174,11 +178,11 @@ public class SalaryDTOService {
     }
 
     private int generateStavkaForDoctor(Doctor doctor, int days, int hours) {
-        return doctor.getRate() * hours - settingsService.get().getTax() * 2 / 9
+        return doctor.getRate() * 7/30 - settingsService.get().getTax() * 7/30
             - settingsService.get().getCanteen() * ((days == 0) ? 0 : days - 1);
     }
 
-    private int generateBonusesForDoctor(List<Talon> talons) {
+    public int generateBonusesForDoctor(List<Talon> talons) {
         if (talons.isEmpty()) return 0;
         double sum = 0;
 
