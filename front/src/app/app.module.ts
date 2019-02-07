@@ -76,6 +76,7 @@ import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.compo
 import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
+import { FinanceSalarySummaryOnDayComponent } from './finance/salary-summary-on-day.component';
 import { FinanceSalaryOnDayComponent } from './finance/salary-on-day.component';
 import { FinanceSalaryComponent } from './finance/salary.component';
 import { FinanceSalarySummaryComponent } from './finance/salary-summary.component';
@@ -254,6 +255,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/salary-summary-on-day', component: FinanceSalarySummaryOnDayComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -336,6 +342,7 @@ const appRoutes: Routes = [
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
         FinanceSalaryOnDayComponent,
+        FinanceSalarySummaryOnDayComponent,
         FinanceSalaryComponent,
         FinanceSalarySummaryComponent,
         FinanceSalaryPreviewComponent,

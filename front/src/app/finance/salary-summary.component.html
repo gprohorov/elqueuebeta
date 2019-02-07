@@ -1,24 +1,24 @@
 <app-loader [loader]="loading"></app-loader>
 <div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
-    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-        [disabled]="loading" (click)="load()" title="Обновити"></button>
+  <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+    [disabled]="loading" (click)="load()" title="Обновити"></button>
 </div>
 <div class="row mb-2">
-	<div class="col"><h4>Зарплати підсумок за період</h4></div>
+	<div class="col"><h4>Зарплати підсумок (по тижням)</h4></div>
 	<div class="col-auto mr-2">
-	   	<div class="input-group" [style.width.px]="200">
-	        <div class="input-group-prepend"><div class="input-group-text">з</div></div>
-	        <input type="date" class="form-control" name="from" [(ngModel)]="from" 
-	        	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
-	    </div>
+   	<div class="input-group" [style.width.px]="200">
+      <div class="input-group-prepend"><div class="input-group-text">з</div></div>
+      <input type="date" class="form-control" name="from" [(ngModel)]="from" 
+      	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
+    </div>
 	</div>
 	<div class="col-auto">
-	    <div class="input-group" [style.width.px]="210">
-	        <div class="input-group-prepend"><div class="input-group-text">по</div></div>
-	        <input type="date" class="form-control" name="to" [(ngModel)]="to"
-	        	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
-	    </div>
+    <div class="input-group" [style.width.px]="210">
+      <div class="input-group-prepend"><div class="input-group-text">по</div></div>
+      <input type="date" class="form-control" name="to" [(ngModel)]="to"
+      	[ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
     </div>
+  </div>
 </div>
 <div class="content table-responsive table-full-width table-sm">
     <table class="table table-bordered">
