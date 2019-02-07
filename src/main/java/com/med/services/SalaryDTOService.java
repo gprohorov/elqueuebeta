@@ -47,7 +47,7 @@ public class SalaryDTOService {
     @Autowired
     SettingsService settingsService;
 
-    private List<Integer> fullTimeList;
+    public List<Integer> fullTimeList;
 
     @PostConstruct
     void init() {
@@ -55,6 +55,7 @@ public class SalaryDTOService {
             .filter(doc -> doc.getProcedureIds().isEmpty())
             .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
+        fullTimeList.add(5); // для Иры.
     }
 
     public List<SalaryDTO> getAll() {

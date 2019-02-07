@@ -17,19 +17,16 @@ public class SalaryDaily {
     @Id
     private String id;
     private LocalDate date; // дата
+    private LocalDate from; // дата
+
     private String name; 	// фамилия доктора
     private int doctorId;	// его айдишник
     private int stavka; 	// ставка
-    // private int taxes;  	// налог
-    // private int canteen; // обед
+
     private int bonuses; 	// бонусы за процедуры
-    // private int award;   // премии, могут добавляться в течение дня
-    // private int penalty; // также и штрафы
+
     private int total;   	// всего начислено за день
-    // private int recd;    // всего уже получено в кассе за текущий день
-    // private int rest;    // остаток в кассе, не выбранный за всё время
-    // private int actual;  // сумма, которую можно получить в кассе,
-    						// учитывая выше изложенное (не влезая в долг)
+
 
     public SalaryDaily() {}
 
@@ -47,6 +44,14 @@ public class SalaryDaily {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public LocalDate getFrom() {
+        return from;
+    }
+
+    public void setFrom(LocalDate from) {
+        this.from = from;
     }
 
     public String getName() {

@@ -156,4 +156,12 @@ public class SalaryController {
     public List<SalaryDaily> getSalariesForDate(@PathVariable(value = "date") String date) {
         return salaryDailyService.getSalariesForDate(LocalDate.parse(date));
     }
+    @RequestMapping("/daily/{from}/{to}")
+    public List<SalaryDaily> getSalariesForPeriod(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to) {
+        return salaryDailyService.getSalarySummaryForPeriod(
+                LocalDate.parse(from), LocalDate.parse(to));
+    }
+
 }
