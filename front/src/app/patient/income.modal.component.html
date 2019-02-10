@@ -64,7 +64,7 @@
       <div class="col">
         <div class="input-group">
             <div class="input-group-prepend">
-                <div class="input-group-text" [style.width.px]="110">Внесено</div>
+                <div class="input-group-text alert-info" [style.width.px]="110">Внесено</div>
             </div>
             <input type="number" class="form-control" #incomeField (keyup)="calcChange()"/>
         </div>
@@ -72,9 +72,9 @@
       <div class="col">
         <div class="input-group">
             <div class="input-group-prepend">
-                <div class="input-group-text" [style.width.px]="80">Здача</div>
+                <div class="input-group-text alert-info" [style.width.px]="80">Здача</div>
             </div>
-            <input type="number" class="form-control" #changeField disabled/>
+            <input type="number" class="form-control bg-light" #changeField disabled/>
         </div>
       </div>
     </div>
