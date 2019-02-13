@@ -83,7 +83,7 @@
             <div class="input-group-text" [style.width.px]="110">Сума</div>
         </div>
         <input type="number" class="form-control" name="sum" [(ngModel)]="model.sum" #sum="ngModel"
-            required />
+            (keyup)="calcChange()" required />
     </div>
     <div *ngIf="f.submitted && !sum.valid" class="help-block text-danger">Поле обов`язкове</div>
     <div class="input-group mt-2">
