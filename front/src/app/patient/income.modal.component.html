@@ -60,6 +60,24 @@
     </div>
     <div *ngIf="f.submitted && !paymentType.valid" class="help-block text-danger">Поле
         обов`язкове</div>
+    <div class="row mt-2" *ngIf="model.paymentType == 'CASH'">
+      <div class="col">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text alert-info" [style.width.px]="110">Внесено</div>
+            </div>
+            <input type="number" class="form-control" #incomeField (keyup)="calcChange()"/>
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text alert-info" [style.width.px]="80">Здача</div>
+            </div>
+            <input type="number" class="form-control bg-light" #changeField disabled/>
+        </div>
+      </div>
+    </div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
             <div class="input-group-text" [style.width.px]="110">Сума</div>

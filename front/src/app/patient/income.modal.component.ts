@@ -1,4 +1,4 @@
-import { Component, ComponentRef, ViewChild } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
 
@@ -22,6 +22,8 @@ export class PatientIncomeModalComponent implements IModalDialog {
     showDetails = false;
     details: any = [];
 
+    @ViewChild('incomeField') incomeField: ElementRef;
+    @ViewChild('changeField') changeField: ElementRef;
     @ViewChild('f') myForm;
     constructor(private alertService: AlertService, private patientService: PatientService) {}
 
@@ -99,6 +101,10 @@ export class PatientIncomeModalComponent implements IModalDialog {
         return item.desc;
     }
 
+    calcChange() {
+        this.changeField.nativeElement.value = this.incomeField.nativeElement.value - this.model.sum; 
+    }
+    
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
