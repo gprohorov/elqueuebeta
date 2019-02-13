@@ -11,18 +11,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.med.model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.med.model.Activity;
-import com.med.model.Doctor;
-import com.med.model.DoctorProcedureProcent;
-import com.med.model.Procedure;
-import com.med.model.SalaryDTO;
-import com.med.model.Talon;
 import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.SalaryDTORepository;
 
@@ -46,6 +41,9 @@ public class SalaryDTOService {
     
     @Autowired
     SettingsService settingsService;
+
+    @Autowired
+    SalaryDailyService salaryDailyService;
 
     public List<Integer> fullTimeList;
 
@@ -86,10 +84,10 @@ public class SalaryDTOService {
     // он начисляет премию\штраф,  меняет ставку и процент за процедуры ,
     // а потом снова перегенерит.
     // Если всё ОК,  запоминает в базу.
-    // Генерить имеет смысл ТОЛЬКО  в субботу после 15.00, когда рабочий день
+    // Генерить имеет смысл ТОЛЬКО  в субботу после 16.00, когда рабочий день
     // закончен. В любой доугой день - некорректно.
     // В течении недели можно вынуть запись из базы и снова перегенерить.
-    // Через неделю в субботу в 18.00 ведомость закрывается и более никаких
+    // Через неделю в субботу в 16.00 ведомость закрывается и более никаких
     // правок вносить нельзя.
     // Учитывается недобор/перебор из прошлой ведомости.
     // В течение недели ведомость считается валидной и по ней можно получать
@@ -160,14 +158,19 @@ public class SalaryDTOService {
                 - daysTax * settingsService.get().getTax()/30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
         */
+/*      DEPRICATED
         int stavka =    doctor.getRate() *7/30
                 - 7 * settingsService.get().getTax()/30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
         dto.setStavka(stavka);
         if (fullTimeList.contains(doctorId)) stavka = 0;
+        */
+        SalaryDaily salaryDailySummary = salaryDailyService.showSummaryForPeriodForDoctor(
+                from.minusDays(7), to.plusDays(1), doctorId);
+        int stavka = salaryDailySummary.getStavka();
         dto.setStavka(stavka);
 
-        int accural = this.generateBonusesForDoctor(talons);
+        int accural = salaryDailySummary.getBonuses();
         dto.setAccural(accural);
 
         int total = rest + stavka + accural + dto.getAward() - dto.getPenalty();

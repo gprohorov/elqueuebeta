@@ -51,6 +51,29 @@ public class SalaryDailyService {
     public SalaryDaily updateSalaryDaily(SalaryDaily salaryDaily) {
         return repository.save(salaryDaily);
     }
+    public List<SalaryDaily> getSalaryListForPeriodForDoctor(LocalDate from,
+                                                             LocalDate to,
+                                                             int doctorId){
+        return repository.findByDateBetweenAndDoctorId(from, to, doctorId);
+    }
+    public SalaryDaily showSummaryForPeriodForDoctor(LocalDate from,
+                                                     LocalDate to,
+                                                     int doctorId){
+        SalaryDaily salarySummary= new SalaryDaily();
+        salarySummary.setDoctorId(doctorId);
+        salarySummary.setName(doctorService.getDoctor(doctorId).getFullName());
+        salarySummary.setFrom(from);
+        salarySummary.setDate(to);
+
+        List<SalaryDaily> list = this.getSalaryListForPeriodForDoctor(from,to,doctorId);
+        int stavka = list.stream().mapToInt(SalaryDaily::getStavka).sum();
+        salarySummary.setStavka(stavka);
+        int bonuses = list.stream().mapToInt(SalaryDaily::getBonuses).sum();
+        salarySummary.setBonuses(bonuses);
+
+        return salarySummary;
+
+    }
 
     public SalaryDaily createSalaryDailyForDoctor(int doctorId, LocalDate date) {
 
@@ -91,7 +114,7 @@ public class SalaryDailyService {
         return this.createSalaryDaily(salary);
     }
 
-    @Scheduled(cron = "0 20 18 * * *")
+    @Scheduled(cron = "0 30 19 * * *")
     public List<SalaryDaily> generateSalariesForToday() {
         List<SalaryDaily> list = new ArrayList<>();
         doctorService.getAllActive().forEach(doctor -> 
@@ -115,7 +138,7 @@ public class SalaryDailyService {
                 .filter(salary->salary.getDate().isBefore(to.plusDays(1)))
                 .collect(Collectors.toList());
         List<Integer> doctorIds = list.stream()
-                .filter(salary->salary.getDate().isAfter(from))
+               // .filter(salary->salary.getDate().isAfter(from))
                 .mapToInt(SalaryDaily::getDoctorId).distinct().boxed()
                 .sorted()
                 .collect(Collectors.toList());
@@ -145,6 +168,63 @@ public class SalaryDailyService {
     }
 
 
+    public List<SalaryDaily>  showCurrentSalariesForToday(){
+        List<SalaryDaily> salaries = new ArrayList<>();
+        List<Talon> talons = talonService.getTalonsForToday();
+        List<Integer> doctorIds = doctorService.getAllActive().stream()
+                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+        doctorIds.forEach(doc->{
+            SalaryDaily salary = this.showCureentSalaryForDoctor(talons,doc);
+            salaries.add(salary);
+        });
+
+        return salaries;
+    }
+    public SalaryDaily showCureentSalaryForDoctor(List<Talon> list, int doctorId){
+        Doctor doctor = doctorService.getDoctor(doctorId);
+        List<Talon> talons = list.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .filter(talon -> talon.getDoctor().getId()==doctorId)
+                .collect(Collectors.toList());
+        SalaryDaily salary = new SalaryDaily();
+        salary.setDate(LocalDate.now());
+        salary.setDoctorId(doctorId);
+        salary.setName(doctor.getFullName());
+        salary.setFrom(LocalDate.now());
+
+        int stavka = 0;
+        int bonuses = 0;
+
+        if(salaryDTOService.fullTimeList.contains(doctorId)){
+            stavka = doctor.getRate()/30 - setting.get().getTax()/30 - setting.get().getCanteen();
+            if( LocalDate.now().getDayOfWeek().equals(DayOfWeek.SATURDAY)
+                    || LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)
+                    ) stavka+= setting.get().getCanteen();
+            salary.setStavka(stavka);
+            if(doctor.getProcedureIds().isEmpty()) return salary;
+            bonuses = salaryDTOService.generateBonusesForDoctor(talons);
+            salary.setBonuses(bonuses);
+            return salary;
+
+        }
+
+        if(talons.isEmpty()){
+            salary.setStavka( 0 - setting.get().getTax()/30 );
+            return salary;
+        }
+
+        stavka = doctor.getRate()/30 - setting.get().getTax()/30 - setting.get().getCanteen();
+
+        if( LocalDate.now().getDayOfWeek().equals(DayOfWeek.SATURDAY)
+                || LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)
+                ) stavka+= setting.get().getCanteen();
+        salary.setStavka(stavka);
+
+        bonuses = salaryDTOService.generateBonusesForDoctor(talons);
+        salary.setBonuses(bonuses);
+
+        return  salary;
+    }
 
 //-----------------------auxillary-------------------------------------------------
     public List<SalaryDaily> createSalariesForKhozDvor(int days) {
