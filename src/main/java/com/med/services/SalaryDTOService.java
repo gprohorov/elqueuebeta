@@ -11,18 +11,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.med.model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.med.model.Activity;
-import com.med.model.Doctor;
-import com.med.model.DoctorProcedureProcent;
-import com.med.model.Procedure;
-import com.med.model.SalaryDTO;
-import com.med.model.Talon;
 import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.SalaryDTORepository;
 
@@ -47,7 +42,10 @@ public class SalaryDTOService {
     @Autowired
     SettingsService settingsService;
 
-    private List<Integer> fullTimeList;
+    @Autowired
+    SalaryDailyService salaryDailyService;
+
+    public List<Integer> fullTimeList;
 
     @PostConstruct
     void init() {
@@ -55,6 +53,7 @@ public class SalaryDTOService {
             .filter(doc -> doc.getProcedureIds().isEmpty())
             .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
+        fullTimeList.add(5); // для Иры.
     }
 
     public List<SalaryDTO> getAll() {
@@ -85,10 +84,10 @@ public class SalaryDTOService {
     // он начисляет премию\штраф,  меняет ставку и процент за процедуры ,
     // а потом снова перегенерит.
     // Если всё ОК,  запоминает в базу.
-    // Генерить имеет смысл ТОЛЬКО  в субботу после 15.00, когда рабочий день
+    // Генерить имеет смысл ТОЛЬКО  в субботу после 16.00, когда рабочий день
     // закончен. В любой доугой день - некорректно.
     // В течении недели можно вынуть запись из базы и снова перегенерить.
-    // Через неделю в субботу в 18.00 ведомость закрывается и более никаких
+    // Через неделю в субботу в 16.00 ведомость закрывается и более никаких
     // правок вносить нельзя.
     // Учитывается недобор/перебор из прошлой ведомости.
     // В течение недели ведомость считается валидной и по ней можно получать
@@ -155,14 +154,23 @@ public class SalaryDTOService {
         }
 
         // int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
-        int stavka = dto.getHours() * doctor.getRate()
+/*        int stavka = dto.getHours() * doctor.getRate()
                 - daysTax * settingsService.get().getTax()/30
+                - daysWithoutSaturdays * settingsService.get().getCanteen();
+        */
+/*      DEPRICATED
+        int stavka =    doctor.getRate() *7/30
+                - 7 * settingsService.get().getTax()/30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
         dto.setStavka(stavka);
         if (fullTimeList.contains(doctorId)) stavka = 0;
+        */
+        SalaryDaily salaryDailySummary = salaryDailyService.showSummaryForPeriodForDoctor(
+                from.minusDays(7), to.plusDays(1), doctorId);
+        int stavka = salaryDailySummary.getStavka();
         dto.setStavka(stavka);
 
-        int accural = this.generateBonusesForDoctor(talons);
+        int accural = salaryDailySummary.getBonuses();
         dto.setAccural(accural);
 
         int total = rest + stavka + accural + dto.getAward() - dto.getPenalty();
@@ -174,11 +182,11 @@ public class SalaryDTOService {
     }
 
     private int generateStavkaForDoctor(Doctor doctor, int days, int hours) {
-        return doctor.getRate() * hours - settingsService.get().getTax() * 2 / 9
+        return doctor.getRate() * 7/30 - settingsService.get().getTax() * 7/30
             - settingsService.get().getCanteen() * ((days == 0) ? 0 : days - 1);
     }
 
-    private int generateBonusesForDoctor(List<Talon> talons) {
+    public int generateBonusesForDoctor(List<Talon> talons) {
         if (talons.isEmpty()) return 0;
         double sum = 0;
 
@@ -506,31 +514,6 @@ public class SalaryDTOService {
         return dto;
     }
 
-    // инжекция разных кверей. Так, на всякий случай.
-    public List<SalaryDTO> inject() {
-    	/*
-        List<SalaryDTO> list = repository.findAll().stream()
-            .filter(dto->dto.getWeek()==52)
-            .collect(Collectors.toList());
-        repository.deleteAll(list);
-        repository.findAll().stream()
-                .filter(dto->dto.getWeek()==48)
-                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
-                .forEach(dto->{
-                    dto.setStavka(dto.getStavka()-450);
-                    dto.setClosed(null);
-                    this.updateSalaryDTO(dto);
-                });
-        repository.findAll().stream()
-                .filter(dto->dto.getWeek()==1)
-                .forEach(dto->{
-                    dto.setWeek(53);
-                    repository.save(dto);
-                });
-
-    	*/
-        return null;
-    }
 
     public DoctorPeriodSalary getDoctorSalaryByJSON(JSONObject object) {
 
@@ -585,10 +568,7 @@ public class SalaryDTOService {
         int stavka = dto.getHours() * rate
                 - daysTax * settingsService.get().getTax() / 30
                 - daysWithoutSaturdays * settingsService.get().getCanteen();
-        System.out.println(daysTax);
-        System.out.println(dto.getHours() * rate);
-        System.out.println(daysTax * settingsService.get().getTax() / 30);
-        System.out.println(daysWithoutSaturdays * settingsService.get().getCanteen());
+ 
         if (doctorId == 2) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
@@ -633,4 +613,29 @@ public class SalaryDTOService {
         doctorService.updateDoctor(doctor);
     }
 
+    // инжекция разных кверей. Так, на всякий случай.
+    public List<SalaryDTO> inject() {
+    	/*
+        List<SalaryDTO> list = repository.findAll().stream()
+            .filter(dto->dto.getWeek()==52)
+            .collect(Collectors.toList());
+        repository.deleteAll(list);
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==48)
+                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
+                .forEach(dto->{
+                    dto.setStavka(dto.getStavka()-450);
+                    dto.setClosed(null);
+                    this.updateSalaryDTO(dto);
+                });
+        repository.findAll().stream()
+                .filter(dto->dto.getWeek()==1)
+                .forEach(dto->{
+                    dto.setWeek(53);
+                    repository.save(dto);
+                });
+
+    	*/
+        return null;
+    }
 }

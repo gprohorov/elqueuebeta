@@ -10,6 +10,8 @@ export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
+    private salaryOnDayUrl = config.api_path + '/salary/date';
+    private salarySummaryOnDayUrl = config.api_path + '/salary/daily';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
     private getDoctorSalaryBaseUrl = config.api_path + '/salary/doctor';
     private getDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor/preview';
@@ -32,6 +34,15 @@ export class FinanceService {
     
     getSalarySummary(from: string, to: string) {
         return this.http.get(this.salarySummaryUrl + '/' + from + '/' + to)
+            .pipe(catchError(this.handleError));
+    }
+    
+    getSalaryOnDay(date: string) {
+        return this.http.get(this.salaryOnDayUrl + '/' + date).pipe(catchError(this.handleError));
+    }
+    
+    getSalarySummaryOnDay(from: string, to: string) {
+        return this.http.get(this.salarySummaryOnDayUrl + '/' + from + '/' + to)
             .pipe(catchError(this.handleError));
     }
     

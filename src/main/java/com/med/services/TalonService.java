@@ -28,6 +28,8 @@ import com.med.model.balance.Receipt;
 import com.med.model.statistics.dto.procedure.ProcedureReceipt;
 import com.med.repository.TalonRepository;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class TalonService {
 
@@ -48,6 +50,12 @@ public class TalonService {
 
     @Autowired
     AccountingService accountingService;
+
+    @PostConstruct
+    void init() {
+       // inject();
+
+    }
 
     public Talon createTalon(String patientId, int procedureId, int days) {
         return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), days));
@@ -415,5 +423,21 @@ public class TalonService {
     @Scheduled(cron = "0 0 21 * * *")
     private void incrementDaysForAllPatientsOfToday() {
     	patientService.getAllForToday().stream().forEach(patient -> this.setDaysToPatientOfToday(patient));
+    }
+
+    public void inject(){
+
+        System.out.println("Injection");
+        List<Talon> talons =
+                //this.getAllTallonsBetween(LocalDate.now(), LocalDate.now().minusDays(2))
+        repository.findByDate(LocalDate.now().minusDays(1))
+                .stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .filter(talon -> talon.getDoctor().getId()==12)
+                .sorted(Comparator.comparing(Talon::getStart))
+                .collect(Collectors.toList());
+        talons.forEach(talon -> System.out.println(talon.getStart()));
+        System.out.println(talons.size());
+
     }
 }

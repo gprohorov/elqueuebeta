@@ -101,6 +101,8 @@
         </div>
         <div class="card-body p-0">
         	<div class="content">
+                <button class="btn btn-success btn-small mr-2" (click)="editPicture()"
+                    [disabled]="!procedureStarted || isEditablePicture">Редагувати</button>
                 <button class="btn btn-secondary btn-small" (click)="clearCanvas()"
                     [disabled]="!procedureStarted || !isEditablePicture">Очистити</button>
                 <button class="btn btn-primary btn-small" [style.width.px]="50"
