@@ -9,6 +9,7 @@ import { config } from '../../config';
 export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
+    private salaryPayrollUrl = config.api_path + '/salary/payroll';
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private salaryOnDayUrl = config.api_path + '/salary/date';
     private salarySummaryOnDayUrl = config.api_path + '/salary/daily';
@@ -30,6 +31,11 @@ export class FinanceService {
         let url = this.salaryUrl;
         if (week !== null) url += '/' + week;
         return this.http.get(url).pipe(catchError(this.handleError));
+    }
+    
+    getSalaryPayroll(from: string, to: string) {
+        return this.http.get(this.salaryPayrollUrl + '/' + from + '/' + to)
+            .pipe(catchError(this.handleError));
     }
     
     getSalarySummary(from: string, to: string) {

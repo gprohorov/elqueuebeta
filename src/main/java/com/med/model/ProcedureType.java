@@ -1,5 +1,5 @@
 package com.med.model;
 
 public enum ProcedureType {
-    COMMON, DIAGNOSTIC
+    COMMON, DIAGNOSTIC, USI
 }
