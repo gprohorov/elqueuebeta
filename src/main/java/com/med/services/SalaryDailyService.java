@@ -2,7 +2,9 @@ package com.med.services;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,13 +35,17 @@ public class SalaryDailyService {
     @Autowired
     SalaryDTOService salaryDTOService;
 
+    @Autowired
+    SalaryService salaryService;
+
     @PostConstruct
     void init() {
 //    	 This code has been commented to the HUI to prevent garbage accrue
 //    	
    // this.generateSalariesForToday();
-   //    this.createSalariesForKhozDvor(3);
+    //  this.createSalariesForKhozDvorForJan(31);
    //   this.injection();
+   //    this.inject2();
     }
 
     public SalaryDaily createSalaryDaily(SalaryDaily salaryDaily) {
@@ -59,6 +65,9 @@ public class SalaryDailyService {
     public SalaryDaily showSummaryForPeriodForDoctor(LocalDate from,
                                                      LocalDate to,
                                                      int doctorId){
+       // from = from.minusDays(1);
+       // to = to.plusDays(1);
+
         SalaryDaily salarySummary= new SalaryDaily();
         salarySummary.setDoctorId(doctorId);
         salarySummary.setName(doctorService.getDoctor(doctorId).getFullName());
@@ -114,7 +123,7 @@ public class SalaryDailyService {
         return this.createSalaryDaily(salary);
     }
 
-    @Scheduled(cron = "0 30 19 * * *")
+    @Scheduled(cron = "0 15 19 * * *")
     public List<SalaryDaily> generateSalariesForToday() {
         List<SalaryDaily> list = new ArrayList<>();
         doctorService.getAllActive().forEach(doctor -> 
@@ -132,11 +141,10 @@ public class SalaryDailyService {
         return this.repository.findAll().stream()
             .filter(salary -> salary.getDate().equals(date)).collect(Collectors.toList());
     }
+
+
     public List<SalaryDaily> getSalarySummaryForPeriod(LocalDate from, LocalDate to){
-        List<SalaryDaily> list = repository.findAll().stream()
-                .filter(salary->salary.getDate().isAfter(from.minusDays(1)))
-                .filter(salary->salary.getDate().isBefore(to.plusDays(1)))
-                .collect(Collectors.toList());
+        List<SalaryDaily> list = repository.findByDateBetween(from.minusDays(1), to.plusDays(1));
         List<Integer> doctorIds = list.stream()
                // .filter(salary->salary.getDate().isAfter(from))
                 .mapToInt(SalaryDaily::getDoctorId).distinct().boxed()
@@ -151,6 +159,17 @@ public class SalaryDailyService {
             doctorSummary.setName(doctor.getFullName());
             doctorSummary.setFrom(from);
             doctorSummary.setDate(to);
+
+            int days = (int) list.stream()
+                    .filter(salaryDaily -> salaryDaily.getBonuses() != 0)
+                    .count();
+            if (salaryDTOService.fullTimeList.contains(id)) {
+                days = (int) list.stream()
+                        .filter(salary->!salary.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY))
+                        .count();
+            }
+            doctorSummary.setDays(days);
+
             int stavka = list.stream()
                     .filter(salary->salary.getDoctorId()==id)
                     .mapToInt(SalaryDaily::getStavka)
@@ -225,26 +244,85 @@ public class SalaryDailyService {
 
         return  salary;
     }
+//--------------------------------  15 feb
+    public List<PermanentPayroll> getPermanentPayrollFromTo(LocalDate from, LocalDate to){
+        List<PermanentPayroll> list = new ArrayList<>() ;
 
-//-----------------------auxillary-------------------------------------------------
-    public List<SalaryDaily> createSalariesForKhozDvor(int days) {
+        List<SalaryDaily> summaries = getSalarySummaryForPeriod(from, to);
+
+        summaries.forEach(salary -> {
+            PermanentPayroll payroll = new PermanentPayroll();
+            payroll.setDoctorId(salary.getDoctorId());
+            payroll.setFrom(salary.getFrom());
+            payroll.setTo(salary.getDate());
+            payroll.setDays(salary.getDays());
+            payroll.setStavka(salary.getStavka());
+            payroll.setAccural(salary.getBonuses());
+
+            List<Salary> slrs = salaryService.getAllForDoctor(salary.getDoctorId())
+                    .stream()
+                    .filter(slr->slr.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                    .filter(slr->slr.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
+                    .collect(Collectors.toList());
+            int award = slrs.stream()
+                    .filter(slr->slr.getType().equals(SalaryType.AWARD))
+                    .mapToInt(Salary::getSum).sum();
+            payroll.setAward(award);
+
+            int penalty = slrs.stream()
+                    .filter(slr->slr.getType().equals(SalaryType.PENALTY))
+                    .mapToInt(Salary::getSum).sum();
+            payroll.setPenalty(penalty);
+
+            int buzunar = slrs.stream()
+                    .filter(slr->slr.getType().equals(SalaryType.BUZUNAR))
+                    .mapToInt(Salary::getSum).sum();
+            payroll.setRecd(buzunar);
+            list.add(payroll);
+        });
+        return list;
+    }
+
+    public PermanentPayroll calculatePayroll(Integer id
+            , List<SalaryDaily> salaries
+             , LocalDate from
+             , LocalDate to) {
+        PermanentPayroll payroll = new PermanentPayroll();
+        payroll.setDoctorId(id);
+        payroll.setName(doctorService.getDoctor(id).getFullName());
+        payroll.setFrom(from);
+        payroll.setTo(to);
+
+        return payroll;
+    }
+
+    //-----------------------auxillary-------------------------------------------------
+    public List<SalaryDaily> createSalariesForKhozDvorForJan(int days) {
         List<SalaryDaily> list = new ArrayList<>();
         List<Integer> khozdvor = doctorService.getAllActive().stream()
             .filter(doctor -> doctor.getProcedureIds().isEmpty())
             .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         khozdvor.add(2);
+        khozdvor.add(5);
+        LocalDate jan01 = LocalDate.of(2019, Month.JANUARY,1);
         khozdvor.stream().forEach(item -> {
-            for (int i =1; i<=days; i++) {
+            for (int i =0; i<days; i++) {
                 SalaryDaily salaryDaily = new SalaryDaily();
                 salaryDaily.setDoctorId(item);
                 salaryDaily.setName(doctorService.getDoctor(item).getFullName());
-                salaryDaily.setDate(LocalDate.now().minusDays(i));
-                salaryDaily.setStavka(
-        			doctorService.getDoctor(item).getRate() / 30 - setting.get().getTax() / 30);
+                salaryDaily.setDate(jan01.plusDays(i));
+                int stavka = doctorService.getDoctor(item).getRate() / 30 - setting.get().getTax() / 30
+                        - setting.get().getCanteen();
+                if (jan01.plusDays(i).getDayOfWeek().equals(DayOfWeek.SUNDAY)) stavka +=setting.get().getCanteen();
+                if (jan01.plusDays(i).getDayOfWeek().equals(DayOfWeek.SATURDAY)) stavka +=setting.get().getCanteen();
+                salaryDaily.setStavka(stavka);
+
                 list.add(salaryDaily);
             }
         });
-        return repository.saveAll(list);
+        List<SalaryDaily> sorted = list.stream().sorted(Comparator.comparing(SalaryDaily::getDoctorId)).collect(Collectors.toList());
+
+        return repository.saveAll(sorted);
     }
 
     public void injection(){
@@ -253,4 +331,13 @@ public class SalaryDailyService {
             this.generateSalariesForDate(LocalDate.now().minusDays(i));
         }
     }
+
+    public void inject2(){
+        LocalDate start = LocalDate.of(2019,Month.JANUARY,1).minusDays(1);
+        LocalDate finish = LocalDate.of(2019,Month.JANUARY,31).plusDays(1);
+        repository.deleteAll(repository.findByDateBetween(start, finish));
+    }
+
+
+
 }

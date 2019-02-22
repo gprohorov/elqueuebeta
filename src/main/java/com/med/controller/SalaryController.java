@@ -128,12 +128,12 @@ public class SalaryController {
         @PathVariable(value = "to") String to) {
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
-
+/*
     @RequestMapping("/inject")
     public List<SalaryDTO> inject() {
         return salaryDTOService.inject();
     }
-    
+    */
     @RequestMapping("/doctor/{doctorId}/{from}/{to}")
     public DoctorPeriodSalary getDoctorSalaryForPeriod(
         @PathVariable(value = "doctorId") int doctorId,
@@ -168,5 +168,14 @@ public class SalaryController {
         return salaryDailyService.getSalarySummaryForPeriod(
                 LocalDate.parse(from), LocalDate.parse(to));
     }
+
+    @RequestMapping("/payroll/{from}/{to}")
+    public List<PermanentPayroll> getPayrollForPeriod(
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to) {
+        return salaryDailyService.getPermanentPayrollFromTo(
+                LocalDate.parse(from), LocalDate.parse(to));
+    }
+
 
 }

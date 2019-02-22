@@ -54,6 +54,10 @@ public class SalaryDTOService {
             .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
         fullTimeList.add(5); // для Иры.
+/*
+       this.inject1();
+       this.inject2();
+       this.createNewTable();*/
     }
 
     public List<SalaryDTO> getAll() {
@@ -96,7 +100,7 @@ public class SalaryDTOService {
 
     public SalaryDTO generateRowOfDoctor(int doctorId) {
         SalaryDTO dto = new SalaryDTO();
-        LocalDate from = LocalDate.now().minusDays(5);
+        LocalDate from = LocalDate.now().minusDays(6);
         LocalDate to = LocalDate.now();
 
         dto.setFrom(from);
@@ -115,7 +119,7 @@ public class SalaryDTOService {
         int rest = this.generateRestForDoctorFromLastTable(doctor);
         dto.setRest(rest);
 
-        List<Talon> talons = talonService.getAllTallonsBetween(from.minusDays(1),to.plusDays(1))
+        List<Talon> talons = talonService.getAllTallonsBetween(from,to.plusDays(1))
            .stream()
            // .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
            .filter( talon -> talon.getDoctor()!= null )
@@ -166,7 +170,9 @@ public class SalaryDTOService {
         if (fullTimeList.contains(doctorId)) stavka = 0;
         */
         SalaryDaily salaryDailySummary = salaryDailyService.showSummaryForPeriodForDoctor(
-                from.minusDays(7), to.plusDays(1), doctorId);
+                from.minusDays(1), to.plusDays(1), doctorId);
+     //   System.out.println(from.toString());
+    //    System.out.println(to.toString());
         int stavka = salaryDailySummary.getStavka();
         dto.setStavka(stavka);
 
@@ -243,10 +249,8 @@ public class SalaryDTOService {
     // ПРИ ЭТОМ актуальная ведомость (за позпрошлую неделю закрывается,
     // а остатки из неё переносятся в новую таблу)
     // Новая ведомость заносится в базу и становится актуальной
-    //  хоз двору начисляются только дни и часы,  зп им в конце мксяца
-    //  Ире -регистратура ()  ставка тоже в конце месяца, а бонусы   начисляются здесь
 
-    @Scheduled(cron = "0 0 16 ? * SAT")
+    @Scheduled(cron = "0 20 19 ? * SAT")
     public List<SalaryDTO> createNewTable() {
         LocalDate today = LocalDate.now();
         List<SalaryDTO> list = this.generateSalaryWeekTable(today.minusDays(6), today.plusDays(1));
@@ -379,7 +383,7 @@ public class SalaryDTOService {
     }
 
     // каждый месяц 28 числа в 16.10  начисляем зп хоздвору
-    @Scheduled(cron = "0 10 16 28 * ?")
+  //  @Scheduled(cron = "0 10 16 28 * ?")
     public List<SalaryDTO> injectSalaryForKhozDvor() {
         List<SalaryDTO> list = this.getOpenTable().stream()
             .filter(item-> fullTimeList.contains(item.getDoctorId()))
@@ -614,28 +618,32 @@ public class SalaryDTOService {
     }
 
     // инжекция разных кверей. Так, на всякий случай.
-    public List<SalaryDTO> inject() {
-    	/*
+    public void inject1() {
+
         List<SalaryDTO> list = repository.findAll().stream()
-            .filter(dto->dto.getWeek()==52)
+            .filter(dto->dto.getWeek()==58)
             .collect(Collectors.toList());
         repository.deleteAll(list);
         repository.findAll().stream()
-                .filter(dto->dto.getWeek()==48)
-                .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
+                .filter(dto->dto.getWeek()==57)
+              //  .filter(dto->!fullTimeList.contains(dto.getDoctorId()))
                 .forEach(dto->{
-                    dto.setStavka(dto.getStavka()-450);
                     dto.setClosed(null);
                     this.updateSalaryDTO(dto);
                 });
+    }
+
+    public void inject2(){
         repository.findAll().stream()
-                .filter(dto->dto.getWeek()==1)
+                .filter(dto->dto.getWeek()==57)
+                .filter(dto->fullTimeList.contains(dto.getDoctorId()))
                 .forEach(dto->{
-                    dto.setWeek(53);
-                    repository.save(dto);
+                    Doctor doctor = doctorService.getDoctor(dto.getDoctorId());
+                    int stavka = doctor.getRate()*7/30 - settingsService.get().getTax()*7/30
+                            - 100;
+                      dto.setStavka(stavka);
+                    this.updateSalaryDTO(dto);
                 });
 
-    	*/
-        return null;
     }
 }

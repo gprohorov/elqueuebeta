@@ -61,12 +61,16 @@ public class SalaryService {
         return repository.findAll();
     }
 
+    public  List<Salary> getAllForDoctor(int doctorId){
+        return repository.findByDoctorId(doctorId);
+    }
+
     // вносит в базу списком обязат недельные платежи (за часы, минус налог, минус обед)
     public List<Salary> createWeekSalaryForDoctor(int doctorId) {
         List<Salary> list = new ArrayList<>();
         list.add(new Salary(doctorId, LocalDateTime.now(), SalaryType.TAX, TAX));
 
-        // TODO: Make by MongoRepository
+
         List<Talon> talons = talonService.getAllTallonsBetween(
     		LocalDate.now().minusDays(6), LocalDate.now().plusDays(1)).stream()
     		.filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
