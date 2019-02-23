@@ -188,7 +188,7 @@ public class SalaryDTOService {
     }
 
     private int generateStavkaForDoctor(Doctor doctor, int days, int hours) {
-        return doctor.getRate() * 7/30 - settingsService.get().getTax() * 7/30
+        return doctor.getRate() * (days+1)/30 - settingsService.get().getTax() * 7/30
             - settingsService.get().getCanteen() * ((days == 0) ? 0 : days - 1);
     }
 
@@ -238,9 +238,9 @@ public class SalaryDTOService {
     }
 
     // TODO: Make by MongoRepository
+    // Done!
     public List<SalaryDTO> getOpenTable() {
-        return repository.findAll().stream().filter(dto->dto.getClosed() == null)
-            .collect(Collectors.toList());
+        return repository.findByClosed(null);
     }
 
     // Генериться автоматически КРОНОМ
@@ -291,9 +291,9 @@ public class SalaryDTOService {
         if (dto == null) return null;
 
         int stavka = this.generateStavkaForDoctor(doctor, dto.getDays(), dto.getHours());
+
         if (fullTimeList.contains(doctorId)) {
-            if (dto.getStavka() == 0) stavka = 0;
-            else stavka = doctor.getRate();
+                   stavka = doctor.getRate()*7/30;
         }
         dto.setStavka(stavka);
         dto.setKredit(doctor.getKredit());

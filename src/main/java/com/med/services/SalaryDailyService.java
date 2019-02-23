@@ -153,10 +153,13 @@ public class SalaryDailyService {
             doctorSummary.setDate(to);
 
             int days = (int) list.stream()
-                .filter(salaryDaily -> salaryDaily.getBonuses() != 0).count();
+                .filter(salaryDaily -> salaryDaily.getBonuses() != 0)
+                .filter(salaryDaily -> salaryDaily.getDoctorId()==id).count();
             if (salaryDTOService.fullTimeList.contains(id)) {
                 days = (int) list.stream()
-                .filter(salary->!salary.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY)).count();
+                .filter(salary->!salary.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY))
+                 .filter(salary->salary.getDoctorId()==id)
+                        .count();
             }
             doctorSummary.setDays(days);
 
@@ -249,15 +252,17 @@ public class SalaryDailyService {
                     .filter(slr->slr.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
                     .filter(slr->slr.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
                     .collect(Collectors.toList());
+          //  System.out.println(slrs.get(0).getDateTime().toLocalDate());
+          //  System.out.println(from);
             int award = slrs.stream()
                     .filter(slr->slr.getType().equals(SalaryType.AWARD))
                     .mapToInt(Salary::getSum).sum();
-            payroll.setAward(award);
+          //  payroll.setAward(award);
 
             int penalty = slrs.stream()
                     .filter(slr->slr.getType().equals(SalaryType.PENALTY))
                     .mapToInt(Salary::getSum).sum();
-            payroll.setPenalty(penalty);
+           // payroll.setPenalty(penalty);
 
             int buzunar = slrs.stream()
                     .filter(slr->slr.getType().equals(SalaryType.BUZUNAR))
