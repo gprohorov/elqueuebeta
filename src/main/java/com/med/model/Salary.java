@@ -63,4 +63,15 @@ public class Salary {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
+    @Override
+    public String toString() {
+        return "Salary{" +
+                "id='" + id + '\'' +
+                ", doctorId=" + doctorId +
+                ", dateTime=" + dateTime +
+                ", type=" + type +
+                ", sum=" + sum +
+                '}';
+    }
 }

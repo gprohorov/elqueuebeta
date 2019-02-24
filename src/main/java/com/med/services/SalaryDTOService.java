@@ -53,11 +53,12 @@ public class SalaryDTOService {
             .filter(doc -> doc.getProcedureIds().isEmpty())
             .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
-        fullTimeList.add(5); // для Иры.
+        fullTimeList.add(5); // для ЮВ
 /*
        this.inject1();
        this.inject2();
        this.createNewTable();*/
+     //   this.inject3();
     }
 
     public List<SalaryDTO> getAll() {
@@ -646,4 +647,14 @@ public class SalaryDTOService {
                 });
 
     }
+    public void inject3(){
+        SalaryDTO dto = this.repository.findByClosed(null).stream()
+                .filter(item->item.getDoctorId()==3)
+                .findFirst().get();
+        dto.setAward(8000);
+        System.out.println("--------------INJECTED-3");
+        this.updateSalaryDTO(dto);
+
+    }
+
 }
