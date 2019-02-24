@@ -45,6 +45,7 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
     }
     
     load() {
+        this.loading = true;
         this.data = [];
         this.sub = this.service.getSalaryPayroll(this.from, this.to).subscribe(
             data => {

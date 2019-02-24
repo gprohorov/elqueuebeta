@@ -88,6 +88,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
     }
     
     loadBaseValues() {
+        this.loading = true;
         this.subBaseValues = this.financeService.getDoctorSalaryBase(this.id, this.from, this.to).subscribe(
             data => {
                 this.loading = false;

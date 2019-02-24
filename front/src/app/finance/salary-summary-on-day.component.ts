@@ -41,6 +41,7 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
     }
     
     load() {
+        this.loading = true;
         this.data = [];
         this.sub = this.service.getSalarySummaryOnDay(this.from, this.to).subscribe(
             data => {
