@@ -2,6 +2,7 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,6 +24,8 @@ import com.med.model.SalaryType;
 import com.med.model.Settings;
 import com.med.model.Talon;
 import com.med.repository.SalaryRepository;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class SalaryService {
@@ -51,6 +54,11 @@ public class SalaryService {
     
     @Autowired
     SettingsService settingsService;
+
+    @PostConstruct
+    void init(){
+     //   this.inject1();
+    }
 
     // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
     public Salary createSalary(Salary salary) {
@@ -356,5 +364,19 @@ public class SalaryService {
         dto.setTotal(total);
         dto.setActual(total - recd);
         return dto;
+    }
+    private void inject1(){
+        LocalDate date1 = LocalDate.of(2019, Month.JANUARY,3);
+        LocalDate date2 = LocalDate.of(2018, Month.DECEMBER,31);
+        List<Salary> list = this.repository.findAll().stream()
+                .filter(salary -> salary.getDateTime().toLocalDate().equals(date1))
+                .filter(salary -> !salary.getType().equals(SalaryType.EXTRACTION))
+                .collect(Collectors.toList());
+        list.forEach(salary -> {
+            System.out.println(salary);
+            salary.setDateTime(date2.atTime(8,45));
+            repository.save(salary);
+        });
+
     }
 }

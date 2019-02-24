@@ -80,7 +80,7 @@ public class SalaryController {
                     .filter(row->row.getDoctorId()==dto.getDoctorID())
                     .filter(row->row.getClosed()==null)
                     .findAny().get();
-            record.setAward(dto.getAward());
+            record.setAward(record.getAward() + dto.getAward());
             salaryDTOService.updateSalaryDTO(record);
         }
 
@@ -95,7 +95,7 @@ public class SalaryController {
                     .filter(row->row.getDoctorId()==dto.getDoctorID())
                     .filter(row->row.getClosed()==null)
                     .findAny().get();
-            record.setPenalty(dto.getPenalty());
+            record.setPenalty(record.getPenalty() + dto.getPenalty());
             salaryDTOService.updateSalaryDTO(record);
         }
     }
