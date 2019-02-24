@@ -1,7 +1,10 @@
 ﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { AlertService, FinanceService } from '../_services/index';
+
+import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
 
 @Component({
     templateUrl: './salary-payroll.component.html'
@@ -24,6 +27,7 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
 
     constructor(
         private alertService: AlertService,
+        private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
         private service: FinanceService) { }
 
@@ -38,6 +42,19 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
+    }
+    
+    editDoctor(id) {
+        window.open('/#/doctor-form;id=' + id, '_blank');
+    }
+    
+    showSalaryHistoryPopup(doctor: any) {
+        const options: any = {
+            title: 'Історія виплат',
+            childComponent: DoctorSalaryHistoryModalComponent,
+            data: doctor
+        };
+        this.modalService.openDialog(this.viewRef, options);
     }
     
     isValid() {

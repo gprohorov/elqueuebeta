@@ -24,6 +24,7 @@
   <table class="table table-bordered">
     <thead class="thead-dark small">
       <tr class="text-center">
+        <th></th>
         <th>Доктор</th>
         <th>Днів</th>
         <th>Ставка</th>
@@ -37,6 +38,14 @@
     </thead>
     <tbody *ngIf="data.length > 0">
       <tr *ngFor="let item of data">
+        <td>
+          <a class="btn btn-success" title="Розрахунок за вибраними ставками"
+            [routerLink]="['/finance/salary-preview/', { id: item.doctorId, from: from, to: to }]">
+              <i class="fa fa-eye" aria-hidden="true"></i></a>
+          <button class="btn btn-info" title="Історія виплат" 
+            (click)="showSalaryHistoryPopup(item)">
+              <i class="fa fa-usd" aria-hidden="true"></i></button>
+        </td>
         <td class="text-nowrap" title="{{item.name}}">{{item.name}}</td>
         <td class="text-right text-nowrap">{{item.days}}</td>
         <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
