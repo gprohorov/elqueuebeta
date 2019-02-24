@@ -23,10 +23,10 @@ import com.med.services.UserService;
 import com.med.services.WorkPlaceService;
 
 @RestController
-@RequestMapping("/api/workplace")
+@RequestMapping("/api/workplace/usi")
 @CrossOrigin("*")
 public class UsiController {
-/*
+
     @Autowired
     TailService tailService;
 
@@ -71,11 +71,6 @@ public class UsiController {
          return userService.getCurrentUserInfo().getProcedureIds().contains(Integer.valueOf(procedureId));
     }
 
-    @RequestMapping("/tails")
-    public List<Tail> getHotTails() {
-        return workPlaceService.getTailsForDoctor(userService.getCurrentUserInfo().getId());
-    }
-
     @GetMapping("/patient/{patientId}/{procedureId}")
     public TalonPatient getTalonAndPatientNew(
         @PathVariable(value = "patientId") String patientId,
@@ -101,5 +96,5 @@ public class UsiController {
     public Talon addZone(@PathVariable(value = "talonId") String talonId) {
     	return  workPlaceService.addZone(talonId);
     }
-*/
+
 }
