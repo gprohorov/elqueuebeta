@@ -137,4 +137,20 @@ public class CashBox {
 	public void setPatient(String patient) {
 		this.patient = patient;
 	}
+
+    @Override
+    public String toString() {
+        return "CashBox{" +
+                "id='" + id + '\'' +
+                ", dateTime=" + dateTime +
+                ", patientId='" + patientId + '\'' +
+                ", doctorId=" + doctorId +
+                ", type=" + type +
+                ", itemId='" + itemId + '\'' +
+                ", desc='" + desc + '\'' +
+                ", sum=" + sum +
+                ", doctor='" + doctor + '\'' +
+                ", patient='" + patient + '\'' +
+                '}';
+    }
 }

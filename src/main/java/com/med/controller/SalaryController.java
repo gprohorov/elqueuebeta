@@ -126,6 +126,7 @@ public class SalaryController {
         @PathVariable(value = "doctor") int doctorId,
         @PathVariable(value = "from") String from,
         @PathVariable(value = "to") String to) {
+       // System.out.println("124 line");
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 /*
