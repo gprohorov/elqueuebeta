@@ -233,7 +233,7 @@ public class SalaryService {
 					+ doctorService.getDoctor(salary.getDoctorId()).getFullName()
     			, salary.getSum());
     	cashBoxUP.setItemId(extractionItemId);
-    	cashBoxService.saveCash(cashBoxUP);
+    	cashBoxService.createCash(cashBoxUP);
     	
     	// kassa is down by this salary
     	CashBox cashBox = new CashBox(
@@ -244,7 +244,7 @@ public class SalaryService {
     			, "з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
     			, -1*salary.getSum());
     	cashBox.setItemId(salaryItemId);
-    	cashBoxService.saveCash(cashBox);
+    	cashBoxService.createCash(cashBox);
     	
     	this.createSalary(salary);
     	dto.setRecd(dto.getRecd() + salary.getSum());
