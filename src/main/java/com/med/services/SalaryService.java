@@ -58,6 +58,7 @@ public class SalaryService {
     @PostConstruct
     void init(){
      //   this.inject1();
+     //   this.extract1();
     }
 
     // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
@@ -263,6 +264,7 @@ public class SalaryService {
     
     // TODO: Make by MongoRepository
     public List<CashBox> getPaymentsByDoctor(int doctorId, LocalDate from, LocalDate to) {
+
     	return cashBoxService.getAll().stream()
     			.filter(cashBox -> cashBox.getDoctorId() == doctorId)
     			.filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
@@ -379,4 +381,19 @@ public class SalaryService {
         });
 
     }
+    void extract1(){
+        LocalDate from = LocalDate.of(2019,Month.JANUARY,1);
+        LocalDate to = LocalDate.of(2019,Month.FEBRUARY,23);
+        int doctorId =22;
+        cashBoxService.getAll().stream()
+                .filter(cashBox -> cashBox.getDoctorId() == doctorId)
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                .forEach(System.out::println);
+        System.out.println("----------------------------------------------------");
+        this.getAll().stream()
+                .filter(salary -> salary.getDoctorId() == doctorId)
+                .filter(salary -> salary.getDateTime().toLocalDate().isAfter(from))
+                .forEach(System.out::println);
+    }
+
 }

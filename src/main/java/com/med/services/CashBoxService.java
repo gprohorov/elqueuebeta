@@ -2,7 +2,10 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ import com.med.model.SalaryType;
 import com.med.model.Settings;
 import com.med.repository.CashRepository;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class CashBoxService {
 
@@ -25,7 +30,18 @@ public class CashBoxService {
     SalaryService salaryService;
 
     @Autowired
-    SettingsService settingsService; 
+    SettingsService settingsService;
+
+    @Autowired
+    DoctorService doctorService;
+
+    @Autowired
+    SettingsService settings;
+
+    @PostConstruct
+    void init(){
+    //  this.inject1();
+    }
 
     public List<CashBox> getAll() {
         return repository.findAll();
@@ -100,4 +116,69 @@ public class CashBoxService {
     public void saveAll(List<CashBox> list) {
     	repository.saveAll(list);
     }
+
+    //----------------------  injection
+
+    // чего не достает  в кешбоксе  - взять из селери
+    private void inject1(){
+         int doctorId = 2;
+         LocalDateTime date1 = LocalDateTime.of(2019,Month.FEBRUARY,2,13,38);
+         LocalDateTime date2 = LocalDateTime.of(2019,Month.FEBRUARY,20,8,4);
+         this.injectPair(doctorId,date1,4000);
+         this.injectPair(doctorId,date2,300);
+
+          doctorId = 4;
+         date1 = LocalDateTime.of(2019,Month.FEBRUARY,12,13,43,3);
+        this.injectPair(doctorId,date1,9000);
+
+        doctorId =5;
+        date1 = LocalDateTime.of(2019,Month.FEBRUARY,12,8,26,27);
+        this.injectPair(doctorId,date1,2000);
+        //
+          doctorId =8;
+        date1 = LocalDateTime.of(2019,Month.FEBRUARY,23,14,18,37);
+       this.injectPair(doctorId,date1,2500);
+
+          doctorId = 17;
+        date1 = LocalDateTime.of(2019,Month.FEBRUARY,8,9,21,50);
+      this.injectPair(doctorId,date1,1500);
+
+          doctorId = 19;
+        date1 = LocalDateTime.of(2019,Month.FEBRUARY,19,10,19,43);
+    this.injectPair(doctorId,date1,5400);
+
+          doctorId = 22;
+        date1 = LocalDateTime.of(2019,Month.FEBRUARY,9,14,1,21);
+        date2 = LocalDateTime.of(2019,Month.FEBRUARY,23,14,19,36);
+     this.injectPair(doctorId,date1,3140);
+     this.injectPair(doctorId,date2,2200);
+
+    }
+    private List<CashBox> injectPair(int doctorId, LocalDateTime dateTime, int sum){
+        List<CashBox> list = new ArrayList<>();
+
+        CashBox inCashBox = new CashBox();
+        inCashBox.setType(CashType.EXTRACTION);
+        inCashBox.setDateTime(dateTime);
+        inCashBox.setDoctorId(1);
+        inCashBox.setDesc("поповнення каси для видачы з.п. " +
+                doctorService.getDoctor(doctorId).getFullName());
+        inCashBox.setSum(sum);
+        inCashBox.setItemId(settings.get().getExtractionItemId());
+        list.add(inCashBox);
+
+        CashBox outCashBox = new CashBox();
+        outCashBox.setType(CashType.SALLARY);
+        outCashBox.setDateTime(dateTime);
+        outCashBox.setDoctorId(doctorId);
+        outCashBox.setDesc("з.п. " +
+                doctorService.getDoctor(doctorId).getFullName());
+        outCashBox.setSum(-1*sum);
+        outCashBox.setItemId(settings.get().getSalaryItemId());
+        list.add(outCashBox);
+        System.out.println(" ----------  pair is injected");
+        return repository.saveAll(list);
+    }
+
+
 }
