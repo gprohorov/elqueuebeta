@@ -19,6 +19,7 @@ public class Therapy {
     private String codeDiag;
     private String notes;
     private List<Assignment> assignments;
+    private List<Usi> usi;
     private int days;
     @Transient
     private Boolean manualTherapy;
