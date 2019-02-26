@@ -121,7 +121,9 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         this.subCalcValues = this.financeService.saveDoctorSalaryPreview({
             id: this.id,
             rate: this.rate,
-            percents: this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; })
+            percents: this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; }),
+            from: this.from, 
+            to: this.to
         }).subscribe(data => {
                 this.loading = false;
                 this.alertService.success('Дані успішно збережені', true);

@@ -127,10 +127,21 @@
         </div>
         <div class="card-body" [innerHTML]="item.talon.desc"></div>
     </div>
-    <label for="comment">Додати коментар:</label>
-    <textarea rows="5" class="form-control" [(ngModel)]="model.comment" [disabled]="loading"></textarea>
-    <button class="btn btn-primary pull-right mb-3" [disabled]="model.comment == '' || loading"
-        (click)="comment()">Додати</button>
+    <div class="row mt-3">
+      <div class="col">
+        <label for="comment">Додати коментар:</label>
+        <textarea rows="5" class="form-control" [(ngModel)]="model.comment" [disabled]="loading"></textarea>
+        <button class="btn btn-primary pull-right mb-3" [disabled]="model.comment == '' || loading"
+            (click)="comment()">Додати</button>
+      </div>
+    </div>
+    <div class="card mb-5" *ngIf="isUSI">
+        <div class="card-header">
+            <button class="btn btn-success pull-right">Редагувати</button>
+            <h4>Заключення УЗД</h4>
+        </div>
+        <div class="card-body"></div>
+    </div>
     <div class="row mt-3">
         <div class="col">
             <button class="btn btn-primary btn-lg btn-block" [style.min-height.px]="100"

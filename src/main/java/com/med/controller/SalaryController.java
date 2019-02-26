@@ -155,7 +155,7 @@ public class SalaryController {
     @RequestMapping("/date/{date}")
     public List<SalaryDaily> getSalariesForDate(@PathVariable(value = "date") String date) {
         int hour = 19; // 19.00 the time when salaries are written to base
-        if ( LocalDate.parse(date).equals(LocalDate.now()) && LocalDateTime.now().getHour()<hour){
+        if (LocalDate.parse(date).equals(LocalDate.now()) && LocalDateTime.now().getHour()<hour) {
             return salaryDailyService.showCurrentSalariesForToday();
         }
         return salaryDailyService.getSalariesForDate(LocalDate.parse(date));

@@ -67,7 +67,8 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     executeProcedure(talonId: string, patient: any, group: any) {
         if (this.authService.isSuperadmin()) {
             window.open('/#/workplace/' + (group.procedureType == 'DIAGNOSTIC'
-                ? 'diagnostic/' + patient.id : 'common/' + patient.id + '/' + group.procedureId), '_blank');
+                ? 'diagnostic/' + patient.id 
+                : 'common/' + patient.id + '/' + group.procedureId), '_blank');
         } else if (confirm('Виконати процедуру "' + group.procedureName
             + '" для пацієнта "' + patient.person.fullName + '" ?')) {
             this.subTemp = this.service.executeProcedure(talonId).subscribe(() => {

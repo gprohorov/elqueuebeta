@@ -37,6 +37,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     patientId: string;
     procedureId: number;
     procedureStarted = false;
+    isUSI = false;
     model: any = { comment: '' };
 
     constructor(
@@ -73,6 +74,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
             this.item = data;
             this.loading = false;
             this.procedureStarted = ('ON_PROCEDURE' === this.item.talon.activity);
+            this.isUSI = ('USI' === this.item.talon.procedure.procedureType);
 
             setTimeout(() => {
                 if (this.item.patient.therapy 
