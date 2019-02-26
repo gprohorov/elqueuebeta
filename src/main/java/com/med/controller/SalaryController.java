@@ -140,16 +140,19 @@ public class SalaryController {
         @PathVariable(value = "doctorId") int doctorId,
         @PathVariable(value = "from") String from,
         @PathVariable(value = "to") String to) {
+
         return salaryDTOService.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/doctor/preview")
     public DoctorPeriodSalary getDoctorSalaryPreview(@Valid @RequestBody String data) {
+        System.out.println(" ---  preview ----");
         return salaryDTOService.getDoctorSalaryByJSON(new JSONObject(data));
     }
     
     @RequestMapping("/doctor/preview/save")
     public void saveDoctorSalaryPreview(@Valid @RequestBody String data) {
+
     	salaryDTOService.saveDoctorSalaryByJSON(new JSONObject(data));
     }
     

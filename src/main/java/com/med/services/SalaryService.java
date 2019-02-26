@@ -58,7 +58,7 @@ public class SalaryService {
     @PostConstruct
     void init(){
      //   this.inject1();
-        this.extract1();
+     //   this.extract1();
     }
 
     // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
@@ -384,14 +384,14 @@ public class SalaryService {
     void extract1(){
         LocalDate from = LocalDate.of(2019,Month.JANUARY,1);
         LocalDate to = LocalDate.of(2019,Month.FEBRUARY,23);
+        int doctorId =22;
         cashBoxService.getAll().stream()
-                .filter(cashBox -> cashBox.getDoctorId() == 2)
+                .filter(cashBox -> cashBox.getDoctorId() == doctorId)
                 .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
-                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isBefore(to.plusDays(1)))
                 .forEach(System.out::println);
         System.out.println("----------------------------------------------------");
         this.getAll().stream()
-                .filter(salary -> salary.getDoctorId() ==2)
+                .filter(salary -> salary.getDoctorId() == doctorId)
                 .filter(salary -> salary.getDateTime().toLocalDate().isAfter(from))
                 .forEach(System.out::println);
     }

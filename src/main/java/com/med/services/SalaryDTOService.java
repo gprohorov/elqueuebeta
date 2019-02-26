@@ -3,6 +3,7 @@ package com.med.services;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -284,6 +285,7 @@ public class SalaryDTOService {
     public SalaryDTO recalculateDTO(int doctorId) {
     	Doctor doctor = doctorService.getDoctor(doctorId);
     	// TODO: Make by MongoRepository
+       System.out.println(" ----------   204 line -------");
         SalaryDTO dto = repository.findAll().stream()
             .filter(el->el.getClosed() == null)
             .filter(el->el.getDoctorId() == doctorId)
@@ -465,9 +467,8 @@ public class SalaryDTOService {
         dto.setName(doctor.getFullName());
         List<Talon> talons = talonService.getAllTallonsBetween(from, to)
             .stream()
-            .filter( talon -> talon.getDoctor() != null )
+            .filter( talon -> talon.getActivity().equals(Activity.EXECUTED) )
             .filter( talon -> talon.getDoctor().getId() == doctorId )
-            .filter( talon -> talon.getExecutionTime() != null )
             .collect(Collectors.toList());
 
         List<LocalDate> dateList = talons.stream().map(talon -> talon.getDate()).collect(Collectors.toList());
@@ -491,11 +492,13 @@ public class SalaryDTOService {
         int daysWithoutSaturdays = (int) dateList.stream().distinct()
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1)) - 1;
-        // int daysTax = days;
-        int stavka = dto.getHours() * doctor.getRate()
+/*        int stavka = dto.getDays() * doctor.getRate()/30
             - daysTax * settingsService.get().getTax() / 30
-            - daysWithoutSaturdays * settingsService.get().getCanteen();
-        if (doctorId == 2) {
+             - ( daysWithoutSaturdays - days) * settingsService.get().getCanteen()  ;*/
+        int stavka = salaryDailyService
+                .getSalaryListForPeriodForDoctor(from.minusDays(1), to.plusDays(1),doctorId)
+                .stream().mapToInt(SalaryDaily::getStavka).sum();
+        if (doctorId == 2 || doctorId == 5) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
             stavka = (doctor.getRate() / 30) * daysTax;
@@ -570,11 +573,11 @@ public class SalaryDTOService {
             .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1))-1;
         // int daysTax = days;
-        int stavka = dto.getHours() * rate
+        int stavka = dto.getDays() * rate/30
                 - daysTax * settingsService.get().getTax() / 30
-                - daysWithoutSaturdays * settingsService.get().getCanteen();
+                - ( days -daysWithoutSaturdays )* settingsService.get().getCanteen();
  
-        if (doctorId == 2) {
+        if (doctorId == 2 || doctorId == 5) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
             stavka = (rate / 30) * daysTax;
@@ -616,7 +619,16 @@ public class SalaryDTOService {
         doctor.setRate(rate);
         doctor.setPercents(procedureProcentList);
         doctorService.updateDoctor(doctor);
+
+//-----------------
+
+        LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
+        LocalDate to = LocalDate.of(2019, Month.JANUARY,7);
+
+        salaryDailyService.reGenerateSalaryForDoctorFromTo(doctorId, from, to );
+
     }
+
 
     // инжекция разных кверей. Так, на всякий случай.
     public void inject1() {

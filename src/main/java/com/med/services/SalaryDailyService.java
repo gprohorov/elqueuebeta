@@ -144,7 +144,9 @@ public class SalaryDailyService {
 
     public List<SalaryDaily> getSalariesForDate(LocalDate date) {
         return this.repository.findAll().stream()
-            .filter(salary -> salary.getDate().equals(date)).collect(Collectors.toList());
+            .filter(salary -> salary.getDate().equals(date))
+            .sorted(Comparator.comparing(SalaryDaily::getDoctorId))
+              .collect(Collectors.toList());
     }
 
     public List<SalaryDaily> getSalarySummaryForPeriod(LocalDate from, LocalDate to){
@@ -267,17 +269,13 @@ public class SalaryDailyService {
             int award = slrs.stream()
                     .filter(slr->slr.getType().equals(SalaryType.AWARD))
                     .mapToInt(Salary::getSum).sum();
-            slrs.stream()
-                    .filter(slr->slr.getType().equals(SalaryType.AWARD))
-                    .forEach(System.out::println);
+
           payroll.setAward(award);
 
             int penalty = slrs.stream()
                     .filter(slr->slr.getType().equals(SalaryType.PENALTY))
                     .mapToInt(Salary::getSum).sum();
-            slrs.stream()
-                    .filter(slr->slr.getType().equals(SalaryType.PENALTY))
-                    .forEach(System.out::println);
+
             payroll.setPenalty(penalty);
 
             int buzunar = slrs.stream()
@@ -299,6 +297,19 @@ public class SalaryDailyService {
 
         return payroll;
     }
+//----------------------------   26 feb
+    public void reGenerateSalaryForDoctorFromTo(int doctorId, LocalDate from, LocalDate to) {
+        List<SalaryDaily> list = this.getSalaryListForPeriodForDoctor(from.minusDays(1),to.plusDays(1),doctorId);
+        this.repository.deleteAll(list);
+        int days = (int) ChronoUnit.DAYS.between(from,to);
+        for (int i = 0; i <=days ; i++) {
+            System.out.println(from.plusDays(i));
+            createSalaryDailyForDoctor(doctorId,from.plusDays(i));
+        }
+
+
+
+    }
 
     //-----------------------auxillary-------------------------------------------------
     // 24th of Feb
@@ -311,11 +322,11 @@ public class SalaryDailyService {
                 .mapToInt(Doctor::getId).boxed()
                 .collect(Collectors.toList());
         int days = (int) ChronoUnit.DAYS.between(from, to) + 1;
-        System.out.println(days);
+
         LocalDate date = null;
         for (int i = 0; i < days; i++) {
             date = from.plusDays(i);
-            System.out.println(date);
+
             for (Integer id : doctorIds) {
                 this.createSalaryDailyForDoctor(id, date);
             }
@@ -378,4 +389,5 @@ public class SalaryDailyService {
         System.out.println("INJECT-4  END");
     }
 
-    }
+
+}
