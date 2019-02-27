@@ -18,9 +18,11 @@
         </button>
     </div>
 </div>
-<table class="table">
+<table class="table table-sm">
 <tr><td>Пацієнтів, записаних на день</td><td class="text-right"><strong>{{data?.assignedPatients}}</strong></td></tr>
 <tr><td>Активних пацієнтів</td><td class="text-right"><strong>{{data?.activePatients}}</strong></td></tr>
+<tr><td>Лікарів працювало</td><td class="text-right"><strong>{{data?.doctorsActive}}</strong></td></tr>
+<tr><td>Відсутні лікарі</td><td class="text-right"><strong>{{data?.doctorsAbsent.length}}</strong></td></tr>
 <tr><td>Сума в касі на початок робочого дня</td><td class="text-right"><strong>{{data?.sumAtStart}}</strong> грн.</td></tr>
 <tr><td>Зроблено процедур на суму</td><td class="text-right"><strong>{{data?.sumForExecutedProcedures}}</strong> грн.</td></tr>
 <tr><td>Готівки за день</td><td class="text-right"><strong>{{data?.cash}}</strong> грн.</td></tr>
@@ -34,6 +36,4 @@
 <tr><td>Сума боргу тих, що не прийшли</td><td class="text-right"><strong>{{data?.debtOfTodayPassive}}</strong> грн.</td></tr>
 <tr><td>Сума боргу готельних</td><td class="text-right"><strong>{{data?.debtOfHotel}}</strong> грн.</td></tr>
 <tr><td>Сума боргу сьогоднішніх активних, не записаних на завтра</td><td class="text-right"><strong>{{data?.debtOfTomorrowPassive}}</strong> грн.</td></tr>
-<tr><td>Лікарів працювало</td><td class="text-right"><strong>{{data?.doctorsActive}}</strong></td></tr>
-<tr><td>Лікарів, що біли відсутні</td><td class="text-right"><strong>{{data?.doctorsAbsent}}</strong></td></tr>
 </table>
