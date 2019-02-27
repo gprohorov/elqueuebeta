@@ -3,12 +3,14 @@ package com.med.services;
 import com.med.model.workday.WorkDay;
 import com.med.repository.WorkDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 /**
  * Created by george on 27.02.19.
  */
+@Service
 public class WorkDayService  {
     @Autowired
     WorkDayRepository repository;
