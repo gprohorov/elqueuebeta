@@ -92,6 +92,8 @@ import { FinanceOutcomeComponent } from './finance/outcome.component';
 import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
 import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
 
+import { FinanceWorkdayComponent } from './finance/workday.component';
+
 import {
     WorkplaceMainComponent,
     WorkplaceCommonComponent,
@@ -266,6 +268,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/workday', component: FinanceWorkdayComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -360,7 +367,8 @@ const appRoutes: Routes = [
         KassaAddOutcomeModalComponent,
         FinanceOutcomeComponent,
         FinanceOutcomeCategoryModalComponent,
-        FinanceOutcomeItemModalComponent
+        FinanceOutcomeItemModalComponent,
+        FinanceWorkdayComponent
     ],
     providers: [
         AuthGuard,

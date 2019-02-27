@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.med.model.*;
-import com.med.services.SalaryDailyService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,9 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.med.model.AwardPenaltyDTO;
+import com.med.model.CashBox;
+import com.med.model.PermanentPayroll;
+import com.med.model.Response;
+import com.med.model.Salary;
+import com.med.model.SalaryDTO;
+import com.med.model.SalaryDaily;
+import com.med.model.SalaryType;
 import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.services.CashBoxService;
 import com.med.services.SalaryDTOService;
+import com.med.services.SalaryDailyService;
 import com.med.services.SalaryService;
 
 @RestController

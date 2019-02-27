@@ -1,43 +1,41 @@
 package com.med.model.workday;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by george on 27.02.19.
- */
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document
 public class WorkDay {
+	
     @Id
     private String id;
 
     private LocalDate date;
     LocalDateTime start;
     LocalDateTime finish;
-    private int assignedPatients; //пациенты, которые зписались на сегодня
-    private int activePatients;   // которые пришли
+    private int assignedPatients; 			// пациенты, которые зписались на сегодня
+    private int activePatients;   			// которые пришли
 
-    private int sumAtStart;  // сумма в кассе на начало рабочего дня
-    private int sumForExecutedProcedures;  // наделали процедур на эту сумму
-    private int cash;      //  кеш за сегодня
-    private int card;     //  карточка
-    private int discount;  // знижки
-    private int outlay;   //  расходы
-    private int cashierWithdrawal;  //  изъяли из касы
-    private int sumAtFinish;    //  что осталось в кассе после выемки
+    private int sumAtStart;  				// сумма в кассе на начало рабочего дня
+    private int sumForExecutedProcedures; 	// наделали процедур на эту сумму
+    private int cash;      					// кеш за сегодня
+    private int card;     					// карточка
+    private int discount;  					// знижки
+    private int outlay;   					// расходы
+    private int cashierWithdrawal;  		// изъяли из касы
+    private int sumAtFinish;    			// что осталось в кассе после выемки
 
-    private int debtOfTodayAll;   //  сумма долга всех должников
-    private int debtOfTodayActive;  // сумма долга всех активных
-    private int debtOfTodayPassive; // долг не пришедших
-    private int debtOfHotel;        // готельных
-    private int debtOfTomorrowPassive;  // долг сегодняшних активных не записаных на завтра
+    private int debtOfTodayAll;   			// сумма долга всех должников
+    private int debtOfTodayActive;  		// сумма долга всех активных
+    private int debtOfTodayPassive; 		// долг не пришедших
+    private int debtOfHotel;        		// готельных
+    private int debtOfTomorrowPassive;  	// долг сегодняшних активных не записаных на завтра
 
-    private int doctorsActive;  // сколько докторов сегодня въябывало
-    private List<String> doctorsAbsent;  //  список сачков
+    private int doctorsActive;  			// сколько докторов сегодня въябывало
+    private List<String> doctorsAbsent; 	// список сачков
 
     public WorkDay(LocalDate date) {
         this.date = date;

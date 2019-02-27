@@ -7,7 +7,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.med.config.JwtTokenUtil;
 import com.med.datastorage.Support;
@@ -39,7 +43,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-       // supportBean.check();
+        // supportBean.check();
         final Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
         );

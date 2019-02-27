@@ -3,7 +3,6 @@ package com.med.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;

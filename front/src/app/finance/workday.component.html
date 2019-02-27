@@ -1,0 +1,39 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="row mb-2">
+   	<div class="col">
+	    <h4>Робочий день</h4>
+    </div>
+    <div class="col-auto form-inline">
+        <button class="btn btn-success mr-2" (click)="changeDay(-1)">
+            <i class="fa fa-arrow-left"></i> попередній день
+        </button>
+        <input type="date" class="form-control" name="date" [(ngModel)]="date" 
+	        	(change)="load()" [disabled]="loading" />
+        <button class="btn btn-success ml-2" (click)="changeDay(1)">
+            наступний день <i class="fa fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
+<table class="table">
+<tr><td>Пацієнтів, записаних на день</td><td class="text-right"><strong>{{data?.assignedPatients}}</strong></td></tr>
+<tr><td>Активних пацієнтів</td><td class="text-right"><strong>{{data?.activePatients}}</strong></td></tr>
+<tr><td>Сума в касі на початок робочого дня</td><td class="text-right"><strong>{{data?.sumAtStart}}</strong> грн.</td></tr>
+<tr><td>Зроблено процедур на суму</td><td class="text-right"><strong>{{data?.sumForExecutedProcedures}}</strong> грн.</td></tr>
+<tr><td>Готівки за день</td><td class="text-right"><strong>{{data?.cash}}</strong> грн.</td></tr>
+<tr><td>Картою за день</td><td class="text-right"><strong>{{data?.card}}</strong> грн.</td></tr>
+<tr><td>Знижки за день</td><td class="text-right"><strong>{{data?.discount}}</strong> грн.</td></tr>
+<tr><td>Витрати за день</td><td class="text-right"><strong>{{data?.outlay}}</strong> грн.</td></tr>
+<tr><td>Вилучили з каси</td><td class="text-right"><strong>{{data?.cashierWithdrawal}}</strong> грн.</td></tr>
+<tr><td>Залишок в касі</td><td class="text-right"><strong>{{data?.sumAtFinish}}</strong> грн.</td></tr>
+<tr><td>Сума боргу всіх боржників</td><td class="text-right"><strong>{{data?.debtOfTodayAll}}</strong> грн.</td></tr>
+<tr><td>Сума боргу всіх активних</td><td class="text-right"><strong>{{data?.debtOfTodayActive}}</strong> грн.</td></tr>
+<tr><td>Сума боргу тих, що не прийшли</td><td class="text-right"><strong>{{data?.debtOfTodayPassive}}</strong> грн.</td></tr>
+<tr><td>Сума боргу готельних</td><td class="text-right"><strong>{{data?.debtOfHotel}}</strong> грн.</td></tr>
+<tr><td>Сума боргу сьогоднішніх активних, не записаних на завтра</td><td class="text-right"><strong>{{data?.debtOfTomorrowPassive}}</strong> грн.</td></tr>
+<tr><td>Лікарів працювало</td><td class="text-right"><strong>{{data?.doctorsActive}}</strong></td></tr>
+<tr><td>Лікарів, що біли відсутні</td><td class="text-right"><strong>{{data?.doctorsAbsent}}</strong></td></tr>
+</table>

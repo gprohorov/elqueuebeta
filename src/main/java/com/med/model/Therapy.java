@@ -108,7 +108,15 @@ public class Therapy {
         this.assignments = assignments;
     }
 
-    public int getDays() {
+    public List<Usi> getUsi() {
+		return usi;
+	}
+
+	public void setUsi(List<Usi> usi) {
+		this.usi = usi;
+	}
+
+	public int getDays() {
         return days;
     }
 
@@ -125,17 +133,10 @@ public class Therapy {
 	}
 
 	@Override
-    public String toString() {
-        return "Therapy{" +
-                "id='" + id + '\'' +
-                ", patientId='" + patientId + '\'' +
-                ", start=" + start +
-                ", finish=" + finish +
-                ", diag='" + diag + '\'' +
-                ", codeDiag='" + codeDiag + '\'' +
-                ", notes='" + notes + '\'' +
-                ", assignments=" + assignments +
-                ", days=" + days +
-                "}";
-    }
+	public String toString() {
+		return String.format("Therapy [id=%s, patientId=%s, start=%s, finish=%s, diag=%s,"
+			+ " codeDiag=%s, notes=%s, assignments=%s, usi=%s, days=%s, manualTherapy=%s]",
+			id, patientId, start, finish, diag, codeDiag, notes, assignments, usi, days, manualTherapy);
+	}
+	
 }
