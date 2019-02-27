@@ -605,6 +605,9 @@ public class SalaryDTOService {
 
         int doctorId = object.getInt("id");
         int rate = object.getInt("rate");
+        String fromAsString = object.getString("from");
+        String toAsString = object.getString("to");
+
         JSONArray percents = object.getJSONArray("percents");
         List<DoctorProcedureProcent> procedureProcentList = new ArrayList<>();
         percents.forEach(o -> {
@@ -621,9 +624,12 @@ public class SalaryDTOService {
         doctorService.updateDoctor(doctor);
 
 //-----------------
-
+/*
         LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
         LocalDate to = LocalDate.of(2019, Month.JANUARY,7);
+*/
+        LocalDate from = LocalDate.parse(fromAsString);
+        LocalDate to = LocalDate.parse(toAsString);
 
         salaryDailyService.reGenerateSalaryForDoctorFromTo(doctorId, from, to );
 
