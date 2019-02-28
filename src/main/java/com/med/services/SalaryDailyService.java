@@ -130,7 +130,11 @@ public class SalaryDailyService {
 
     @Scheduled(cron = "0 15 19 * * *")
     public List<SalaryDaily> generateSalariesForToday() {
-        List<SalaryDaily> list = new ArrayList<>();
+
+        List<SalaryDaily> list = this.getSalariesForDate(LocalDate.now());
+        this.repository.deleteAll(list);
+        list.clear();
+
         doctorService.getAllActive().forEach(doctor -> 
         	list.add(this.createSalaryDailyForDoctor(doctor.getId(), LocalDate.now())));
         return list;
