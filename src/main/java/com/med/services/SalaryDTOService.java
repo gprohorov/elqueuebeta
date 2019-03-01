@@ -569,13 +569,13 @@ public class SalaryDTOService {
         dto.setHours(hours[0]);
         if(doctorId==1) dto.setHours(days*8);
 
-        int daysWithoutSaturdays = (int) dateList.stream().distinct()
-            .filter(date->!date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
+        int saturdays = (int) dateList.stream().distinct()
+            .filter(date->date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1))-1;
         // int daysTax = days;
-        int stavka = dto.getDays() * rate/30
+        int stavka = days * rate/30
                 - daysTax * settingsService.get().getTax() / 30
-                - ( days -daysWithoutSaturdays )* settingsService.get().getCanteen();
+                -  (days-saturdays) * settingsService.get().getCanteen();
  
         if (doctorId == 2 || doctorId == 5) {
             dto.setDays(daysTax);

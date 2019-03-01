@@ -307,7 +307,6 @@ public class SalaryDailyService {
         this.repository.deleteAll(list);
         int days = (int) ChronoUnit.DAYS.between(from,to);
         for (int i = 0; i <=days ; i++) {
-            System.out.println(from.plusDays(i));
             createSalaryDailyForDoctor(doctorId,from.plusDays(i));
         }
 
