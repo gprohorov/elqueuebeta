@@ -6,6 +6,8 @@ import { AlertService, FinanceService } from '../_services/index';
 
 import { DoctorSalaryHistoryModalComponent } from './doctor-salary-history.modal.component';
 
+import { SetSalaryModalComponent } from './set-salary.modal.component';
+
 @Component({
     templateUrl: './salary-payroll.component.html'
 })
@@ -48,6 +50,16 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
         window.open('/#/doctor-form;id=' + id, '_blank');
     }
     
+    showSetSalaryPopup(doctor: any) {
+        const options: any = {
+            title: 'Лікар: ' + doctor.name,
+            childComponent: SetSalaryModalComponent,
+            data: doctor
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.load(); });
+    }
+    
     showSalaryHistoryPopup(doctor: any) {
         const options: any = {
             title: 'Історія виплат',
@@ -82,6 +94,8 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
                     this.totalTotal += currentValue.total;
                     this.totalRecd += currentValue.recd;
                     this.totalActual += currentValue.actual;
+                    
+                    currentValue.lastName = currentValue.name.split(' ')[0];
                 });
                 this.loading = false;
             },

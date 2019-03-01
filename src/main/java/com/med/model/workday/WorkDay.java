@@ -35,7 +35,8 @@ public class WorkDay {
     private int debtOfTomorrowPassive;  	// долг сегодняшних активных не записаных на завтра
 
     private int doctorsActive;  			// сколько докторов сегодня въябывало
-    private List<String> doctorsAbsent; 	// список сачков
+    private int doctorsAbsent; 				// сколько сачков
+    private List<String> doctorsAbsentList; // список сачков
 
     public WorkDay(LocalDate date) {
         this.date = date;
@@ -200,38 +201,32 @@ public class WorkDay {
         this.doctorsActive = doctorsActive;
     }
 
-    public List<String> getDoctorsAbsent() {
-        return doctorsAbsent;
-    }
+    public int getDoctorsAbsent() {
+		return doctorsAbsent;
+	}
 
-    public void setDoctorsAbsent(List<String> doctorsAbsent) {
-        this.doctorsAbsent = doctorsAbsent;
-    }
+	public void setDoctorsAbsent(int doctorsAbsent) {
+		this.doctorsAbsent = doctorsAbsent;
+	}
 
-    @Override
-    public String toString() {
-        return "WorkDay{" +
-                "id='" + id + '\'' +
-                ", date=" + date +
-                ", start=" + start +
-                ", finish=" + finish +
-                ", assignedPatients=" + assignedPatients +
-                ", activePatients=" + activePatients +
-                ", sumAtStart=" + sumAtStart +
-                ", sumForExecutedProcedures=" + sumForExecutedProcedures +
-                ", cash=" + cash +
-                ", card=" + card +
-                ", discount=" + discount +
-                ", outlay=" + outlay +
-                ", cashierWithdrawal=" + cashierWithdrawal +
-                ", sumAtFinish=" + sumAtFinish +
-                ", debtOfTodayAll=" + debtOfTodayAll +
-                ", debtOfTodayActive=" + debtOfTodayActive +
-                ", debtOfTodayPassive=" + debtOfTodayPassive +
-                ", debtOfHotel=" + debtOfHotel +
-                ", debtOfTomorrowPassive=" + debtOfTomorrowPassive +
-                ", doctorsActive=" + doctorsActive +
-                ", doctorsAbsent=" + doctorsAbsent +
-                '}';
-    }
+	public List<String> getDoctorsAbsentList() {
+		return doctorsAbsentList;
+	}
+
+	public void setDoctorsAbsentList(List<String> doctorsAbsentList) {
+		this.doctorsAbsentList = doctorsAbsentList;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("WorkDay [id=%s, date=%s, start=%s, finish=%s, assignedPatients=%s,"
+			+ " activePatients=%s, sumAtStart=%s, sumForExecutedProcedures=%s, cash=%s, card=%s,"
+			+ " discount=%s, outlay=%s, cashierWithdrawal=%s, sumAtFinish=%s, debtOfTodayAll=%s,"
+			+ " debtOfTodayActive=%s, debtOfTodayPassive=%s, debtOfHotel=%s, debtOfTomorrowPassive=%s,"
+			+ " doctorsActive=%s, doctorsAbsent=%s, doctorsAbsentList=%s]",
+			id, date, start, finish, assignedPatients, activePatients, sumAtStart, 
+			sumForExecutedProcedures, cash, card, discount, outlay, cashierWithdrawal, sumAtFinish,
+			debtOfTodayAll, debtOfTodayActive, debtOfTodayPassive, debtOfHotel, debtOfTomorrowPassive,
+			doctorsActive, doctorsAbsent, doctorsAbsentList);
+	}
 }
