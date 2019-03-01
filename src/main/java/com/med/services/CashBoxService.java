@@ -117,6 +117,19 @@ public class CashBoxService {
     	repository.saveAll(list);
     }
 
+    public List<CashBox> getAllForToday() {
+        LocalDateTime morning = LocalDateTime.now().minusHours(12);
+        return repository.findAllByDateTimeAfter(morning);
+    }
+
+    public int getOutlayForToday() {
+        LocalDateTime morning = LocalDateTime.now().minusHours(12);
+        return repository.findAllByDateTimeAfter(morning).stream()
+                .filter(cashBox -> cashBox.getSum()<0)
+                .mapToInt(CashBox::getSum)
+                .sum();
+    }
+
     //----------------------  injection
 
     // чего не достает  в кешбоксе  - взять из селери

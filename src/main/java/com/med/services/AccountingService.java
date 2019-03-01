@@ -90,10 +90,31 @@ public class AccountingService {
             .mapToLong(Accounting::getSum).sum();
     }
 
+    public Long getSumForDateProcedures(LocalDate date){
+        return this.getAllForDate(date).stream()
+            .filter(accounting -> accounting.getSum() > 0)
+            .filter(accounting -> !accounting.getPayment().equals(PaymentType.PROC))
+            .mapToLong(Accounting::getSum).sum();
+    }
+
+    public Long getSumForDateDiscount(LocalDate date){
+        return this.getAllForDate(date).stream()
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
+            .mapToLong(Accounting::getSum).sum();
+    }
+
+
     public Long getSumForDateCash(LocalDate date) {
         return this.getAllForDate(date).stream()
             .filter(accounting -> accounting.getSum() > 0)
             .filter(accounting -> accounting.getPayment().equals(PaymentType.CASH))
+            .mapToLong(Accounting::getSum).sum();
+    }
+
+    public Long getSumForDateCard(LocalDate date) {
+        return this.getAllForDate(date).stream()
+            .filter(accounting -> accounting.getSum() > 0)
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.CARD))
             .mapToLong(Accounting::getSum).sum();
     }
 

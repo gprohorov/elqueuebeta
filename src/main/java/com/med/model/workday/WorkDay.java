@@ -14,8 +14,8 @@ public class WorkDay {
     private String id;
 
     private LocalDate date;
-    LocalDateTime start;
-    LocalDateTime finish;
+    LocalDateTime start;                     // приняли первого пациента
+    LocalDateTime finish;                   // отправили последнего
     private int assignedPatients; 			// пациенты, которые зписались на сегодня
     private int activePatients;   			// которые пришли
 
@@ -206,5 +206,32 @@ public class WorkDay {
 
     public void setDoctorsAbsent(List<String> doctorsAbsent) {
         this.doctorsAbsent = doctorsAbsent;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkDay{" +
+                "id='" + id + '\'' +
+                ", date=" + date +
+                ", start=" + start +
+                ", finish=" + finish +
+                ", assignedPatients=" + assignedPatients +
+                ", activePatients=" + activePatients +
+                ", sumAtStart=" + sumAtStart +
+                ", sumForExecutedProcedures=" + sumForExecutedProcedures +
+                ", cash=" + cash +
+                ", card=" + card +
+                ", discount=" + discount +
+                ", outlay=" + outlay +
+                ", cashierWithdrawal=" + cashierWithdrawal +
+                ", sumAtFinish=" + sumAtFinish +
+                ", debtOfTodayAll=" + debtOfTodayAll +
+                ", debtOfTodayActive=" + debtOfTodayActive +
+                ", debtOfTodayPassive=" + debtOfTodayPassive +
+                ", debtOfHotel=" + debtOfHotel +
+                ", debtOfTomorrowPassive=" + debtOfTomorrowPassive +
+                ", doctorsActive=" + doctorsActive +
+                ", doctorsAbsent=" + doctorsAbsent +
+                '}';
     }
 }
