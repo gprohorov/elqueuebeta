@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -33,7 +34,8 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: DoctorService,
         private procedureService: ProcedureService,
-        private financeService: FinanceService
+        private financeService: FinanceService,
+        private _location: Location
     ) { }
 
     ngOnInit() {
@@ -151,5 +153,9 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
                 this.alertService.error(error);
                 this.loading = false;
             });
+    }
+    
+    goBack() {
+        this._location.back();
     }
 }
