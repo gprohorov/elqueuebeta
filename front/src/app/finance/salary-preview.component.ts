@@ -129,7 +129,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
                 this.loading = false;
                 this.alertService.success('Дані успішно збережені', true);
-                this.router.navigate(['finance/salary-summary']);
+                this.goBack();
             },
             error => {
                 this.alertService.error(error);
