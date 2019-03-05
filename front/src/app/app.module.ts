@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxPermissionsModule, NgxPermissionsGuard } from 'ngx-permissions';
 import { NgxMasonryModule } from 'ng5-masonry';
 import { ModalDialogModule } from 'ngx-modal-dialog';
+//import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
@@ -62,6 +63,8 @@ import { PatientsQueueListComponent } from './patients-queue/list.component';
 import { ProceduresQueueListComponent } from './procedures-queue/list.component';
 
 import { CreatePatientModalComponent } from './patient/create-patient.modal.component';
+
+import { UsiModalComponent } from './workplace/usi.modal.component';
 
 import { GeneralStatisticFromToComponent } from './statistic/general-statistic-from-to.component';
 import { CashSummaryComponent } from './statistic/cash-summary.component';
@@ -309,6 +312,7 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         HttpClientModule,
+//        AngularEditorModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
         NgxPermissionsModule.forRoot(),
@@ -368,7 +372,8 @@ const appRoutes: Routes = [
         FinanceOutcomeComponent,
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
-        FinanceWorkdayComponent
+        FinanceWorkdayComponent,
+        UsiModalComponent
     ],
     providers: [
         AuthGuard,
@@ -405,7 +410,8 @@ const appRoutes: Routes = [
         KassaTozeroModalComponent,
         KassaAddOutcomeModalComponent,
         FinanceOutcomeCategoryModalComponent,
-        FinanceOutcomeItemModalComponent        
+        FinanceOutcomeItemModalComponent,
+        UsiModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

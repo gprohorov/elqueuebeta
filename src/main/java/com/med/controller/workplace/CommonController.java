@@ -52,14 +52,13 @@ public class CommonController {
     }
 
     //////////////////////////////// EXECUTE ///////////////////
-
+	
     @PostMapping("/execute/{talonId}/{zones}")
-    public void execute(@Valid @RequestBody ArrayList<ArrayList<Object>> picture,
-		@PathVariable(value = "talonId") String talonId, 
-		@PathVariable(value = "zones") int zones) {
-        workPlaceService.execute(talonId, zones, userService.getCurrentUserInfo().getId(), picture, "");
-    }
-
+	public void	execute(@Valid @RequestBody ArrayList<ArrayList<Object>> picture,
+		@PathVariable(value = "talonId") String talonId, @PathVariable(value = "zones") int zones) {
+		workPlaceService.execute(talonId, zones, userService.getCurrentUserInfo().getId(), picture); 
+	}
+	 
     //////////////////////////////// CANCEL ////////////////////
 
     @GetMapping("/cancel/{talonId}")

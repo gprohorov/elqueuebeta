@@ -8,8 +8,9 @@ import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Status } from '../_storage/index';
-import { AlertService, WorkplaceCommonService, PatientsQueueService } from '../_services/index';
+import { AlertService, WorkplaceCommonService, PatientsQueueService, UsiService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
+import { UsiModalComponent } from './usi.modal.component';
 
 @Component({
     templateUrl: './common.component.html'
@@ -28,11 +29,13 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
     subTemp: Subscription;
     subPatient: Subscription;
     subProcedure: Subscription;
+    subUSI: Subscription;
     Status = Status;
     Statuses = Object.keys(Status);
 
     reloadFunc: any;
     item: any;
+    USI: any;
     talonId: string;
     patientId: string;
     procedureId: number;
@@ -46,6 +49,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private alertService: AlertService,
         private service: WorkplaceCommonService,
+        private usiService: UsiService,
         private patientsQueueService: PatientsQueueService,
         private modalService: ModalDialogService
     ) { }
@@ -65,6 +69,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         if (this.subPatient) this.subPatient.unsubscribe();
         if (this.subProcedure) this.subProcedure.unsubscribe();
         if (this.subTemp) this.subTemp.unsubscribe();
+        if (this.subUSI) this.subUSI.unsubscribe();
         if (this.reloadFunc) clearInterval(this.reloadFunc);
     }
 
@@ -91,7 +96,26 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
                     this.canvasInit();
                 }
             }, 0);
+            if (this.isUSI) this.loadUSI();
         });
+    }
+    
+    private loadUSI() {
+        this.loading = true;
+        this.subUSI = this.usiService.getAllforPatient(this.patientId).subscribe(data => {
+            this.USI = data;
+            this.loading = false;
+        });
+    }
+    
+    showUsiPopup() {
+        const options: any = {
+            title: 'УЗД обстеження пацієнта: ' + this.item.patient.person.fullName,
+            childComponent: UsiModalComponent,
+            data: this.item
+        };
+        this.modalService.openDialog(this.viewRef, options);
+        options.closeDialogSubject.subscribe(() => { this.loadUSI(); });
     }
 
     private canvasInit() {
@@ -267,6 +291,7 @@ export class WorkplaceCommonComponent implements OnInit, OnDestroy {
         this.subProcedure = this.service.executeProcedure(
             this.item.talon.id, this.item.talon.zones, this.canvasBuffer).subscribe(() => {
                 this.alertService.success('Процедуру завершено.');
+                this.loading = false;
                 this.router.navigate(['workplace']);
             },
             error => {

@@ -18,35 +18,19 @@ export class DoctorService {
   constructor(private http: HttpClient) { }
 
   getAll(search: string = '') {
-    return this.http
-      .get<Doctor[]>(this.listUrl + search)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.get<Doctor[]>(this.listUrl + search).pipe(catchError(this.handleError));
   }
 
   get(id: number) {
-    return this.http
-      .get<Doctor>(this.getUrl + id)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.get<Doctor>(this.getUrl + id).pipe(catchError(this.handleError));
   }
 
   update(model: Doctor) {
-    return this.http
-      .post(this.updateUrl, model)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.post(this.updateUrl, model).pipe(catchError(this.handleError));
   }
 
   delete(id: number) {
-    return this.http
-      .get(this.deleteUrl + id)
-      .pipe(
-        catchError(this.handleError)
-     );
+    return this.http.get(this.deleteUrl + id).pipe(catchError(this.handleError));
   }
 
   // Implement a method to handle errors if any

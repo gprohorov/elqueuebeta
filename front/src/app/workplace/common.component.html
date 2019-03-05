@@ -137,10 +137,33 @@
     </div>
     <div class="card mb-5" *ngIf="isUSI">
         <div class="card-header">
-            <button class="btn btn-success pull-right">Редагувати</button>
+            <button class="btn btn-success pull-right">Добавити</button>
             <h4>Заключення УЗД</h4>
         </div>
-        <div class="card-body"></div>
+        <div class="card-body">
+          <table class="table">
+            <tr *ngFor="let doc of USI">
+              <td>
+                <button class="btn btn-primary" title="Переглянути">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-success" title="Редагувати">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-danger" title="Видалити">
+                  <i class="fa fa-ban" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td>{{doc.title}}</td>
+              <td>{{doc.doctor}}</td>
+              <td>{{doc.date}}</td>
+            </tr>
+          </table>
+        </div>
     </div>
     <div class="row mt-3">
         <div class="col">
