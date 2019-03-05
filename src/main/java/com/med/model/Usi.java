@@ -1,26 +1,57 @@
 package com.med.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Usi {
 
-	private ObjectId id = ObjectId.get();
-	private LocalDateTime created = LocalDateTime.now();
+	@Id
+    private String id;
+    private String patientId;
     private LocalDate date;
     private int doctorId;
+    @Transient
+    private String doctor;
     private String title;
-    private String doc;
+    private String body;
 
     public Usi() {}
 
-	public Usi(LocalDate date, int doctorId, String title, String doc) {
+	public Usi(String patientId, LocalDate date, int doctorId, String title, String body) {
+		this.patientId = patientId;
 		this.date = date;
 		this.doctorId = doctorId;
 		this.title = title;
-		this.doc = doc;
+		this.body = body;
+	}
+	
+	public Usi(String id, String patientId, LocalDate date, int doctorId, String title, String body) {
+		this.id = id;
+		this.patientId = patientId;
+		this.date = date;
+		this.doctorId = doctorId;
+		this.title = title;
+		this.body = body;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
 	}
 
 	public LocalDate getDate() {
@@ -38,6 +69,14 @@ public class Usi {
 	public void setDoctorId(int doctorId) {
 		this.doctorId = doctorId;
 	}
+	
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
+	}
 
 	public String getTitle() {
 		return title;
@@ -47,18 +86,18 @@ public class Usi {
 		this.title = title;
 	}
 
-	public String getDoc() {
-		return doc;
+	public String getBody() {
+		return body;
 	}
 
-	public void setDoc(String doc) {
-		this.doc = doc;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Usi [created=%s, date=%s, doctorId=%s, title=%s, doc=%s]", 
-			created, date, doctorId, title, doc);
+		return String.format("Usi [id=%s, patientId=%s, date=%s, doctorId=%s, doctor=%s, title=%s, body=%s]",
+			id, patientId, date, doctorId, doctor, title, body);
 	}
 	
 }

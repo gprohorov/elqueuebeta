@@ -1,42 +1,52 @@
 package com.med.controller.workplace;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.med.services.UserService;
-import com.med.services.WorkPlaceService;
+import com.med.model.Usi;
+import com.med.services.UsiService;
 
 @RestController
 @RequestMapping("/api/workplace/usi")
 @CrossOrigin("*")
 public class UsiController {
-	
-	@Autowired
-    WorkPlaceService workPlaceService;
 
     @Autowired
-    UserService userService;
+    UsiService usiService;
 
-    @PostMapping("/execute/{talonId}/{zones}")
-    public void executeUSI(@Valid @RequestBody String data,
-		@PathVariable(value = "talonId") String talonId, 
-		@PathVariable(value = "zones") int zones) {
-    	
-    	JSONObject jsonObj = new JSONObject(data);
-    	ArrayList<ArrayList<Object>> picture = (ArrayList<ArrayList<Object>>) jsonObj.get("picture");
-    	int doctorId = userService.getCurrentUserInfo().getId();
-    	String usi = jsonObj.getString("usi");
-        workPlaceService.execute(talonId, zones, doctorId, picture, usi);
+    @GetMapping("/patient/{patientId}")
+    public List<Usi> getPatientUsiList(@PathVariable(value = "patientId") String patientId) {
+        return usiService.getPatientUsiList(patientId);
+    }
+    
+    @GetMapping("/get/{id}")
+    public Usi get(@PathVariable(value = "id") String id) {
+    	return usiService.getById(id);
+    }
+    
+    @PostMapping("/create/")
+    public void create(@Valid @RequestBody Usi usi) {
+        usiService.create(usi);
+    }
+
+    @PostMapping("/update/")
+    public void updateDoctor(@Valid @RequestBody Usi usi) {
+        usiService.update(usi);
+    }
+
+    @GetMapping("/delete/{id}")
+    public void delete(@PathVariable(value = "id") String id) {
+        usiService.delete(id);
     }
     
 }

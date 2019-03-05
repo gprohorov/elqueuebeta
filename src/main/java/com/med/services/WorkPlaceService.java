@@ -83,7 +83,7 @@ public class WorkPlaceService {
     }
 
     ////////////////////////////////// EXECUTE //////////////////////////
-    public void execute(String talonId, int zones, int doctorId, ArrayList<ArrayList<Object>> picture, String usi) {
+    public void execute(String talonId, int zones, int doctorId, ArrayList<ArrayList<Object>> picture) {
 
         Talon talon = talonService.getTalon(talonId);
         if (talon == null || talon.getActivity().equals(Activity.EXECUTED)) return;
@@ -133,11 +133,6 @@ public class WorkPlaceService {
         if (procedure.getProcedureType() == ProcedureType.SWT) {
         	therapy.setNotes(therapy.getNotes() + "<br>"
     		+ " : УХТ " + LocalDate.now() + " " + zones + " зон.");
-        }
-        
-        ////////////////////// if USI - do related actions
-        if (procedure.getProcedureType() == ProcedureType.USI) {
-        	
         }
         
         if (picture.size() > 0) {
