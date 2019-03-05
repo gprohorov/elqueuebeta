@@ -26,14 +26,14 @@
       <tr class="text-center">
         <th></th>
         <th>Доктор</th>
-        <th>Днів</th>
+        <th>Залишок</th>
+        <th>Отримано</th>
+        <th>Нараховано</th>
         <th>Ставка</th>
         <th>Бонуси</th>
         <th>Премії</th>
         <th>Штрафи</th>
-        <th>Нараховано</th>
-        <th>Отримано</th>
-        <th>Залишок</th>
+        <th>Днів</th>
       </tr>
     </thead>
     <tbody *ngIf="data.length > 0">
@@ -52,24 +52,24 @@
           </button>
         </td>
         <td class="text-nowrap" title="{{item.name}}">{{item.lastName}}</td>
-        <td class="text-right text-nowrap">{{item.days}}</td>
+        <td class="text-right text-nowrap">{{item.actual}} грн.</td>
+        <td class="text-right text-nowrap">{{item.recd}} грн.</td>
+        <td class="text-right text-nowrap">{{item.total}} грн.</td>
         <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
         <td class="text-right text-nowrap">{{item.accural}} грн.</td>
         <td class="text-right text-nowrap">{{item.award}} грн.</td>
         <td class="text-right text-nowrap">{{item.penalty}} грн.</td>
-        <td class="text-right text-nowrap">{{item.total}} грн.</td>
-        <td class="text-right text-nowrap">{{item.recd}} грн.</td>
-        <td class="text-right text-nowrap">{{item.actual}} грн.</td>
+        <td class="text-right text-nowrap">{{item.days}}</td>
       </tr>
       <tr>
-        <td colspan="3"><strong>Всього:</strong></td>
+        <td colspan="2"><strong>Всього:</strong></td>
+        <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
+        <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
+        <td class="text-right text-nowrap"><strong>{{totalTotal}} грн.</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalStavka}} грн.</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalAccural}} грн.</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalAward}} грн.</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalPenalty}} грн.</strong></td>
-        <td class="text-right text-nowrap"><strong>{{totalTotal}} грн.</strong></td>
-        <td class="text-right text-nowrap"><strong>{{totalRecd}} грн.</strong></td>
-        <td class="text-right text-nowrap"><strong>{{totalActual}} грн.</strong></td>
       </tr>
     </tbody>
     <tr *ngIf="data.length === 0"><td colspan="100" class="text-center text-danger">

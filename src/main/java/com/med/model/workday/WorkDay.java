@@ -14,7 +14,7 @@ public class WorkDay {
     private String id;
 
     private LocalDate date;
-    LocalDateTime start;                     // приняли первого пациента
+    LocalDateTime start;                    // приняли первого пациента
     LocalDateTime finish;                   // отправили последнего
     private int assignedPatients; 			// пациенты, которые зписались на сегодня
     private int activePatients;   			// которые пришли
@@ -36,7 +36,7 @@ public class WorkDay {
 
     private int doctorsActive;  			// сколько докторов сегодня въябывало
     private int doctorsAbsent; 				// сколько сачков
-    private List<String> doctorsAbsentList; // список сачков
+    private String doctorsAbsentList; 		// список сачков
 
     public WorkDay(LocalDate date) {
         this.date = date;
@@ -209,11 +209,11 @@ public class WorkDay {
 		this.doctorsAbsent = doctorsAbsent;
 	}
 
-	public List<String> getDoctorsAbsentList() {
+	public String getDoctorsAbsentList() {
 		return doctorsAbsentList;
 	}
 
-	public void setDoctorsAbsentList(List<String> doctorsAbsentList) {
+	public void setDoctorsAbsentList(String doctorsAbsentList) {
 		this.doctorsAbsentList = doctorsAbsentList;
 	}
 

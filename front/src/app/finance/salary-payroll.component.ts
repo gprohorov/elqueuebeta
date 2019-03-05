@@ -35,8 +35,8 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const date = new Date();
-        this.from = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
-            .toISOString().slice(0, -14);
+        this.from = (new Date((new Date(date.getFullYear(), 0, 1)).valueOf() 
+            - date.getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.to = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
             .toISOString().slice(0, -14);
         this.load();

@@ -19,10 +19,18 @@
     </div>
 </div>
 <table class="table table-sm">
+<tr><td>Початок робочого дня</td><td class="text-right"><strong>{{data?.start | date:'HH:mm'}}</strong></td></tr>
+<tr><td>Кінець робочого дня</td><td class="text-right"><strong>{{data?.finish | date:'HH:mm'}}</strong></td></tr>
 <tr><td>Пацієнтів, записаних на день</td><td class="text-right"><strong>{{data?.assignedPatients}}</strong></td></tr>
-<tr><td>Активних пацієнтів</td><td class="text-right"><strong>{{data?.activePatients}}</strong></td></tr>
+<tr><td>Пацієнтів, що були присутні</td><td class="text-right"><strong>{{data?.activePatients}}</strong></td></tr>
 <tr><td>Лікарів працювало</td><td class="text-right"><strong>{{data?.doctorsActive}}</strong></td></tr>
-<tr><td>Лікарів, що були відсутніми </td><td class="text-right"><strong>{{data?.doctorsAbsent}}</strong></td></tr>
+<tr>
+  <td>Лікарів, що були відсутніми (список)</td>
+  <td class="text-right">
+    <strong>{{data?.doctorsAbsent}}</strong>
+    <i class="fa fa-list-ul text-info" [ngbPopover]="data?.doctorsAbsentList"></i>
+  </td>
+</tr>
 <tr><td>Сума в касі на початок робочого дня</td><td class="text-right"><strong>{{data?.sumAtStart}}</strong> грн.</td></tr>
 <tr><td>Зроблено процедур на суму</td><td class="text-right"><strong>{{data?.sumForExecutedProcedures}}</strong> грн.</td></tr>
 <tr><td>Готівки за день</td><td class="text-right"><strong>{{data?.cash}}</strong> грн.</td></tr>
