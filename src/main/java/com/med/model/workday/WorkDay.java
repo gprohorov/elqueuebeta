@@ -29,11 +29,12 @@ public class WorkDay {
     private int sumAtFinish;    			// что осталось в кассе после выемки
 
     private int debtOfTodayAll;   			// сумма долга всех должников
+    private int debtOfTodayWithoutHotel;   	// сумма долга всех не готельних
+    private List<String> debtOfTodayWithoutHotelList;   	// сумма долга всех не готельних
     private int debtOfTodayActive;  		// сумма долга всех активных
-    private int debtOfTodayPassive; 		// долг не пришедших
+    private int debtOfTodayPassive; 		// долг тех, кто был записан но не пришел
     private int debtOfHotel;        		// готельных
     private int debtOfTomorrowPassive;  	// долг сегодняшних активных не записаных на завтра
-
     private int doctorsActive;  			// сколько докторов сегодня въябывало
     private int doctorsAbsent; 				// сколько сачков
     private List<String> doctorsAbsentList; // список сачков
@@ -217,16 +218,19 @@ public class WorkDay {
 		this.doctorsAbsentList = doctorsAbsentList;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("WorkDay [id=%s, date=%s, start=%s, finish=%s, assignedPatients=%s,"
-			+ " activePatients=%s, sumAtStart=%s, sumForExecutedProcedures=%s, cash=%s, card=%s,"
-			+ " discount=%s, outlay=%s, cashierWithdrawal=%s, sumAtFinish=%s, debtOfTodayAll=%s,"
-			+ " debtOfTodayActive=%s, debtOfTodayPassive=%s, debtOfHotel=%s, debtOfTomorrowPassive=%s,"
-			+ " doctorsActive=%s, doctorsAbsent=%s, doctorsAbsentList=%s]",
-			id, date, start, finish, assignedPatients, activePatients, sumAtStart, 
-			sumForExecutedProcedures, cash, card, discount, outlay, cashierWithdrawal, sumAtFinish,
-			debtOfTodayAll, debtOfTodayActive, debtOfTodayPassive, debtOfHotel, debtOfTomorrowPassive,
-			doctorsActive, doctorsAbsent, doctorsAbsentList);
-	}
+    public int getDebtOfTodayWithoutHotel() {
+        return debtOfTodayWithoutHotel;
+    }
+
+    public void setDebtOfTodayWithoutHotel(int debtOfTodayWithoutHotel) {
+        this.debtOfTodayWithoutHotel = debtOfTodayWithoutHotel;
+    }
+
+    public List<String> getDebtOfTodayWithoutHotelList() {
+        return debtOfTodayWithoutHotelList;
+    }
+
+    public void setDebtOfTodayWithoutHotelList(List<String> debtOfTodayWithoutHotelList) {
+        this.debtOfTodayWithoutHotelList = debtOfTodayWithoutHotelList;
+    }
 }

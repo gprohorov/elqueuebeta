@@ -112,9 +112,9 @@ public class SalaryDailyService {
         ) {
             stavka += setting.get().getCanteen();
         }
-        if (!this.fullTimeList.contains(doctorId)) {
+/*        if (!this.fullTimeList.contains(doctorId)) {
             if (talons.isEmpty()) stavka = 0 - setting.get().getTax() / 30;
-        }
+        }*/
         if (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
             stavka = doctorService.getDoctor(doctorId).getRate() / 30
             		- setting.get().getTax() / 30;
@@ -122,8 +122,10 @@ public class SalaryDailyService {
 
         salary.setStavka(stavka);
 
+
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
-        salary.setBonuses(bonuses);
+        //hardcode
+        salary.setBonuses(bonuses*9/10);
 
         return this.createSalaryDaily(salary);
     }
@@ -384,6 +386,7 @@ public class SalaryDailyService {
     }
 
     // @Scheduled(cron = "0 20 17 ? * SUN")
+
     public void inject4(){
         System.out.println("INJECT-4");
         LocalDate start = LocalDate.of(2019, Month.JANUARY, 1);
@@ -391,6 +394,20 @@ public class SalaryDailyService {
         this.createDailySalariesForAllFromTo(start, finish);
         System.out.println("INJECT-4  END");
     }
+    //@Scheduled(cron = "0 30 18 ? * SAT")
+    public void inject5(){
+        System.out.println("INJECT-5");
+        List<SalaryDaily> list = new ArrayList<>();
+        this.repository.findAll().stream()
+                .forEach(salaryDaily -> {
+                  salaryDaily.setBonuses( (salaryDaily.getBonuses() * 9/10));
+                  list.add(salaryDaily);
+                });
+        repository.saveAll(list);
+        System.out.println("INJECT-5  END");
+    }
+
+
 
 
 }

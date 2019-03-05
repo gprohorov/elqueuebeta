@@ -2,7 +2,10 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.med.model.*;
 import com.med.model.statistics.dto.accounting.AvailableexecutedPart;
@@ -30,6 +33,9 @@ public class WorkDayService  {
 
     @Autowired
     AccountingService accountingService;
+
+    @Autowired
+    DoctorService doctorService;
 
     public WorkDay create(WorkDay workDay) {
         return repository.save(workDay);
@@ -114,19 +120,38 @@ public class WorkDayService  {
                 .mapToInt(Patient::getBalance).sum();
         workDay.setDebtOfTodayAll(debt);
 
-        int doctors = (int) talonService.getTalonsForToday().stream()
+        List<Doctor> doctorsActiveList =  talonService.getTalonsForToday().stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
-                .map(Talon::getDoctor).distinct().count();
-        workDay.setDoctorsActive(doctors+2);
+                .map(Talon::getDoctor).distinct()
+                .collect(Collectors.toList());
+        if (!doctorsActiveList.contains(doctorService.getDoctor(2))){
+            doctorsActiveList.add(doctorService.getDoctor(2));
+        }
+        if (!doctorsActiveList.contains(doctorService.getDoctor(5))){
+            doctorsActiveList.add(doctorService.getDoctor(5));
+        }
 
+        workDay.setDoctorsActive(doctorsActiveList.size());
 
+        List<String> doctorsAbsentList = new ArrayList<>();
+        String doctorsAbsentString = "";
+
+        // hardcode!!!
+        doctorService.getAllActive().stream()
+                .filter(doctor -> !doctor.getProcedureIds().isEmpty())
+                .filter(doctor -> doctor.getId() !=2 )
+                .filter(doctor -> doctor.getId() !=5 )
+                .forEach(doctor -> {
+
+                });
 
         int active = (int) patientService.getAllForToday().stream()
                 .filter(patient -> patient.calcActivity().equals(Activity.GAMEOVER))
                 .count();
         workDay.setActivePatients(active);
-        System.out.println(workDay);
-        repository.save(workDay);
+
+        //------------------------ debt------------------
+
 
     }
 }

@@ -310,7 +310,7 @@ public class SalaryDTOService {
             .collect(Collectors.toList());
 
         int accural = this.generateBonusesForDoctor(talons);
-        dto.setAccural(accural);
+        dto.setAccural(accural *9/10);
 
         return this.updateSalaryDTO(dto);
     }
@@ -517,7 +517,7 @@ public class SalaryDTOService {
             double accural = zones * price * percent / 100;
             bonuses += accural;
         }
-        dto.setAccural((int) bonuses);
+        dto.setAccural((int) bonuses *9/10);
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }
@@ -573,7 +573,7 @@ public class SalaryDTOService {
             .filter(date->date.getDayOfWeek().equals(DayOfWeek.SATURDAY)).count();
         int daysTax = (int) ChronoUnit.DAYS.between(from.minusDays(1), to.plusDays(1))-1;
         // int daysTax = days;
-        int stavka = days * rate/30
+        int stavka = daysTax * rate/30
                 - daysTax * settingsService.get().getTax() / 30
                 -  (days-saturdays) * settingsService.get().getCanteen();
  
@@ -596,7 +596,7 @@ public class SalaryDTOService {
             double accural = zones * price * percent / 100;
             bonuses += accural;
         }
-        dto.setAccural((int) bonuses);
+        dto.setAccural((int) bonuses * 9/10);
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }

@@ -126,6 +126,7 @@ public class CashBoxService {
         LocalDateTime morning = LocalDateTime.now().minusHours(12);
         return repository.findAllByDateTimeAfter(morning).stream()
                 .filter(cashBox -> cashBox.getSum()<0)
+                .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
                 .mapToInt(CashBox::getSum)
                 .sum();
     }
