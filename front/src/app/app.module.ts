@@ -31,7 +31,8 @@ import {
     WorkplaceDiagnosticService,
     HotelService,
     FinanceService,
-    OutcomeService
+    OutcomeService,
+    UsiService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -396,6 +397,7 @@ const appRoutes: Routes = [
         HotelService,
         FinanceService,
         OutcomeService,
+        UsiService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [

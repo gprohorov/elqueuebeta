@@ -9,5 +9,6 @@
       </div>
       <div *ngIf="f.submitted && !title.valid" class="help-block text-danger">Поле обов`язкове</div>
       <!-- <angular-editor [(ngModel)]="data.body"></angular-editor> -->
+      <textarea class="form-control" name="body" [(ngModel)]="data.body" #body="ngModel"></textarea>
     </div>
 </form>

@@ -137,7 +137,8 @@
     </div>
     <div class="card mb-5" *ngIf="isUSI">
         <div class="card-header">
-            <button class="btn btn-success pull-right">Добавити</button>
+            <button class="btn btn-success pull-right" [disabled]="!procedureStarted"
+              (click)="showUsiPopup()">Добавити</button>
             <h4>Заключення УЗД</h4>
         </div>
         <div class="card-body">
