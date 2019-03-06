@@ -28,7 +28,7 @@
   <td>Лікарів, що були відсутніми (список)</td>
   <td class="text-right">
     <strong>{{data?.doctorsAbsent}}</strong>
-    <i class="fa fa-list-ul text-info" [ngbPopover]="data?.doctorsAbsentList"></i>
+    <i class="fa fa-list-ul text-info" triggers="mouseenter:mouseleave click" [ngbPopover]="data?.doctorsAbsentList"></i>
   </td>
 </tr>
 <tr><td>Сума в касі на початок робочого дня</td><td class="text-right"><strong>{{data?.sumAtStart}}</strong> грн.</td></tr>
