@@ -13,7 +13,8 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
     data: any;
     from: string;
     to: string;
-
+    
+    showTotlal = true;
     totalStavka = 0;
     totalBonuses = 0;
     totalTotal = 0;
@@ -40,11 +41,17 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
         return (this.from && this.to && this.to >= this.from);
     }
     
+    filterRow(item) {
+        this.data = [item];
+        this.showTotlal = false;
+    }
+    
     load() {
         this.loading = true;
         this.data = [];
         this.sub = this.service.getSalarySummaryOnDay(this.from, this.to).subscribe(
             data => {
+                this.showTotlal = true;
                 this.data = data;
                 this.totalStavka = 0;
                 this.totalBonuses = 0;
