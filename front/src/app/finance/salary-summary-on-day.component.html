@@ -34,7 +34,7 @@
     <tbody *ngIf="data.length > 0">
       <tr *ngFor="let item of data">
         <td [style.width.px]="40">
-          <button class="btn btn-success" title="Фільтрувати" (click)="filterRow(item)">
+          <button class="btn btn-success btn-sm" title="Фільтрувати" (click)="filterRow(item)">
             <i class="fa fa-eyedropper" aria-hidden="true"></i>
           </button>
         </td>
