@@ -130,28 +130,42 @@ public class WorkDayService  {
         if (!doctorsActiveList.contains(doctorService.getDoctor(5))){
             doctorsActiveList.add(doctorService.getDoctor(5));
         }
-
         workDay.setDoctorsActive(doctorsActiveList.size());
 
-        List<String> doctorsAbsentList = new ArrayList<>();
+        List<Doctor> allDoctors = doctorService.getAllActiveDoctors();
         String doctorsAbsentString = "";
-
-        // hardcode!!!
-        doctorService.getAllActive().stream()
-                .filter(doctor -> !doctor.getProcedureIds().isEmpty())
-                .filter(doctor -> doctor.getId() !=2 )
-                .filter(doctor -> doctor.getId() !=5 )
-                .forEach(doctor -> {
-
-                });
+        int counter = 0;
+        for (Doctor doctor:allDoctors){
+            if (!doctorsActiveList.contains(doctor)){
+                String fullName = doctor.getFullName();
+                String[] array = fullName.split(" ");
+                doctorsAbsentString += array[0] + ", ";
+                counter++;
+            }
+        }
+        workDay.setDoctorsAbsent(counter);
+        workDay.setDoctorsAbsentList(doctorsAbsentString);
 
         int active = (int) patientService.getAllForToday().stream()
                 .filter(patient -> patient.calcActivity().equals(Activity.GAMEOVER))
                 .count();
         workDay.setActivePatients(active);
 
+        List<Patient> patients = patientService.getAllForToday();
+        int hotel = patients.stream()
+                .filter(patient -> patient.isHotel())
+                .mapToInt(Patient::getBalance)
+                .sum();
+        workDay.setDebtOfHotel(hotel);
+
+        int present = patients.stream()
+                .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
+                .mapToInt(Patient::getBalance)
+                .sum();
+      //  workDay.setDebtOfTodayActive(present);
+
         //------------------------ debt------------------
-
-
+        System.out.println("WORKDAY COMPLETE ");
+        this.update(workDay);
     }
 }
