@@ -19,7 +19,8 @@ public class PermanentPayroll {
     private int penalty; // также и штрафы
     private int total;   // всего начислено за это время
     private int recd;    // всего уже получено в кассе за это время
-    private int actual;  // сумма, которую можно получить в кассе, учитывая выше изложенное (не влезая в долг)
+    private int actual;  // остаток на ТО время
+    private int actualNow;  // остаток на сегодня
 
     public PermanentPayroll() {}
 
@@ -120,6 +121,13 @@ public class PermanentPayroll {
         return actual;
     }
 
+    public int getActualNow() {
+        return actualNow;
+    }
+
+    public void setActualNow(int actualNow) {
+        this.actualNow = actualNow;
+    }
 
     private void recalculate(){
         this.total = this.stavka + this.accural + this.award
@@ -142,6 +150,7 @@ public class PermanentPayroll {
                 ", total=" + total +
                 ", recd=" + recd +
                 ", actual=" + actual +
+                ", actualNow=" + actualNow +
                 '}';
     }
 }

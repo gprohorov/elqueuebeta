@@ -288,9 +288,41 @@ public class SalaryDailyService {
                     .filter(slr->slr.getType().equals(SalaryType.BUZUNAR))
                     .mapToInt(Salary::getSum).sum();
             payroll.setRecd(buzunar);
+            payroll.setActualNow(this.getRestForTodayForDoctor(salary.getDoctorId()));
             list.add(payroll);
         });
         return list;
+    }
+
+
+//----------------------------- 10 march   ----------------------------------------
+    private int getRestForTodayForDoctor(int id){
+        LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
+        LocalDate to = LocalDate.now();
+
+        int dailySummary = this.showSummaryForPeriodForDoctor(from.minusDays(1),to.plusDays(1),id)
+                .getTotal();
+
+        List<Salary> slrs = salaryService.getAllForDoctor(id).stream()
+                .filter(salary -> salary.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                .collect(Collectors.toList());
+
+        int buzunar = slrs.stream()
+                .filter(slr->slr.getType().equals(SalaryType.BUZUNAR))
+                .mapToInt(Salary::getSum).sum();
+
+        int award = slrs.stream()
+                .filter(slr->slr.getType().equals(SalaryType.AWARD))
+                .mapToInt(Salary::getSum).sum();
+
+
+        int penalty = slrs.stream()
+                .filter(slr->slr.getType().equals(SalaryType.PENALTY))
+                .mapToInt(Salary::getSum).sum();
+
+        int result = dailySummary + award - penalty - buzunar;
+
+        return result;
     }
 
     public PermanentPayroll calculatePayroll(Integer id, List<SalaryDaily> salaries, 
