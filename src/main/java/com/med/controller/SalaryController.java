@@ -84,8 +84,8 @@ public class SalaryController {
                     , dto.getAward());
             service.createSalary(salary);
             SalaryDTO record = salaryDTOService.getAll().stream()
-                    .filter(row->row.getDoctorId()==dto.getDoctorID())
-                    .filter(row->row.getClosed()==null)
+                    .filter(row->row.getDoctorId() == dto.getDoctorID())
+                    .filter(row->row.getClosed() == null)
                     .findAny().get();
             record.setAward(record.getAward() + dto.getAward());
             salaryDTOService.updateSalaryDTO(record);
@@ -99,8 +99,8 @@ public class SalaryController {
                     , dto.getPenalty());
             service.createSalary(salary);
             SalaryDTO record = salaryDTOService.getAll().stream()
-                    .filter(row->row.getDoctorId()==dto.getDoctorID())
-                    .filter(row->row.getClosed()==null)
+                    .filter(row->row.getDoctorId() == dto.getDoctorID())
+                    .filter(row->row.getClosed() == null)
                     .findAny().get();
             record.setPenalty(record.getPenalty() + dto.getPenalty());
             salaryDTOService.updateSalaryDTO(record);
@@ -136,18 +136,19 @@ public class SalaryController {
        // System.out.println("124 line");
 		return service.getPaymentsByDoctor(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
-/*
+    
+    /*
     @RequestMapping("/inject")
     public List<SalaryDTO> inject() {
         return salaryDTOService.inject();
     }
     */
+    
     @RequestMapping("/doctor/{doctorId}/{from}/{to}")
     public DoctorPeriodSalary getDoctorSalaryForPeriod(
         @PathVariable(value = "doctorId") int doctorId,
         @PathVariable(value = "from") String from,
         @PathVariable(value = "to") String to) {
-
         return salaryDTOService.getDoctorSalaryForPeriod(doctorId, LocalDate.parse(from), LocalDate.parse(to));
     }
 
@@ -159,34 +160,23 @@ public class SalaryController {
     
     @RequestMapping("/doctor/preview/save")
     public void saveDoctorSalaryPreview(@Valid @RequestBody String data) {
-
     	salaryDTOService.saveDoctorSalaryByJSON(new JSONObject(data));
     }
     
     @RequestMapping("/date/{date}")
     public List<SalaryDaily> getSalariesForDate(@PathVariable(value = "date") String date) {
         int hour = 19; // 19.00 the time when salaries are written to base
-        if (LocalDate.parse(date).equals(LocalDate.now()) && LocalDateTime.now().getHour()<hour) {
+        if (LocalDate.parse(date).equals(LocalDate.now()) && LocalDateTime.now().getHour() < hour) {
             return salaryDailyService.showCurrentSalariesForToday();
         }
         return salaryDailyService.getSalariesForDate(LocalDate.parse(date));
-    }
-    
-    @RequestMapping("/daily/{from}/{to}")
-    public List<SalaryDaily> getSalariesForPeriod(
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to) {
-        return salaryDailyService.getSalarySummaryForPeriod(
-                LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @RequestMapping("/payroll/{from}/{to}")
     public List<PermanentPayroll> getPayrollForPeriod(
             @PathVariable(value = "from") String from,
             @PathVariable(value = "to") String to) {
-        return salaryDailyService.getPermanentPayrollFromTo(
-                LocalDate.parse(from), LocalDate.parse(to));
+        return salaryDailyService.getPermanentPayrollFromTo(LocalDate.parse(from), LocalDate.parse(to));
     }
-
 
 }
