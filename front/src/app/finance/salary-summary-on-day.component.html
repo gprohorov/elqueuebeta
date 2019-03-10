@@ -59,8 +59,9 @@
 <div class="content table-responsive table-full-width table-sm" *ngIf="detailed">
   <table class="table table-bordered">
       <tr><th>Доктор</th><td>{{detailedItem.name}}</td></tr>
-      <tr><th>Залишок <small>("-" — означає борг)</small></th><td>{{detailedItem.actual}} грн.</td></tr>
       <tr><th>Залишок на {{this.to | date:"dd.MM.yyyy"}} <small>("-" — означає борг)</small></th>
+        <td>{{detailedItem.actual}} грн.</td></tr>
+      <tr><th>Залишок на сьогодні <small>("-" — означає борг)</small></th>
         <td>{{detailedItem.actualNow}} грн.</td></tr>
       <tr><th>Отримано</th><td>{{detailedItem.recd}} грн.</td></tr>
       <tr><th>Нараховано</th><td>{{detailedItem.total}} грн.</td></tr>
