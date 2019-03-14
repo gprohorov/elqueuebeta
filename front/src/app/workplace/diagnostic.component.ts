@@ -8,7 +8,7 @@ import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
 import { Status } from '../_storage/index';
-import { AlertService, WorkplaceDiagnosticService, PatientsQueueService } from '../_services/index';
+import { AlertService, WorkplaceDiagnosticService, PatientsQueueService, PatientService } from '../_services/index';
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 
 @Component({
@@ -49,6 +49,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         private alertService: AlertService,
         private service: WorkplaceDiagnosticService,
         private patientsQueueService: PatientsQueueService,
+        private patientService: PatientService,
         private modalService: ModalDialogService
     ) { }
 
@@ -295,6 +296,13 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         } else {
             this.load();
         }
+    }
+    
+    updateDiscount(id: string, value: number) {
+        this.loading = true;
+        this.subTemp = this.patientService.updateDiscount(id, value).subscribe(() => {
+            this.load();
+        });
     }
 
     showIncomePopup(patient: any) {

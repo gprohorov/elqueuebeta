@@ -1,7 +1,7 @@
 ﻿<app-loader [loader]="loading"></app-loader>
 <button
-    [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-    [disabled]="loading" (click)="load()" title="Обновити"></button>
+  [ngClass]="{'pull-right fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+  [disabled]="loading" (click)="load()" title="Обновити"></button>
 <div class="content" *ngIf="item?.patient">
     <h2 class="title">Діагностика</h2>
     <h4 class="title mb-5">{{item.patient.person.fullName}} ({{item?.patient.days}} день)</h4>
@@ -58,34 +58,46 @@
                 </button>
             </div>
         </div>
-        <div class="row" *ngxPermissionsOnly="['ROLE_HEAD']">
+        <div class="row" *ngxPermissionsOnly="['ROLE_HEAD', 'ROLE_SUPERADMIN']">
             <div class="col">
                 <div class="card mb-2">
                     <div class="card-header">
                         <h4>Фінансова інформація</h4>
                     </div>
                     <div class="card-body row">
-                        <div class="col-auto input-group" [style.max-width.px]="400">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text">Баланс:
-                                    {{item.patient.balance}} грн.</label>
-                            </div>
-                            <button class="btn btn-warning" (click)="showIncomePopup(item)"
-                                [hidden]="!procedureStarted" [disabled]="loading">Історія
-                                розрахунків</button>
+                        <div class="col">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text">Баланс: {{item.patient.balance}} грн.</label>
+                                <button class="btn btn-warning" (click)="showIncomePopup(item)"
+                                    [hidden]="!procedureStarted" [disabled]="loading">Історія розрахунків</button>
+                              </div>
+                          </div>
                         </div>
-                        <div class="col-auto input-group" [style.max-width.px]="300">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text">Статус:</label>
-                            </div>
-                            <select class="custom-select" [(ngModel)]="item.patient.status"
+                        <div class="col">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text">Знижка (%):</label>
+                              </div>
+                              <input type="number" class="form-control" [(ngModel)]="item.patient.discount"
                                 [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
-                                (ngModelChange)="updateStatus(item.patient.id, item.patient.status)">
-                                <option *ngFor="let status of Statuses" [ngValue]="status"
-                                    [disabled]="loading">{{Status[status]?.text}}</option>
-                            </select>
+                                (ngModelChange)="updateDiscount(item.patient.id, item.patient.discount)"/>
+                          </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <label class="input-group-text">Статус:</label>
+                              </div>
+                              <select class="custom-select" [(ngModel)]="item.patient.status"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
+                                  (ngModelChange)="updateStatus(item.patient.id, item.patient.status)">
+                                  <option *ngFor="let status of Statuses" [ngValue]="status"
+                                      [disabled]="loading">{{Status[status]?.text}}</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="col">
                             <a href="/statistic/patient/{{item.patient.id}}" target="_blank"
                                 class="btn btn-secondary" target="_blank" [disabled]="loading">Статистика</a>
                         </div>

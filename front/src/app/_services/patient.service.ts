@@ -21,6 +21,7 @@ export class PatientService {
     private getBalanceUrl = config.api_path + '/patient/balance/today/';
     private receiptUrl = config.api_path + '/patient/create/receipt/';
     private checkUrl = config.api_path + '/patient/create/receipt/';
+    private updateDiscountUrl = config.api_path + '/patient/update/discount/';
 
     constructor(private http: HttpClient) { }
 
@@ -71,6 +72,11 @@ export class PatientService {
 
     getCheck(patientId: string) {
         return this.http.get(this.checkUrl + patientId + '/today')
+        .pipe(catchError(this.handleError));
+    }
+    
+    updateDiscount(patientId: string, discount: number) {
+        return this.http.get(this.updateDiscountUrl + patientId + '/' + discount)
         .pipe(catchError(this.handleError));
     }
 
