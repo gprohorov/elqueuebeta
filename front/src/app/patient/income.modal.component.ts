@@ -105,6 +105,12 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.changeField.nativeElement.value = this.incomeField.nativeElement.value - this.model.sum; 
     }
     
+    calcDiscount() {
+        const diff = (this.model.sum / 100) * this.data.discount; 
+        this.model.sum = this.model.sum - diff;
+        this.model.discount = diff;
+    }
+    
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;

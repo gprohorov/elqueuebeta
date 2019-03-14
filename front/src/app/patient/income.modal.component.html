@@ -104,4 +104,12 @@
             [(ngModel)]="model.closeDay" />
         <label class="form-check-label">Відмінити всі процедури на сьогодні</label>
     </div>
+    <div class="row">
+        <div class="col-auto">
+            Знижка: <strong>{{data.discount}}</strong> %.
+        </div>
+        <div class="col">
+            <button class="btn btn-sm btn-info pull-right" (click)="calcDiscount()">Застосувати</button>
+        </div>
+    </div>
 </form>
