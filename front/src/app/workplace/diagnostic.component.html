@@ -79,9 +79,12 @@
                               <div class="input-group-prepend">
                                 <label class="input-group-text">Знижка (%):</label>
                               </div>
-                              <input type="number" class="form-control" [(ngModel)]="item.patient.discount"
-                                [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
-                                (ngModelChange)="updateDiscount(item.patient.id, item.patient.discount)"/>
+                              <select class="custom-select" [(ngModel)]="item.patient.discount"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="!procedureStarted"
+                                  (ngModelChange)="updateDiscount(item.patient.id, item.patient.discount)">
+                                  <option *ngFor="let discount of Discounts" [ngValue]="discount"
+                                      [disabled]="loading">{{discount}} %</option>
+                              </select>
                           </div>
                         </div>
                         <div class="col">
