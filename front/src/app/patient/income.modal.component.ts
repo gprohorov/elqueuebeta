@@ -21,6 +21,9 @@ export class PatientIncomeModalComponent implements IModalDialog {
     loading = false;
     showDetails = false;
     details: any = [];
+    cash = 0;
+    change = 0;
+    balanceAfter: number;
 
     @ViewChild('incomeField') incomeField: ElementRef;
     @ViewChild('changeField') changeField: ElementRef;
@@ -103,13 +106,18 @@ export class PatientIncomeModalComponent implements IModalDialog {
     }
 
     calcChange() {
-        this.changeField.nativeElement.value = this.incomeField.nativeElement.value - this.model.sum; 
+        this.change = this.cash - this.model.sum;
+        this.calcBalanceAfter();
     }
     
     calcDiscount() {
-        const diff = (this.model.sum / 100) * this.data.discount; 
-        this.model.sum = this.model.sum - diff;
-        this.model.discount = diff;
+        this.model.discount = (this.model.sum / 100) * this.data.discount; 
+        this.model.sum = this.model.sum - this.model.discount;
+        this.calcChange();
+    }
+    
+    calcBalanceAfter() {
+        this.balanceAfter = this.data.balance + this.model.sum + this.model.discount;
     }
     
     submit(f, options) {

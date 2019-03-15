@@ -46,6 +46,7 @@
         <button class="btn btn-sm btn-success pull-right" (click)="getDetails()">Детальніше</button>
     </div>
 </div>
+Баланс після оплати: <strong>{{balanceAfter}}</strong> грн.
 <form name="form" #f="ngForm" novalidate>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
@@ -66,7 +67,8 @@
             <div class="input-group-prepend">
                 <div class="input-group-text alert-info" [style.width.px]="110">Готівка</div>
             </div>
-            <input type="number" class="form-control" #incomeField (keyup)="calcChange()"/>
+            <input type="number" class="form-control" [(ngModel)]="cash"
+              [ngModelOptions]="{standalone: true}" (ngModelChange)="calcChange()"/>
         </div>
       </div>
       <div class="col">
@@ -74,7 +76,8 @@
             <div class="input-group-prepend">
                 <div class="input-group-text alert-info" [style.width.px]="80">Здача</div>
             </div>
-            <input type="number" class="form-control bg-light" #changeField disabled/>
+            <input type="number" class="form-control bg-light" [(ngModel)]="change"
+              [ngModelOptions]="{standalone: true}" disabled/>
         </div>
       </div>
     </div>
