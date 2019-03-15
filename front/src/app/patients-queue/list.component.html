@@ -45,18 +45,20 @@
         </button>
     </div>
 </div>
-<div [ngClass]="{'row': true, 'align-middle': true, 'alert-secondary': appointment.appointment % 2 != 0}" 
+<div class="container">
+  <div [ngClass]="{'row': true, 'alert-secondary': appointment.appointment % 2 != 0}" 
     *ngFor="let appointment of appointments">
-    <div class="col-1">{{appointment.appointment}}:00</div>
+    <div class="col-1 pt-1">{{appointment.appointment}}:00</div>
     <div class="col">
-        <div class="form-inline pt-1">
-            <div *ngFor="let item of appointment.items">
-                <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: items[item]}"></ng-container>
-            </div>
+      <div class="form-inline pt-1">
+        <div *ngFor="let item of appointment.items">
+          <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: items[item]}"></ng-container>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<div class="mt-2 content table-responsive table-full-width">
+<div class="mt-2 table-responsive table-full-width">
     <table class="table table-sm">
         <thead class="thead-dark small">
             <tr>
@@ -190,7 +192,7 @@
 
 
 <ng-template #templateRef let-item>
-    <button [style.width.px]="245" (click)="scrollToRow(item?.id)" 
+    <button [style.width.px]="238" (click)="scrollToRow(item?.id)" 
         [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
         popoverTitle="{{item?.person.fullName}}" placement="bottom" 
         [hidden]="isHiddenRow(item)"
