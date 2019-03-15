@@ -29,12 +29,13 @@ export class CheckComponent implements OnInit, OnDestroy {
         this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.loading = true;
-        this.sub = this.service.getCheck(this.patientId)
-            .subscribe(data => {
-                this.data = data;
-                this.setTimer();
-                this.loading = false;
-            });
+        this.sub = this.service.getCheck(this.patientId).subscribe(data => {
+            this.data = data;
+            this.data.discountSum = (this.data.balance / 100) * this.data.discount;
+            this.data.totalSum = this.data.balance - this.data.discountSum; 
+            this.setTimer();
+            this.loading = false;
+        });
     }
 
     ngOnDestroy() {

@@ -12,6 +12,7 @@ public class ReceiptToday {
     private int proceduresSum;  // сумма за все процедуры и готель ЗА СЕГОДНЯ
     private int payed;
     private int balance;
+    private int discount;
 
     public ReceiptToday() {}
 
@@ -69,5 +70,13 @@ public class ReceiptToday {
 
 	public void setBalance(int balance) {
 		this.balance = balance;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
 }

@@ -225,7 +225,7 @@ public class AccountingService {
         receipt.setPayed(accountings.stream().filter(accounting -> accounting.getSum() > 0)
     		.mapToInt(Accounting::getSum).sum());
         receipt.setBalance(patient.getBalance());
-
+    	receipt.setDiscount(patient.getDiscount());
         return receipt;
     }
 }

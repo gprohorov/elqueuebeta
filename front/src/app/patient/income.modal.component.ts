@@ -31,6 +31,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.data = options.data;
         this.model.patientId = this.data.id;
         this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
+        this.calcDiscount();
         options.actionButtons = [{
             text: 'Виписка',
             buttonClass: 'btn btn-info mr-5',

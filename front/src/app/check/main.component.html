@@ -40,5 +40,13 @@ e-mail: mednean@gmail.com
             <td align="right"><strong>Баланс:</strong></td>
             <td align="right"><strong>{{data?.balance}} грн.</strong></td>
         </tr>
+        <tr>
+            <td align="right"><strong>Знижка ({{data?.discount}} %):</strong></td>
+            <td align="right"><strong>{{data?.discountSum *-1}} грн.</strong></td>
+        </tr>
+        <tr>
+            <td align="right"><strong>До сплати:</strong></td>
+            <td align="right"><strong>{{data?.totalSum *-1}} грн.</strong></td>
+        </tr>
     </tbody>
 </table>
