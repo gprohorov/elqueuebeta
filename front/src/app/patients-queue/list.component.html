@@ -45,10 +45,11 @@
         </button>
     </div>
 </div>
-<div class="row" *ngFor="let appointment of appointments">
-    <div [ngClass]="{'col-1': true, 'alert-secondary': appointment.appointment % 2 != 0}">{{appointment.appointment}}:00</div>
+<div [ngClass]="{'row': true, 'align-middle': true, 'alert-secondary': appointment.appointment % 2 != 0}" 
+    *ngFor="let appointment of appointments">
+    <div class="col-1">{{appointment.appointment}}:00</div>
     <div class="col">
-        <div class="form-inline">
+        <div class="form-inline pt-1">
             <div *ngFor="let item of appointment.items">
                 <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: items[item]}"></ng-container>
             </div>
@@ -189,10 +190,11 @@
 
 
 <ng-template #templateRef let-item>
-    <button [style.width.px]="245" (click)="scrollToRow(item?.id)" [ngbPopover]="popContent"
-        triggers="mouseenter:mouseleave" popoverTitle="{{item?.person.fullName}}"
-        placement="bottom" [hidden]="isHiddenRow(item)"
-        [ngClass]="{'bg-light': item.appointed % 2 == 0, 'mb-1 mr-2 btn btn-sm text-left': true}"
+    <button [style.width.px]="245" (click)="scrollToRow(item?.id)" 
+        [ngbPopover]="popContent" triggers="mouseenter:mouseleave"
+        popoverTitle="{{item?.person.fullName}}" placement="bottom" 
+        [hidden]="isHiddenRow(item)"
+        class="bg-transparent mb-1 mr-2 btn btn-sm text-left"
         [ngStyle]="{'line-height': '.2rem'}">
         <span class="badge badge-{{Activity[item?.activity].cssClass}}" 
             [ngStyle]="{'max-width': '180px', 'overflow-x': 'hidden', 'text-overflow': 'ellipsis'}"
