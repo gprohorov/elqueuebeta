@@ -34,6 +34,9 @@ export class CheckComponent implements OnInit, OnDestroy {
             if (this.data.balance < 0) {
                 this.data.discountSum = Math.ceil((this.data.balance / 100) * this.data.discount);
                 this.data.totalSum = this.data.balance - this.data.discountSum;
+            } else {
+                this.data.discountSum = 0;
+                this.data.totalSum = this.data.balance;
             }
             this.setTimer();
             this.loading = false;
