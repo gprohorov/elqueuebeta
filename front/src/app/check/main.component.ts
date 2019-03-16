@@ -31,8 +31,10 @@ export class CheckComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.sub = this.service.getCheck(this.patientId).subscribe(data => {
             this.data = data;
-            this.data.discountSum = Math.ceil((this.data.balance / 100) * this.data.discount);
-            this.data.totalSum = this.data.balance - this.data.discountSum; 
+            if (this.data.balance < 0) {
+                this.data.discountSum = Math.ceil((this.data.balance / 100) * this.data.discount);
+                this.data.totalSum = this.data.balance - this.data.discountSum;
+            }
             this.setTimer();
             this.loading = false;
         });
