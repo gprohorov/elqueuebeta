@@ -58,12 +58,6 @@ public class DataStorageTest {
     @Autowired
     CashBoxService cashBoxService;
 
-    @PostConstruct
-    void init(){
-     //   System.out.println("--------------  history ---------------");
-     //   this.getHistory();
-    //    this.findNedostachu();
-    };
 
     public void launch() {}
 
@@ -99,14 +93,14 @@ public class DataStorageTest {
 	        .filter(salary -> salary.getType().equals(SalaryType.BUZUNAR))
             .collect(Collectors.toList());
 	    list.stream().forEach(salary -> {
-	        System.out.println(salary.getDateTime().toLocalDate() + "  " + 
+	        System.out.println(salary.getDateTime().toLocalDate() + "  " +
         		salary.getDateTime().getHour() + ":" +
                 salary.getDateTime().getMinute() + ":" +
                 salary.getDateTime().getSecond() + ":" + ", Sum: " + salary.getSum());
 	    });
         System.out.println(list.stream().mapToInt(Salary::getSum).sum());
     }
-    
+
     public void resetPatientsTable() {
         System.out.println("Talon table updated");
     }

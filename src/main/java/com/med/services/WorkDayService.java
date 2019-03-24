@@ -22,7 +22,7 @@ import com.med.repository.WorkDayRepository;
 
 @Service
 public class WorkDayService  {
-	
+
     @Autowired
     WorkDayRepository repository;
 
@@ -44,23 +44,23 @@ public class WorkDayService  {
     public WorkDay create(WorkDay workDay) {
         return repository.save(workDay);
     }
-    
+
     public WorkDay create(LocalDate date) {
         return repository.save(new WorkDay(date));
     }
-    
+
     public WorkDay getWorkDay(String id) {
         return repository.findById(id).orElse(new WorkDay());
     }
-    
+
     public WorkDay getWorkDay(LocalDate date) {
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
-    
+
     public WorkDay update(WorkDay workDay) {
         return repository.save(workDay);
     }
-    
+
     @Scheduled(cron = "0 0 7 * * *")
     public void initWorkDay(){
         WorkDay workDay = new WorkDay(LocalDate.now());
@@ -72,7 +72,7 @@ public class WorkDayService  {
 
         this.create(workDay);
     }
-    
+
     @Scheduled(cron = "0 0 10 * * *")
     public void setWorkDayStart() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
@@ -120,9 +120,6 @@ public class WorkDayService  {
         int rest = cashBoxService.getCashBox();
         workDay.setSumAtFinish(rest);
 
-        int debt = patientService.getAllForToday().stream().mapToInt(Patient::getBalance).sum();
-        workDay.setDebtOfTodayAll(debt);
-
         List<Doctor> doctorsActiveList = talonService.getTalonsForToday().stream()
             .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
             .map(Talon::getDoctor).distinct().collect(Collectors.toList());
@@ -146,14 +143,41 @@ public class WorkDayService  {
         workDay.setDoctorsAbsent(doctorsAbsentList.size());
         workDay.setDoctorsAbsentList(String.join(", ", doctorsAbsentList));
 
-        int active = (int) patientService.getAllForToday().stream()
-            .filter(patient -> patient.calcActivity().equals(Activity.GAMEOVER)).count();
-        workDay.setActivePatients(active);
 
         List<Patient> patients = patientService.getAllForToday();
+
+        int debt = patients.stream().mapToInt(Patient::getBalance).sum();
+        workDay.setDebtOfTodayAll(debt);
+
+        int active =(int) patients.stream()
+                .filter(patient -> patient.calcActivity().equals(Activity.GAMEOVER)).count();
+        workDay.setActivePatients(active);
+
+        int passiveDebt = debt - active;
+        workDay.setDebtOfTodayPassive(passiveDebt);
+
         int hotel = patients.stream().filter(patient -> patient.isHotel())
             .mapToInt(Patient::getBalance).sum();
         workDay.setDebtOfHotel(hotel);
+
+        List<Patient> truants = patients.stream()
+                .filter(patient -> patient.getActivity().equals(Activity.NON_ACTIVE))
+                .filter(patient -> patient.getBalance()<0)
+                .collect(Collectors.toList());
+
+
+        List<Patient> tomorrov = patientService.getAllForDate(LocalDate.now().plusDays(1));
+        List<Patient> tomorrowTruants = new ArrayList<>();
+
+        for (Patient truant:truants){
+            if (!tomorrov.contains(truant)){
+                tomorrowTruants.add(truant);
+            }
+        }
+        int tomorrovAbsent = tomorrowTruants.stream()
+                .mapToInt(Patient::getBalance).sum();
+        workDay.setDebtOfTomorrowPassive(tomorrovAbsent);
+
 
 //        int present = patients.stream()
 //            .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))

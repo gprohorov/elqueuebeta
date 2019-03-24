@@ -60,19 +60,19 @@ public class SalaryDailyService {
     public SalaryDaily createSalaryDaily(SalaryDaily salaryDaily) {
         return repository.save(salaryDaily);
     }
-    
+
     public SalaryDaily getSalaryDaily(String salaryDailyId) {
         return repository.findById(salaryDailyId).orElse(null);
     }
-    
+
     public SalaryDaily updateSalaryDaily(SalaryDaily salaryDaily) {
         return repository.save(salaryDaily);
     }
-    
+
     public List<SalaryDaily> getSalaryListForPeriodForDoctor(LocalDate from, LocalDate to, int doctorId) {
         return repository.findByDateBetweenAndDoctorId(from, to, doctorId);
     }
-    
+
     public SalaryDaily showSummaryForPeriodForDoctor(LocalDate from, LocalDate to, int doctorId) {
        // from = from.minusDays(1);
        // to = to.plusDays(1);
@@ -105,10 +105,13 @@ public class SalaryDailyService {
         salary.setName(doctorService.getDoctor(doctorId).getFullName());
         salary.setDate(date);
 
-        int stavka = (doctorService.getDoctor(doctorId).getRate() / 30) 
+        int stavka = (doctorService.getDoctor(doctorId).getRate() / 30)
     		- setting.get().getTax() / 30 - setting.get().getCanteen();
+
+
         if (( date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
-        ||  (date.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+        ||  (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
+        ||  (talons.isEmpty()))
         ) {
             stavka += setting.get().getCanteen();
         }
@@ -137,7 +140,7 @@ public class SalaryDailyService {
         this.repository.deleteAll(list);
         list.clear();
 
-        doctorService.getAllActive().forEach(doctor -> 
+        doctorService.getAllActive().forEach(doctor ->
         	list.add(this.createSalaryDailyForDoctor(doctor.getId(), LocalDate.now())));
         return list;
     }
@@ -204,7 +207,7 @@ public class SalaryDailyService {
         });
         return salaries;
     }
-    
+    //  current state for today
     public SalaryDaily showCureentSalaryForDoctor(List<Talon> list, int doctorId) {
         Doctor doctor = doctorService.getDoctor(doctorId);
         List<Talon> talons = list.stream()
@@ -249,7 +252,7 @@ public class SalaryDailyService {
 
         return  salary;
     }
-    
+
     // --------------------------------  15 feb
     public List<PermanentPayroll> getPermanentPayrollFromTo(LocalDate from, LocalDate to) {
         List<PermanentPayroll> list = new ArrayList<>();
@@ -296,7 +299,7 @@ public class SalaryDailyService {
 
 
 //----------------------------- 10 march   ----------------------------------------
-    private int getRestForTodayForDoctor(int id){
+    public int getRestForTodayForDoctor(int id){
         LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
         LocalDate to = LocalDate.now();
 
@@ -325,7 +328,7 @@ public class SalaryDailyService {
         return result;
     }
 
-    public PermanentPayroll calculatePayroll(Integer id, List<SalaryDaily> salaries, 
+    public PermanentPayroll calculatePayroll(Integer id, List<SalaryDaily> salaries,
 			LocalDate from, LocalDate to) {
         PermanentPayroll payroll = new PermanentPayroll();
         payroll.setDoctorId(id);
@@ -385,7 +388,7 @@ public class SalaryDailyService {
                 salaryDaily.setDoctorId(item);
                 salaryDaily.setName(doctorService.getDoctor(item).getFullName());
                 salaryDaily.setDate(jan01.plusDays(i));
-                int stavka = doctorService.getDoctor(item).getRate() / 30 
+                int stavka = doctorService.getDoctor(item).getRate() / 30
             		- setting.get().getTax() / 30 - setting.get().getCanteen();
                 if (jan01.plusDays(i).getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
                 	stavka += setting.get().getCanteen();

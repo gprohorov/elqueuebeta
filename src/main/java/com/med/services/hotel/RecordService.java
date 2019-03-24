@@ -50,7 +50,7 @@ public class RecordService {
     public Record createRecord(Record record) {
         return repository.save(record);
     }
-    
+
     public void cancelRecord(String recordId) {
         Record record = this.getRecord(recordId);
         Patient patient = patientService.getPatient(record.getPatientId());
@@ -127,7 +127,7 @@ public class RecordService {
                     reject.setMessage("Накладка поселення та бронювання");
                     return reject;
                 }
-            } else { 
+            } else {
             	reject.setMessage("Бронювання та поселення принципово неможливе");
             }
 
@@ -141,7 +141,7 @@ public class RecordService {
             } else {
             	reject.setMessage("Два бронювання неможливе");
             }
-            
+
             return reject;
         }
 
@@ -201,7 +201,7 @@ public class RecordService {
     public Record updateRecord(Record record) {
        return repository.save(record);
     }
-    
+
     public Response updateRecordById(String recordId) {
     	return new Response(true, "OK");
     }
@@ -225,7 +225,7 @@ public class RecordService {
         int days = (int)ChronoUnit.DAYS.between(record.getStart(), record.getFinish());
         int subtractPausedDays = 0;
         int sum = 0;
-        Optional<List<Record>> pausedRecordsOpt = getPausedRecordsFromTo(record.getPatientId(), 
+        Optional<List<Record>> pausedRecordsOpt = getPausedRecordsFromTo(record.getPatientId(),
         		record.getStart().toLocalDate(), record.getFinish().toLocalDate());
         if (pausedRecordsOpt.isPresent()) {
             List<Record> pausedRecords = pausedRecordsOpt.get();
@@ -239,7 +239,7 @@ public class RecordService {
             }
         }
         sum = (days - subtractPausedDays) * record.getPrice();
-        record.setDesc(formDescForClosedRecord(record.getKoika().getName(), days, 
+        record.setDesc(formDescForClosedRecord(record.getKoika().getName(), days,
     		subtractPausedDays, record.getPrice(), sum));
         return -sum;
     }
@@ -353,7 +353,7 @@ public class RecordService {
     }
 
     public List<KoikaRecord> getKoikaMap(LocalDate start) {
-		
+
         List<KoikaRecord> map = new ArrayList<>();
 
         koikaService.getAll().stream().forEach(koika -> {
@@ -372,7 +372,7 @@ public class RecordService {
 
         return map;
     }
-    
+
     // 12 Sept
     public void recalculate() {
         System.out.println("Recalculate was called ---------------------");
@@ -405,7 +405,7 @@ public class RecordService {
         return list;
     }
 
-   @Scheduled(cron = "0 0 8 * * *")
+   @Scheduled(cron = "0 0 12 * * *")
     private List<Accounting> generateBillsForAllLodgers() {
         List<Accounting> list = new ArrayList<>();
         repository.findByFinishGreaterThan(LocalDate.now().atTime(8,0).minusDays(1)).stream()
@@ -414,6 +414,10 @@ public class RecordService {
             	Accounting accounting = this.createAccounting(record, LocalDate.now());
                 list.add(accounting);
             });
+       List<Accounting> expired = accountingService.getAllForDate(LocalDate.now()).stream()
+               .filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
+               .collect(Collectors.toList());
+       accountingService.deleteAll(expired);
         return accountingService.saveAll(list);
     }
 
