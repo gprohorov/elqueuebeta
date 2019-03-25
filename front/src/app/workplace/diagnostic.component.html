@@ -118,14 +118,23 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-2">
+            <div class="col-auto">
+                <div class="content">
+                    {{currentProcedureName}}
+                    <button [hidden]="!procedureStarted || currentProcedureName == ''"
+                        (click)="saveProcedure()" class="ml-2 btn btn-success btn-small">Зберегти</button>
+                    <button [hidden]="!procedureStarted"
+                        (click)="saveProcedureAll()" class="ml-2 btn btn-info btn-small">
+                        Зберегти для всіх процедур</button>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-auto">
                 <div class="content">
                     <button class="btn btn-secondary btn-small" (click)="clearCanvas()"
                         [disabled]="!procedureStarted">Очистити</button>
-                    {{currentProcedureName}}
-                    <button [hidden]="!procedureStarted || currentProcedureName == ''"
-                        (click)="saveProcedure()" class="ml-2 btn btn-success btn-small">Зберегти</button>
                     <button class="btn btn-danger btn-small pull-right" [style.width.px]="50"
                         [disabled]="!procedureStarted" (click)="setColor('red')">&nbsp;</button>
                     <button class="btn btn-primary btn-small pull-right mr-2" [style.width.px]="50"

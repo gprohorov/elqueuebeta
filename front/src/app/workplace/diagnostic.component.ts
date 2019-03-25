@@ -87,6 +87,15 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         this.currentProcedureName = '';
         this.clearCanvas();
     }
+    
+    public saveProcedureAll() {
+        this.procedures.forEach(p => {
+            p.picture = this.canvasBuffer;
+        });
+        this.currentProcedureId = null;
+        this.currentProcedureName = '';
+        this.clearCanvas();
+    }
 
     public clearCanvas() {
         this.restoreCanvas([]);
