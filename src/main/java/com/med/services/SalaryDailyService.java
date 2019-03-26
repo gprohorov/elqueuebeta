@@ -350,8 +350,28 @@ public class SalaryDailyService {
 
 
     }
-
-    //-----------------------auxillary-------------------------------------------------
+    //  vacation++
+    //-------------------- 24 march ---------------
+    public List<Doctor> setDoctorsTruant(LocalDate date){
+        List<Doctor> doctors = doctorService.getAllActiveDoctors().stream()
+                .filter(doctor -> (!fullTimeList.contains(doctor)))
+                .collect(Collectors.toList());
+        List<SalaryDaily> salaries = this.getSalariesForDate(date);
+        for (Doctor doctor:doctors){
+            boolean isEmpty = salaries.stream()
+                    .filter(salary -> salary.getDoctorId() == doctor.getId())
+                    .findFirst().get().getBonuses() == 0;
+            if( isEmpty
+                && (!date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
+                && (!date.getDayOfWeek().equals(DayOfWeek.SUNDAY) )
+              ) {
+                doctor.setDaysOff(doctor.getDaysOff()+1);
+                doctorService.updateDoctor(doctor);
+            }
+        }
+        return null;
+    }
+    //-----------------------auxillary injections-------------------------------------------------
     // 24th of Feb
     // generate Salaries for a period for ALL
     public List<SalaryDaily> createDailySalariesForAllFromTo(LocalDate from, LocalDate to) {

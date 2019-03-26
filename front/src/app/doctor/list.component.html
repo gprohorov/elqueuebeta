@@ -16,6 +16,7 @@
         <thead class="thead-light">
             <tr>
                 <th [style.min-width.px]="300">ПІБ</th>
+                <th>Відп.</th>
                 <th>Телефон</th>
                 <th>Спеціальність</th>
                 <th>Ставка</th>
@@ -27,11 +28,12 @@
         <tbody>
             <tr *ngFor="let item of items">
                 <td>
-                	<i class="fa fa-user-circle" aria-hidden="true" 
-                		title="{{item.active ? 'Активний' : 'Не активний'}}" 
+                	<i class="fa fa-user-circle" aria-hidden="true"
+                		title="{{item.active ? 'Активний' : 'Не активний'}}"
                 		[ngClass]="{'text-success': item.active, 'text-danger': !item.active}"></i>
                 	&nbsp;{{item.fullName}}
                	</td>
+                <td>{{item.daysOff}}</td>
                 <td>{{item.cellPhone}}</td>
                 <td>{{item.speciality}}</td>
                 <td>{{item.rate}}</td>
