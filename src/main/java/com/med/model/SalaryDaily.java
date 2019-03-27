@@ -103,4 +103,19 @@ public class SalaryDaily {
     private void reacalculate() {
         this.total = this.stavka + this.bonuses;
     }
+
+    @Override
+    public String toString() {
+        return "SalaryDaily{" +
+                "id='" + id + '\'' +
+                ", date=" + date +
+                ", from=" + from +
+                ", days=" + days +
+                ", name='" + name + '\'' +
+                ", doctorId=" + doctorId +
+                ", stavka=" + stavka +
+                ", bonuses=" + bonuses +
+                ", total=" + total +
+                '}';
+    }
 }

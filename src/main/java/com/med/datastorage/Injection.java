@@ -1,18 +1,23 @@
 package com.med.datastorage;
 
+import com.med.model.Doctor;
 import com.med.model.SalaryDaily;
+import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.TalonRepository;
 import com.med.services.*;
 import com.med.services.hotel.ChamberService;
 import com.med.services.hotel.KoikaService;
 import com.med.services.hotel.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by george on 24.03.19.
@@ -56,9 +61,21 @@ public class Injection {
     @Autowired
     SalaryDailyService salaryDailyService;
 
+    @Autowired
+    DoctorService doctorService;
+
+    private List<Integer> fullTimeList;
+
+
     @PostConstruct
-    void init(){
-   //  injectCanteenForDoctor();
+    void init() {
+        fullTimeList = doctorService.getAllActive().stream()
+                .filter(doc -> doc.getProcedureIds().isEmpty())
+                .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
+        fullTimeList.add(2); // для Иры.
+        fullTimeList.add(5); // для ЮВ
+
+
     }
 
     private void   injectCanteenForDoctor() {
@@ -74,5 +91,24 @@ public class Injection {
             System.out.println(salaryDaily.getDate());
             salaryDailyService.updateSalaryDaily(salaryDaily);
         });
+    }
+  //  @Scheduled(cron = "0 5 23 * * *")
+    private void getDaysOff(){
+        List<Doctor> doctors = doctorService.getAllActiveDoctors().stream()
+                .filter(doctor -> (!fullTimeList.contains(doctor)))
+                .collect(Collectors.toList());
+        LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
+        LocalDate to = LocalDate.now();
+        for (Doctor doctor:doctors) {
+            List<SalaryDaily> salaries = salaryDailyService
+                    .getSalaryListForPeriodForDoctor(from,to, doctor.getId());
+            int daysOff = (int) salaries.stream()
+                    .filter(salary ->!salary.getDate().getDayOfWeek().equals(DayOfWeek.SATURDAY) )
+                    .filter(salary ->!salary.getDate().getDayOfWeek().equals(DayOfWeek.SUNDAY) )
+                    .filter(salary ->salary.getBonuses() == 0 )
+                    .count();
+            System.out.println(doctor.getFullName()+" " + daysOff);
+        }
+
     }
 }

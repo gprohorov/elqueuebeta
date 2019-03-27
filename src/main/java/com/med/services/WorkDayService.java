@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.med.model.balance.PaymentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -61,10 +63,9 @@ public class WorkDayService  {
         return repository.save(workDay);
     }
 
-    @Scheduled(cron = "0 0 7 * * *")
+    //@Scheduled(cron = "0 0 7 * * *")
     public void initWorkDay(){
         WorkDay workDay = new WorkDay(LocalDate.now());
-        workDay.setSumAtStart(cashBoxService.getCashBox());
         int assigned = (int) talonService.getTalonsForToday().stream()
                 .map(Talon::getPatientId).distinct().count();
         workDay.setAssignedPatients(assigned);
@@ -73,50 +74,77 @@ public class WorkDayService  {
         this.create(workDay);
     }
 
-    @Scheduled(cron = "0 0 10 * * *")
+ //   @Scheduled(cron = "0 0 10 * * *")
     public void setWorkDayStart() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
         LocalDateTime start = talonService.getTalonsForToday().stream()
             .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)
             || talon.getActivity().equals(Activity.ON_PROCEDURE)))
-            .map(Talon::getStart).findFirst().orElse(null);
+            .map(Talon::getStart)
+                .sorted()
+                .findFirst().orElse(null);
         workDay.setStart(start);
         this.update(workDay);
     }
 
-    @Scheduled(cron = "0 25 19 * * *")
+   // @Scheduled(cron = "0 25 19 * * *")
     public void setWorkDayFinishValues() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
 
+        // Ищем когда закончилась последняя процедура
         LocalDateTime finish = talonService.getTalonsForToday().stream()
             .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)))
             .map(Talon::getExecutionTime).sorted(Comparator.reverseOrder()).findFirst().orElse(null);
         workDay.setFinish(finish);
 
+        // сумма, начислення за выполненные процедуры
         int sumForExecutedProcedures = Math.toIntExact(accountingService.getSumForDateProcedures(LocalDate.now()));
         workDay.setSumForExecutedProcedures(sumForExecutedProcedures);
 
+        // кол-во пациентов, записанных на сегодня
         int assigned = (int) talonService.getTalonsForToday().stream()
             .map(Talon::getPatientId).distinct().count();
         workDay.setAssignedPatients(assigned);
 
+        //  сумма, внесённая сегодня в кассу пациентами НАЛОМ
         int cash = Math.toIntExact(accountingService.getSumForDateCash(LocalDate.now()));
         workDay.setCash(cash);
 
+        //  сумма, внесённая сегодня в кассу пациентами КАРТОЧКОЙ
         int card = Math.toIntExact(accountingService.getSumForDateCard(LocalDate.now()));
         workDay.setCard(card);
 
+        // Сумма всех скидок
         int discount = Math.toIntExact(accountingService.getSumForDateDiscount(LocalDate.now()));
         workDay.setDiscount(discount);
 
+        // Список скидочников с суммами скидок
+        final String[] discountsStringList = {""};
+        HashMap<String, Integer> discounts =new HashMap<>();
+        accountingService.getAllForDate(LocalDate.now()).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
+                .forEach(accounting -> {
+                    Patient patient = patientService.getPatient(accounting.getPatientId());
+                    String key =  patient.getPerson().getFullName().split(" ")[0];
+                    Integer value = accounting.getSum();
+                    discounts.put(key,value);
+                    discountsStringList[0] += key +" " + value + ", ";
+                });
+        workDay.setDiscountList(discountsStringList[0]);
+
+
+
+        // витраты за сегодня
         int outlay = cashBoxService.getOutlayForToday();
         workDay.setOutlay(outlay);
 
+        // инкассация
         int cashierWithdrawal = cashBoxService.getAllForToday().stream()
             .filter(cashBox -> cashBox.getType().equals(CashType.EXTRACTION))
             .mapToInt(CashBox::getSum).sum();
         workDay.setCashierWithdrawal(cashierWithdrawal);
 
+        // остаток на конец дня
         int rest = cashBoxService.getCashBox();
         workDay.setSumAtFinish(rest);
 
@@ -137,7 +165,8 @@ public class WorkDayService  {
         List<String> doctorsAbsentList = new ArrayList<String>();
         for (Doctor doctor:allDoctors) {
             if (!doctorsActiveList.contains(doctor)) {
-            	doctorsAbsentList.add(doctor.getFullName().split(" ")[0]);
+            	doctorsAbsentList.add(doctor.getFullName().split(" ")[0] + " "
+                + doctor.getDaysOff());
             }
         }
         workDay.setDoctorsAbsent(doctorsAbsentList.size());

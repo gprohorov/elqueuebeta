@@ -39,7 +39,7 @@ public class SalaryDTOService {
 
     @Autowired
     ProcedureService procedureService;
-    
+
     @Autowired
     SettingsService settingsService;
 
@@ -84,7 +84,7 @@ public class SalaryDTOService {
                 .filter(el->el.getDoctorId()==doctorId)
                 .findFirst().orElse(new SalaryDTO());
     }
-    
+
     // главврач генерит зарплату врачу за неделю.
     // Если его что-то не устраивает, то он ПОТОМ
     // он начисляет премию\штраф,  меняет ставку и процент за процедуры ,
@@ -285,7 +285,6 @@ public class SalaryDTOService {
     public SalaryDTO recalculateDTO(int doctorId) {
     	Doctor doctor = doctorService.getDoctor(doctorId);
     	// TODO: Make by MongoRepository
-       System.out.println(" ----------   204 line -------");
         SalaryDTO dto = repository.findAll().stream()
             .filter(el->el.getClosed() == null)
             .filter(el->el.getDoctorId() == doctorId)
@@ -397,7 +396,7 @@ public class SalaryDTOService {
         });
         return repository.saveAll(list);
     }
-    
+
     //  полный отчет по доктору за указанный период
     // не совсем корректно, ведь у нас дискретность - неделя
     public SalaryDTO getDoctorSummarySalary(int doctorId, LocalDate from, LocalDate to) {
@@ -576,7 +575,7 @@ public class SalaryDTOService {
         int stavka = daysTax * rate/30
                 - daysTax * settingsService.get().getTax() / 30
                 -  (days-saturdays) * settingsService.get().getCanteen();
- 
+
         if (doctorId == 2 || doctorId == 5) {
             dto.setDays(daysTax);
             dto.setHours(daysTax*8);
@@ -600,7 +599,7 @@ public class SalaryDTOService {
         dto.setTotal( dto.getStavka() + dto.getAccural() );
         return dto;
     }
-    
+
     public void saveDoctorSalaryByJSON(JSONObject object) {
 
         int doctorId = object.getInt("id");
@@ -617,7 +616,7 @@ public class SalaryDTOService {
             dpp.setProcent(obj.getInt("procent"));
             procedureProcentList.add(dpp);
         });
-        
+
         Doctor doctor = doctorService.getDoctor(doctorId);
         doctor.setRate(rate);
         doctor.setPercents(procedureProcentList);

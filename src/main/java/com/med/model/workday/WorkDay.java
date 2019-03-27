@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class WorkDay {
-	
+
     @Id
     private String id;
 
@@ -38,6 +38,24 @@ public class WorkDay {
     private int doctorsActive;  			// сколько докторов сегодня въябывало
     private int doctorsAbsent; 				// сколько сачков
     private String doctorsAbsentList; 		// список сачков
+    private int discountSum; 				// сколько дали знижок - сумма всего
+    private String discountList; 		    // список знижок
+
+    public int getDiscountSum() {
+        return discountSum;
+    }
+
+    public void setDiscountSum(int discountSum) {
+        this.discountSum = discountSum;
+    }
+
+    public String getDiscountList() {
+        return discountList;
+    }
+
+    public void setDiscountList(String discountList) {
+        this.discountList = discountList;
+    }
 
     public WorkDay(LocalDate date) {
         this.date = date;
