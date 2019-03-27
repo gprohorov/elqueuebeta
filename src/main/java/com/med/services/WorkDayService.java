@@ -63,8 +63,8 @@ public class WorkDayService  {
         return repository.save(workDay);
     }
 
-    //@Scheduled(cron = "0 0 7 * * *")
-    public void initWorkDay(){
+    // @Scheduled(cron = "0 0 7 * * *")
+    public void initWorkDay() {
         WorkDay workDay = new WorkDay(LocalDate.now());
         int assigned = (int) talonService.getTalonsForToday().stream()
                 .map(Talon::getPatientId).distinct().count();
@@ -74,20 +74,18 @@ public class WorkDayService  {
         this.create(workDay);
     }
 
- //   @Scheduled(cron = "0 0 10 * * *")
+    // @Scheduled(cron = "0 0 10 * * *")
     public void setWorkDayStart() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
         LocalDateTime start = talonService.getTalonsForToday().stream()
             .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)
             || talon.getActivity().equals(Activity.ON_PROCEDURE)))
-            .map(Talon::getStart)
-                .sorted()
-                .findFirst().orElse(null);
+            .map(Talon::getStart).sorted().findFirst().orElse(null);
         workDay.setStart(start);
         this.update(workDay);
     }
 
-   // @Scheduled(cron = "0 25 19 * * *")
+    // @Scheduled(cron = "0 25 19 * * *")
     public void setWorkDayFinishValues() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
 
@@ -122,17 +120,15 @@ public class WorkDayService  {
         final String[] discountsStringList = {""};
         HashMap<String, Integer> discounts =new HashMap<>();
         accountingService.getAllForDate(LocalDate.now()).stream()
-                .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
-                .forEach(accounting -> {
-                    Patient patient = patientService.getPatient(accounting.getPatientId());
-                    String key =  patient.getPerson().getFullName().split(" ")[0];
-                    Integer value = accounting.getSum();
-                    discounts.put(key,value);
-                    discountsStringList[0] += key +" " + value + ", ";
-                });
+	        .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
+	        .forEach(accounting -> {
+	            Patient patient = patientService.getPatient(accounting.getPatientId());
+	            String key =  patient.getPerson().getFullName().split(" ")[0];
+	            Integer value = accounting.getSum();
+	            discounts.put(key,value);
+	            discountsStringList[0] += key +" " + value + ", ";
+	        });
         workDay.setDiscountList(discountsStringList[0]);
-
-
 
         // витраты за сегодня
         int outlay = cashBoxService.getOutlayForToday();
@@ -172,7 +168,6 @@ public class WorkDayService  {
         workDay.setDoctorsAbsent(doctorsAbsentList.size());
         workDay.setDoctorsAbsentList(String.join(", ", doctorsAbsentList));
 
-
         List<Patient> patients = patientService.getAllForToday();
 
         int debt = patients.stream().mapToInt(Patient::getBalance).sum();
@@ -198,15 +193,14 @@ public class WorkDayService  {
         List<Patient> tomorrov = patientService.getAllForDate(LocalDate.now().plusDays(1));
         List<Patient> tomorrowTruants = new ArrayList<>();
 
-        for (Patient truant:truants){
-            if (!tomorrov.contains(truant)){
+        for (Patient truant:truants) {
+            if (!tomorrov.contains(truant)) {
                 tomorrowTruants.add(truant);
             }
         }
         int tomorrovAbsent = tomorrowTruants.stream()
                 .mapToInt(Patient::getBalance).sum();
         workDay.setDebtOfTomorrowPassive(tomorrovAbsent);
-
 
 //        int present = patients.stream()
 //            .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
@@ -218,5 +212,4 @@ public class WorkDayService  {
         System.out.println("WORKDAY COMPLETE ");
         this.update(workDay);
     }
-
 }

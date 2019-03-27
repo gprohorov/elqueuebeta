@@ -11,30 +11,31 @@ import java.time.LocalDate;
  */
 @Service
 public class ScheduleService {
+	
     @Autowired
     WorkDayService workDayService;
-
 
     @Autowired
     SalaryDailyService dailyService;
 
     @Scheduled(cron = "0 0 7 * * *")
-    void initWorkDay(){
+    void initWorkDay() {
        workDayService.initWorkDay();
     }
+    
     @Scheduled(cron = "0 0 10 * * *")
-    void setWorkDayStart(){
+    void setWorkDayStart() {
         workDayService.setWorkDayStart();
     }
+    
     @Scheduled(cron = "0 25 19 * * *")
-    void closeWorkDay(){
+    void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
 
     @Scheduled(cron = "0 41 19 * * *")
-    void markAbsentDoctors(){
+    void markAbsentDoctors() {
         dailyService.setDoctorsTruant(LocalDate.now());
         System.out.println("Truant marked");
     }
-
 }

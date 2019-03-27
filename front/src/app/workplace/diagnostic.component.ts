@@ -85,7 +85,6 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         p.picture = this.canvasBuffer;
         this.currentProcedureId = null;
         this.currentProcedureName = '';
-        this.clearCanvas();
     }
     
     public saveProcedureAll() {
@@ -94,7 +93,6 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
         });
         this.currentProcedureId = null;
         this.currentProcedureName = '';
-        this.clearCanvas();
     }
 
     public clearCanvas() {

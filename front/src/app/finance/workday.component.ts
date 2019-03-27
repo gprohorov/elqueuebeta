@@ -12,6 +12,12 @@ export class FinanceWorkdayComponent implements OnInit, OnDestroy {
     loading = false;
     data: any;
     date: any;
+    
+    show_doctorsAbsentList = false;
+    show_discountList = false;
+    show_debtOfTodayWithoutHotelList = false;
+    show_debtOfTomorrowPassiveList = false;
+    show_debtOfTodayPassiveList = false;
 
     constructor(
         private alertService: AlertService,
@@ -42,6 +48,11 @@ export class FinanceWorkdayComponent implements OnInit, OnDestroy {
             data => {
                 this.data = data;
                 this.loading = false;
+                this.show_doctorsAbsentList = false;
+                this.show_discountList = false;
+                this.show_debtOfTodayWithoutHotelList = false;
+                this.show_debtOfTomorrowPassiveList = false;
+                this.show_debtOfTodayPassiveList = false;
             },
             error => {
                 this.alertService.error('Помилка на сервері', false);
