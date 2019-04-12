@@ -65,9 +65,11 @@ public class Injection {
     @Autowired
     CashBoxService cashBoxService;
 
-
     @Autowired
     SettingsService settingsService;
+
+    @Autowired
+    WorkDayService workDayService;
 
     private List<Integer> fullTimeList;
 
@@ -83,6 +85,7 @@ public class Injection {
 
  //   this.showExtraction();
      //   this.updateBalance();
+        this.refreshWorkDay();
     }
   private void shhwHotelSummary(){
         LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
@@ -139,7 +142,8 @@ public class Injection {
         patient.setBalance(-2090);
         System.out.println(patient.getPerson().getFullName());
         patientService.savePatient(patient);
-
-
+    }
+    private void refreshWorkDay(){
+        workDayService.setWorkDayFinishValues();
     }
 }

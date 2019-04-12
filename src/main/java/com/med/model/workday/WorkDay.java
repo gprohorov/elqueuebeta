@@ -39,8 +39,8 @@ public class WorkDay {
     private String doctorsAbsentList; 		// список сачков
     private int discountSum; 				// сколько дали знижок - сумма всего
     private String discountList; 		    // список знижок
-    private String truantsString;           // список должников, которые записаны и не пришли
-    private String truantsTomorrowString;           // список должников, которые записаны и не пришли
+    private String debtOfTodayPassiveList;  // список должников, которые записаны на сегодня и не пришли
+    private String debtOfTomorrowPassiveList; //список должников, которые НЕ записаны на завтра
 
 
 
@@ -255,19 +255,19 @@ public class WorkDay {
         this.debtOfTodayWithoutHotelList = debtOfTodayWithoutHotelList;
     }
 
-    public String getTruantsString() {
-        return truantsString;
+    public String getDebtOfTodayPassiveList() {
+        return debtOfTodayPassiveList;
     }
 
-    public void setTruantsString(String truantsString) {
-        this.truantsString = truantsString;
+    public void setDebtOfTodayPassiveList(String debtOfTodayPassiveList) {
+        this.debtOfTodayPassiveList = debtOfTodayPassiveList;
     }
 
-    public String getTruantsTomorrowString() {
-        return truantsTomorrowString;
+    public String getDebtOfTomorrowPassiveList() {
+        return debtOfTomorrowPassiveList;
     }
 
-    public void setTruantsTomorrowString(String truantsTomorrowString) {
-        this.truantsTomorrowString = truantsTomorrowString;
+    public void setDebtOfTomorrowPassiveList(String debtOfTomorrowPassiveList) {
+        this.debtOfTomorrowPassiveList = debtOfTomorrowPassiveList;
     }
 }

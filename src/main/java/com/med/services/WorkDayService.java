@@ -87,7 +87,7 @@ public class WorkDayService  {
         workDay.setStart(start);
         this.update(workDay);
     }
-
+//--------------------------------------------------------------------------------------
     // @Scheduled(cron = "0 25 19 * * *")
     public void setWorkDayFinishValues() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
@@ -230,7 +230,7 @@ public class WorkDayService  {
             truantString += patient.getPerson().getFullName().split(" ")[0]
                     + " " + patient.getBalance() + ", ";
         }
-        workDay.setTruantsString(truantString);
+        workDay.setDebtOfTodayPassiveList(truantString);
 
 
         List<Patient> tomorrov = patientService.getAllForDate(LocalDate.now().plusDays(1));
@@ -250,7 +250,7 @@ public class WorkDayService  {
             truantTomorrowString += patient.getPerson().getFullName().split(" ")[0]
                     + " " + patient.getBalance() + ", ";
         }
-        workDay.setTruantsTomorrowString(truantTomorrowString);
+        workDay.setDebtOfTomorrowPassiveList(truantTomorrowString);
 
 
         //------------------------ debt------------------
