@@ -11,7 +11,7 @@ import java.time.LocalDate;
  */
 @Service
 public class ScheduleService {
-	
+
     @Autowired
     WorkDayService workDayService;
 
@@ -22,20 +22,22 @@ public class ScheduleService {
     void initWorkDay() {
        workDayService.initWorkDay();
     }
-    
+
     @Scheduled(cron = "0 0 10 * * *")
     void setWorkDayStart() {
         workDayService.setWorkDayStart();
     }
-    
-    @Scheduled(cron = "0 25 19 * * *")
-    void closeWorkDay() {
-        workDayService.setWorkDayFinishValues();
-    }
 
-    @Scheduled(cron = "0 41 19 * * *")
+    @Scheduled(cron = "0 28 19 * * *")
     void markAbsentDoctors() {
         dailyService.setDoctorsTruant(LocalDate.now());
         System.out.println("Truant marked");
     }
+
+    @Scheduled(cron = "0 32 19 * * *")
+    void closeWorkDay() {
+        workDayService.setWorkDayFinishValues();
+    }
+
+
 }

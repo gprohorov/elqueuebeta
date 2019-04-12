@@ -27,10 +27,9 @@ public class WorkDay {
     private int outlay;   					// расходы
     private int cashierWithdrawal;  		// изъяли из касы
     private int sumAtFinish;    			// что осталось в кассе после выемки
-
     private int debtOfTodayAll;   			// сумма долга всех должников
     private int debtOfTodayWithoutHotel;   	// сумма долга всех не готельних
-    private List<String> debtOfTodayWithoutHotelList;   	// сумма долга всех не готельних
+    private String debtOfTodayWithoutHotelList;   	// сумма долга всех не готельних
     private int debtOfTodayActive;  		// сумма долга всех активных
     private int debtOfTodayPassive; 		// долг тех, кто был записан но не пришел
     private int debtOfHotel;        		// готельных
@@ -40,6 +39,10 @@ public class WorkDay {
     private String doctorsAbsentList; 		// список сачков
     private int discountSum; 				// сколько дали знижок - сумма всего
     private String discountList; 		    // список знижок
+    private String truantsString;           // список должников, которые записаны и не пришли
+    private String truantsTomorrowString;           // список должников, которые записаны и не пришли
+
+
 
     public int getDiscountSum() {
         return discountSum;
@@ -244,11 +247,27 @@ public class WorkDay {
         this.debtOfTodayWithoutHotel = debtOfTodayWithoutHotel;
     }
 
-    public List<String> getDebtOfTodayWithoutHotelList() {
+    public String getDebtOfTodayWithoutHotelList() {
         return debtOfTodayWithoutHotelList;
     }
 
-    public void setDebtOfTodayWithoutHotelList(List<String> debtOfTodayWithoutHotelList) {
+    public void setDebtOfTodayWithoutHotelList(String debtOfTodayWithoutHotelList) {
         this.debtOfTodayWithoutHotelList = debtOfTodayWithoutHotelList;
+    }
+
+    public String getTruantsString() {
+        return truantsString;
+    }
+
+    public void setTruantsString(String truantsString) {
+        this.truantsString = truantsString;
+    }
+
+    public String getTruantsTomorrowString() {
+        return truantsTomorrowString;
+    }
+
+    public void setTruantsTomorrowString(String truantsTomorrowString) {
+        this.truantsTomorrowString = truantsTomorrowString;
     }
 }

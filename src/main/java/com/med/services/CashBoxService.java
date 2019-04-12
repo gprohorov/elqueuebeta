@@ -46,7 +46,7 @@ public class CashBoxService {
     public List<CashBox> getAll() {
         return repository.findAll();
     }
-    
+
     public List<CashBox> getAllFromToExceptTypePatient(LocalDate from, LocalDate to) {
     	return repository.findAllByDateTimeIsBetweenAndTypeIsNot(from, to.plusDays(1), CashType.PATIENT);
     }
@@ -54,7 +54,7 @@ public class CashBoxService {
     public CashBox createCash(CashBox cash) {
     	return repository.save(cash);
     }
-    
+
     public Response saveCash(CashBox cash) {
     	if (Math.abs(cash.getSum()) > this.getCashBox()) {
     		return new Response(false, "В касі не вистачає коштів.");
@@ -62,20 +62,20 @@ public class CashBoxService {
         repository.save(cash);
         return new Response(true, "");
     }
-    
+
     public Response saveCashSA(CashBox cash) {
-    	
+
     	Settings settings = settingsService.get();
     	String extractionItemId = settings.getExtractionItemId();
     	if (extractionItemId == null || extractionItemId == "null" || extractionItemId.isEmpty()) {
     		return new Response(false, "Не налаштована стаття для обліку зняття каси.");
     	}
-    	
+
     	CashBox cashBox = new CashBox(LocalDateTime.now(), null, 1, CashType.EXTRACTION,
 			"Поповнення каси" , -1 * cash.getSum());
     	cashBox.setItemId(extractionItemId);
     	repository.save(cashBox);
-    	
+
     	repository.save(cash);
     	return new Response(true, "");
     }
@@ -99,7 +99,7 @@ public class CashBoxService {
     	if (extractionItemId == null || extractionItemId == "null" || extractionItemId.isEmpty()) {
     		return new Response(false, "Не налаштована стаття витрат для обліку здачі каси.");
     	}
-        CashBox cashBox = new CashBox(LocalDateTime.now(), null, 1, 
+        CashBox cashBox = new CashBox(LocalDateTime.now(), null, 1,
     		(sum > 0 ? "Касу знято" : "Внесено в касу"), -1*sum);
         cashBox.setType(CashType.EXTRACTION);
         cashBox.setItemId(extractionItemId);
@@ -108,7 +108,7 @@ public class CashBoxService {
         repository.save(cashBox);
         return new Response(true, "");
     }
-    
+
     public List<CashBox> findByItemId(String id) {
     	return repository.findByItemId(id);
     }
@@ -118,7 +118,7 @@ public class CashBoxService {
     }
 
     public List<CashBox> getAllForToday() {
-        LocalDateTime morning = LocalDateTime.now().minusHours(12);
+        LocalDateTime morning = LocalDate.now().atStartOfDay();
         return repository.findAllByDateTimeAfter(morning);
     }
 

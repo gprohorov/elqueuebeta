@@ -414,9 +414,18 @@ public class RecordService {
             	Accounting accounting = this.createAccounting(record, LocalDate.now());
                 list.add(accounting);
             });
+        // находим список начислений поселенных в готель до 12.00, им уже начислили за поселение
        List<Accounting> expired = accountingService.getAllForDate(LocalDate.now()).stream()
                .filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
                .collect(Collectors.toList());
+      // находим пациентов, поселенных до 12.00. и убираем им сумму за поселение
+       expired.forEach(accounting -> {
+           Patient patient = patientService.getPatient(accounting.getPatientId());
+           int balance = patient.getBalance();
+           balance = balance - accounting.getSum();
+           patient.setBalance(balance);
+           patientService.savePatient(patient);
+       });
        accountingService.deleteAll(expired);
         return accountingService.saveAll(list);
     }

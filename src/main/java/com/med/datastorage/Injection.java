@@ -1,7 +1,8 @@
 package com.med.datastorage;
 
-import com.med.model.Doctor;
-import com.med.model.SalaryDaily;
+import com.med.model.*;
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.doctor.DoctorPeriodSalary;
 import com.med.repository.TalonRepository;
 import com.med.services.*;
@@ -56,13 +57,17 @@ public class Injection {
     SalaryDTOService salaryDTOService;
 
     @Autowired
-    CashBoxService cashBoxService;
-
-    @Autowired
     SalaryDailyService salaryDailyService;
 
     @Autowired
     DoctorService doctorService;
+
+    @Autowired
+    CashBoxService cashBoxService;
+
+
+    @Autowired
+    SettingsService settingsService;
 
     private List<Integer> fullTimeList;
 
@@ -74,9 +79,20 @@ public class Injection {
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
         fullTimeList.add(2); // для Иры.
         fullTimeList.add(5); // для ЮВ
+      //  this.shhwHotelSummary();
 
-
+ //   this.showExtraction();
+     //   this.updateBalance();
     }
+  private void shhwHotelSummary(){
+        LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
+        LocalDate to = LocalDate.now();
+        int sum = accountingService.getByDateBetween(from,to).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.HOTEL))
+                .mapToInt(Accounting::getSum)
+                .sum();
+      System.out.println("-------Hotel----- " + sum);
+  }
 
     private void   injectCanteenForDoctor() {
         LocalDate from = LocalDate.of(2019, Month.MARCH, 11);
@@ -109,6 +125,21 @@ public class Injection {
                     .count();
             System.out.println(doctor.getFullName()+" " + daysOff);
         }
+    }
+    private void showExtraction(){
+       cashBoxService.getAllForToday().stream()
+               .filter(cashBox -> cashBox.getItemId()!=null)
+                .filter(cashBox -> cashBox.getItemId().equals(settingsService.get().getExtractionItemId()))
+                .forEach(System.out::println);
+    }
+    private void updateBalance(){
+        Patient patient = patientService.getAllForToday().stream()
+                .filter(pat->pat.getBalance()==-2440).findFirst()
+                .orElse(null);
+        patient.setBalance(-2090);
+        System.out.println(patient.getPerson().getFullName());
+        patientService.savePatient(patient);
+
 
     }
 }
