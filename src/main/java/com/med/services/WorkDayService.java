@@ -252,11 +252,6 @@ public class WorkDayService  {
         }
         workDay.setTruantsTomorrowString(truantTomorrowString);
 
-//        int present = patients.stream()
-//            .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
-//            .mapToInt(Patient::getBalance)
-//            .sum();
-//        workDay.setDebtOfTodayActive(present);
 
         //------------------------ debt------------------
         System.out.println("WORKDAY COMPLETE ");
