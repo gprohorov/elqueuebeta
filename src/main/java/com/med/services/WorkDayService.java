@@ -219,7 +219,8 @@ public class WorkDayService  {
         }
         workDay.setDebtOfTodayWithoutHotelList(nonHotelDebt);
 
-
+        //------------------------------------------  today is absent but with debt
+        // -------  Сума боргу, записаних на сьогодні, але не прийшли
         List<Patient> truants = patients.stream()
                 .filter(patient -> patient.getActivity().equals(Activity.NON_ACTIVE))
                 .filter(patient -> patient.getBalance() < 0)
@@ -232,21 +233,28 @@ public class WorkDayService  {
         }
         workDay.setDebtOfTodayPassiveList(truantString);
 
-
+        //----------------------------------------- today active, tomorrow absent
+        //------------  Сума боргу сьогоднішніх активних, не записаних на завтра
         List<Patient> tomorrov = patientService.getAllForDate(LocalDate.now().plusDays(1));
         List<Patient> tomorrowTruants = new ArrayList<>();
+        List<Patient> debetorsActive = patientService.getAllForToday().stream()
+                .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
+                .filter(patient -> patient.getBalance()<0)
+                .collect(Collectors.toList());
 
-        for (Patient truant:truants) {
-            if (!tomorrov.contains(truant)) {
-                tomorrowTruants.add(truant);
+       // truants.forEach(patient -> System.out.println(patient.getPerson().getFullName() + " " + patient.getActivity()));
+
+        for (Patient patient:debetorsActive) {
+            if ( !tomorrov.contains(patient) ) {
+                tomorrowTruants.add(patient);
             }
         }
         int tomorrovAbsent = tomorrowTruants.stream()
                 .mapToInt(Patient::getBalance).sum();
         workDay.setDebtOfTomorrowPassive(tomorrovAbsent);
-
+        //-------------------------------
         String truantTomorrowString = "";
-        for (Patient patient : truants) {
+        for (Patient patient : tomorrowTruants) {
             truantTomorrowString += patient.getPerson().getFullName().split(" ")[0]
                     + " " + patient.getBalance() + ", ";
         }

@@ -11,7 +11,7 @@
         <button class="btn btn-success mr-2" (click)="changeDay(-1)">
             <i class="fa fa-arrow-left"></i> попередній день
         </button>
-        <input type="date" class="form-control" name="date" [(ngModel)]="date" 
+        <input type="date" class="form-control" name="date" [(ngModel)]="date"
 	        	(change)="load()" [disabled]="loading" />
         <button class="btn btn-success ml-2" (click)="changeDay(1)">
             наступний день <i class="fa fa-arrow-right"></i>
@@ -41,7 +41,7 @@
 <tr><td>Залишок в касі</td><td class="text-right text-nowrap"><strong>{{data?.sumAtFinish}}</strong> грн.</td></tr>
 <tr><td>Сума боргу всіх боржників</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayAll}}</strong> грн.</td></tr>
 <tr><td>Сума боргу всіх активних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayActive}}</strong> грн.</td></tr>
-<tr><td>Сума боргу тих, що не прийшли</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayPassive}}</strong> грн.</td></tr>
+<tr></tr>
 <tr><td>Сума боргу готельних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfHotel}}</strong> грн.</td></tr>
 <tr style="cursor: pointer;" (click)="show_debtOfTodayWithoutHotelList ? show_debtOfTodayWithoutHotelList = false : show_debtOfTodayWithoutHotelList = true">
   <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу не готельних</td>
