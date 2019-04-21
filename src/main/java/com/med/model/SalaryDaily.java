@@ -18,6 +18,7 @@ public class SalaryDaily {
     private String id;
     private LocalDate date; // дата
     private LocalDate from; // дата
+    private int days;
 
     private String name; 	// фамилия доктора
     private int doctorId;	// его айдишник
@@ -52,6 +53,14 @@ public class SalaryDaily {
 
     public void setFrom(LocalDate from) {
         this.from = from;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 
     public String getName() {
@@ -93,5 +102,20 @@ public class SalaryDaily {
 
     private void reacalculate() {
         this.total = this.stavka + this.bonuses;
+    }
+
+    @Override
+    public String toString() {
+        return "SalaryDaily{" +
+                "id='" + id + '\'' +
+                ", date=" + date +
+                ", from=" + from +
+                ", days=" + days +
+                ", name='" + name + '\'' +
+                ", doctorId=" + doctorId +
+                ", stavka=" + stavka +
+                ", bonuses=" + bonuses +
+                ", total=" + total +
+                '}';
     }
 }

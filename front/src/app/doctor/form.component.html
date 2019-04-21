@@ -6,7 +6,7 @@
         	<div class="form-check mt-4 mb-4">
                 <input type="checkbox" class="form-check-input" [name]="active"
                     [(value)]="model.active" [(ngModel)]="model.active" #active="ngModel" />
-                    <label class="form-check-label">Активний</label> 
+                    <label class="form-check-label">Активний</label>
             </div>
             <div class="form-group">
                 <label for="fullName">Аккаунт</label>
@@ -43,17 +43,22 @@
                     #kredit="ngModel" />
             </div>
             <div class="form-group">
+                <label for="daysOff">Відп.</label> <input type="number"
+                    class="form-control" name="daysOff" [(ngModel)]="model.daysOff"
+                    #daysOff="ngModel" />
+            </div>
+            <div class="form-group">
                 <label>Процедури</label>
                 <div class="row m-1" *ngFor="let procedure of procedures">
 	                <div class="col form-check">
 	                    <input type="checkbox" class="form-check-input" [name]="procedure.value"
 	                        [(value)]="procedure.checked" [(ngModel)]="procedure.checked" /> <label
-	                        class="form-check-label">{{procedure.name}}</label> 
+	                        class="form-check-label">{{procedure.name}}</label>
 	                </div>
-	                <div class="col form-inline"> 
+	                <div class="col form-inline">
 						<input [style.width.px]="150" type="number" class="form-control"
-	                    	[name]="'percents_' + procedure.value" [(ngModel)]="procedure.procent"/> 
-	                    	<label class="ml-2">%</label> 
+	                    	[name]="'percents_' + procedure.value" [(ngModel)]="procedure.procent"/>
+	                    	<label class="ml-2">%</label>
 	                </div>
                 </div>
             </div>

@@ -20,10 +20,11 @@
     </div>
   </div>
 </div>
-<div class="content table-responsive table-full-width table-sm">
+<div class="content table-responsive table-full-width table-sm" *ngIf="!detailed">
   <table class="table table-bordered">
     <thead class="thead-dark small">
       <tr class="text-center">
+        <th></th>
         <th>Доктор</th>
         <th>Ставка</th>
         <th>Бонуси</th>
@@ -32,20 +33,40 @@
     </thead>
     <tbody *ngIf="data.length > 0">
       <tr *ngFor="let item of data">
-        <td class="text-nowrap" title="{{item.name}}">{{item.name}}</td>
+        <td [style.width.px]="40">
+          <button class="btn btn-success btn-sm" title="Детальніше" (click)="showDetails(item)">
+            <i class="fa fa-eyedropper" aria-hidden="true"></i>
+          </button>
+        </td>
+        <td class="text-nowrap" title="{{item.name}}">{{item.lastName}}</td>
         <td class="text-right text-nowrap">{{item.stavka}} грн.</td>
-        <td class="text-right text-nowrap">{{item.bonuses}} грн.</td>
+        <td class="text-right text-nowrap">{{item.accural}} грн.</td>
         <td class="text-right text-nowrap">{{item.total}} грн.</td>
       </tr>
       <tr>
-        <td><strong>Всього:</strong></td>
+        <td colspan="2"><strong>Всього:</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalStavka}} грн.</strong></td>
-        <td class="text-right text-nowrap"><strong>{{totalBonuses}} грн.</strong></td>
+        <td class="text-right text-nowrap"><strong>{{totalAccural}} грн.</strong></td>
         <td class="text-right text-nowrap"><strong>{{totalTotal}} грн.</strong></td>
       </tr>
     </tbody>
-    <tr *ngIf="data.length === 0"><td colspan="4" class="text-center text-danger">
+    <tr *ngIf="data.length === 0"><td colspan="5" class="text-center text-danger">
     	<strong>Данні відсутні ...</strong>
     </td></tr>
+  </table>
+</div>
+
+<div class="content table-responsive table-full-width table-sm" *ngIf="detailed">
+  <table class="table table-bordered">
+      <tr><th>Доктор</th><td>{{detailedItem.name}}</td></tr>
+      <tr><th>Залишок на сьогодні <small>("-" — означає борг)</small></th>
+        <td>{{detailedItem.actualNow}} грн.</td></tr>
+      <tr><th>Отримано</th><td>{{detailedItem.recd}} грн.</td></tr>
+      <tr><th>Нараховано</th><td>{{detailedItem.total}} грн.</td></tr>
+      <tr><th>Ставка</th><td>{{detailedItem.stavka}} грн.</td></tr>
+      <tr><th>Бонуси</th><td>{{detailedItem.accural}} грн.</td></tr>
+      <tr><th>Премії</th><td>{{detailedItem.award}} грн.</td></tr>
+      <tr><th>Штрафи</th><td>{{detailedItem.penalty}} грн.</td></tr>
+      <tr><th>Днів</th><td>{{detailedItem.days}}</td></tr>
   </table>
 </div>

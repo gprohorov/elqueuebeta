@@ -1,0 +1,58 @@
+<app-loader [loader]="loading"></app-loader>
+<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
+        [disabled]="loading" (click)="load()" title="Обновити"></button>
+</div>
+<div class="row mb-2">
+   	<div class="col">
+	    <h4>Робочий день</h4>
+    </div>
+    <div class="col-auto form-inline">
+        <button class="btn btn-success mr-2" (click)="changeDay(-1)">
+            <i class="fa fa-arrow-left"></i> попередній день
+        </button>
+        <input type="date" class="form-control" name="date" [(ngModel)]="date"
+	        	(change)="load()" [disabled]="loading" />
+        <button class="btn btn-success ml-2" (click)="changeDay(1)">
+            наступний день <i class="fa fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
+<table class="table table-sm">
+<tr><td>Початок робочого дня</td><td class="text-right text-nowrap"><strong>{{data?.start | date:'HH:mm'}}</strong></td></tr>
+<tr><td>Кінець робочого дня</td><td class="text-right text-nowrap"><strong>{{data?.finish | date:'HH:mm'}}</strong></td></tr>
+<tr><td>Пацієнтів, записаних на день</td><td class="text-right text-nowrap"><strong>{{data?.assignedPatients}}</strong></td></tr>
+<tr><td>Пацієнтів, що були присутні</td><td class="text-right text-nowrap"><strong>{{data?.activePatients}}</strong></td></tr>
+<tr><td>Лікарів працювало</td><td class="text-right text-nowrap"><strong>{{data?.doctorsActive}}</strong></td></tr>
+<tr style="cursor: pointer;" (click)="show_doctorsAbsentList ? show_doctorsAbsentList = false : show_doctorsAbsentList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Лікарів, що були відсутніми</td>
+  <td class="text-right text-nowrap"><strong>{{data?.doctorsAbsent}}</strong></td></tr>
+<tr *ngIf="show_doctorsAbsentList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.doctorsAbsentList}}</td></tr>
+<tr><td>Сума в касі на початок робочого дня</td><td class="text-right text-nowrap"><strong>{{data?.sumAtStart}}</strong> грн.</td></tr>
+<tr><td>Зроблено процедур на суму</td><td class="text-right text-nowrap"><strong>{{data?.sumForExecutedProcedures}}</strong> грн.</td></tr>
+<tr><td>Готівки за день</td><td class="text-right text-nowrap"><strong>{{data?.cash}}</strong> грн.</td></tr>
+<tr><td>Картою за день</td><td class="text-right text-nowrap"><strong>{{data?.card}}</strong> грн.</td></tr>
+<tr style="cursor: pointer;" (click)="show_discountList ? show_discountList = false : show_discountList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Знижки за день</td>
+  <td class="text-right text-nowrap"><strong>{{data?.discount}}</strong> грн.</td></tr>
+<tr *ngIf="show_discountList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.discountList}}</td></tr>
+<tr><td>Витрати за день</td><td class="text-right text-nowrap"><strong>{{data?.outlay}}</strong> грн.</td></tr>
+<tr><td>Вилучили з каси</td><td class="text-right text-nowrap"><strong>{{data?.cashierWithdrawal}}</strong> грн.</td></tr>
+<tr><td>Залишок в касі</td><td class="text-right text-nowrap"><strong>{{data?.sumAtFinish}}</strong> грн.</td></tr>
+<tr><td>Сума боргу всіх боржників</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayAll}}</strong> грн.</td></tr>
+<tr><td>Сума боргу всіх активних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayActive}}</strong> грн.</td></tr>
+<tr></tr>
+<tr><td>Сума боргу готельних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfHotel}}</strong> грн.</td></tr>
+<tr style="cursor: pointer;" (click)="show_debtOfTodayWithoutHotelList ? show_debtOfTodayWithoutHotelList = false : show_debtOfTodayWithoutHotelList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу не готельних</td>
+  <td class="text-right text-nowrap"><strong>{{data?.debtOfTodayWithoutHotel}}</strong> грн.</td></tr>
+<tr *ngIf="show_debtOfTodayWithoutHotelList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.debtOfTodayWithoutHotelList}}</td></tr>
+<tr style="cursor: pointer;" (click)="show_debtOfTomorrowPassiveList ? show_debtOfTomorrowPassiveList = false : show_debtOfTomorrowPassiveList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу сьогоднішніх активних, не записаних на завтра</td>
+  <td class="text-right text-nowrap"><strong>{{data?.debtOfTomorrowPassive}}</strong> грн.</td></tr>
+<tr *ngIf="show_debtOfTomorrowPassiveList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.debtOfTomorrowPassiveList}}</td></tr>
+<tr style="cursor: pointer;" (click)="show_debtOfTodayPassiveList ? show_debtOfTodayPassiveList = false : show_debtOfTodayPassiveList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу, записаних на сьогодні, але не прийшли</td>
+  <td class="text-right text-nowrap"><strong>{{data?.debtOfTodayPassive}}</strong> грн.</td></tr>
+<tr *ngIf="show_debtOfTodayPassiveList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.debtOfTodayPassiveList}}</td></tr>
+</table>

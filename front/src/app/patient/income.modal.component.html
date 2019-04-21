@@ -46,10 +46,11 @@
         <button class="btn btn-sm btn-success pull-right" (click)="getDetails()">Детальніше</button>
     </div>
 </div>
+Баланс після оплати: <strong>{{balanceAfter}}</strong> грн.
 <form name="form" #f="ngForm" novalidate>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text" [style.width.px]="110">Тип оплати</div>
+            <div class="input-group-text" [style.width.px]="130">Тип оплати</div>
         </div>
         <select class="form-control" name="paymentType" [(ngModel)]="model.paymentType"
             #paymentType="ngModel" required>
@@ -64,9 +65,10 @@
       <div class="col">
         <div class="input-group">
             <div class="input-group-prepend">
-                <div class="input-group-text alert-info" [style.width.px]="110">Готівка</div>
+                <div class="input-group-text alert-info" [style.width.px]="130">Готівка</div>
             </div>
-            <input type="number" class="form-control" #incomeField (keyup)="calcChange()"/>
+            <input type="number" class="form-control" [(ngModel)]="cash"
+              [ngModelOptions]="{standalone: true}" (ngModelChange)="calcChange()"/>
         </div>
       </div>
       <div class="col">
@@ -74,28 +76,30 @@
             <div class="input-group-prepend">
                 <div class="input-group-text alert-info" [style.width.px]="80">Здача</div>
             </div>
-            <input type="number" class="form-control bg-light" #changeField disabled/>
+            <input type="number" class="form-control bg-light" [(ngModel)]="change"
+              [ngModelOptions]="{standalone: true}" disabled/>
         </div>
       </div>
     </div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text" [style.width.px]="110">Сума</div>
+            <div class="input-group-text bg-primary text-white" [style.width.px]="130">Сума</div>
         </div>
         <input type="number" class="form-control" name="sum" [(ngModel)]="model.sum" #sum="ngModel"
-            (keyup)="calcChange()" required />
+            (keyup)="model.discount = 0; calcChange();" required />
     </div>
     <div *ngIf="f.submitted && !sum.valid" class="help-block text-danger">Поле обов`язкове</div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text" [style.width.px]="110">Знижка</div>
+            <div class="input-group-text" [style.width.px]="130">
+              Знижка (<strong>{{data.discount}}%</strong>)</div>
         </div>
         <input type="number" class="form-control" name="discount" [(ngModel)]="model.discount"
-            #discount="ngModel" />
+            (keyup)="calcChange();" #discount="ngModel" />
     </div>
     <div class="input-group mt-2">
         <div class="input-group-prepend">
-            <div class="input-group-text" [style.width.px]="110">Коментар</div>
+            <div class="input-group-text" [style.width.px]="130">Коментар</div>
         </div>
         <input type="text" class="form-control" name="desc" [(ngModel)]="model.desc" #desc="ngModel" />
     </div>

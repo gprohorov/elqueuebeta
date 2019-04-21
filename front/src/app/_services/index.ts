@@ -17,3 +17,4 @@ export * from './workplace/diagnostic.service';
 export * from './hotel.service';
 export * from './finance.service';
 export * from './outcome.service';
+export * from './usi.service';

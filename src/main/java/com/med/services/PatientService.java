@@ -115,6 +115,12 @@ public class PatientService {
 		patient.setStatus(status);
 		return repository.save(patient);
 	}
+	
+	public Patient updateDiscount(String patientId, int discount) {
+		Patient patient = this.getPatient(patientId);
+		patient.setDiscount(discount);
+		return repository.save(patient);
+	}
 
 	public Accounting insertIncome(String patientId, int sum, String desc, PaymentType payment) {
 		return accountingService.createAccounting(

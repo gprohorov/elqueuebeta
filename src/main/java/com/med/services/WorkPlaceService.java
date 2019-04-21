@@ -15,6 +15,7 @@ import com.med.model.Assignment;
 import com.med.model.Doctor;
 import com.med.model.Patient;
 import com.med.model.Procedure;
+import com.med.model.ProcedureType;
 import com.med.model.Tail;
 import com.med.model.Talon;
 import com.med.model.TalonPatient;
@@ -122,26 +123,24 @@ public class WorkPlaceService {
                 , descr);
         accountingService.createAccounting(accounting);
 
-        /////////////////  cancelling and activating approp. talons
+        ///////////////// canceling and activating appropriate talons
         this.cancelTalonsByCard(procedure, patient.getId());
         this.activateTalonsByCard(procedure, patient.getId());
 
         Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
         
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // TODO: Remove hardcoded value !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        ////////////////////// if YXT   -  comment to therapy
-        if (procedure.getId() == 9) therapy.setNotes(therapy.getNotes() + "<br>"
+        ////////////////////// if УХТ - comment to therapy
+        if (procedure.getProcedureType() == ProcedureType.SWT) {
+        	therapy.setNotes(therapy.getNotes() + "<br>"
     		+ " : УХТ " + LocalDate.now() + " " + zones + " зон.");
+        }
         
         if (picture.size() > 0) {
 	        List<Assignment> assignments = therapy.getAssignments();
-	        if (assignments.stream().filter(
-        		as -> as.getProcedureId() == talon.getProcedure().getId()).count() > 0) {
-	        	Assignment a = assignments.stream().filter(
-            		as -> as.getProcedureId() == talon.getProcedure().getId()).findFirst().get();
+	        if (assignments.stream().filter(as -> 
+	        	as.getProcedureId() == talon.getProcedure().getId()).count() > 0) {
+	        	Assignment a = assignments.stream().filter(as -> 
+	        		as.getProcedureId() == talon.getProcedure().getId()).findFirst().get();
         		a.setPicture(picture);
         		assignments.set(assignments.indexOf(a), a); 
         		therapy.setAssignments(assignments);
@@ -154,12 +153,12 @@ public class WorkPlaceService {
     private int getPrice(Patient patient, int procedureId) {
         Procedure procedure = procedureService.getProcedure(procedureId);
         switch (patient.getStatus()) {
-            case SOCIAL: return procedure.getSOCIAL();
-            case VIP: return procedure.getVIP();
+            case SOCIAL: 		return procedure.getSOCIAL();
+            case VIP: 			return procedure.getVIP();
             case ALL_INCLUSIVE: return procedure.getALL_INCLUSIVE();
-            case BUSINESS: return procedure.getBUSINESS();
-            case FOREIGN: return procedure.getFOREIGN();
-            default: return procedure.getSOCIAL();
+            case BUSINESS: 		return procedure.getBUSINESS();
+            case FOREIGN: 		return procedure.getFOREIGN();
+            default: 			return procedure.getSOCIAL();
         }
     }
 
@@ -170,7 +169,7 @@ public class WorkPlaceService {
         talon.setActivity(Activity.TEMPORARY_NA);
         talon.setExecutionTime(LocalDateTime.now());
         talon.setDesc(userService.getCurrentUserInfo().getFullName() + "cancelled "
-        		+ LocalDateTime.now().toString() + " : " + desc);
+    		+ LocalDateTime.now().toString() + " : " + desc);
 
         tail.setPatientOnProcedure(null);
         tail.setVacant(true);
@@ -189,8 +188,8 @@ public class WorkPlaceService {
     public List<Tail> getTailsForDoctor(int doctorId) {
 
         List<Tail> tails = tailService.getTails().stream().filter(
-    		tail -> userService.getCurrentUserInfo().getProcedureIds().contains(tail.getProcedureId()))
-            .collect(Collectors.toList());
+    		tail -> userService.getCurrentUserInfo().getProcedureIds()
+    		.contains(tail.getProcedureId())).collect(Collectors.toList());
 
         // inject into the tail the first active patient and all on procedure if not freechoice
         tails.stream().forEach(tail -> {
@@ -239,8 +238,8 @@ public class WorkPlaceService {
         Patient patient = patientService.getPatient(patientId);
         List<Assignment> assignments = patient.getTherapy().getAssignments();
         patient.getTherapy().setAssignments(null);
-        List<Assignment> ass = assignments.stream().filter(
-    		as -> as.getProcedureId() == procedureId).collect(Collectors.toList());
+        List<Assignment> ass = assignments.stream().filter(as -> 
+        	as.getProcedureId() == procedureId).collect(Collectors.toList());
         if (ass.size() > 0) patient.getTherapy().setAssignments(ass);
         	
         Talon talon = talonService.getTalonsForToday().stream()
@@ -291,7 +290,7 @@ public class WorkPlaceService {
     // i.e ultrasound must be canceled if laser has been done
     private void cancelTalonsByCard(Procedure procedure, String patientId) {
 		// List<Integer> proceduresToClose = cardService
-    	//	.getCardByProcedureId(procedure.getId()).getCloseAfter();
+    	// .getCardByProcedureId(procedure.getId()).getCloseAfter();
 
     	// List<Integer> proceduresToClose = procedure.getCard().getCloseAfter();
         List<Integer> proceduresToClose = procedureService.getProcedure(procedure.getId())
@@ -299,14 +298,14 @@ public class WorkPlaceService {
         patientService.getPatientWithTalons(patientId).getTalons().stream()
             .filter(talon -> !talon.getActivity().equals(Activity.EXECUTED))
             .forEach(talon -> {
-	            if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))){
+	            if (proceduresToClose.contains(Integer.valueOf(talon.getProcedure().getId()))) {
 	                talon.setActivity(Activity.CANCELED);
 	                talonService.saveTalon(talon);
 	            }
 	        });
     }
     
-    //   activation after execution : some talons may be activated ONLY when the procedure is done
+    // activation after execution : some talons may be activated ONLY when the procedure is done
     // i.e. i.e massage after water-pulling. Because of gell.
     private void activateTalonsByCard(Procedure procedure, String patientId) {
         // List<Integer> proceduresToActivate = procedure.getCard().getActivateAfter();

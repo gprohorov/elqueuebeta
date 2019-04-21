@@ -6,7 +6,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.med.model.Activity;
 import com.med.model.Patient;
@@ -86,6 +92,13 @@ public class PatientController {
 
     //////////////////////END OF CRUD ////////////////////////////////////
 
+    // Update discount for patient by id
+    @GetMapping("/update/discount/{patientId}/{discount}")
+    public Patient updateDiscount(@PathVariable(value = "patientId") String patientId,
+            					  @PathVariable(value = "discount") int discount) {
+    	return service.updateDiscount(patientId, discount);
+    }
+    
     // create talon to date for patient on procedure
     @GetMapping("/create/talon/procedure/date/{patientId}/{procedureId}/{days}")
     public Talon createTalon(@PathVariable(value = "patientId") String patientId,

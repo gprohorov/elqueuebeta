@@ -10,12 +10,14 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     loading = false;
+    detailed = false;
+    detailedItem: any;
     data: any;
     from: string;
     to: string;
-
+    
     totalStavka = 0;
-    totalBonuses = 0;
+    totalAccural = 0;
     totalTotal = 0;
 
     constructor(
@@ -25,8 +27,8 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const date = new Date();
-        this.from = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
-            .toISOString().slice(0, -14);
+        this.from = (new Date((new Date(date.getFullYear(), date.getMonth(), 1)).valueOf() 
+            - date.getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.to = (new Date(Date.now() - date.getTimezoneOffset() * 60000))
             .toISOString().slice(0, -14);
         this.load();
@@ -40,17 +42,26 @@ export class FinanceSalarySummaryOnDayComponent implements OnInit, OnDestroy {
         return (this.from && this.to && this.to >= this.from);
     }
     
+    showDetails(item) {
+        this.detailedItem = item;
+        this.detailed = true;
+    }
+    
     load() {
+        this.loading = true;
         this.data = [];
-        this.sub = this.service.getSalarySummaryOnDay(this.from, this.to).subscribe(
+        this.sub = this.service.getSalaryPayroll(this.from, this.to).subscribe(
             data => {
+                this.detailed = false;
+                this.detailedItem = {};
                 this.data = data;
                 this.totalStavka = 0;
-                this.totalBonuses = 0;
+                this.totalAccural = 0;
                 this.totalTotal = 0;
                 data.forEach( currentValue => {
+                    currentValue.lastName = currentValue.name.split(' ')[0];
                     this.totalStavka += currentValue.stavka;
-                    this.totalBonuses += currentValue.bonuses;
+                    this.totalAccural += currentValue.accural;
                     this.totalTotal += currentValue.total;
                 });
                 this.loading = false;

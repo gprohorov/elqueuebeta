@@ -16,6 +16,7 @@ public class Doctor {
     private String speciality;
     private String cellPhone;
     private boolean isActive;
+    private int daysOff;
     private List<Integer> procedureIds = new ArrayList<>();
     private List<DoctorProcedureProcent> percents =  new ArrayList<>();
     private int rate;
@@ -134,6 +135,14 @@ public class Doctor {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public int getDaysOff() {
+        return daysOff;
+    }
+
+    public void setDaysOff(int daysOff) {
+        this.daysOff = daysOff;
     }
 
     @Override

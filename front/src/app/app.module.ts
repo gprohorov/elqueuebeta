@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxPermissionsModule, NgxPermissionsGuard } from 'ngx-permissions';
 import { NgxMasonryModule } from 'ng5-masonry';
 import { ModalDialogModule } from 'ngx-modal-dialog';
+//import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppComponent } from './app.component';
 import { AlertComponent, SortableTableDirective, SortableColumnComponent } from './_directives/index';
@@ -30,7 +31,8 @@ import {
     WorkplaceDiagnosticService,
     HotelService,
     FinanceService,
-    OutcomeService
+    OutcomeService,
+    UsiService
 } from './_services/index';
 
 import { LoginComponent } from './login/login.component';
@@ -63,6 +65,8 @@ import { ProceduresQueueListComponent } from './procedures-queue/list.component'
 
 import { CreatePatientModalComponent } from './patient/create-patient.modal.component';
 
+import { UsiModalComponent } from './workplace/usi.modal.component';
+
 import { GeneralStatisticFromToComponent } from './statistic/general-statistic-from-to.component';
 import { CashSummaryComponent } from './statistic/cash-summary.component';
 import { DoctorsProceduresFromToComponent } from './statistic/doctors-procedures-from-to.component';
@@ -76,6 +80,7 @@ import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.compo
 import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
 
+import { FinanceSalaryPayrollComponent } from './finance/salary-payroll.component';
 import { FinanceSalarySummaryOnDayComponent } from './finance/salary-summary-on-day.component';
 import { FinanceSalaryOnDayComponent } from './finance/salary-on-day.component';
 import { FinanceSalaryComponent } from './finance/salary.component';
@@ -90,6 +95,8 @@ import { KassaAddOutcomeModalComponent } from './finance/kassa-add-outcome.modal
 import { FinanceOutcomeComponent } from './finance/outcome.component';
 import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
 import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
+
+import { FinanceWorkdayComponent } from './finance/workday.component';
 
 import {
     WorkplaceMainComponent,
@@ -231,6 +238,11 @@ const appRoutes: Routes = [
     },
 
     {
+        path: 'finance/salary-payroll', component: FinanceSalaryPayrollComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
         path: 'finance/salary', component: FinanceSalaryComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
@@ -257,6 +269,11 @@ const appRoutes: Routes = [
     },
     {
         path: 'finance/salary-summary-on-day', component: FinanceSalarySummaryOnDayComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/workday', component: FinanceWorkdayComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
@@ -296,6 +313,7 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         HttpClientModule,
+//        AngularEditorModule,
         NgxMasonryModule,
         NgbModule.forRoot(),
         NgxPermissionsModule.forRoot(),
@@ -341,6 +359,7 @@ const appRoutes: Routes = [
         WorkplaceMainComponent,
         WorkplaceCommonComponent,
         WorkplaceDiagnosticComponent,
+        FinanceSalaryPayrollComponent,
         FinanceSalaryOnDayComponent,
         FinanceSalarySummaryOnDayComponent,
         FinanceSalaryComponent,
@@ -353,7 +372,9 @@ const appRoutes: Routes = [
         KassaAddOutcomeModalComponent,
         FinanceOutcomeComponent,
         FinanceOutcomeCategoryModalComponent,
-        FinanceOutcomeItemModalComponent
+        FinanceOutcomeItemModalComponent,
+        FinanceWorkdayComponent,
+        UsiModalComponent
     ],
     providers: [
         AuthGuard,
@@ -376,6 +397,7 @@ const appRoutes: Routes = [
         HotelService,
         FinanceService,
         OutcomeService,
+        UsiService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ],
     entryComponents: [
@@ -390,7 +412,8 @@ const appRoutes: Routes = [
         KassaTozeroModalComponent,
         KassaAddOutcomeModalComponent,
         FinanceOutcomeCategoryModalComponent,
-        FinanceOutcomeItemModalComponent        
+        FinanceOutcomeItemModalComponent,
+        UsiModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

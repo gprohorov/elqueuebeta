@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -33,7 +34,8 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: DoctorService,
         private procedureService: ProcedureService,
-        private financeService: FinanceService
+        private financeService: FinanceService,
+        private _location: Location
     ) { }
 
     ngOnInit() {
@@ -88,6 +90,7 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
     }
     
     loadBaseValues() {
+        this.loading = true;
         this.subBaseValues = this.financeService.getDoctorSalaryBase(this.id, this.from, this.to).subscribe(
             data => {
                 this.loading = false;
@@ -120,11 +123,13 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
         this.subCalcValues = this.financeService.saveDoctorSalaryPreview({
             id: this.id,
             rate: this.rate,
-            percents: this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; })
+            percents: this.procedures.map(x => { return { procedureId: x.id, procent: x.procentNew }; }),
+            from: this.from, 
+            to: this.to
         }).subscribe(data => {
                 this.loading = false;
                 this.alertService.success('Дані успішно збережені', true);
-                this.router.navigate(['finance/salary-summary']);
+                this.goBack();
             },
             error => {
                 this.alertService.error(error);
@@ -148,5 +153,9 @@ export class FinanceSalaryPreviewComponent implements OnInit, OnDestroy {
                 this.alertService.error(error);
                 this.loading = false;
             });
+    }
+    
+    goBack() {
+        this._location.back();
     }
 }

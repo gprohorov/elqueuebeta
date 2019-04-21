@@ -99,8 +99,8 @@
             		Розрахувати</button>
             	<button class="btn btn-success" [disabled]="loading" (click)="save()">
             		Зберегти встановлені значення</button>
-                <button [routerLink]="['/finance/salary-summary']" class="btn btn-link">
-                	Скасувати</button>
+              <button class="btn btn-secondary" [disabled]="loading" (click)="goBack()">
+              	Повернутися</button>
                 <i class="fa fa-refresh fa-spin" [hidden]="!loading"></i>
             </div>
         </form>

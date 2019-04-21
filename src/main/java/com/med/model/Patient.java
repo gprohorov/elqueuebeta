@@ -29,6 +29,7 @@ public class Patient {
     private LocalDateTime startActivity;
     private Status status = Status.SOCIAL;
     private int balance;
+    private int discount = 0;
     private LocalDateTime registration;
     private int days = 0;
     private boolean isHotel;
@@ -105,7 +106,15 @@ public class Patient {
         this.balance = balance;
     }
 
-    public String getId() {
+    public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
+	public String getId() {
         return id;
     }
 

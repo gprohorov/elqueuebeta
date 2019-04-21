@@ -2,6 +2,7 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,9 +25,11 @@ import com.med.model.Settings;
 import com.med.model.Talon;
 import com.med.repository.SalaryRepository;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class SalaryService {
-    
+
 	// TODO: Rewrite it to get from Settings
 	private final int TAX = 400;
     private final int CANTEEN = 20;
@@ -48,9 +51,18 @@ public class SalaryService {
 
     @Autowired
     SalaryDTOService salaryDTOService;
-    
+
     @Autowired
     SettingsService settingsService;
+
+    @Autowired
+    SalaryDailyService dailyService;
+
+    @PostConstruct
+    void init(){
+     //   this.inject1();
+     //   this.extract1();
+    }
 
     // вносит в базу элемент зарплаты, например,  премию, штраф, бонусы.
     public Salary createSalary(Salary salary) {
@@ -61,12 +73,16 @@ public class SalaryService {
         return repository.findAll();
     }
 
+    public  List<Salary> getAllForDoctor(int doctorId){
+        return repository.findByDoctorId(doctorId);
+    }
+
     // вносит в базу списком обязат недельные платежи (за часы, минус налог, минус обед)
     public List<Salary> createWeekSalaryForDoctor(int doctorId) {
         List<Salary> list = new ArrayList<>();
         list.add(new Salary(doctorId, LocalDateTime.now(), SalaryType.TAX, TAX));
 
-        // TODO: Make by MongoRepository
+
         List<Talon> talons = talonService.getAllTallonsBetween(
     		LocalDate.now().minusDays(6), LocalDate.now().plusDays(1)).stream()
     		.filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
@@ -145,28 +161,32 @@ public class SalaryService {
 
     // выдача зарплаты : отметка в ведомости и в кассе
     public Response paySalary(Salary salary) {
-    	
-    	if (salary.getSum() > cashBoxService.getCashBox()) {
+
+        Doctor doctor = doctorService.getDoctor(salary.getDoctorId());
+
+    	if (salary.getSum() > cashBoxService.getCashBox() ) {
     		return new Response(false, "В касі не вистачає коштів.");
     	}
-    	
+
     	Settings settings = settingsService.get();
     	String salaryItemId = settings.getSalaryItemId();
     	if (salaryItemId == null || salaryItemId == "null" || salaryItemId.isEmpty()) {
     		return new Response(false, "Не налаштована стаття витрат для обліку зарплати.");
     	}
-    	
+
         SalaryDTO dto = salaryDTOService.getAll().stream()
                 .filter(el->el.getClosed()==null)
                 .filter(el->el.getDoctorId()==salary.getDoctorId())
                 .findAny().orElse(new SalaryDTO());
 
-        int rest = dto.getActual();
+//---------------   fixed, not salaryDTOService, but dailyService
+        int rest = dailyService.getRestForTodayForDoctor(salary.getDoctorId());
         int sum = salary.getSum();
-        int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
+        int kredit = doctor.getKredit();
+        System.out.println( "sum = " + sum + " rest = " +rest + "   kredit = " +kredit);
 
         if (sum > rest + kredit) {
-            return new Response(false, "Перевищено ліміт нарахованих грошей.");
+            return new Response(false, "Перевищено ліміт нарахованих та кредитних грошей.");
         }
 
         salary.setDateTime(LocalDateTime.now());
@@ -184,12 +204,12 @@ public class SalaryService {
         cashBoxService.saveCash(cashBox);
 
         this.createSalary(salary);
-        dto.setRecd(dto.getRecd()+salary.getSum());
+       dto.setRecd(dto.getRecd()+salary.getSum());
         salaryDTOService.updateSalaryDTO(dto);
-        
+
         return new Response(true, "");
     }
-    
+
     // выдача зарплаты суперадмином с автоматической проводкой через кассу
     public Response paySalarySA(Salary salary) {
 
@@ -202,35 +222,37 @@ public class SalaryService {
     	if (extractionItemId == null || extractionItemId == "null" || extractionItemId.isEmpty()) {
     		return new Response(false, "Не налаштована стаття для обліку зняття каси.");
     	}
-    	
+
     	SalaryDTO dto = salaryDTOService.getAll().stream()
 			.filter(el -> el.getClosed() == null)
 			.filter(el -> el.getDoctorId() == salary.getDoctorId())
 			.findAny().orElse(new SalaryDTO());
-    	
-    	int rest = dto.getActual();
+
+        int rest = dailyService.getRestForTodayForDoctor(salary.getDoctorId());
     	int sum = salary.getSum();
     	int kredit = doctorService.getDoctor(salary.getDoctorId()).getKredit();
-    	
+
+/*
     	if (sum > rest + kredit) {
     		return new Response(false, "Перевищено ліміт нарахованих грошей.");
     	}
-    	
+*/
+
     	salary.setDateTime(LocalDateTime.now());
     	salary.setType(SalaryType.BUZUNAR);
-    	
+
     	// kassa is up by this salary
     	CashBox cashBoxUP = new CashBox(
     			LocalDateTime.now()
     			, null
     			, 1
     			, CashType.EXTRACTION
-    			, "Поповнення каси для видачі з/п " 
+    			, "Поповнення каси для видачі з/п "
 					+ doctorService.getDoctor(salary.getDoctorId()).getFullName()
     			, salary.getSum());
     	cashBoxUP.setItemId(extractionItemId);
-    	cashBoxService.saveCash(cashBoxUP);
-    	
+    	cashBoxService.createCash(cashBoxUP);
+
     	// kassa is down by this salary
     	CashBox cashBox = new CashBox(
     			LocalDateTime.now()
@@ -240,17 +262,18 @@ public class SalaryService {
     			, "з/п " + doctorService.getDoctor(salary.getDoctorId()).getFullName()
     			, -1*salary.getSum());
     	cashBox.setItemId(salaryItemId);
-    	cashBoxService.saveCash(cashBox);
-    	
+    	cashBoxService.createCash(cashBox);
+
     	this.createSalary(salary);
     	dto.setRecd(dto.getRecd() + salary.getSum());
     	salaryDTOService.updateSalaryDTO(dto);
-    	
+
     	return new Response(true, "");
     }
-    
+
     // TODO: Make by MongoRepository
     public List<CashBox> getPaymentsByDoctor(int doctorId, LocalDate from, LocalDate to) {
+
     	return cashBoxService.getAll().stream()
     			.filter(cashBox -> cashBox.getDoctorId() == doctorId)
     			.filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
@@ -259,7 +282,7 @@ public class SalaryService {
     }
 
     // TODO: Remove it, if really don't needed !!!
-    
+
     // зарплатная ведомость всех врачей за ПР0ШЕДШУЮ неделю
     // со всеми ставками, бонусами и тд
     //  обычно генерится в субботу после 15.00, когда все свалят
@@ -353,4 +376,33 @@ public class SalaryService {
         dto.setActual(total - recd);
         return dto;
     }
+    private void inject1(){
+        LocalDate date1 = LocalDate.of(2019, Month.JANUARY,3);
+        LocalDate date2 = LocalDate.of(2018, Month.DECEMBER,31);
+        List<Salary> list = this.repository.findAll().stream()
+                .filter(salary -> salary.getDateTime().toLocalDate().equals(date1))
+                .filter(salary -> !salary.getType().equals(SalaryType.EXTRACTION))
+                .collect(Collectors.toList());
+        list.forEach(salary -> {
+            System.out.println(salary);
+            salary.setDateTime(date2.atTime(8,45));
+            repository.save(salary);
+        });
+
+    }
+    void extract1(){
+        LocalDate from = LocalDate.of(2019,Month.JANUARY,1);
+        LocalDate to = LocalDate.of(2019,Month.FEBRUARY,23);
+        int doctorId =22;
+        cashBoxService.getAll().stream()
+                .filter(cashBox -> cashBox.getDoctorId() == doctorId)
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from.minusDays(1)))
+                .forEach(System.out::println);
+        System.out.println("----------------------------------------------------");
+        this.getAll().stream()
+                .filter(salary -> salary.getDoctorId() == doctorId)
+                .filter(salary -> salary.getDateTime().toLocalDate().isAfter(from))
+                .forEach(System.out::println);
+    }
+
 }

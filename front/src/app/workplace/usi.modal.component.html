@@ -1,0 +1,14 @@
+<form name="form" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !f.valid }">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <div class="input-group-text">Заголовок</div>
+          </div>
+          <input type="text" class="form-control" name="title" [(ngModel)]="data.title"
+            #title="ngModel" required />
+      </div>
+      <div *ngIf="f.submitted && !title.valid" class="help-block text-danger">Поле обов`язкове</div>
+      <!-- <angular-editor [(ngModel)]="data.body"></angular-editor> -->
+      <textarea class="form-control" name="body" [(ngModel)]="data.body" #body="ngModel"></textarea>
+    </div>
+</form>

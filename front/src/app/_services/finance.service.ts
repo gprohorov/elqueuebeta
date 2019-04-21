@@ -9,9 +9,9 @@ import { config } from '../../config';
 export class FinanceService {
     // Define the routes we are going to interact with
     private salaryUrl = config.api_path + '/salary/list';
+    private salaryPayrollUrl = config.api_path + '/salary/payroll';
     private salarySummaryUrl = config.api_path + '/salary/list/summary';
     private salaryOnDayUrl = config.api_path + '/salary/date';
-    private salarySummaryOnDayUrl = config.api_path + '/salary/daily';
     private getDoctorSalaryHistoryUrl = config.api_path + '/salary/list/payment';
     private getDoctorSalaryBaseUrl = config.api_path + '/salary/doctor';
     private getDoctorSalaryPreviewUrl = config.api_path + '/salary/doctor/preview';
@@ -23,6 +23,7 @@ export class FinanceService {
     private tozeroUrl = config.api_path + '/cashbox/tozero/';
     private kassaAddOutcomeUrl = config.api_path + '/cashbox/create';
     private kassaAddOutcomeSAUrl = config.api_path + '/cashbox/create-sa';
+    private workdayUrl = config.api_path + '/workday/get';
 
     constructor(private http: HttpClient) { }
 
@@ -32,6 +33,11 @@ export class FinanceService {
         return this.http.get(url).pipe(catchError(this.handleError));
     }
     
+    getSalaryPayroll(from: string, to: string) {
+        return this.http.get(this.salaryPayrollUrl + '/' + from + '/' + to)
+            .pipe(catchError(this.handleError));
+    }
+    
     getSalarySummary(from: string, to: string) {
         return this.http.get(this.salarySummaryUrl + '/' + from + '/' + to)
             .pipe(catchError(this.handleError));
@@ -39,11 +45,6 @@ export class FinanceService {
     
     getSalaryOnDay(date: string) {
         return this.http.get(this.salaryOnDayUrl + '/' + date).pipe(catchError(this.handleError));
-    }
-    
-    getSalarySummaryOnDay(from: string, to: string) {
-        return this.http.get(this.salarySummaryOnDayUrl + '/' + from + '/' + to)
-            .pipe(catchError(this.handleError));
     }
     
     getDoctorSalaryHistory(doctor: number, from: string, to: string) {
@@ -84,6 +85,10 @@ export class FinanceService {
     
     toZero(sum: number) {
         return this.http.get(this.tozeroUrl + sum).pipe(catchError(this.handleError));
+    }
+    
+    getWorkday(date: string) {
+        return this.http.get(this.workdayUrl + '/' + date).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
