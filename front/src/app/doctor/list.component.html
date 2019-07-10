@@ -7,6 +7,9 @@
         <button class="btn btn-success" [routerLink]="['/doctor-form']">Створити</button>
     </div>
     <div class="col-auto">
+        <button [disabled]="loading" (click)="hideNotActive = !hideNotActive; load()"
+          title="{{hideNotActive ? 'Показати' : 'Приховати'}} не активних"
+          [ngClass]="{'btn btn-light fa fa-user-circle': true, 'text-success': hideNotActive, 'text-danger': !hideNotActive}"></button>
         <button [disabled]="loading" (click)="load()" title="Обновити"
             [ngClass]="{'btn btn-light text-success fa fa-refresh': true, 'fa-spin': loading}"></button>
     </div>
