@@ -15,6 +15,7 @@ export class DoctorListComponent implements OnInit, OnDestroy {
     items: Doctor[] = [];
     procedures: Procedure[] = [];
     loading = false;
+    hideNotActive = true;
     rows = [];
 
     constructor(
@@ -52,6 +53,9 @@ export class DoctorListComponent implements OnInit, OnDestroy {
     load(search: string = '') {
         this.loading = true;
         this.sub = this.service.getAll(search).subscribe(data => {
+            if (this.hideNotActive) {
+              data = data.filter(x => x.active === true);
+            }
             this.items = data;
             this.loading = false;
         });
