@@ -5,6 +5,7 @@ dump.tar.gz
 target/
 !.mvn
 .fuse*
+/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated

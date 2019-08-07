@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "ng serve",
+    "start": "ng serve --locale uk",
     "stop": "kill -- -$(ps -o pgid=$(ps -a|grep 'npm'|grep -o ^[0-9]*) | grep -o [0-9]*)",
     "ng": "ng",
-    "build": "ng build --prod",
+    "build": "ng build -prod --locale uk",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
