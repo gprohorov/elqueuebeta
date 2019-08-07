@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,7 +86,8 @@ public class Injection {
 
  //   this.showExtraction();
      //   this.updateBalance();
-        this.refreshWorkDay();
+      //  this.refreshWorkDay();
+      //  this.showAllAfterExtraction();
     }
   private void shhwHotelSummary(){
         LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
@@ -145,5 +147,28 @@ public class Injection {
     }
     private void refreshWorkDay(){
         workDayService.setWorkDayFinishValues();
+    }
+
+    private void showAllAfterExtraction(){
+        LocalDateTime  dateTime = LocalDateTime.of(2019,Month.APRIL,18,16,47);
+        List<Accounting> accountings = accountingService.getAllForDate(LocalDate.now())
+                .stream()
+                .filter(accounting -> accounting.getDateTime().isAfter(dateTime))
+                .filter(accounting -> accounting.getPatientId() != null)
+                .filter(accounting -> accounting.getSum()>0)
+                .collect(Collectors.toList());
+        accountings.forEach(accounting -> {
+            String id = accounting.getPatientId();
+            Patient patient = patientService.getPatient(id);
+            String name = patient.getPerson().getFullName();
+            int balance = patient.getBalance();
+
+            System.out.println(name + "  " + accounting.getDateTime() + "  "
+            + " cymma " + accounting.getSum() + " " + accounting.getPayment()
+            + " " + " balance " + balance );
+
+
+
+        });
     }
 }

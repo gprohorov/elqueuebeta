@@ -32,4 +32,12 @@ public class KoikaRecord {
     public void setRecords(List<Record> records) {
         this.records = records;
     }
+
+    @Override
+    public String toString() {
+        return "KoikaRecord{" +
+                "koika=" + koika +
+                ", records=" + records +
+                '}';
+    }
 }

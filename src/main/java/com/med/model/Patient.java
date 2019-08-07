@@ -35,6 +35,8 @@ public class Patient {
     private boolean isHotel;
     @Transient
     private Talon talon;
+    private String recomendation;
+    private String desc;
 
     public Patient() {}
 
@@ -60,10 +62,22 @@ public class Patient {
         this.registration = LocalDateTime.now();
     }
 
+
+
     public Patient(Person person) {
         this.talons = new ArrayList<>();
         this.person = person;
         this.registration = LocalDateTime.now();
+    }
+
+
+    public Patient(Person person, String recomendation, String desc) {
+        this.talons = new ArrayList<>();
+        this.person = person;
+        this.registration = LocalDateTime.now();
+        this.desc = desc;
+        this.recomendation = recomendation;
+
     }
 
     public boolean isHotel() {

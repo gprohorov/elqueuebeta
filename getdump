@@ -6,3 +6,4 @@ scp -P 2222 bvh@195.200.245.115:/home/bvh/dump.tar.gz ./
 
 tar -zxvf dump.tar.gz 
 mongorestore --drop
+// Hope1234
