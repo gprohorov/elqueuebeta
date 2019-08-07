@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ModalDialogService } from 'ngx-modal-dialog';
 
+import { config } from '../../config';
 import { AuthService, AlertService } from '../_services/index';
 
 import { GiveSalaryModalComponent } from '../finance/give-salary.modal.component';
@@ -18,6 +19,7 @@ export class NavComponent implements OnInit, OnDestroy {
     user: any;
     navbarOpen = false;
     sub: Subscription;
+    project = config.project === 'kl' ? 'КЛІШКІВЦІ' : 'ЧЕРНІВЦІ';
 
     constructor(
         public authService: AuthService,

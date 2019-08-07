@@ -1,7 +1,7 @@
 rm -R ./dump
 rm ./dump.tar.gz
 
-ssh -tt bvh@195.200.245.115 -p 2222 'cd /home/bvh;rm -R dump;rm dump.tar.gz;mongodump -d mednean; mongodump -d mednean_cv; mongodump -d mednean_kl;tar -zcvf dump.tar.gz dump;exit'
+ssh -tt bvh@195.200.245.115 -p 2222 'cd /home/bvh;rm -R dump;rm dump.tar.gz;mongodump -d mednean_cv;mongodump -d mednean_kl;tar -zcvf dump.tar.gz dump;exit'
 scp -P 2222 bvh@195.200.245.115:/home/bvh/dump.tar.gz ./
 
 tar -zxvf dump.tar.gz 

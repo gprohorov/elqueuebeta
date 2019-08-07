@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { config } from '../../config';
 import { AlertService, AuthService } from '../_services/index';
 
 @Component({
@@ -8,9 +9,11 @@ import { AlertService, AuthService } from '../_services/index';
     templateUrl: 'login.component.html'
 })
 export class LoginComponent implements OnInit {
+  
     model: any = {};
     loading = false;
     returnUrl: string;
+    project = config.project === 'kl' ? 'КЛІШКІВЦІ' : 'ЧЕРНІВЦІ';
 
     constructor(
         private router: Router,
