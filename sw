@@ -14,3 +14,5 @@ BE_FILE=application.properties
 
 cp -f $FE_PATH/$DST.$FE_FILE $FE_PATH/$FE_FILE
 cp -f $BE_PATH/$DST.$BE_FILE $BE_PATH/$BE_FILE
+
+echo "Project switched to $DST"
