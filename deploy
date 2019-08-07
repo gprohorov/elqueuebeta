@@ -1,3 +1,5 @@
+SERVER_PATH=/home/bvh/elqueue
+
 echo 'Building Front-end...'
 echo ''
 cd front
@@ -12,8 +14,8 @@ mvn clean package
 echo ''
 echo 'Copying app to destination server...'
 echo ''
-scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:/home/bvh/elqueue
+scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:$SERVER_PATH
 
 echo ''
 echo 'Enter password for remotely RESTART server'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo mv /home/bvh/elqueue/elqueue.out /home/bvh/elqueue/elqueue.bak;sudo systemctl start elqueue.service;exit'
+ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo mv $SERVER_PATH/elqueue.out $SERVER_PATH/elqueue.bak;sudo systemctl start elqueue.service;exit'

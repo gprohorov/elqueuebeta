@@ -1,5 +1,7 @@
 src/main/resources/public/*
 
+dump
+dump.tar.gz
 target/
 !.mvn
 .fuse*
@@ -26,8 +28,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-dump
-dump.tar.gz
 
 ### Eclipse ###
 .externalToolBuilders
