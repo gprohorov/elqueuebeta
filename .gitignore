@@ -1,9 +1,12 @@
 src/main/resources/public/*
 
+dump
+dump.tar.gz
 target/
 !.mvn
-
 .fuse*
+/src/main/resources/application.properties
+
 ### STS ###
 .apt_generated
 .classpath
@@ -26,5 +29,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-dump
-dump.tar.gz
+
+### Eclipse ###
+.externalToolBuilders
+.project
