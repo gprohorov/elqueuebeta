@@ -96,6 +96,8 @@ import { FinanceOutcomeComponent } from './finance/outcome.component';
 import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
 import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
 
+import { AssignPatientRecomendationModalComponent } from './patient/assign-patient-recomendation.modal.component';
+
 import { FinanceWorkdayComponent } from './finance/workday.component';
 
 import {
@@ -374,6 +376,7 @@ const appRoutes: Routes = [
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
         FinanceWorkdayComponent,
+        AssignPatientRecomendationModalComponent,
         UsiModalComponent
     ],
     providers: [
@@ -413,6 +416,7 @@ const appRoutes: Routes = [
         KassaAddOutcomeModalComponent,
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
+        AssignPatientRecomendationModalComponent,
         UsiModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],

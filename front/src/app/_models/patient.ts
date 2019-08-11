@@ -9,6 +9,7 @@ export class Patient {
     balance: number;
     appointed: number;
     recomendation: string;
+    recomendationName: string;
     desc: string;
     
     constructor() {
