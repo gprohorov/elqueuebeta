@@ -62,14 +62,11 @@ public class Patient {
         this.registration = LocalDateTime.now();
     }
 
-
-
     public Patient(Person person) {
         this.talons = new ArrayList<>();
         this.person = person;
         this.registration = LocalDateTime.now();
     }
-
 
     public Patient(Person person, String recomendation, String desc) {
         this.talons = new ArrayList<>();
@@ -121,14 +118,14 @@ public class Patient {
     }
 
     public int getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(int discount) {
-		this.discount = discount;
-	}
-
-	public String getId() {
+  		return discount;
+  	}
+  
+  	public void setDiscount(int discount) {
+  		this.discount = discount;
+  	}
+  
+  	public String getId() {
         return id;
     }
 
@@ -297,6 +294,8 @@ public class Patient {
                 ", startActivity=" + startActivity +
                 ", status=" + status +
                 ", balance=" + balance +
+                ", desc=" + desc +
+                ", recomendation=" + recomendation +
                 "}";
     }
 }
