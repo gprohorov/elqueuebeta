@@ -8,6 +8,8 @@ export class Patient {
     startActivity: string;
     balance: number;
     appointed: number;
+    recomendation: string;
+    desc: string;
     
     constructor() {
         this.person = new Person();
