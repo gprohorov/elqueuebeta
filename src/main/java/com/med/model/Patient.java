@@ -35,7 +35,7 @@ public class Patient {
     private boolean isHotel;
     @Transient
     private Talon talon;
-    private String recomendation;
+    private String recomendation; // id of recomendator
     private String desc;
 
     public Patient() {}
