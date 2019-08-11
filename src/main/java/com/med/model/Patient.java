@@ -36,6 +36,7 @@ public class Patient {
     @Transient
     private Talon talon;
     private String recomendation; // id of recomendator
+    private String recomendationName; // name of recomendator
     private String desc;
 
     public Patient() {}
