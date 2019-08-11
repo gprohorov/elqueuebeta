@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER=http://185.189.185.80
+SERVER=185.189.185.80
 
 if [ "$1" != "cv" ] && [ "$1" != "kl" ]
 then 

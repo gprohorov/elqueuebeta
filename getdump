@@ -1,4 +1,4 @@
-SERVER=http://185.189.185.80
+SERVER=185.189.185.80
 
 rm -R ./dump
 rm ./dump.tar.gz
