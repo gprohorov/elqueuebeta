@@ -74,6 +74,7 @@ public class PatientController {
     // Save the patient
     @PostMapping("/save/")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
+
         service.savePatient(patient);
         return patient;
     }

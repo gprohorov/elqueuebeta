@@ -78,6 +78,30 @@ public class Patient {
 
     }
 
+    public String getRecomendation() {
+        return recomendation;
+    }
+
+    public void setRecomendation(String recomendation) {
+        this.recomendation = recomendation;
+    }
+
+    public String getRecomendationName() {
+        return recomendationName;
+    }
+
+    public void setRecomendationName(String recomendationName) {
+        this.recomendationName = recomendationName;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public boolean isHotel() {
         return isHotel;
     }
