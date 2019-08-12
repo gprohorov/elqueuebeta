@@ -144,7 +144,7 @@ public class AccountingService {
         long gameover =  patientService.getAllForToday().stream()
             .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER)).count();
 
-        int part = (int) (gameover * 100) / people;
+        int part = (people > 0) ? ((int) (gameover * 100) / people) : 0;
 
         report.setPercentage(part);
 
