@@ -228,4 +228,9 @@ public class AccountingService {
     	receipt.setDiscount(patient.getDiscount());
         return receipt;
     }
+
+    public  List<Accounting> getAllForDateAndType(LocalDate date, PaymentType type){
+
+        return this.repository.findByDateAndPayment(date,type);
+    }
 }

@@ -133,4 +133,20 @@ public class Accounting {
     public void setKoikaId(int koikaId) {
         this.koikaId = koikaId;
     }
+
+    @Override
+    public String toString() {
+        return "Accounting{" +
+                "id='" + id + '\'' +
+                ", doctorId=" + doctorId +
+                ", patientId='" + patientId + '\'' +
+                ", dateTime=" + dateTime +
+                ", date=" + date +
+                ", talonId='" + talonId + '\'' +
+                ", sum=" + sum +
+                ", payment=" + payment +
+                ", desc='" + desc + '\'' +
+                ", koikaId=" + koikaId +
+                '}';
+    }
 }

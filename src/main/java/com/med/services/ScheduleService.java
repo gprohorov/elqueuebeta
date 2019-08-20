@@ -18,6 +18,9 @@ public class ScheduleService {
     @Autowired
     SalaryDailyService dailyService;
 
+    @Autowired
+    RecomendationService recomendationService;
+
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
        workDayService.initWorkDay();
@@ -37,6 +40,13 @@ public class ScheduleService {
     @Scheduled(cron = "0 32 19 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
+    }
+
+    // TODO: inject Recordservice for the hotel
+
+    @Scheduled(cron = "0 40 19 * * *")
+    void  setAwardsForRecomendation(){
+        recomendationService.setAwardForRecomendation();
     }
 
 
