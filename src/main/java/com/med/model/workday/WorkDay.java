@@ -41,7 +41,8 @@ public class WorkDay {
     private String discountList; 		    // список знижок
     private String debtOfTodayPassiveList;  // список должников, которые записаны на сегодня и не пришли
     private String debtOfTomorrowPassiveList; //список должников, которые НЕ записаны на завтра
-
+    private int recomendation;                // сумма за рекомендации
+    private String recomendationList;            // список рекомендателей
 
 
     public int getDiscountSum() {
@@ -269,5 +270,57 @@ public class WorkDay {
 
     public void setDebtOfTomorrowPassiveList(String debtOfTomorrowPassiveList) {
         this.debtOfTomorrowPassiveList = debtOfTomorrowPassiveList;
+    }
+
+    public int getRecomendation() {
+        return recomendation;
+    }
+
+    public void setRecomendation(int recomendation) {
+        this.recomendation = recomendation;
+    }
+
+    public String getRecomendationList() {
+        return recomendationList;
+    }
+
+    public void setRecomendationList(String recomendationList) {
+        this.recomendationList = recomendationList;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkDay{" +
+                "id='" + id + '\'' +
+                ", date=" + date +
+                ", start=" + start +
+                ", finish=" + finish +
+                ", assignedPatients=" + assignedPatients +
+                ", activePatients=" + activePatients +
+                ", sumAtStart=" + sumAtStart +
+                ", sumForExecutedProcedures=" + sumForExecutedProcedures +
+                ", cash=" + cash +
+                ", card=" + card +
+                ", discount=" + discount +
+                ", outlay=" + outlay +
+                ", cashierWithdrawal=" + cashierWithdrawal +
+                ", sumAtFinish=" + sumAtFinish +
+                ", debtOfTodayAll=" + debtOfTodayAll +
+                ", debtOfTodayWithoutHotel=" + debtOfTodayWithoutHotel +
+                ", debtOfTodayWithoutHotelList='" + debtOfTodayWithoutHotelList + '\'' +
+                ", debtOfTodayActive=" + debtOfTodayActive +
+                ", debtOfTodayPassive=" + debtOfTodayPassive +
+                ", debtOfHotel=" + debtOfHotel +
+                ", debtOfTomorrowPassive=" + debtOfTomorrowPassive +
+                ", doctorsActive=" + doctorsActive +
+                ", doctorsAbsent=" + doctorsAbsent +
+                ", doctorsAbsentList='" + doctorsAbsentList + '\'' +
+                ", discountSum=" + discountSum +
+                ", discountList='" + discountList + '\'' +
+                ", debtOfTodayPassiveList='" + debtOfTodayPassiveList + '\'' +
+                ", debtOfTomorrowPassiveList='" + debtOfTomorrowPassiveList + '\'' +
+                ", recomendation=" + recomendation +
+                ", recomendationList=" + recomendationList +
+                '}';
     }
 }

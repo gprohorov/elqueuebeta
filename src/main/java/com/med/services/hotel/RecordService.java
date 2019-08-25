@@ -405,8 +405,8 @@ public class RecordService {
         return list;
     }
 
-   @Scheduled(cron = "0 0 12 * * *")
-    private List<Accounting> generateBillsForAllLodgers() {
+  // @Scheduled(cron = "0 0 12 * * *")
+     public void generateBillsForAllLodgers() {
         List<Accounting> list = new ArrayList<>();
         repository.findByFinishGreaterThan(LocalDate.now().atTime(8,0).minusDays(1)).stream()
             .filter(record -> record.getState().equals(State.OCCUP))
@@ -427,7 +427,7 @@ public class RecordService {
            patientService.savePatient(patient);
        });
        accountingService.deleteAll(expired);
-        return accountingService.saveAll(list);
+       accountingService.saveAll(list);
     }
 
 

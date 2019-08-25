@@ -1,10 +1,13 @@
 package com.med.services;
 
+import com.med.model.balance.Accounting;
+import com.med.services.hotel.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by george on 24.03.19.
@@ -21,6 +24,9 @@ public class ScheduleService {
     @Autowired
     RecomendationService recomendationService;
 
+    @Autowired
+    RecordService recordService;
+
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
        workDayService.initWorkDay();
@@ -31,23 +37,30 @@ public class ScheduleService {
         workDayService.setWorkDayStart();
     }
 
-    @Scheduled(cron = "0 28 19 * * *")
-    void markAbsentDoctors() {
-        dailyService.setDoctorsTruant(LocalDate.now());
-        System.out.println("Truant marked");
+    @Scheduled(cron = "0 0 12 * * *")
+    void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
     }
 
-    @Scheduled(cron = "0 32 19 * * *")
+    @Scheduled(cron = "0 15 19 * * *")
+    void markAbsentDoctors() {
+        dailyService.setDoctorsTruant(LocalDate.now());
+    }
+
+    @Scheduled(cron = "0 25 19 * * *")
+    void  setAwardsForRecomendation(){
+        recomendationService.setAwardForRecomendation();
+    }
+
+    @Scheduled(cron = "0 30 19 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
 
-    // TODO: inject Recordservice for the hotel
 
-    @Scheduled(cron = "0 40 19 * * *")
-    void  setAwardsForRecomendation(){
-        recomendationService.setAwardForRecomendation();
-    }
+  //  @Scheduled(cron = "0 40 19 * * *")
+
+
+
 
 
 }
