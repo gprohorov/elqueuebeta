@@ -55,4 +55,8 @@
   <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу, записаних на сьогодні, але не прийшли</td>
   <td class="text-right text-nowrap"><strong>{{data?.debtOfTodayPassive}}</strong> грн.</td></tr>
 <tr *ngIf="show_debtOfTodayPassiveList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.debtOfTodayPassiveList}}</td></tr>
+<tr style="cursor: pointer;" (click)="show_recomendationList ? show_recomendationList = false : show_recomendationList = true">
+  <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума за рекомендації</td>
+  <td class="text-right text-nowrap"><strong>{{data?.recomendation}}</strong> грн.</td></tr>
+<tr *ngIf="show_recomendationList"><td class="pl-3 pr-3 alert-info" colspan="2">{{data?.recomendationList}}</td></tr>
 </table>
