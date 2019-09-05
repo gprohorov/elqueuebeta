@@ -263,6 +263,7 @@ public class SalaryDailyService {
             PermanentPayroll payroll = new PermanentPayroll();
             payroll.setName(salary.getName());
             payroll.setDoctorId(salary.getDoctorId());
+            payroll.setActive(doctorService.getDoctor(salary.getDoctorId()).isActive());
             payroll.setFrom(salary.getFrom());
             payroll.setTo(salary.getDate());
             payroll.setDays(salary.getDays());
