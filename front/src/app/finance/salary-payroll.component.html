@@ -1,9 +1,5 @@
 <app-loader [loader]="loading"></app-loader>
-<div class="position-fixed" [style.right.px]="50" [style.z-index]="999999">
-  <button [ngClass]="{'fa fa-refresh text-success btn btn-light mb-3': true, 'fa-spin': loading}"
-    [disabled]="loading" (click)="load()" title="Обновити"></button>
-</div>
-<div class="row mb-2">
+<div class="row mb-3">
   <div class="col"><h4>Зарплатна відомість</h4></div>
   <div class="col-auto mr-2">
     <div class="input-group" [style.width.px]="200">
@@ -12,12 +8,19 @@
         [ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
     </div>
   </div>
-  <div class="col-auto">
+  <div class="col-auto mr-2">
     <div class="input-group" [style.width.px]="210">
       <div class="input-group-prepend"><div class="input-group-text">по</div></div>
       <input type="date" class="form-control" name="to" [(ngModel)]="to"
         [ngClass]="{'is-invalid': !isValid()}" (change)="load()" [disabled]="loading" />
     </div>
+  </div>
+  <div class="col-auto">
+    <button [disabled]="loading" (click)="hideNotActive = !hideNotActive; load()"
+      title="{{hideNotActive ? 'Показати' : 'Приховати'}} не активних"
+      [ngClass]="{'btn btn-light fa fa-user-circle': true, 'text-success': hideNotActive, 'text-secondary': !hideNotActive}"></button>
+    <button [ngClass]="{'fa fa-refresh text-success btn btn-light': true, 'fa-spin': loading}"
+      [disabled]="loading" (click)="load()" title="Обновити"></button>
   </div>
 </div>
 <div class="content table-responsive table-full-width table-sm">
@@ -37,15 +40,15 @@
       </tr>
     </thead>
     <tbody *ngIf="data.length > 0">
-      <tr *ngFor="let item of data">
+      <tr *ngFor="let item of data" [ngClass]="{'alert-secondary': !item.active}">
         <td [style.width.px]="140">
-          <a class="btn btn-success" title="Розрахунок за вибраними ставками"
+          <a class="btn btn-success" title="Розрахунок за вибраними ставками" *ngIf="item.active"
             [routerLink]="['/finance/salary-preview/', { id: item.doctorId, from: from, to: to }]">
               <i class="fa fa-eye" aria-hidden="true"></i></a>
           <button class="btn btn-info" title="Історія виплат" 
             (click)="showSalaryHistoryPopup(item)">
               <i class="fa fa-usd" aria-hidden="true"></i></button>
-          <button class="btn btn-success" title="Призначити" 
+          <button class="btn btn-success" title="Призначити" *ngIf="item.active"
             (click)="showSetSalaryPopup(item)"
             [disabled]="item.closed">
               <i class="fa fa-star-half-o" aria-hidden="true"></i>
