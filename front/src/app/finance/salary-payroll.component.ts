@@ -15,6 +15,7 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     loading = false;
+    hideNotActive = true;
     data: any;
     from: string;
     to: string;
@@ -78,6 +79,10 @@ export class FinanceSalaryPayrollComponent implements OnInit, OnDestroy {
         this.data = [];
         this.sub = this.service.getSalaryPayroll(this.from, this.to).subscribe(
             data => {
+//                data.forEach(x => x.active = x.active || !(x.total % 2) );
+                if (this.hideNotActive) {
+                  data = data.filter(x => x.active === true);
+                }
                 this.data = data;
                 this.totalStavka = 0;
                 this.totalAccural = 0;
