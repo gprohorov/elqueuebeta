@@ -58,25 +58,25 @@ public class Injection {
     @Autowired
     TherapyRepository therapyRepository;
 
+    @Autowired
+    SalaryDailyService salaryDailyService;
+
+    @Autowired
+    DoctorService doctorService;
+
+    @Autowired
+    WorkWeekService weekService;
+
 
     @PostConstruct
     void init() {
-/*
-     talonRepository.deleteAll();
-     patientRepository.deleteAll();
-     recordRepository.deleteAll();
-     accountingRepository.deleteAll();
-     salaryRepository.deleteAll();
-     salaryDailyRepository.deleteAll();
-     salaryDTORepository.deleteAll();
-     cashRepository.deleteAll();
-     workDayRepository.deleteAll();
-     therapyRepository.deleteAll();
 
-*/
-
+     //   weekService.generateWeekReport();
 
     }
+
+
+
 
 
 

@@ -26,6 +26,11 @@ public class Doctor {
     
     public Doctor() {}
 
+    public Doctor(int id, String name) {
+        this.id = id;
+        this.fullName = name;
+    }
+
     public Doctor(String fullName, String speciality, String cellPhone,
     		List<Integer> procedureIds, String userId) {
         this.fullName = fullName;

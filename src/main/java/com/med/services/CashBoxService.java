@@ -131,6 +131,21 @@ public class CashBoxService {
                 .sum();
     }
 
+
+    // 17 september 2019
+    public int getOutlayForPeriod(LocalDate from, LocalDate to) {
+
+        return repository.findAll().stream()
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from))
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().isBefore(to))
+                .filter(cashBox -> cashBox.getSum()<0)
+                .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
+                .mapToInt(CashBox::getSum)
+                .sum();
+    }
+
+
+
     //----------------------  injection
 
     // чего не достает  в кешбоксе  - взять из селери

@@ -63,8 +63,12 @@ public class WorkDayService  {
     public WorkDay update(WorkDay workDay) {
         return repository.save(workDay);
     }
+    public List<WorkDay> getAll() { return repository.findAll();
+    }
 
-    // @Scheduled(cron = "0 0 7 * * *")
+
+
+
     public void initWorkDay() {
         WorkDay workDay = new WorkDay(LocalDate.now());
         int assigned = (int) talonService.getTalonsForToday().stream()
@@ -306,4 +310,10 @@ public class WorkDayService  {
         System.out.println("WORKDAY COMPLETE ");
         this.update(workDay);
     }
+
+
+
+
+
+
 }

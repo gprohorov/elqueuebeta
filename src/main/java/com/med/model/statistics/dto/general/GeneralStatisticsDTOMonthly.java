@@ -1,17 +1,13 @@
 package com.med.model.statistics.dto.general;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDate;
 
 
 @Document
-public class GeneralStatisticsDTOWeekly {
+public class GeneralStatisticsDTOMonthly {
 
-    @Id
     private String id;
-    private String week;
+    private String month;
     private int year;
     private int weekNumber;
     private int patients;
@@ -20,10 +16,7 @@ public class GeneralStatisticsDTOWeekly {
     private long bill;
     private long discount;
     private long outcome;
-
-
-    public GeneralStatisticsDTOWeekly() {
-    }
+    private long debt;
 
     public String getId() {
         return id;
@@ -33,12 +26,12 @@ public class GeneralStatisticsDTOWeekly {
         this.id = id;
     }
 
-    public String getWeek() {
-        return week;
+    public String getMonth() {
+        return month;
     }
 
-    public void setWeek(String week) {
-        this.week = week;
+    public void setMonth(String month) {
+        this.month = month;
     }
 
     public int getYear() {
@@ -105,11 +98,20 @@ public class GeneralStatisticsDTOWeekly {
         this.outcome = outcome;
     }
 
+    public long getDebt() {
+        return debt;
+    }
+
+    public void setDebt(long debt) {
+        this.debt = debt;
+    }
+
+
     @Override
     public String toString() {
-        return "GeneralStatisticsDTOWeekly{" +
+        return "GeneralStatisticsDTOMonthly{" +
                 "id='" + id + '\'' +
-                ", week='" + week + '\'' +
+                ", month='" + month + '\'' +
                 ", year=" + year +
                 ", weekNumber=" + weekNumber +
                 ", patients=" + patients +
@@ -118,6 +120,7 @@ public class GeneralStatisticsDTOWeekly {
                 ", bill=" + bill +
                 ", discount=" + discount +
                 ", outcome=" + outcome +
+                ", debt=" + debt +
                 '}';
     }
 }
