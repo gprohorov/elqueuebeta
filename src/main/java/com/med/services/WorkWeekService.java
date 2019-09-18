@@ -56,7 +56,13 @@ public class WorkWeekService {
 
         weekly.setWeekNumber(week);
         weekly.setYear(LocalDate.now().getYear());
-        weekly.setWeek(from.plusDays(1).toString() + " - " + to.minusDays(1).toString());
+        String weekString = from.plusDays(1).getDayOfMonth() + ""
+                + from.plusDays(1).getMonth().toString().substring(0,3).toLowerCase()
+                + " - "
+                + to.minusDays(1).getDayOfMonth() + ""
+                + from.plusDays(1).getMonth().toString().substring(0,3).toLowerCase();
+
+        weekly.setWeek(weekString);
 
         int patients = workDays.stream()
                 .mapToInt(WorkDay::getActivePatients).sum();
@@ -86,10 +92,11 @@ public class WorkWeekService {
         return this.repository.save(weekly);
     }
 
-  //  @Scheduled(cron = "0 59 22 * * *")
+    @Scheduled(cron = "0 22 12 * * *")
     public void generateWeekReport(){
 
         System.out.println("----week------");
+        repository.deleteAll();
 
         for (int i = 10; i <= 37 ; i++) {
           //  this.createWeekly(i);
