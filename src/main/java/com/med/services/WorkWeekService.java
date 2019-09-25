@@ -40,17 +40,18 @@ public class WorkWeekService {
                 .collect(Collectors.toList());
     }
 
-    GeneralStatisticsDTOWeekly createWeekly(int week){
+    GeneralStatisticsDTOWeekly createWeekly(int year, int week){
 
-        LocalDate to = LocalDate.of(2019,1,7).plusDays(7*(week-1));
+        LocalDate theFirstSatOfYear = LocalDate.of(2019,Month.JANUARY, 5 );
+        LocalDate to = theFirstSatOfYear.plusDays( 7 * week + 1);
         LocalDate from = to.minusDays(8);
         List<WorkDay> workDays = workDayService.getAll().stream()
                 .filter(workDay -> workDay.getDate().isAfter(from))
                 .filter(workDay -> workDay.getDate().isBefore(to))
                 .collect(Collectors.toList());
 
-       workDays.stream().map(WorkDay::getDate).distinct()
-               .forEach(System.out::println);
+   //    workDays.stream().map(WorkDay::getDate).distinct()
+   //            .forEach(System.out::println);
 
         GeneralStatisticsDTOWeekly weekly = new GeneralStatisticsDTOWeekly();
 
@@ -87,21 +88,30 @@ public class WorkWeekService {
        int outcome = cashBoxService.getOutlayForPeriod(from, to);
         weekly.setOutcome(outcome);
 
-       // ;
-
+        System.out.println("Week generation complete");
         return this.repository.save(weekly);
     }
 
-    @Scheduled(cron = "0 22 12 * * *")
+    public GeneralStatisticsDTOWeekly generateWeeklyForCurrentWeek(){
+        int currentYear = LocalDate.now().getYear();
+        int lastWeek = this.getAllForYear(currentYear).stream()
+                .mapToInt(GeneralStatisticsDTOWeekly::getWeekNumber)
+                .max().orElse(0);
+
+
+        return createWeekly(currentYear,lastWeek+1);
+    }
+
+   // @Scheduled(cron = "0 26 21 * * *")
     public void generateWeekReport(){
 
         System.out.println("----week------");
         repository.deleteAll();
 
-        for (int i = 10; i <= 37 ; i++) {
+        for (int i = 9; i <= 36 ; i++) {
           //  this.createWeekly(i);
 
-            System.out.println(createWeekly(i).toString());
+            System.out.println(createWeekly(2019, i).toString());
         }
 
        //

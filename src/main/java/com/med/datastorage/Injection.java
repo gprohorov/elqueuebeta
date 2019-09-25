@@ -70,11 +70,28 @@ public class Injection {
 
     @PostConstruct
     void init() {
-
-     //   weekService.generateWeekReport();
-
     }
 
+  //  @Scheduled(cron = "0 5 23 * * *")
+    void showPats(){
+        System.out.println("------------------------------------------");
+
+        patientRepository.findAll().stream()
+                .filter(patient -> patient.getPerson().getCellPhone()!=null)
+                .filter(patient -> patient.getPerson().getCellPhone().contains("05 52"))
+                .forEach(patient -> System.out.println(patient.getPerson().getFullName().toString()+
+                        patient.getPerson().getCellPhone()
+
+                ));
+
+
+//
+//        patientRepository.findAll().stream()
+//                .filter(patient -> patient.getPerson().getCellPhone().contains("4"))
+//
+
+
+    }
 
 
 

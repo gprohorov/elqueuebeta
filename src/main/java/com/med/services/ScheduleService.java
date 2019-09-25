@@ -1,13 +1,12 @@
 package com.med.services;
 
-import com.med.model.balance.Accounting;
+import com.med.model.statistics.dto.general.GeneralStatisticsDTOWeekly;
 import com.med.services.hotel.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by george on 24.03.19.
@@ -26,6 +25,10 @@ public class ScheduleService {
 
     @Autowired
     RecordService recordService;
+
+    @Autowired
+    WorkWeekService weekService;
+
 
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
@@ -56,8 +59,13 @@ public class ScheduleService {
         workDayService.setWorkDayFinishValues();
     }
 
+    @Scheduled(cron = "0 40 19 * * SAT")
+    GeneralStatisticsDTOWeekly calculateWorkWeek() {
+        System.out.println("Week report generation");
+       return weekService.generateWeeklyForCurrentWeek();
+    }
 
-  //  @Scheduled(cron = "0 40 19 * * *")
+  //  @Scheduled(cron = "0 40 19 * * *") Hope1234
 
 
 

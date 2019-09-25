@@ -22,4 +22,8 @@ public class WorkWeekController {
     public List<GeneralStatisticsDTOWeekly> showAllForYear(@PathVariable(value = "year") int year) {
         return service.getAllForYear(year);
     }
+
+
+
+
 }

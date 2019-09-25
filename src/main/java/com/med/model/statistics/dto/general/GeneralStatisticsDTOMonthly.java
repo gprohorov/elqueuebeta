@@ -9,7 +9,7 @@ public class GeneralStatisticsDTOMonthly {
     private String id;
     private String month;
     private int year;
-    private int weekNumber;
+    private int monthNumber;
     private int patients;
     private long cash;
     private long card;
@@ -42,12 +42,12 @@ public class GeneralStatisticsDTOMonthly {
         this.year = year;
     }
 
-    public int getWeekNumber() {
-        return weekNumber;
+    public int getMonthNumber() {
+        return monthNumber;
     }
 
-    public void setWeekNumber(int weekNumber) {
-        this.weekNumber = weekNumber;
+    public void setMonthNumber(int weekNumber) {
+        this.monthNumber = weekNumber;
     }
 
     public int getPatients() {
@@ -113,7 +113,7 @@ public class GeneralStatisticsDTOMonthly {
                 "id='" + id + '\'' +
                 ", month='" + month + '\'' +
                 ", year=" + year +
-                ", weekNumber=" + weekNumber +
+
                 ", patients=" + patients +
                 ", cash=" + cash +
                 ", card=" + card +
