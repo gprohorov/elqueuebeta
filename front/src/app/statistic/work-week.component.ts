@@ -33,6 +33,11 @@ export class WorkWeekComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
+    change(years: number) {
+        this.year = this.year + years;
+        this.load();
+    }
+    
     load() {
         this.loading = true;
         this.sub = this.service.showAllForYear(this.year).subscribe(data => {
