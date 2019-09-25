@@ -17,6 +17,8 @@ export class StatisticService {
     private patientStatisticsUrl = config.api_path + '/statistics/patient/';
     private patientsStatisticsUrl = config.api_path + '/statistics/patient/list/';
     private doctorStatisticsUrl = config.api_path + '/statistics/doctors/current/';
+    
+    private workWeekUrl = config.api_path + '/workweek/get/list/';
 
     constructor(private http: HttpClient) { }
 
@@ -68,6 +70,11 @@ export class StatisticService {
 
     getDoctorsCurrentStatistics(date: string) {
         return this.http.get(this.doctorStatisticsUrl + date).pipe(catchError(this.handleError));
+    }
+    
+    
+    showAllForYear(year: number) {
+        return this.http.get(this.workWeekUrl + year).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any
