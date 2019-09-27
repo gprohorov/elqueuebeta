@@ -1,0 +1,49 @@
+﻿<app-loader [loader]="loading"></app-loader>
+<div class="row mb-2">
+    <div class="col">
+      <h4>Робочий місяць</h4>
+    </div>
+    <div class="col-auto form-inline">
+        <button class="btn btn-success mr-2" (click)="change(-1)">
+            <i class="fa fa-arrow-left"></i> попередній рік
+        </button>
+        <input type="number" class="form-control" name="year" [(ngModel)]="year"
+            (change)="load()" [disabled]="loading" />
+        <button class="btn btn-success ml-2" (click)="change(1)">
+            наступний рік <i class="fa fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Місяць</th>
+            <th>Кількість пацієнтів</th>
+            <th>Готівка</th>
+            <th>Карта</th>
+            <th>Нараховано</th>
+            <th>Знижки</th>
+            <th>Витрати</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of data;">
+            <td class="text-nowrap">{{item.month}} ({{item.year}}/{{item.monthNumber}})</td>
+            <td>{{item.patients}}</td>
+            <td class="text-nowrap text-right">{{item.cash}} грн.</td>
+            <td class="text-nowrap text-right">{{item.card}} грн.</td>
+            <td class="text-nowrap text-right">{{item.bill}} грн.</td>
+            <td class="text-nowrap text-right">{{item.discount}} грн.</td>
+            <td class="text-nowrap text-right">{{item.outcome}} грн.</td>
+        </tr>
+        <tr>
+            <td><strong>Всього:</strong></td>
+            <td><strong>{{patients}}</strong></td>
+            <td class="text-nowrap text-right"><strong>{{cash}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{card}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{bill}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{discount}} грн.</strong></td>
+            <td class="text-nowrap text-right"><strong>{{outcome}} грн.</strong></td>
+        </tr>
+    </tbody>
+</table>

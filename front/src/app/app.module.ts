@@ -76,7 +76,6 @@ import { PatientsDebetorsExtComponent } from './statistic/patients-debetors-ext.
 import { PatientStatisticsComponent } from './statistic/patient-statistics.component';
 import { PatientsStatisticsComponent } from './statistic/patients-statistics.component';
 import { DoctorsStatisticsComponent } from './statistic/doctors-statistics.component';
-import { WorkWeekComponent } from './statistic/work-week.component';
 
 import { ReceiptComponent } from './receipt/main.component';
 import { CheckComponent } from './check/main.component';
@@ -100,6 +99,8 @@ import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.c
 import { AssignPatientRecomendationModalComponent } from './patient/assign-patient-recomendation.modal.component';
 
 import { FinanceWorkdayComponent } from './finance/workday.component';
+import { FinanceWorkWeekComponent } from './finance/work-week.component';
+import { FinanceWorkMonthComponent } from './finance/work-month.component';
 
 import {
     WorkplaceMainComponent,
@@ -281,7 +282,12 @@ const appRoutes: Routes = [
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
     {
-        path: 'finance/workweek', component: WorkWeekComponent,
+        path: 'finance/workweek', component: FinanceWorkWeekComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/workmonth', component: FinanceWorkMonthComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
@@ -384,7 +390,8 @@ const appRoutes: Routes = [
         FinanceWorkdayComponent,
         AssignPatientRecomendationModalComponent,
         UsiModalComponent,
-        WorkWeekComponent
+        FinanceWorkWeekComponent,
+        FinanceWorkMonthComponent
     ],
     providers: [
         AuthGuard,

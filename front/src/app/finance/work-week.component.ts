@@ -6,7 +6,7 @@ import { StatisticService } from '../_services/index';
 @Component({
     templateUrl: './work-week.component.html'
 })
-export class WorkWeekComponent implements OnInit, OnDestroy {
+export class FinanceWorkWeekComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
     loading = false;
@@ -40,7 +40,7 @@ export class WorkWeekComponent implements OnInit, OnDestroy {
     
     load() {
         this.loading = true;
-        this.sub = this.service.showAllForYear(this.year).subscribe(data => {
+        this.sub = this.service.showAllForYearByWeek(this.year).subscribe(data => {
             this.data = data;
 
             this.patients = 0;
