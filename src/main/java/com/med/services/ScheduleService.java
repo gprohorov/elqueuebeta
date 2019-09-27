@@ -1,5 +1,6 @@
 package com.med.services;
 
+import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOWeekly;
 import com.med.services.hotel.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ScheduleService {
 
     @Autowired
     WorkWeekService weekService;
+
+    @Autowired
+    WorkMonthService monthService;
 
 
     @Scheduled(cron = "0 0 7 * * *")
@@ -65,7 +69,15 @@ public class ScheduleService {
        return weekService.generateWeeklyForCurrentWeek();
     }
 
-  //  @Scheduled(cron = "0 40 19 * * *") Hope1234
+    @Scheduled(cron = "1 1 1 1 * *")
+    GeneralStatisticsDTOMonthly calculateWorkMonth() {
+        System.out.println("Month report generation");
+       return monthService.createRegularMonthReport();
+    }
+
+
+
+  //  @Scheduled(cron = "0 40 19 * * *")
 
 
 

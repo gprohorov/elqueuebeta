@@ -16,7 +16,7 @@ public class GeneralStatisticsDTOMonthly {
     private long bill;
     private long discount;
     private long outcome;
-    private long debt;
+
 
     public String getId() {
         return id;
@@ -98,13 +98,7 @@ public class GeneralStatisticsDTOMonthly {
         this.outcome = outcome;
     }
 
-    public long getDebt() {
-        return debt;
-    }
 
-    public void setDebt(long debt) {
-        this.debt = debt;
-    }
 
 
     @Override
@@ -113,14 +107,12 @@ public class GeneralStatisticsDTOMonthly {
                 "id='" + id + '\'' +
                 ", month='" + month + '\'' +
                 ", year=" + year +
-
                 ", patients=" + patients +
                 ", cash=" + cash +
                 ", card=" + card +
                 ", bill=" + bill +
                 ", discount=" + discount +
                 ", outcome=" + outcome +
-                ", debt=" + debt +
                 '}';
     }
 }

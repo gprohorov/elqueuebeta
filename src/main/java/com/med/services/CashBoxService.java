@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.med.model.CashBox;
@@ -147,11 +148,25 @@ public class CashBoxService {
 
 
     //----------------------  injection
+   // @Scheduled(cron = "0 40 12 * * *")
+    private void testOutlay(){
+        System.out.println("Started");
+        repository.findAll().stream()
+                .filter(cashBox
+                        -> cashBox.getDateTime().toLocalDate().isAfter(LocalDate.of(2019,9,2)))
+                .filter(cashBox
+                        -> cashBox.getDateTime().toLocalDate().isBefore(LocalDate.of(2019,9,10)))
+                .map(CashBox::getDateTime).sorted()
+                .forEach(System.out::println);
+
+        System.out.println("Finished");
+
+    }
 
     // чего не достает  в кешбоксе  - взять из селери
     private void inject1(){
          int doctorId = 2;
-         LocalDateTime date1 = LocalDateTime.of(2019,Month.FEBRUARY,2,13,38);
+         LocalDateTime date1 = LocalDateTime.of(2019,Month.SEPTEMBER,2,13,38);
          LocalDateTime date2 = LocalDateTime.of(2019,Month.FEBRUARY,20,8,4);
          this.injectPair(doctorId,date1,4000);
          this.injectPair(doctorId,date2,300);

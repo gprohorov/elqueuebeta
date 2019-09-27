@@ -4,6 +4,7 @@ import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.workday.WorkDay;
 import com.med.repository.WorkMonthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,9 +29,11 @@ public class WorkMonthService {
           return repository.findById(id).orElse(null);
      }
 
+
      public GeneralStatisticsDTOMonthly create(GeneralStatisticsDTOMonthly item){
           return repository.save(item);
      }
+
 
      public List<GeneralStatisticsDTOMonthly> getAll(){
           return repository.findAll();
@@ -38,21 +41,24 @@ public class WorkMonthService {
 
      public void deleteAll(){ repository.deleteAll(); }
 
+
+     // must created on the 1st of each month at 01.00 AM
+   // @Scheduled(cron = "0 00 14 * * *")
      public GeneralStatisticsDTOMonthly createRegularMonthReport(){
 
-          LocalDate to = LocalDate.now();
-          int year = to.getYear();
-          int month = to.getMonthValue() -1 ;
-
-          if (to.getMonth().equals(Month.JANUARY)){
-               year -= 1;
-               month = 11;
+          int year = LocalDate.now().getYear();
+          int month = LocalDate.now().getMonthValue();
+          if(LocalDate.now().getMonth().equals(Month.JANUARY)){
+               year-=1;
+               month=12;
           }
 
-          LocalDate from = LocalDate.of(year, month, 1);
-
-          return null;
+          System.out.println("Regular month generation " + year +"/" + month);
+          return this.createMonthlReport(year,month);
      }
+
+
+
 
      public GeneralStatisticsDTOMonthly createMonthlReport(int yr, int mnth){
 
@@ -67,7 +73,7 @@ public class WorkMonthService {
           GeneralStatisticsDTOMonthly monthly = new GeneralStatisticsDTOMonthly();
           
           monthly.setYear(year);
-          monthly.setMonth(workDays.get(0).getDate().getDayOfWeek().name().substring(0,3));
+          monthly.setMonth(workDays.get(0).getDate().getMonth().name().substring(0,3));
           monthly.setMonthNumber(month);
 
 
@@ -98,20 +104,29 @@ public class WorkMonthService {
 
           if (to.getMonth().equals(Month.JANUARY)){
 
-               from = LocalDate.of(year-1, 11, 1);
+               from = LocalDate.of(year-1, 12, 1);
           }
 
 
 
 
-          int outcome = cashBoxService.getOutlayForPeriod(from, to);
+          int outcome = cashBoxService.getOutlayForPeriod(from.minusDays(1), to);
           monthly.setOutcome(outcome);
 
-          System.out.println("Month generation complete");
+          System.out.println("Month generation for "+ year + "/" + month + " complete");
 
-          return null;
+          return repository.save(monthly);
      }
 
+   //Hope1234  @Scheduled(cron = "0 0 18 * * *")
+       private void createMonthly(){
+            for (int i = 3; i < 9; i++) {
+
+                 this.createMonthlReport(2019, i);
+
+            }
+       }
+  //
 
 
 
