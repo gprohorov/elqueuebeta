@@ -41,6 +41,13 @@ public class WorkMonthService {
 
      public void deleteAll(){ repository.deleteAll(); }
 
+     public  List<GeneralStatisticsDTOMonthly> getAllForYear(int year){
+
+          return this.getAll().stream()
+                  .filter(month->month.getYear() == year)
+                  .collect(Collectors.toList());
+     }
+
 
      // must created on the 1st of each month at 01.00 AM
      public GeneralStatisticsDTOMonthly createRegularMonthReport(){
