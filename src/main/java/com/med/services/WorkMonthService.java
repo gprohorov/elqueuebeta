@@ -43,7 +43,6 @@ public class WorkMonthService {
 
 
      // must created on the 1st of each month at 01.00 AM
-   // @Scheduled(cron = "0 00 14 * * *")
      public GeneralStatisticsDTOMonthly createRegularMonthReport(){
 
           int year = LocalDate.now().getYear();
