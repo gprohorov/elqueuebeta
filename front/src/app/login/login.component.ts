@@ -13,12 +13,25 @@ export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     returnUrl: string;
-    project = config.project === 'kl' ? 'КЛІШКІВЦІ' : 'ЧЕРНІВЦІ';
-
+    project: string;
+     
     constructor(
         private router: Router,
         private authService: AuthService,
         private alertService: AlertService) {
+      
+        switch(config.project) {
+          case 'mg':
+            this.project = 'МИГОВО';
+            break;
+          case 'kl': 
+            this.project = 'КЛІШКІВЦІ';
+            break;
+          case 'cv':
+          default:
+            this.project = 'ЧЕРНІВЦІ';
+            break;
+        }
         this.authService.deAuth();
     }
 
