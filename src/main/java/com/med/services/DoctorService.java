@@ -20,6 +20,9 @@ public class DoctorService {
     @Autowired
     SalaryDTOService salaryDTOService;
 
+
+    private Doctor defaultDoctor = new Doctor(100, "Default");
+
     public Doctor createDoctor(Doctor doctor) {
         if (doctor.getId() == 0) {
             doctor.setId(this.getAll().stream().mapToInt(Doctor::getId).max().getAsInt() + 1);
@@ -37,7 +40,7 @@ public class DoctorService {
     }
 
     public Doctor getDoctor(int id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElse(defaultDoctor);
     }
 
     public Doctor getDoctorByUserId(String id) {

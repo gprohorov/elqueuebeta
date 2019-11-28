@@ -17,12 +17,14 @@ export class StatisticService {
     private patientStatisticsUrl = config.api_path + '/statistics/patient/';
     private patientsStatisticsUrl = config.api_path + '/statistics/patient/list/';
     private doctorStatisticsUrl = config.api_path + '/statistics/doctors/current/';
+    
+    private workWeekUrl = config.api_path + '/workweek/get/list/';
+    private workMonthUrl = config.api_path + '/workmonth/get/list/';
 
     constructor(private http: HttpClient) { }
 
     getGeneralStatisticsFromTo(start: string, finish: string) {
-        return this.http.get(this.generalStatisticsFromToUrl + start + '/' + finish
-            ).pipe(catchError(this.handleError));
+        return this.http.get(this.generalStatisticsFromToUrl + start + '/' + finish).pipe(catchError(this.handleError));
     }
 
     getCashSummary() {
@@ -68,6 +70,15 @@ export class StatisticService {
 
     getDoctorsCurrentStatistics(date: string) {
         return this.http.get(this.doctorStatisticsUrl + date).pipe(catchError(this.handleError));
+    }
+    
+    
+    showAllForYearByWeek(year: number) {
+        return this.http.get(this.workWeekUrl + year).pipe(catchError(this.handleError));
+    }
+    
+    showAllForYearByMonth(year: number) {
+        return this.http.get(this.workMonthUrl + year).pipe(catchError(this.handleError));
     }
 
     // Implement a method to handle errors if any

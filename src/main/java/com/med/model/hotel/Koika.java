@@ -6,6 +6,8 @@ import org.springframework.lang.Nullable;
 
 import com.med.model.Patient;
 
+import java.util.Objects;
+
 @Document
 public class Koika {
 
@@ -86,5 +88,18 @@ public class Koika {
     public String toString() {
         return "Koika{" + "id=" + id + ", name='" + name + '\'' + ", chamber="
         		+ chamber.toString() + ", price=" + price + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Koika koika = (Koika) o;
+        return getId() == koika.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

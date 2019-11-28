@@ -144,7 +144,7 @@ public class AccountingService {
         long gameover =  patientService.getAllForToday().stream()
             .filter(patient -> patient.getActivity().equals(Activity.GAMEOVER)).count();
 
-        int part = (int) (gameover * 100) / people;
+        int part = (people > 0) ? ((int) (gameover * 100) / people) : 0;
 
         report.setPercentage(part);
 
@@ -227,5 +227,10 @@ public class AccountingService {
         receipt.setBalance(patient.getBalance());
     	receipt.setDiscount(patient.getDiscount());
         return receipt;
+    }
+
+    public  List<Accounting> getAllForDateAndType(LocalDate date, PaymentType type){
+
+        return this.repository.findByDateAndPayment(date,type);
     }
 }

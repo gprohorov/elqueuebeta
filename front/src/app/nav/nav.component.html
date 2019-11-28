@@ -1,5 +1,5 @@
 ﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="">Меднеан</a>
+    <a class="navbar-brand" href="">Меднеан <b>{{project}}</b></a>
     <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -95,6 +95,10 @@
                     <hr/>
                     <a class="dropdown-item" routerLink="/finance/workday"
                         routerLinkActive="active">Робочий день</a>
+                    <a class="dropdown-item" routerLink="/finance/workweek"
+                        routerLinkActive="active">Робочий тиждень</a>
+                    <a class="dropdown-item" routerLink="/finance/workmonth"
+                        routerLinkActive="active">Робочий місяць</a>
                     <a class="dropdown-item" routerLink="/finance/outcome"
                         routerLinkActive="active">Витрати</a>
                 </div>

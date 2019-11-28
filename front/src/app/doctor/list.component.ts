@@ -47,7 +47,10 @@ export class DoctorListComponent implements OnInit, OnDestroy {
     }
 
     getProcedures(list) {
-        return list.map(id => this.procedures.find(x => x.id === id).name).join(', ');
+        return list.map(id => { 
+          let p = this.procedures.find(x => x.id === id);
+          return (p && p.name) ? p.name : '---'; 
+        }).join(', ');
     }
 
     load(search: string = '') {

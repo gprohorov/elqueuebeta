@@ -12,6 +12,7 @@ public class PermanentPayroll {
     private LocalDate to;   // по какое число включительно
     private String name; // фамилия доктора
     private int doctorId;// его айдишник
+    private  boolean active; // активен ли
     private int days;    // сколько рабочих дней проработал за это время
     private int stavka;  // ставка  минус налог минус обед
     private int accural; // бонусы за процедуры за это время
@@ -50,6 +51,14 @@ public class PermanentPayroll {
 
     public int getDoctorId() {
         return doctorId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setDoctorId(int doctorId) {
@@ -142,6 +151,7 @@ public class PermanentPayroll {
                 ", to=" + to +
                 ", name='" + name + '\'' +
                 ", doctorId=" + doctorId +
+                ", active=" + active +
                 ", days=" + days +
                 ", stavka=" + stavka +
                 ", accural=" + accural +

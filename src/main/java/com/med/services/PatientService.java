@@ -3,6 +3,7 @@ package com.med.services;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -142,8 +143,9 @@ public class PatientService {
 	}
 
 	public List<Accounting> getUltimateBalanceToday(String patientId) {
+		LocalDate start = LocalDate.of(2018, Month.AUGUST, 28);
 		return this.getUltimateBalance(
-			patientId, LocalDate.now().minusDays(100), LocalDate.now().plusDays(1));
+			patientId, start, LocalDate.now().plusDays(1));
 	}
 
 	public List<Accounting> getBalanceForCurrentTherapy(String patientId) {

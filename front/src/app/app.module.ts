@@ -96,7 +96,11 @@ import { FinanceOutcomeComponent } from './finance/outcome.component';
 import { FinanceOutcomeCategoryModalComponent } from './finance/outcome/category.modal.component';
 import { FinanceOutcomeItemModalComponent } from './finance/outcome/item.modal.component';
 
+import { AssignPatientRecomendationModalComponent } from './patient/assign-patient-recomendation.modal.component';
+
 import { FinanceWorkdayComponent } from './finance/workday.component';
+import { FinanceWorkWeekComponent } from './finance/work-week.component';
+import { FinanceWorkMonthComponent } from './finance/work-month.component';
 
 import {
     WorkplaceMainComponent,
@@ -277,6 +281,16 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
+    {
+        path: 'finance/workweek', component: FinanceWorkWeekComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
+    {
+        path: 'finance/workmonth', component: FinanceWorkMonthComponent,
+        canActivate: [AuthGuard, NgxPermissionsGuard],
+        data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
+    },
 
     {
         path: 'workplace', component: WorkplaceMainComponent,
@@ -374,7 +388,10 @@ const appRoutes: Routes = [
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
         FinanceWorkdayComponent,
-        UsiModalComponent
+        AssignPatientRecomendationModalComponent,
+        UsiModalComponent,
+        FinanceWorkWeekComponent,
+        FinanceWorkMonthComponent
     ],
     providers: [
         AuthGuard,
@@ -413,6 +430,7 @@ const appRoutes: Routes = [
         KassaAddOutcomeModalComponent,
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
+        AssignPatientRecomendationModalComponent,
         UsiModalComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],

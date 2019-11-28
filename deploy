@@ -1,7 +1,19 @@
+#!/bin/bash
+
+SERVER=185.189.185.80
+
+if [ "$1" != "cv" ] && [ "$1" != "kl" ]
+then 
+  echo "Error! Wrong params! Allowed params are: cv | kl"
+  exit
+fi
+
+./sw $1
+./
 echo 'Building Front-end...'
 echo ''
 cd front
-ng build -prod --locale uk
+npm run build
 
 echo ''
 echo 'Building Back-end...'
@@ -12,8 +24,8 @@ mvn clean package
 echo ''
 echo 'Copying app to destination server...'
 echo ''
-scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@195.200.245.115:/home/bvh/elqueue
+scp -P 2222 ./target/elqueuebeta-0.0.1-SNAPSHOT.jar bvh@$SERVER:/home/bvh/mednean_$1
 
 echo ''
 echo 'Enter password for remotely RESTART server'
-ssh -tt bvh@195.200.245.115 -p 2222 'sudo systemctl stop elqueue.service;sudo mv /home/bvh/elqueue/elqueue.out /home/bvh/elqueue/elqueue.bak;sudo systemctl start elqueue.service;exit'
+ssh -tt bvh@$SERVER -p 2222 "sudo systemctl stop mednean_$1.service;sudo mv /home/bvh/mednean_$1/elqueue.out /home/bvh/mednean_$1/elqueue.bak;sudo systemctl start mednean_$1.service;exit"

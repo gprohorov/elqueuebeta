@@ -18,6 +18,7 @@ export class FinanceWorkdayComponent implements OnInit, OnDestroy {
     show_debtOfTodayWithoutHotelList = false;
     show_debtOfTomorrowPassiveList = false;
     show_debtOfTodayPassiveList = false;
+    show_recomendationList = false;
 
     constructor(
         private alertService: AlertService,
@@ -53,6 +54,7 @@ export class FinanceWorkdayComponent implements OnInit, OnDestroy {
                 this.show_debtOfTodayWithoutHotelList = false;
                 this.show_debtOfTomorrowPassiveList = false;
                 this.show_debtOfTodayPassiveList = false;
+                this.show_recomendationList = false;
             },
             error => {
                 this.alertService.error('Помилка на сервері', false);

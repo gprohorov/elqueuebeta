@@ -1,0 +1,22 @@
+﻿<div [style.height.px]="208" style="overflow-y: scroll;">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">Пошук</div>
+        </div>
+        <input type="text" class="form-control" name="search" [(ngModel)]="search" (keyup)="load()" />
+    </div>
+    <div class="content table-responsive table-full-width">
+        <table class="table table-sm">
+            <tr *ngFor="let item of patients">
+                <td [ngClass]="{'bg-primary text-white': item.id == patient?.id}"
+                    [ngStyle]="{'cursor': 'pointer'}" (click)="patient = item"
+                    title="
+                        {{item.person.gender ? 'ч.' : 'ж.'}}, 
+                        {{item.person.dateOfBirth | date:'dd.MM.yyyy'}}, 
+                        {{item.person.town}},
+                        {{item.balance}} грн.  
+                        ">{{item.person.fullName}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

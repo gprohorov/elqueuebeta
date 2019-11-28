@@ -35,6 +35,9 @@ public class Patient {
     private boolean isHotel;
     @Transient
     private Talon talon;
+    private String recomendation; // id of recomendator
+    private String recomendationName; // name of recomendator
+    private String desc;
 
     public Patient() {}
 
@@ -64,6 +67,39 @@ public class Patient {
         this.talons = new ArrayList<>();
         this.person = person;
         this.registration = LocalDateTime.now();
+    }
+
+    public Patient(Person person, String recomendation, String desc) {
+        this.talons = new ArrayList<>();
+        this.person = person;
+        this.registration = LocalDateTime.now();
+        this.desc = desc;
+        this.recomendation = recomendation;
+
+    }
+
+    public String getRecomendation() {
+        return recomendation;
+    }
+
+    public void setRecomendation(String recomendation) {
+        this.recomendation = recomendation;
+    }
+
+    public String getRecomendationName() {
+        return recomendationName;
+    }
+
+    public void setRecomendationName(String recomendationName) {
+        this.recomendationName = recomendationName;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public boolean isHotel() {
@@ -107,14 +143,14 @@ public class Patient {
     }
 
     public int getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(int discount) {
-		this.discount = discount;
-	}
-
-	public String getId() {
+  		return discount;
+  	}
+  
+  	public void setDiscount(int discount) {
+  		this.discount = discount;
+  	}
+  
+  	public String getId() {
         return id;
     }
 
@@ -283,6 +319,8 @@ public class Patient {
                 ", startActivity=" + startActivity +
                 ", status=" + status +
                 ", balance=" + balance +
+                ", desc=" + desc +
+                ", recomendation=" + recomendation +
                 "}";
     }
 }

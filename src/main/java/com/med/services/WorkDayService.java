@@ -2,12 +2,10 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -65,8 +63,12 @@ public class WorkDayService  {
     public WorkDay update(WorkDay workDay) {
         return repository.save(workDay);
     }
+    public List<WorkDay> getAll() { return repository.findAll();
+    }
 
-    // @Scheduled(cron = "0 0 7 * * *")
+
+
+
     public void initWorkDay() {
         WorkDay workDay = new WorkDay(LocalDate.now());
         int assigned = (int) talonService.getTalonsForToday().stream()
@@ -90,6 +92,8 @@ public class WorkDayService  {
 //--------------------------------------------------------------------------------------
     // @Scheduled(cron = "0 25 19 * * *")
     public void setWorkDayFinishValues() {
+
+        System.out.println("WORKDAY calculations are running");
         WorkDay workDay = this.getWorkDay(LocalDate.now());
 
         // Ищем когда закончилась последняя процедура
@@ -132,6 +136,47 @@ public class WorkDayService  {
                     discountsStringList[0] += key + " " + value + ", ";
                 });
         workDay.setDiscountList(discountsStringList[0]);
+
+
+        //------------------------- 24 aug
+        int recomendation = accountingService.getAllForDate(LocalDate.now()).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.RECOMENDATION))
+                .mapToInt(Accounting::getSum).sum();
+        workDay.setRecomendation(recomendation);
+
+         String recomendationsStringList = "";
+        Map<String, Integer> recomendationsMap = new HashMap<>();
+        accountingService.getAllForDate(LocalDate.now()).stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.RECOMENDATION))
+                .forEach(
+                        accounting -> {
+
+                            Patient recomendator = patientService.getPatient(accounting.getPatientId());
+
+                                String name = recomendator.getPerson().getFullName()
+                                        .split(" ")[0];
+
+                                if (recomendationsMap.containsKey(name)){
+                                int sum = recomendationsMap.get(name) + accounting.getSum();
+                                recomendationsMap.put(name, sum);
+                                } else
+                                    recomendationsMap.put(name,accounting.getSum());
+
+                        }
+
+                );
+        for (Map.Entry<String, Integer> entry: recomendationsMap.entrySet()){
+
+            recomendationsStringList += entry.getKey() + " - " + entry.getValue() + "; ";
+            System.out.println(entry.toString());
+        }
+        workDay.setRecomendationList(recomendationsStringList);
+
+
+
+        //-----------------------------------------
+
+
 
         // витраты за сегодня
         int outlay = cashBoxService.getOutlayForToday();
@@ -265,4 +310,10 @@ public class WorkDayService  {
         System.out.println("WORKDAY COMPLETE ");
         this.update(workDay);
     }
+
+
+
+
+
+
 }

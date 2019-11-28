@@ -16,4 +16,5 @@ public interface CashRepository extends MongoRepository<CashBox, String> {
 	List<CashBox> findByItemId(String id);
 	List<CashBox> findAllByDateTimeIsBetweenAndTypeIsNot(LocalDate from, LocalDate to, CashType type);
 	List<CashBox> findAllByDateTimeAfter(LocalDateTime dateTime);
+
 }
