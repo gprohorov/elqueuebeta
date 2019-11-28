@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ "$1" != "cv" ] && [ "$1" != "kl" ]
+if [ "$1" != "cv" ] && [ "$1" != "kl" ] && [ "$1" != "mg" ]
 then 
-  echo "Error! Wrong params! Allowed params are: cv | kl"
+  echo "Error! Wrong params! Allowed params are: [ cv | kl | mg ]"
   exit
 fi
 

@@ -19,7 +19,7 @@ export class NavComponent implements OnInit, OnDestroy {
     user: any;
     navbarOpen = false;
     sub: Subscription;
-    project = config.project === 'kl' ? 'КЛІШКІВЦІ' : 'ЧЕРНІВЦІ';
+    project: string;
 
     constructor(
         public authService: AuthService,
@@ -27,7 +27,20 @@ export class NavComponent implements OnInit, OnDestroy {
         private modalService: ModalDialogService,
         private viewRef: ViewContainerRef,
         private router: Router
-    ) { }
+    ) {
+      switch(config.project) {
+          case 'mg':
+            this.project = 'МИГОВО';
+            break;
+          case 'kl': 
+            this.project = 'КЛІШКІВЦІ';
+            break;
+          case 'cv':
+          default:
+            this.project = 'ЧЕРНІВЦІ';
+            break;
+        }
+    }
 
     ngOnInit() {
         if (this.authService.isAuth()) {

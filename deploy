@@ -2,12 +2,6 @@
 
 SERVER=185.189.185.80
 
-if [ "$1" != "cv" ] && [ "$1" != "kl" ]
-then 
-  echo "Error! Wrong params! Allowed params are: cv | kl"
-  exit
-fi
-
 ./sw $1
 ./
 echo 'Building Front-end...'
