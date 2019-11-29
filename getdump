@@ -1,4 +1,4 @@
-SERVER=185.189.185.80
+SERVER=admin.mednean.com.ua
 
 rm -R ./dump
 rm ./dump.tar.gz
