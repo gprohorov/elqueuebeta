@@ -1,5 +1,7 @@
 package com.med.services;
 
+import com.med.model.balance.Accounting;
+import com.med.model.balance.PaymentType;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.workday.WorkDay;
 import com.med.repository.WorkMonthRepository;
@@ -23,6 +25,9 @@ public class WorkMonthService {
 
      @Autowired
      CashBoxService cashBoxService;
+
+     @Autowired
+     AccountingService accountingService;
 
      public GeneralStatisticsDTOMonthly get(String id){
 
@@ -53,7 +58,7 @@ public class WorkMonthService {
      public GeneralStatisticsDTOMonthly createRegularMonthReport(){
 
           int year = LocalDate.now().getYear();
-          int month = LocalDate.now().getMonthValue();
+          int month = LocalDate.now().getMonthValue() -1 ;
           if(LocalDate.now().getMonth().equals(Month.JANUARY)){
                year-=1;
                month=12;
@@ -113,9 +118,6 @@ public class WorkMonthService {
                from = LocalDate.of(year-1, 12, 1);
           }
 
-
-
-
           int outcome = cashBoxService.getOutlayForPeriod(from.minusDays(1), to);
           monthly.setOutcome(outcome);
 
@@ -124,14 +126,80 @@ public class WorkMonthService {
           return repository.save(monthly);
      }
 
-   //Hope1234  @Scheduled(cron = "0 0 18 * * *")
-       private void createMonthly(){
-            for (int i = 3; i < 9; i++) {
 
-                 this.createMonthlReport(2019, i);
+     //28 sep 2019
+     public GeneralStatisticsDTOMonthly createMonthlReportViaAccount(int yr, int mnth){
 
+          final int year = yr;
+          final int month = mnth;
+
+          List<WorkDay> workDays = workDayService.getAll().stream()
+                  .filter(day->day.getDate().getYear() == year)
+                  .filter(day->day.getDate().getMonthValue() ==month )
+                  .collect(Collectors.toList());
+
+          List<Accounting> accountings =
+                  accountingService.getAll().stream()
+                  .filter(accounting -> accounting.getDate().getYear() == year)
+                  .filter(accounting -> accounting.getDate().getMonthValue() == month)
+                  .collect(Collectors.toList());
+
+          GeneralStatisticsDTOMonthly monthly = new GeneralStatisticsDTOMonthly();
+
+          monthly.setYear(year);
+          monthly.setMonth(Month.of(mnth).toString());
+          monthly.setMonthNumber(month);
+
+          int patients = (int) accountings.stream()
+                  .map(accounting -> (accounting.getPatientId() + accounting.getDate()))
+                  .distinct().count();
+          monthly.setPatients(patients);
+
+          int bill = (int) -1 * accountings.stream().filter(acc->acc.getSum() < 0)
+                  .mapToInt(Accounting::getSum).sum();
+          monthly.setBill(bill);
+
+          int cash = accountings.stream().filter(acc->acc.getPayment().equals(PaymentType.CASH))
+                  .mapToInt(Accounting::getSum).sum();
+          monthly.setCash(cash);
+
+          int card = accountings.stream().filter(acc->acc.getPayment().equals(PaymentType.CARD))
+                  .mapToInt(Accounting::getSum).sum();
+          monthly.setCard(card);
+
+          int discount = accountings.stream().filter(acc->acc.getPayment().equals(PaymentType.DISCOUNT))
+                  .mapToInt(Accounting::getSum).sum();
+          monthly.setDiscount(discount);
+
+          int outcome = cashBoxService.getOutlayForMonth(month, year);
+          monthly.setOutcome(outcome);
+
+          System.out.println("Month generation complete");
+
+          return repository.save(monthly);
+     }
+
+
+
+
+
+     //------------------------------------ INJECTION
+   //  @Scheduled(cron = "0 30 19 * * *")
+       private void createMonthlyViaAcc(){
+          repository.deleteAll();
+
+          int yr = 2018;
+            for (int i = 9; i <= 12; i++) {
+                 System.out.println(Month.of(i).toString() + " " + yr);
+                 this.createMonthlReportViaAccount(yr,i);
             }
-       }
+           yr = 2019;
+          for (int i = 1; i <= 9; i++) {
+               System.out.println(Month.of(i).toString() + " " + yr);
+               this.createMonthlReportViaAccount(yr,i);
+          }
+
+     }
   //
 
 

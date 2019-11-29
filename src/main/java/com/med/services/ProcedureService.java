@@ -16,6 +16,9 @@ public class ProcedureService {
     @Autowired
     ProcedureRepository repository;
 
+    @Autowired
+    TailService tailService;
+
     public List<Procedure> getAll() {
         return repository.findAll(new Sort(Sort.Direction.ASC, "_id"));
     }
@@ -29,7 +32,10 @@ public class ProcedureService {
             		repository.findAll().stream().mapToInt(Procedure::getId).max().getAsInt() + 1);
             }
         }
-        return repository.save(procedure);
+        Procedure procedureSaved = repository.save(procedure);
+        tailService.refreshProcedures();
+
+        return procedureSaved;
     }
 
     public Procedure getProcedure(int procedureId) {

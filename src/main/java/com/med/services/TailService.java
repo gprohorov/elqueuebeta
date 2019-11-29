@@ -37,6 +37,10 @@ public class TailService {
         procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
     }
 
+    public void refreshProcedures() {
+        procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
+
+    }
     public HashMap<Integer, Boolean> setAllSemafors(List<Talon> talonsForToday) {
 	    semafor.entrySet().stream().forEach(entry-> {
 	    	entry.setValue(talonsForToday.stream()

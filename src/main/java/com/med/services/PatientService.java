@@ -4,10 +4,8 @@ import java.text.Collator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,4 +216,27 @@ public class PatientService {
 			}
 		});
 	}
+
+	//@Scheduled(cron = "0 51 22 * * *")
+	public void  showGrouppedByAge(){
+
+		System.out.println("--------------------------------------");
+		System.out.println(repository.findAll().size());
+
+		List<Integer> list = repository.findAll().stream()
+				.filter(patient -> patient.getPerson().getDateOfBirth() != null)
+				.mapToInt(patient -> patient.getPerson().getDateOfBirth().getYear()).boxed()
+				.collect(Collectors.toList());
+		System.out.println(list.size());
+
+		final Map<Integer, Long> groupped = list.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+		groupped.entrySet().stream()
+				.forEach(entry-> {
+					System.out.println(entry.getKey() + "  " + entry.getValue());
+				});
+
+
+	}
+
 }

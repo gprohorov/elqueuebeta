@@ -166,7 +166,7 @@ public class TherapyService {
 			manualTherapyTalon.setStatus(patient.getStatus());
 			talonService.saveTalon(manualTherapyTalon);
 
-			////////////////// accounting manual
+			/////// accounting manual
 			accountingService.createAccounting(new Accounting(
 				manualTherapyTalon.getDoctor().getId(),
 				patient.getId(),
@@ -181,6 +181,18 @@ public class TherapyService {
 		repository.save(therapy);
 		
 		talonService.saveTalon(talon);
+
+		// TODO: Remove hardcoded value!!!
+		accountingService.createAccounting(new Accounting(
+				talon.getDoctor().getId(),
+				patient.getId(),
+				LocalDateTime.now(),
+				talon.getId(),
+				procedureService.getProcedure(2).getSOCIAL() * (-1),
+				PaymentType.PROC,
+				"Діагностика "
+		));
+
 		
 		List<Talon> toDelete = talonService.getAllTalonsForPatient(patient.getId()).stream()
             .filter(tal -> (tal.getActivity().equals(Activity.NON_ACTIVE)

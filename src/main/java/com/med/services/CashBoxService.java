@@ -136,9 +136,23 @@ public class CashBoxService {
     // 17 september 2019
     public int getOutlayForPeriod(LocalDate from, LocalDate to) {
 
+        // FROM is not included !!!!
         return repository.findAll().stream()
                 .filter(cashBox -> cashBox.getDateTime().toLocalDate().isAfter(from))
                 .filter(cashBox -> cashBox.getDateTime().toLocalDate().isBefore(to))
+                .filter(cashBox -> cashBox.getSum()<0)
+                .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
+                .mapToInt(CashBox::getSum)
+                .sum();
+    }
+
+// 28 september 2019
+    public int getOutlayForMonth(int month, int year) {
+
+        // FROM is not included !!!!
+        return repository.findAll().stream()
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().getMonthValue() == month)
+                .filter(cashBox -> cashBox.getDateTime().toLocalDate().getYear() == year)
                 .filter(cashBox -> cashBox.getSum()<0)
                 .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
                 .mapToInt(CashBox::getSum)
