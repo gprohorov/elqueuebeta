@@ -41,7 +41,7 @@ export class WorkplaceDiagnosticComponent implements OnInit, OnDestroy {
     lastCabinet = 0;
     procedureStarted = false;
     model: any = {};
-    Discounts = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    Discounts = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
 
     constructor(
         private viewRef: ViewContainerRef,
