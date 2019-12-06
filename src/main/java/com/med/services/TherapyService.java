@@ -166,7 +166,7 @@ public class TherapyService {
 			manualTherapyTalon.setStatus(patient.getStatus());
 			talonService.saveTalon(manualTherapyTalon);
 
-			/////// accounting manual
+			// accounting manual
 			accountingService.createAccounting(new Accounting(
 				manualTherapyTalon.getDoctor().getId(),
 				patient.getId(),
