@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 24.03.19.
  */
-@Service
+//@Service
 public class Injection {
 
     @Autowired
@@ -45,7 +45,7 @@ public class Injection {
 
 
 
-    @PostConstruct
+  //  @PostConstruct
     void init() {
         Chamber chamber1 = new Chamber(1,"1", Category.LUX, 1, "", 2);
         Chamber chamber2 = new Chamber(2,"2", Category.LUX, 1, "", 2);
