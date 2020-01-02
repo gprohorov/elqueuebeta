@@ -81,7 +81,7 @@ public class ScheduleService {
        return monthService.createMonthlReport(2019,10);
     }
 
-      @Scheduled(cron = "0 10 22 * * *")
+   //   @Scheduled(cron = "0 10 22 * * *")
     void calculateWorkMonthes() {
         System.out.println("Month report generation");
         monthService.createMonthlReport(2019,10);
