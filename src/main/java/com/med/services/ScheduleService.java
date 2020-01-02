@@ -69,11 +69,28 @@ public class ScheduleService {
        return weekService.generateWeeklyForCurrentWeek();
     }
  // @Scheduled(cron = "1 13 21 * * *")
-    @Scheduled(cron = "1 1 1 1 * *")
+   @Scheduled(cron = "1 1 21 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
-        System.out.println("Month report generation");
+        System.out.println("Month report new year  generation");
        return monthService.createRegularMonthReport();
     }
+
+  // @Scheduled(cron = "0 55 19 * * *")
+    GeneralStatisticsDTOMonthly calculateWorkMonth1() {
+        System.out.println("Month report generation");
+       return monthService.createMonthlReport(2019,10);
+    }
+
+      @Scheduled(cron = "0 48 22 * * *")
+    void calculateWorkMonthes() {
+        System.out.println("Month report generation");
+        monthService.createMonthlReport(2019,10);
+        System.out.println("Month report generation");
+        monthService.createMonthlReport(2019,11);
+        System.out.println("Month report generation");
+        monthService.createMonthlReport(2019,12);
+    }
+
 
 
 

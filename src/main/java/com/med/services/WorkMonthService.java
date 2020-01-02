@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -109,9 +110,11 @@ public class WorkMonthService {
           monthly.setDiscount(discount);
 
 
-          LocalDate to = LocalDate.now();
-          LocalDate from = LocalDate.of(year, to.getMonthValue() -1, 1);
+          LocalDate to = LocalDate.of(year, mnth, 1);
+          LocalDate from = LocalDate.of(year, to.getMonthValue() -1, 1)
+                  .minusDays(1);
 
+          System.out.println( "Days in " + to.getMonth() + " - " + ChronoUnit.DAYS.between(to, from));
 
           if (to.getMonth().equals(Month.JANUARY)){
 

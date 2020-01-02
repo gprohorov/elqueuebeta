@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.med.model.Category;
 
+import java.util.Objects;
+
 @Document
 public class Chamber {
 	
@@ -79,5 +81,18 @@ public class Chamber {
     public String toString() {
         return "Chamber{" + "id=" + id + ", name='" + name + '\'' + ", category=" + category +
             ", floor=" + floor + ", desc='" + desc + '\'' + ", beds=" + beds + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chamber chamber = (Chamber) o;
+        return getId() == chamber.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
