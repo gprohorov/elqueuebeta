@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 24.03.19.
  */
-//@Service
+@Service
 public class Injection {
 
     @Autowired
@@ -45,36 +45,36 @@ public class Injection {
 
 
 
-  //  @PostConstruct
+    @PostConstruct
     void init() {
-        Chamber chamber1 = new Chamber(1,"1", Category.LUX, 1, "", 2);
-        Chamber chamber2 = new Chamber(2,"2", Category.LUX, 1, "", 2);
-        Chamber chamber3 = new Chamber(3,"3", Category.LUX, 1, "", 2);
-        Chamber chamber4 = new Chamber(4,"4", Category.LUX, 1, "", 2);
-        Chamber chamber5 = new Chamber(5,"5", Category.LUX, 1, "", 2);
-        Chamber chamber6 = new Chamber(6,"6", Category.LUX, 1, "", 2);
-        Chamber chamber7 = new Chamber(7,"7", Category.LUX, 1, "", 2);
-        Chamber chamber8 = new Chamber(8,"8", Category.SEMILUX, 1, "", 3);
-        Chamber chamber9 = new Chamber(9,"9", Category.LUX, 1, "", 2);
-        Chamber chamber10 = new Chamber(10,"10", Category.LUX, 1, "", 2);
-        Chamber chamber11 = new Chamber(11,"11", Category.SEMILUX, 1, "", 4);
-        Chamber chamber12 = new Chamber(12,"12", Category.LUX, 1, "", 2);
-        Chamber chamber13 = new Chamber(13,"13", Category.LUX, 1, "", 2);
-        Chamber chamber14 = new Chamber(14,"14", Category.LUX, 1, "", 2);
-        Chamber chamber15 = new Chamber(15,"15", Category.LUX, 1, "", 2);
-        Chamber chamber16 = new Chamber(16,"16", Category.LUX, 1, "", 2);
-        Chamber chamber17 = new Chamber(17,"17", Category.LUX, 1, "", 2);
+        Chamber chamber1 = new Chamber(1,"1", Category.LUX, 2, "", 2);
+        Chamber chamber2 = new Chamber(2,"2", Category.LUX, 2, "", 2);
+        Chamber chamber3 = new Chamber(3,"3", Category.LUX, 2, "", 2);
+        Chamber chamber4 = new Chamber(4,"4", Category.LUX, 2, "", 2);
+        Chamber chamber5 = new Chamber(5,"5", Category.LUX, 2, "", 2);
+        Chamber chamber6 = new Chamber(6,"6", Category.LUX, 2, "", 2);
+        Chamber chamber7 = new Chamber(7,"7", Category.LUX, 2, "", 2);
+        Chamber chamber8 = new Chamber(8,"8", Category.SEMILUX, 2, "", 3);
+        Chamber chamber9 = new Chamber(9,"9", Category.LUX, 2, "", 2);
+        Chamber chamber10 = new Chamber(10,"10", Category.LUX, 2, "", 2);
+        Chamber chamber11 = new Chamber(11,"11", Category.SEMILUX, 2, "", 4);
+        Chamber chamber12 = new Chamber(12,"12", Category.LUX, 2, "", 2);
+        Chamber chamber13 = new Chamber(13,"13", Category.LUX, 2, "", 2);
+        Chamber chamber14 = new Chamber(14,"14", Category.LUX, 2, "", 2);
+        Chamber chamber15 = new Chamber(15,"15", Category.LUX, 2, "", 2);
+        Chamber chamber16 = new Chamber(16,"16", Category.LUX, 2, "", 2);
+        Chamber chamber17 = new Chamber(17,"17", Category.LUX, 2, "", 2);
 
-        Chamber chamber20 = new Chamber(21,"21", Category.SOC, 2, "", 8);
-        Chamber chamber21 = new Chamber(21,"21", Category.SOC, 2, "", 9);
-        Chamber chamber22 = new Chamber(22,"22", Category.SOC, 2, "", 8);
-        Chamber chamber23 = new Chamber(23,"23", Category.SOC, 2, "", 7);
-        Chamber chamber24 = new Chamber(24,"24", Category.SOC, 2, "", 5);
-        Chamber chamber25 = new Chamber(25,"25", Category.SOC, 2, "", 5);
-        Chamber chamber26 = new Chamber(26,"26", Category.SOC, 2, "", 4);
-        Chamber chamber27 = new Chamber(27,"27", Category.SEMILUX, 2, "", 3);
-        Chamber chamber28 = new Chamber(28,"28", Category.SOC, 2, "", 5);
-        Chamber chamber29 = new Chamber(29,"29", Category.SOC, 2, "", 6);
+        Chamber chamber20 = new Chamber(20,"20", Category.SOC, 3, "", 8);
+        Chamber chamber21 = new Chamber(21,"21", Category.SOC, 3, "", 9);
+        Chamber chamber22 = new Chamber(22,"22", Category.SOC, 3, "", 8);
+        Chamber chamber23 = new Chamber(23,"23", Category.SOC, 3, "", 7);
+        Chamber chamber24 = new Chamber(24,"24", Category.SOC, 3, "", 5);
+        Chamber chamber25 = new Chamber(25,"25", Category.SOC, 3, "", 5);
+        Chamber chamber26 = new Chamber(26,"26", Category.SOC, 3, "", 4);
+        Chamber chamber27 = new Chamber(27,"27", Category.SEMILUX, 3, "", 3);
+        Chamber chamber28 = new Chamber(28,"28", Category.SOC, 3, "", 5);
+        Chamber chamber29 = new Chamber(29,"29", Category.SOC, 3, "", 6);
 
         chambers.add(chamber1);
         chambers.add(chamber2);
@@ -122,7 +122,7 @@ public class Injection {
 
                         new Koika(41, "4.1", chamber4, 350, null),
                         new Koika(42, "4.2", chamber4, 350, null),
-                        
+
                         new Koika(51, "5.1", chamber5, 350, null),
                         new Koika(52, "5.2", chamber5, 350, null),
                         new Koika(61, "6.1", chamber6, 350, null),
@@ -157,8 +157,27 @@ public class Injection {
         chamberRepository.deleteAll();
         chamberRepository.saveAll(chambers);
 
-        koikaRepository.deleteAll();
-        koikaRepository.saveAll(koikas);
+       // koikaRepository.deleteAll();
+       // koikaRepository.saveAll(koikas);
+        List<Koika> koika3 = new ArrayList<>();
+        chambers.stream().filter(chamber -> chamber.getId()>=20)
+                .forEach(chamber -> {
+                    for (int i = 1; i <=chamber.getBeds() ; i++) {
+                        koika3.add(new Koika(chamber.getId()*10 +i
+                                , String.valueOf(chamber.getId()) + "." + String.valueOf(i)
+                                , chamber
+                                , 300
+                                , null
+                        ));
+
+                    }
+
+                });
+
+        koika3.stream().forEach(System.out::println);
+        koikaRepository.saveAll(koika3);
+
+
 
     }
 }
