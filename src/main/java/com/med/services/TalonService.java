@@ -305,8 +305,9 @@ public class TalonService {
         Patient patient = patientService.getPatient(talon.getPatientId());
         patient.setLastActivity(LocalDateTime.now());
 
-        // 0 means that this doctor is Nechay
-        Doctor doctor = doctorService.getAll().get(0);
+        //TODO: 1 means that this doctor is Nechay
+        //TODO: 5 means that this doctor is Zakhlivniak
+        Doctor doctor = doctorService.getDoctor(5);
 
         talon.setActivity(Activity.EXECUTED);
         talon.setStart(LocalDateTime.now());

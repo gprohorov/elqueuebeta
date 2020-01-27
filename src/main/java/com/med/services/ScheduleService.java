@@ -71,7 +71,7 @@ public class ScheduleService {
  // @Scheduled(cron = "1 13 21 * * *")
    @Scheduled(cron = "1 1 21 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
-        System.out.println("Month report new year  generation");
+        System.out.println("Month report   generation");
        return monthService.createRegularMonthReport();
     }
 
