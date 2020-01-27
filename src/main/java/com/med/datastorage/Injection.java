@@ -157,7 +157,7 @@ public class Injection {
         chamberRepository.deleteAll();
         chamberRepository.saveAll(chambers);
 
-       // koikaRepository.deleteAll();
+       // koikaRepository.del
        // koikaRepository.saveAll(koikas);
         List<Koika> koika3 = new ArrayList<>();
         chambers.stream().filter(chamber -> chamber.getId()>=20)
