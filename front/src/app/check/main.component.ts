@@ -2,6 +2,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
+import { config } from '../../config';
+
 import { PatientService} from '../_services/index';
 
 @Component({
@@ -13,6 +15,7 @@ export class CheckComponent implements OnInit, OnDestroy {
     timeOut: any;
     data: any;
     loading = false;
+    address_info: any;
 
     patientId: string;
     date: string;
@@ -23,6 +26,7 @@ export class CheckComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute
     ) {
         sessionStorage.setItem('showMenu', 'false');
+        this.address_info = config.address_info; 
     }
 
     ngOnInit() {
