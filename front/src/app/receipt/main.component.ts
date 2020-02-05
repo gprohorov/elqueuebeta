@@ -2,6 +2,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
+import { config } from '../../config';
+
 import { PatientService } from '../_services/index';
 
 @Component({
@@ -12,6 +14,7 @@ export class ReceiptComponent implements OnInit, OnDestroy {
     sub: Subscription;
     data: any;
     loading = false;
+    address_info: any;
 
     patientId: string;
     start: string;
@@ -21,6 +24,7 @@ export class ReceiptComponent implements OnInit, OnDestroy {
 
     constructor(private service: PatientService, private route: ActivatedRoute) {
         sessionStorage.setItem('showMenu', 'false');
+        this.address_info = config.address_info;
     }
 
     ngOnInit() {
