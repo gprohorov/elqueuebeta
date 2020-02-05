@@ -307,6 +307,7 @@ public class TalonService {
 
         //TODO: 1 means that this doctor is Nechay
         //TODO: 5 means that this doctor is Zakhlivniak
+        // TODO Migovo
         Doctor doctor = doctorService.getDoctor(1);
 
         talon.setActivity(Activity.EXECUTED);
