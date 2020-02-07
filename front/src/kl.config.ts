@@ -7,8 +7,8 @@ export const config = {
   project: 'kl',
   address_info: {
       edrpou: '????????',
-      address: 'м.Чернівецька обл., с.Клішківці',
-      phone: '',
+      address: 'Чернівецька обл., Хотинський р-н., с.Клішківці, вул.Струмінського, 7',
+      phone: '+38 (050) 056 48 15',
       site: 'www.mednean.com.ua',
       email: 'mednean@gmail.com'
   }

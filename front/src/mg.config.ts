@@ -7,8 +7,8 @@ export const config = {
   project: 'mg',
   address_info: {
       edrpou: '????????',
-      address: 'м.Чернівецька обл., с.Мигово',
-      phone: '',
+      address: 'Чернівецька обл., Вижницький р-н., с.Мигове, вул.Центральна, 140',
+      phone: '+38 (096) 92 32 533',
       site: 'www.mednean.com.ua',
       email: 'mednean@gmail.com'
   }

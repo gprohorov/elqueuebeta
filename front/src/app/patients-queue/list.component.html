@@ -100,9 +100,7 @@
                             <div class="row form-inline">
                                 <h4 class="col-auto">Процедури</h4>
                                 <div class="col-auto">
-                                    <button class="btn btn-info"
-                                        (click)="showAssignProcedurePopup(item)">Додати
-                                        процедуру</button>
+                                    <button class="btn btn-info" (click)="showAssignProcedurePopup(item)">Додати процедуру</button>
                                 </div>
                                 <div class="col-auto">
                                     <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
@@ -145,8 +143,7 @@
                             <div class="row" *ngFor="let talon of item.talons">
                                 <div class="col-auto mr-auto">
                                     <p title="{{getTalonTitle(talon)}}">
-                                        <span
-                                            [ngClass]="{'fa fa-arrow-circle-up': talon.outOfTurn }"
+                                        <span [ngClass]="{'fa fa-arrow-circle-up': talon.outOfTurn }"
                                             class="btn btn-{{Activity[talon.activity].cssClass}}">
                                             {{talon.procedure.name}} </span> <span>{{getTalonInfo(talon)}}</span>
                                     </p>
@@ -176,8 +173,7 @@
                                     <button title='Поза чергою'
                                         class="btn btn-sm btn-info text-white"
                                         (click)="updateOutOfTurn(talon.id, talon.activity != 'INVITED', item)">
-                                        <i
-                                            [ngClass]="{'fa': true, 'fa-arrow-circle-up': talon.activity != 'INVITED', 
+                                        <i [ngClass]="{'fa': true, 'fa-arrow-circle-up': talon.activity != 'INVITED', 
                                             'fa-arrow-circle-down': talon.activity == 'INVITED'}"></i>
                                     </button>
                                 </div>
