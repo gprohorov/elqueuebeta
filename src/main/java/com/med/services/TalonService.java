@@ -10,18 +10,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.med.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.med.model.Activity;
-import com.med.model.Assignment;
-import com.med.model.Doctor;
-import com.med.model.LastTalonInfo;
-import com.med.model.Patient;
-import com.med.model.Procedure;
-import com.med.model.Talon;
-import com.med.model.Therapy;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.model.balance.Receipt;
@@ -274,16 +267,36 @@ public class TalonService {
 	                patientService.savePatient(patient);
 	            }
         	});
-         
+
 	    	// TODO: Remove hardcoded procedure, use procedure type instead (make it first)
 	        // recall the udarno-wave therapy last time date - KOSTIL
     		Talon talon = talons.stream()
-				.filter(tl -> tl.getProcedure().getId() == 9).findFirst().orElse(null);
-	        if (talon != null) talon.setLast(this.getLastExecuted(talon));
-         } else {
+				.filter(tl -> tl.getProcedure().getProcedureType().equals(ProcedureType.SWT)).findFirst().orElse(null);
+	        if (talon != null); // talon.setLast(this.getLastExecuted(talon));
+         }
+        else {
         	// TODO: Remove hardcoded diagnostic, use procedure type instead
-            talons.add(new Talon(patientId, procedureService.getProcedure(2), date, time));
+         //   talons.add(new Talon(patientId, procedureService.getProcedure(2), date, time));
         }
+
+ /*       List<Talon> talonList = talons.stream()
+                .filter(tl-> tl.getProcedure().getProcedureType().equals(ProcedureType.SWT))
+                .collect(Collectors.toList());
+
+        talonList.stream().forEach( tln -> {
+            LastTalonInfo lastExecution = this.getLastExecuted(tln);
+            tln.setLast(lastExecution);
+                }
+        );
+        */
+        talons.stream().filter(talon -> talon.getProcedure().getProcedureType().equals(ProcedureType.SWT))
+                .forEach(talon -> {
+                    LastTalonInfo lastExecution = this.getLastExecuted(talon);
+                    talon.setLast(lastExecution);
+                }
+                );
+
+
         return repository.saveAll(talons);
     }
 
@@ -355,7 +368,7 @@ public class TalonService {
         Talon tln = repository.findByPatientIdAndDateGreaterThan(
     		talon.getPatientId(), LocalDate.now().minusDays(10)).stream()
         		// TODO: Remove hardcoded procedure, use procedure type instead (make it first)
-                .filter(tal -> tal.getProcedure().getId() == 9 )
+                .filter(tal -> tal.getProcedure().getId() == talon.getProcedure().getId() )
                 .filter(tal -> tal.getActivity().equals(Activity.EXECUTED))
                 .sorted(Comparator.comparing(Talon::getDate).reversed())
                 .findFirst().orElse(null);
