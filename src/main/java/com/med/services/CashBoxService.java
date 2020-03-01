@@ -145,6 +145,17 @@ public class CashBoxService {
                 .mapToInt(CashBox::getSum)
                 .sum();
     }
+    public int getOutlayForTheMonth(int year, int month) {
+
+        // FROM is not included !!!!
+        return repository.findAll().stream()
+                .filter(cashBox -> cashBox.getDateTime().getYear() == year)
+                .filter(cashBox -> cashBox.getDateTime().getMonthValue() == month)
+                .filter(cashBox -> cashBox.getSum()<0)
+                .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
+                .mapToInt(CashBox::getSum)
+                .sum();
+    }
 
 // 28 september 2019
     public int getOutlayForMonth(int month, int year) {

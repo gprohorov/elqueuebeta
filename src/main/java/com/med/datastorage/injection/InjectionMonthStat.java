@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 /**
  * Created by george on 24.03.19.
  */
-//@Service
+@Service
 public class InjectionMonthStat {
 
     @Autowired
@@ -25,7 +25,7 @@ public class InjectionMonthStat {
 
        for (int i = 1; i < 3; i++) {
            monthService.deleteReport(2020,i);
-           monthService.createMonthlReportViaAccount(2020,i);
+           monthService.createMonthlReport(2020,i);
        }
     }
 

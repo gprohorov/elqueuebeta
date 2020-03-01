@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by george on 24.03.19.
  */
-@Service
+//@Service
 public class InjectionWeekStat {
 
     @Autowired

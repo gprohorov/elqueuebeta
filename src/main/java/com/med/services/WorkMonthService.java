@@ -109,19 +109,7 @@ public class WorkMonthService {
                   .mapToInt(WorkDay::getDiscount).sum();
           monthly.setDiscount(discount);
 
-
-          LocalDate to = LocalDate.of(year, mnth, 1);
-          LocalDate from = LocalDate.of(year, to.getMonthValue() -1, 1)
-                  .minusDays(1);
-
-          System.out.println( "Days in " + to.getMonth() + " - " + ChronoUnit.DAYS.between(to, from));
-
-          if (to.getMonth().equals(Month.JANUARY)){
-
-               from = LocalDate.of(year-1, 12, 1);
-          }
-
-          int outcome = cashBoxService.getOutlayForPeriod(from.minusDays(1), to);
+          int outcome = cashBoxService.getOutlayForTheMonth(yr,mnth);
           monthly.setOutcome(outcome);
 
           System.out.println("Month generation for "+ year + "/" + month + " complete");
