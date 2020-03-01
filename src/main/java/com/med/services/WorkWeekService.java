@@ -38,6 +38,11 @@ public class WorkWeekService {
         return repository.save(weekly);
     }
 
+    public void drop(){
+        repository.deleteAll();
+    }
+
+
 
     public List<GeneralStatisticsDTOWeekly> getAllForYear(int year){
         return repository.findAll().stream()
@@ -109,7 +114,7 @@ public class WorkWeekService {
 
 
     // 27 sep
-    GeneralStatisticsDTOWeekly createWeeklyViaAccounting(int week, int yr) {
+    public GeneralStatisticsDTOWeekly createWeeklyViaAccounting(int week, int yr) {
 
         LocalDate firstSunday = LocalDate.of(yr-1, Month.DECEMBER, 31);
 
