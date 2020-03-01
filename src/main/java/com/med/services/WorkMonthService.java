@@ -177,7 +177,7 @@ public class WorkMonthService {
           int outcome = cashBoxService.getOutlayForMonth(month, year);
           monthly.setOutcome(outcome);
 
-          System.out.println("Month generation complete");
+          System.out.println("Month generation " + monthly.getMonth() + " complete");
 
           return repository.save(monthly);
      }
@@ -203,7 +203,17 @@ public class WorkMonthService {
           }
 
      }
-  //
+
+     public void deleteReport(int year, int month) {
+          GeneralStatisticsDTOMonthly report = this.getAllForYear(year).stream()
+                  .filter(rep -> rep.getMonthNumber() == month)
+                  .findFirst().orElse(null);
+          if(report != null) {
+               repository.delete(report);
+          }else System.out.println(" " + year + "/" + month + " not found");
+
+     }
+     //
 
 
 
