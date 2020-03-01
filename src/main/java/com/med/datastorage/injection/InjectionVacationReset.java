@@ -19,8 +19,6 @@ public class InjectionVacationReset {
     DoctorService doctorService;
 
 
-
-
   @PostConstruct
     void init() {
        List<Doctor> allDoctors = doctorService.getAll();
