@@ -50,7 +50,7 @@ public class WorkWeekService {
                 .collect(Collectors.toList());
     }
 
-    GeneralStatisticsDTOWeekly createWeekly(int year, int week){
+    public GeneralStatisticsDTOWeekly createWeekly(int year, int week){
 
         LocalDate theFirstSatOfYear = LocalDate.of(year,Month.JANUARY, 5 );
         LocalDate to = theFirstSatOfYear.plusDays( 7 * week + 1);
@@ -66,7 +66,7 @@ public class WorkWeekService {
         GeneralStatisticsDTOWeekly weekly = new GeneralStatisticsDTOWeekly();
 
         weekly.setWeekNumber(week);
-        weekly.setYear(LocalDate.now().getYear());
+        weekly.setYear(year);
         String weekString = from.plusDays(1).getDayOfMonth() + ""
                 + from.plusDays(1).getMonth().toString().substring(0,3).toLowerCase()
                 + " - "

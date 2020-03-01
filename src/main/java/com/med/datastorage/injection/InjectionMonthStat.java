@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 /**
  * Created by george on 24.03.19.
  */
-@Service
+//@Service
 public class InjectionMonthStat {
 
     @Autowired
