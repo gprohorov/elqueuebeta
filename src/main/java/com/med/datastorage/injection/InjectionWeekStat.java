@@ -29,12 +29,12 @@ public class InjectionWeekStat {
    @PostConstruct
     void init() {
        weekService.drop();
-/*
+
 
        for (int i = 0; i < 52; i++) {
            weekService.createWeeklyViaAccounting(i,2019);
        }
-*/
+
 
        for (int i = 0; i < 9; i++) {
            weekService.createWeeklyViaAccounting(i,2020);
