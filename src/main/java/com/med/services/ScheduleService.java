@@ -63,7 +63,7 @@ public class ScheduleService {
         workDayService.setWorkDayFinishValues();
     }
 
-    @Scheduled(cron = "0 0 19 * * SUN")
+    @Scheduled(cron = "0 40 19 * * SAT")
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();

@@ -361,7 +361,7 @@ public class SalaryDailyService {
         for (Doctor doctor:doctors){
             boolean isEmpty = salaries.stream()
                     .filter(salary -> salary.getDoctorId() == doctor.getId())
-                    .findFirst().get().getBonuses() == 0;
+                    .collect(Collectors.toList()).isEmpty();
             if( isEmpty
                 && (!date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
                 && (!date.getDayOfWeek().equals(DayOfWeek.SUNDAY) )

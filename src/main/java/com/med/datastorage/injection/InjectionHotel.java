@@ -1,4 +1,4 @@
-package com.med.datastorage;
+package com.med.datastorage.injection;
 
 import com.med.model.*;
 import com.med.model.balance.Accounting;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * Created by george on 24.03.19.
  */
 //@Service
-public class Injection {
+public class InjectionHotel {
 
     @Autowired
     ChamberRepository chamberRepository;
