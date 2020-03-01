@@ -12,20 +12,20 @@ import java.util.List;
 /**
  * Created by george on 24.03.19.
  */
-@Service
+//@Service
 public class InjectionVacationReset {
 
     @Autowired
     DoctorService doctorService;
 
 
- @PostConstruct
+ //@PostConstruct
     void init() {
        List<Doctor> allDoctors = doctorService.getAll();
        allDoctors.stream().forEach(doctor -> {
            doctor.setDaysOff(0);
            System.out.println(doctor.getFullName());
-        doctorService.updateDoctor(doctor);
+   //     doctorService.updateDoctor(doctor);
        });
     }
 
