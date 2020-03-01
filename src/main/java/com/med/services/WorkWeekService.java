@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class WorkWeekService {
+
+    private int totalDays = 0;
 
     @Autowired
     WorkWeekRepository repository;
@@ -53,8 +56,15 @@ public class WorkWeekService {
     public GeneralStatisticsDTOWeekly createWeekly(int year, int week){
 
         LocalDate theFirstSatOfYear = LocalDate.of(year,Month.JANUARY, 5 );
-        LocalDate to = theFirstSatOfYear.plusDays( 7 * week + 1);
-        LocalDate from = to.minusDays(8);
+        LocalDate to = theFirstSatOfYear.plusDays( 7 * week);
+        LocalDate from = to.minusDays(7);
+        int days = (int) ChronoUnit.DAYS.between(from,to);
+/*
+        totalDays += days;
+        System.out.println("-------------" + from.toString() + "------------------------");
+        System.out.println("---------- "+ totalDays +" ---------------------------");
+        System.out.println("---------------" + to.toString() + "----------------------");
+   */
         List<WorkDay> workDays = workDayService.getAll().stream()
                 .filter(workDay -> workDay.getDate().isAfter(from))
                 .filter(workDay -> workDay.getDate().isBefore(to))
@@ -98,7 +108,7 @@ public class WorkWeekService {
        int outcome = cashBoxService.getOutlayForPeriod(from, to);
         weekly.setOutcome(outcome);
 
-        System.out.println("Week generation complete");
+        System.out.println("Week " + week + " generation complete");
         return this.repository.save(weekly);
     }
 

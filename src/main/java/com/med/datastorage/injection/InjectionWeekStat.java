@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by george on 24.03.19.
  */
-//@Service
+// @Service
 public class InjectionWeekStat {
 
     @Autowired
@@ -28,7 +28,7 @@ public class InjectionWeekStat {
 
  @PostConstruct
     private void init() {
-      weekService.drop();
+
 
 /*
 
@@ -46,9 +46,13 @@ public class InjectionWeekStat {
            System.out.println("" + "create week report " + i);
        }
 
-    */   for (int i = 0; i < 9; i++) {
+    */
+
+     weekService.drop();
+       for (int i = 0; i < 9; i++) {
+         System.out.println("" + "Try to creat week report " + i);
            weekService.createWeekly(2020, i);
-           System.out.println("" + "create week report " + i);
+           System.out.println("" + "Has been created week report " + i);
        }
 
 

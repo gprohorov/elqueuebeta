@@ -16,7 +16,7 @@ public class InjectionMonthStat {
     @Autowired
     WorkMonthService monthService;
 
-  @PostConstruct
+ @PostConstruct
     private void init() {
 /*       for (int i = 1; i < 13; i++) {
            monthService.deleteReport(2019,i);
