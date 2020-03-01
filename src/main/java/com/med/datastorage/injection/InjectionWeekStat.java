@@ -31,6 +31,9 @@ public class InjectionWeekStat {
        weekService.drop();
 
 
+       for (int i = 32; i < 52; i++) {
+           weekService.createWeeklyViaAccounting(i,2018);
+       }
        for (int i = 0; i < 52; i++) {
            weekService.createWeeklyViaAccounting(i,2019);
        }
