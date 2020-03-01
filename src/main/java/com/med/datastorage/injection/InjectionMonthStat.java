@@ -18,10 +18,11 @@ public class InjectionMonthStat {
 
   @PostConstruct
     private void init() {
-       for (int i = 8; i < 13; i++) {
+/*       for (int i = 1; i < 13; i++) {
            monthService.deleteReport(2019,i);
            monthService.createMonthlReportViaAccount(2019,i);
-       }
+       }*/
+
        for (int i = 1; i < 3; i++) {
            monthService.deleteReport(2020,i);
            monthService.createMonthlReportViaAccount(2020,i);
