@@ -26,6 +26,7 @@ public class InjectionVacationReset {
        List<Doctor> allDoctors = doctorService.getAll();
        allDoctors.stream().forEach(doctor -> {
            doctor.setDaysOff(0);
+           System.out.println(doctor.getFullName());
            doctorService.updateDoctor(doctor);
        });
     }
