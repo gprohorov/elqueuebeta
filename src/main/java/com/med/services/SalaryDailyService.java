@@ -61,6 +61,14 @@ public class SalaryDailyService {
         return repository.save(salaryDaily);
     }
 
+    public List<SalaryDaily> getAllByDate(LocalDate date){
+        return this.repository.findByDate(date);
+    }
+
+    public List<SalaryDaily> getAllForToday(){
+        return this.repository.findByDate(LocalDate.now().minusDays(30));
+    }
+
     public SalaryDaily getSalaryDaily(String salaryDailyId) {
         return repository.findById(salaryDailyId).orElse(null);
     }
@@ -133,8 +141,8 @@ public class SalaryDailyService {
         return this.createSalaryDaily(salary);
     }
 
-    @Scheduled(cron = "0 15 19 * * *")
-    public List<SalaryDaily> generateSalariesForToday() {
+   // @Scheduled(cron = "0 15 19 * * *")
+    public void generateSalariesForToday() {
 
         List<SalaryDaily> list = this.getSalariesForDate(LocalDate.now());
         this.repository.deleteAll(list);
@@ -142,7 +150,7 @@ public class SalaryDailyService {
 
         doctorService.getAllActive().forEach(doctor ->
         	list.add(this.createSalaryDailyForDoctor(doctor.getId(), LocalDate.now())));
-        return list;
+       // return list;
     }
 
 

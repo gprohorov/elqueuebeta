@@ -16,7 +16,7 @@ public class InjectionMonthStat {
     @Autowired
     WorkMonthService monthService;
 
- @PostConstruct
+ //@PostConstruct
     private void init() {
 
 

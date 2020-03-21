@@ -179,4 +179,14 @@ public class SalaryController {
         return salaryDailyService.getPermanentPayrollFromTo(LocalDate.parse(from), LocalDate.parse(to));
     }
 
+    @RequestMapping("/get/{date}")
+    public List<SalaryDaily> getAllByDate(@PathVariable(value = "date") String date){
+        return salaryDailyService.getAllByDate(LocalDate.parse(date));
+    }
+
+    @RequestMapping("/get/today")
+    public List<SalaryDaily> getAllForToday(){
+        return salaryDailyService.getAllForToday();
+    }
+
 }

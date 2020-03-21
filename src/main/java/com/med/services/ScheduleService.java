@@ -1,5 +1,6 @@
 package com.med.services;
 
+import com.med.model.SalaryDaily;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOWeekly;
 import com.med.services.hotel.RecordService;
@@ -8,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by george on 24.03.19.
@@ -19,7 +21,7 @@ public class ScheduleService {
     WorkDayService workDayService;
 
     @Autowired
-    SalaryDailyService dailyService;
+    SalaryDailyService salaryDailyService;
 
     @Autowired
     RecomendationService recomendationService;
@@ -48,9 +50,14 @@ public class ScheduleService {
     void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
     }
 
+    @Scheduled(cron = "0 5 19 * * *")
+    public void salaryDailyGeneration(){
+        this.salaryDailyService.generateSalariesForToday();
+    }
+
     @Scheduled(cron = "0 15 19 * * *")
     void markAbsentDoctors() {
-        dailyService.setDoctorsTruant(LocalDate.now());
+        salaryDailyService.setDoctorsTruant(LocalDate.now());
     }
 
     @Scheduled(cron = "0 25 19 * * *")

@@ -26,7 +26,7 @@ public class InjectionWeekStat {
 
 
 
- @PostConstruct
+ //@PostConstruct
     private void init() {
 
 

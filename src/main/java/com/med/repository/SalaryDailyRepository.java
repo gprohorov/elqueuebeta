@@ -11,4 +11,5 @@ import java.util.List;
 public interface SalaryDailyRepository extends MongoRepository<SalaryDaily, String> {
     List<SalaryDaily> findByDateBetweenAndDoctorId(LocalDate from, LocalDate to, int doctorId);
     List<SalaryDaily> findByDateBetween(LocalDate from, LocalDate to);
+    List<SalaryDaily> findByDate(LocalDate date);
 }
