@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Created by george on 24.03.19.
  */
-@Service
+//@Service
 public class InjectionZakhlivniak {
 
     @Autowired
