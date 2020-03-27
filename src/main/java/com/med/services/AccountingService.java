@@ -92,9 +92,9 @@ public class AccountingService {
 
     public Long getSumForDateProcedures(LocalDate date){
         return this.getAllForDate(date).stream()
-            .filter(accounting -> accounting.getSum() > 0)
-            .filter(accounting -> !accounting.getPayment().equals(PaymentType.PROC))
-            .mapToLong(Accounting::getSum).sum();
+          //  .filter(accounting -> accounting.getSum() < 0)
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.PROC))
+            .mapToLong(Accounting::getSum).sum() * (-1);
     }
 
     public Long getSumForDateDiscount(LocalDate date){

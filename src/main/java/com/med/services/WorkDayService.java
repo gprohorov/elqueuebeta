@@ -96,11 +96,20 @@ public class WorkDayService  {
         System.out.println("WORKDAY calculations are running");
         WorkDay workDay = this.getWorkDay(LocalDate.now());
 
+        // Ищем когда началась ПЕРВАЯ процедура
+        LocalDateTime start = talonService.getTalonsForToday().stream()
+                .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)))
+                .map(Talon::getStart).sorted().findFirst().orElse(null);
+        workDay.setStart(start);
+
         // Ищем когда закончилась последняя процедура
         LocalDateTime finish = talonService.getTalonsForToday().stream()
                 .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)))
                 .map(Talon::getExecutionTime).sorted(Comparator.reverseOrder()).findFirst().orElse(null);
         workDay.setFinish(finish);
+
+
+
 
         // сумма, начислення за выполненные процедуры
         int sumForExecutedProcedures = Math.toIntExact(accountingService.getSumForDateProcedures(LocalDate.now()));
@@ -311,7 +320,46 @@ public class WorkDayService  {
         this.update(workDay);
     }
 
+    public void setWorkDayFinishValues(LocalDate date) {
 
+        System.out.println("WORKDAY calculations are running");
+        WorkDay workDay = this.getWorkDay(date);
+
+        // Ищем когда началась ПЕРВАЯ процедура
+        LocalDateTime start = talonService.getTalonsForDate(date).stream()
+                .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)))
+                .map(Talon::getStart).sorted().findFirst().orElse(null);
+        workDay.setStart(start);
+
+        // Ищем когда закончилась последняя процедура
+        LocalDateTime finish = talonService.getTalonsForDate(date).stream()
+                .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)))
+                .map(Talon::getExecutionTime).sorted(Comparator.reverseOrder()).findFirst().orElse(null);
+        workDay.setFinish(finish);
+
+
+
+
+        // сумма, начислення за выполненные процедуры
+        int sumForExecutedProcedures = Math.toIntExact(accountingService.getSumForDateProcedures(date));
+        workDay.setSumForExecutedProcedures( sumForExecutedProcedures);
+
+/*
+       accountingService.getAllForDate(date).stream()
+               .filter(accounting -> accounting.getSum() > 0)
+               .filter(accounting -> !accounting.getPayment().equals(PaymentType.PROC))
+               .forEach(System.out::println);
+*/
+
+
+
+
+
+        //------------------------ debt------------------
+        System.out.println(" ----------------  WORKDAY COMPLETE " + date.toString());
+        System.out.println(workDay.getSumForExecutedProcedures() + " " + (workDay.getCash() ));
+        this.update(workDay);
+    }
 
 
 
