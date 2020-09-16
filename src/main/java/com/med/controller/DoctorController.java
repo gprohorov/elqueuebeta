@@ -1,6 +1,7 @@
 package com.med.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -27,6 +28,12 @@ public class DoctorController {
     @RequestMapping("/list")
     public List<Doctor> showDoctors(){
         return service.getAll();
+    }
+
+    @RequestMapping("/list/active")
+    public List<Doctor> showDoctorsActive(){
+        return service.getAll().stream().filter(doctor -> doctor.isActive())
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/create")

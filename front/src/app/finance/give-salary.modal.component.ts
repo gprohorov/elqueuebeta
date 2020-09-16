@@ -34,7 +34,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.subDoctors = this.doctorService.getAll().subscribe(data => { this.doctors = data; });
+        this.subDoctors = this.doctorService.getAllActive().subscribe(data => { this.doctors = data; });
         this.subKassa = this.financeService.getKassa().subscribe(data => { this.kassa = data; });
     }
 
@@ -43,7 +43,7 @@ export class GiveSalaryModalComponent implements IModalDialog {
         if (!f.form.valid) return false;
 
         this.sub = this.financeService.giveSalary({
-            doctorId: this.data.doctorId, 
+            doctorId: this.data.doctorId,
             sum: this.data.sum}, options.data.SA).subscribe(resp => {
                 if (resp && resp.status) {
                     this.alertService.success('Зарплату видано.');

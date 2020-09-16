@@ -23,7 +23,7 @@ public class InjectionZakhlivniak {
     SalaryDailyRepository salaryDailyRepository;
 
 
-    @PostConstruct
+    //@PostConstruct
     void init() {
         List<SalaryDaily> list = salaryDailyRepository.findAll().stream()
                 .filter(item-> item.getDate().isAfter(LocalDate.now().minusDays(22)))

@@ -11,6 +11,7 @@ import { Doctor } from '../_models/index';
 export class DoctorService {
   // Define the routes we are going to interact with
   private listUrl   = config.api_path + '/doctor/list/';
+  private listActiveUrl   = config.api_path + '/doctor/list/active';
   private getUrl    = config.api_path + '/doctor/get/';
   private updateUrl = config.api_path + '/doctor/update/';
   private deleteUrl = config.api_path + '/doctor/delete/';
@@ -19,6 +20,10 @@ export class DoctorService {
 
   getAll(search: string = '') {
     return this.http.get<Doctor[]>(this.listUrl + search).pipe(catchError(this.handleError));
+  }
+
+  getAllActive(search: string = '') {
+    return this.http.get<Doctor[]>(this.listActiveUrl + search).pipe(catchError(this.handleError));
   }
 
   get(id: number) {

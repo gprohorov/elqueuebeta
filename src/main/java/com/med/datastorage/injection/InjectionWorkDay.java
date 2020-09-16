@@ -17,7 +17,7 @@ public class InjectionWorkDay {
     @Autowired
     WorkDayService service;
 
-   @PostConstruct
+ //  @PostConstruct
     private void init() {
 
         LocalDate start = LocalDate.of(2020, 3, 27);

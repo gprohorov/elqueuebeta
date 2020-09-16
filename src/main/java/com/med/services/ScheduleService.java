@@ -50,27 +50,27 @@ public class ScheduleService {
     void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
     }
 
-    @Scheduled(cron = "0 5 19 * * *")
+    @Scheduled(cron = "0 5 21 * * *")
     public void salaryDailyGeneration(){
         this.salaryDailyService.generateSalariesForToday();
     }
 
-    @Scheduled(cron = "0 15 19 * * *")
+    @Scheduled(cron = "0 15 21 * * *")
     void markAbsentDoctors() {
         salaryDailyService.setDoctorsTruant(LocalDate.now());
     }
 
-    @Scheduled(cron = "0 25 19 * * *")
+    @Scheduled(cron = "0 25 21 * * *")
     void  setAwardsForRecomendation(){
         recomendationService.setAwardForRecomendation();
     }
 
-    @Scheduled(cron = "0 30 19 * * *")
+    @Scheduled(cron = "0 30 21 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
 
-    @Scheduled(cron = "0 40 19 * * SAT")
+    @Scheduled(cron = "0 40 21 * * SAT")
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();
