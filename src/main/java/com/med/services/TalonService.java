@@ -2,6 +2,7 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -376,7 +377,9 @@ public class TalonService {
     }
 
     // 27 aug  receipt means check
+    //  Hardcode FROM was set to 28 aug 2018
     public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
+        from = LocalDate.of(2018, Month.AUGUST,28);  //  HARDCODE
         List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, from.minusDays(15))
             .stream().filter(talon -> talon.getDate().isBefore(to.plusDays(1)))
             .filter(talon -> talon.getActivity().equals(Activity.EXECUTED)).collect(Collectors.toList());
@@ -407,6 +410,8 @@ public class TalonService {
            .mapToInt(Accounting::getSum).sum();
 
         receipt.setHotel(-1 * hotel);
+
+        System.out.println(" RECEIPT");
         return receipt;
     }
 

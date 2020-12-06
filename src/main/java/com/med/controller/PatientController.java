@@ -137,7 +137,7 @@ public class PatientController {
 			patientId, procedureId, LocalDate.parse(date), time, activate, schema);
     }
 
-    // create talon to today for patient on registration
+    // create talon for today for patient on registration
     @GetMapping("/create/talon/today/{patientId}")
     public Talon createTalonOnToday(@PathVariable(value = "patientId") String patientId) {
         // registration - id==1
