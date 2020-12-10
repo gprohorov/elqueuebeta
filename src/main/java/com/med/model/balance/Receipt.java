@@ -91,4 +91,19 @@ public class Receipt {
     public void setDiscount(int discount) {
         this.discount = discount;
     }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "number='" + number + '\'' +
+                ", patient=" + patient +
+                ", start=" + start +
+                ", finish=" + finish +
+                ", list=" + list +
+                ", sum=" + sum +
+                ", discount=" + discount +
+                ", hotel=" + hotel +
+                ", tips=" + tips +
+                '}';
+    }
 }

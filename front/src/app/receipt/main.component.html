@@ -14,24 +14,30 @@ e-mail: {{address_info.email}}
 </center>
 <span class="pull-right">вих. №______</span>
 <br/><br/>
-Видана гр. <strong>{{data?.patient.person.fullName}}</strong>, 
-<strong>{{data?.patient.person.dateOfBirth ? 
+Видана гр. <strong>{{data?.patient.person.fullName}}</strong>,
+<strong>{{data?.patient.person.dateOfBirth ?
     (data?.patient.person.dateOfBirth | date:"dd.MM.yyyy") : '_________________' }}</strong> р.н.,
 {{data?.patient.person.gender ? 'жителю' : 'жительці'}}
-м./с. {{data?.patient.person.town || '__________________________'}} 
+м./с. {{data?.patient.person.town || '__________________________'}}
 {{data?.patient.person.address  || '_____________________________________________________________'}}
-в тому, що {{data?.patient.person.gender ? 'він' : 'вона'}} 
-дійсно {{data?.patient.person.gender ? 'перебував' : 'перебувала'}} 
-на амбулаторному (стаціонарному) лікуванні в ПП МЦ «МЕДНЕАН» 
+в тому, що {{data?.patient.person.gender ? 'він' : 'вона'}}
+дійсно {{data?.patient.person.gender ? 'перебував' : 'перебувала'}}
+на амбулаторному (стаціонарному) лікуванні в ПП МЦ «МЕДНЕАН»
 з {{data?.start ? (data?.start | date:"dd.MM.yyyy") : '_________________'}}
 по {{data?.finish ? (data?.finish | date:"dd.MM.yyyy") : '_________________'}}
 <br/><br/>
-<strong>Діагноз при поступленні</strong>: {{data?.patient.therapy.diag 
-|| '______________________________________________________________________________________________________________________________________ 
+<strong>Діагноз при поступленні</strong>: {{data?.patient.therapy.diag
+|| '______________________________________________________________________________________________________________________________________
 ____________________________________________________________________________________________________________________________________________________________________'}}
 <br/><br/>
 За час лікування {{data?.patient.person.gender ? 'проходив' : 'проходила'}}:
 <br/><br/>
+
+
+<!--<pre>{{data | json}}</pre>-->
+<h1 *ngIf="data.list.length == 0"> Нема даних. Див. архiв  2018-2019 рр.</h1>
+
+<div *ngIf="data.list.length > 0">
 <table class="table table-bordered">
     <thead class="thead-light">
         <tr>
@@ -67,3 +73,5 @@ ____________________________________________________________________
 <span class="pull-right">{{ date | date: "dd.MM.yyyy"}} p.</span>
 <br/><br/>
 <span class="pull-right">Головний лікар ______________________ Нечай А.В.</span>
+
+ </div>

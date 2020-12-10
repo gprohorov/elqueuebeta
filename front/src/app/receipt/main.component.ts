@@ -34,6 +34,7 @@ export class ReceiptComponent implements OnInit, OnDestroy {
         this.patientId = this.route.snapshot.paramMap.get('patientId');
         this.sub = this.service.getReceipt(this.patientId, this.start, this.finish)
             .subscribe(data => { this.data = data; this.loading = false; });
+        console.log(this.data.list)
     }
 
     ngOnDestroy() {

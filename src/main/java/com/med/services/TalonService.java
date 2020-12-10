@@ -385,7 +385,13 @@ public class TalonService {
             .filter(talon -> talon.getActivity().equals(Activity.EXECUTED)).collect(Collectors.toList());
         List<ProcedureReceipt> list = new ArrayList<>();
         Receipt receipt = new Receipt();
-        receipt.setPatient(patientService.getPatient(patientId));
+        Patient patient = patientService.getPatient(patientId);
+        if (patient.getTherapy() == null){
+            Therapy therapy = new Therapy();
+            therapy.setDiag(" НЕМА ДАНИХ. ДИВ АРХIВ ");
+            patient.setTherapy(therapy);
+        }
+        receipt.setPatient(patient);
         talons.stream().collect(Collectors.groupingBy(Talon::getProcedure)).forEach((key, value) -> {
             ProcedureReceipt procedureReceipt = new ProcedureReceipt();
             procedureReceipt.setName(key.getName());
@@ -397,6 +403,11 @@ public class TalonService {
             procedureReceipt.setPrice((zones == 0 ) ? 0 : sum / zones);
             list.add(procedureReceipt);
         });
+/*        if(list.isEmpty()){
+            ProcedureReceipt procedureReceiptDefault = new ProcedureReceipt();
+            procedureReceiptDefault.setName("НЕМА ДАНИХ. ДИВ АРХIВ");
+            list.add(procedureReceiptDefault);
+        }*/
         receipt.setList(list);
         receipt.setSum((int) list.stream().mapToLong(ProcedureReceipt::getSum).sum());
 
@@ -411,7 +422,8 @@ public class TalonService {
 
         receipt.setHotel(-1 * hotel);
 
-        System.out.println(" RECEIPT");
+      //  System.out.println(" RECEIPT  Has BEEN GENERATED");
+      //  System.out.println(receipt);
         return receipt;
     }
 
