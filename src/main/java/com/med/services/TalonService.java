@@ -149,6 +149,7 @@ public class TalonService {
                 Activity.ON_PROCEDURE
             )
         );
+
         Talon talon = this.getTalon(talonId);
         if (talon != null && !activities.contains(talon.getActivity())) {
             Activity former = talon.getActivity();
@@ -162,6 +163,20 @@ public class TalonService {
                 }
                 patientService.savePatient(patient);
             }
+        }
+        // delete the procedure from Therapy  FOREVER
+        if (activity.equals(Activity.CANCELED)){
+            Therapy therapy = therapyService.findTheLastTherapy(talon.getPatientId());
+            List<Assignment> assignments = therapy.getAssignments();
+            List<Assignment> correctedAssignments = assignments.stream()
+                    .filter(assignment -> assignment.getProcedureId() != talon.getProcedureId())
+                    .collect(Collectors.toList());
+            therapy.setAssignments(correctedAssignments);
+            therapyService.saveTherapy(therapy);
+/*            Patient patient = patientService.getPatient(talon.getPatientId());
+            patient.setTherapy(therapy);
+            patientService.savePatient(patient);*/
+
         }
         return repository.save(talon);
     }
