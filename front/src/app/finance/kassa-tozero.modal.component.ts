@@ -27,10 +27,7 @@ export class KassaTozeroModalComponent implements IModalDialog {
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
-        this.subKassa = this.financeService.getKassa().subscribe(data => { 
-            this.kassa = data;
-            this.data.sum = data;
-        });
+//        this.subKassa = this.financeService.getKassa().subscribe(data => { this.kassa = data; });
     }
 
     submit(f, options) {
