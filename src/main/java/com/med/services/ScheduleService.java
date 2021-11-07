@@ -1,6 +1,7 @@
 package com.med.services;
 
 import com.med.model.SalaryDaily;
+import com.med.model.Talon;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOWeekly;
 import com.med.services.hotel.RecordService;
@@ -34,6 +35,9 @@ public class ScheduleService {
 
     @Autowired
     WorkMonthService monthService;
+
+    @Autowired
+    TalonService talonService;
 
 
     @Scheduled(cron = "0 0 7 * * *")
@@ -74,6 +78,14 @@ public class ScheduleService {
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();
+    }
+
+   // @Scheduled(cron = "0 40 2 * * *")
+    void cutOldTalones() {
+       System.out.println("Cut talons more than 1 year old");
+       long years = 1;
+       talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
+       System.out.println("-- Success cut ----");
     }
  // @Scheduled(cron = "1 13 21 * * *")
    @Scheduled(cron = "1 1 1 1 * *")

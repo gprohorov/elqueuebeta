@@ -17,4 +17,6 @@ public interface TalonRepository extends MongoRepository<Talon, String> {
     List<Talon> findByDateAndPatientId(LocalDate date, String patientId);
     List<Talon> findByDateBetween(LocalDate start, LocalDate finish);
     List<Talon> findByPatientIdAndDateGreaterThan(String patientId, LocalDate start);
+    List<Talon>  findAllByDateBefore(LocalDate date);
+    void deleteAllByDateBefore(LocalDate date);
 }

@@ -1,4 +1,4 @@
-SERVER=admin.mednean.com.ua
+SERVER=195.211.240.23
 
 rm -R ./dump
 rm ./dump.tar.gz
@@ -7,4 +7,4 @@ ssh -tt bvh@$SERVER -p 2222 'cd /home/bvh;rm -R dump;rm dump.tar.gz;mongodump -d
 scp -P 2222 bvh@$SERVER:/home/bvh/dump.tar.gz ./
 
 tar -zxvf dump.tar.gz 
-mongorestore --drop
+mongorestore --drop2128506
