@@ -39,6 +39,9 @@ public class ScheduleService {
     @Autowired
     TalonService talonService;
 
+    @Autowired
+    TherapyService therapyService;
+
 
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
@@ -80,13 +83,16 @@ public class ScheduleService {
        return weekService.generateWeeklyForCurrentWeek();
     }
 
-   // @Scheduled(cron = "0 40 2 * * *")
-    void cutOldTalones() {
-       System.out.println("Cut talons more than 1 year old");
+//     @Scheduled(cron = "0 10 23 * * *")
+     @Scheduled(cron = "0 40 23 * * *")
+    void cutOldTalonesAndTherapies() {
+       System.out.println("Cut talons and therapies more than 1 year old");
        long years = 1;
        talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
+       therapyService.deleteAllTherapiesOlderThanOneYear();
        System.out.println("-- Success cut ----");
     }
+
  // @Scheduled(cron = "1 13 21 * * *")
    @Scheduled(cron = "1 1 1 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
