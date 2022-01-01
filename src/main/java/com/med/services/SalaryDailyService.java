@@ -110,8 +110,9 @@ public class SalaryDailyService {
                 .filter(talon -> talon.getDoctor().getId() == doctorId)
                 .collect(Collectors.toList());
 
-        if( (talons.isEmpty()) && (!date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) ) {
+        if( talons.isEmpty() && !this.isWeekEnd(date) ) {
            doctor.setDaysOff(doctor.getDaysOff() +1);
+           doctorService.updateDoctor(doctor);
         }
 
         salary.setDoctorId(doctorId);
@@ -122,28 +123,17 @@ public class SalaryDailyService {
         int stavka = (doctorService.getDoctor(doctorId).getRate() / 30)
     		- setting.get().getTax() / 30 - setting.get().getCanteen();
 
-        // HARDCORE  25 are the vacations days +  all the state holidays
+        // HARDCORE:  25 are the vacations days +  all the state holidays
         if(doctor.getDaysOff() > 25){
-            stavka = 0 - setting.get().getTax() / 30 - setting.get().getCanteen();;
+            stavka = 0 - setting.get().getTax() / 30 - setting.get().getCanteen();
         }
 
-        if (
-                (date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
-            ||  (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
-            ||  (talons.isEmpty()))
-           ) {
-            stavka += setting.get().getCanteen();
-        }
-/*        if (!this.fullTimeList.contains(doctorId)) {
-            if (talons.isEmpty()) stavka = 0 - setting.get().getTax() / 30;
-        }*/
         if (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
             stavka = doctorService.getDoctor(doctorId).getRate() / 30
             		- setting.get().getTax() / 30;
         }
 
         salary.setStavka(stavka);
-
 
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
         //hardcode
@@ -482,6 +472,10 @@ public class SalaryDailyService {
         System.out.println("INJECT-5  END");
     }
 
+    private boolean isWeekEnd(LocalDate date){
+        return date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
+                || date.getDayOfWeek().equals(DayOfWeek.SATURDAY);
+    }
 
 
 
