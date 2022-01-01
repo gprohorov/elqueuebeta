@@ -103,24 +103,35 @@ public class SalaryDailyService {
     public SalaryDaily createSalaryDailyForDoctor(int doctorId, LocalDate date) {
 
         SalaryDaily salary = new SalaryDaily();
+        Doctor doctor = doctorService.getDoctor(doctorId);
 
         List<Talon> talons = talonService.getTalonsForDate(date).stream()
                 .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
                 .filter(talon -> talon.getDoctor().getId() == doctorId)
                 .collect(Collectors.toList());
 
+        if( (talons.isEmpty()) && (!date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) ) {
+           doctor.setDaysOff(doctor.getDaysOff() +1);
+        }
+
         salary.setDoctorId(doctorId);
         salary.setName(doctorService.getDoctor(doctorId).getFullName());
         salary.setDate(date);
 
+
         int stavka = (doctorService.getDoctor(doctorId).getRate() / 30)
     		- setting.get().getTax() / 30 - setting.get().getCanteen();
 
+        // HARDCORE  25 are the vacations days +  all the state holidays
+        if(doctor.getDaysOff() > 25){
+            stavka = 0 - setting.get().getTax() / 30 - setting.get().getCanteen();;
+        }
 
-        if (( date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
-        ||  (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
-        ||  (talons.isEmpty()))
-        ) {
+        if (
+                (date.getDayOfWeek().equals(DayOfWeek.SATURDAY))
+            ||  (date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
+            ||  (talons.isEmpty()))
+           ) {
             stavka += setting.get().getCanteen();
         }
 /*        if (!this.fullTimeList.contains(doctorId)) {
