@@ -119,7 +119,7 @@ public class ScheduleService {
         monthService.createMonthlReport(2019,12);
     }
 
-  @Scheduled(cron = "0 30 16 * * *")
+  @Scheduled(cron = "0 45 16 * * *")
     void inject(){
         injectionService.inject();
     }
