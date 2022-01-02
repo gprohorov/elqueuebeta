@@ -50,7 +50,7 @@ public class InjectionService {
         list.add(ali);
         list.add(oni);
         list.add(kri);
-        list.stream().forEach( item -> salaryService.createSalary(item));
+     //   list.stream().forEach( item -> salaryService.createSalary(item));
         System.out.println(" INJECTED " + list.size() + " items");
 
     }
