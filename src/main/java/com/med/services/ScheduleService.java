@@ -42,6 +42,9 @@ public class ScheduleService {
     @Autowired
     TherapyService therapyService;
 
+    @Autowired
+    InjectionService injectionService;
+
 
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
@@ -116,10 +119,10 @@ public class ScheduleService {
         monthService.createMonthlReport(2019,12);
     }
 
-
-
-
-  //  @Scheduled(cron = "0 40 19 * * *")
+  @Scheduled(cron = "0 30 16 * * *")
+    void inject(){
+        injectionService.inject();
+    }
 
 
 
