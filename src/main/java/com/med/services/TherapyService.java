@@ -69,7 +69,7 @@ public class TherapyService {
 
 	public Therapy findTheLastTherapy(String patientId) {
 		return repository.findByPatientId(patientId).stream()
-			.sorted(Comparator.comparing(Therapy::getStart).reversed()).findFirst().orElse(null);
+			.sorted(Comparator.comparing(Therapy::getStart).reversed()).findFirst().orElse(new Therapy());
 	}
 
 	// TODO: Remove harcoded value 
@@ -266,9 +266,10 @@ public class TherapyService {
 	// Delete older than 1 year
 	public void deleteAllTherapiesOlderThanOneYear(){
 		List<Therapy> oldTherapies = this.repository
-				.findAllByStartBefore(LocalDateTime.now().minusYears(1));
+				.findAllByStartBefore(LocalDateTime.now().minusYears(2));
 		System.out.println("#################### Therapies deleted - " + oldTherapies.size());
 		this.repository.deleteAll(oldTherapies);
-		oldTherapies.clear();
+		System.out.println("==================  DONE!++++++++++++++++++");
+		oldTherapies = null;
 	}
 }

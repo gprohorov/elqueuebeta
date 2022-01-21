@@ -89,8 +89,8 @@ public class ScheduleService {
 //     @Scheduled(cron = "0 10 23 * * *")
      @Scheduled(cron = "0 40 23 * * *")
     void cutOldTalonesAndTherapies() {
-       System.out.println("Cut talons and therapies more than 1 year old");
-       long years = 1;
+       System.out.println("Cut talons and therapies more than 2 year old");
+       long years = 2;
        talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
        therapyService.deleteAllTherapiesOlderThanOneYear();
        System.out.println("-- Success cut ----");
