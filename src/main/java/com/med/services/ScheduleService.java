@@ -87,7 +87,7 @@ public class ScheduleService {
     }
 
 //     @Scheduled(cron = "0 10 23 * * *")
-     @Scheduled(cron = "0 32 0 * * *")
+     @Scheduled(cron = "0 35 0 * * *")
     void cutOldTalonesAndTherapies() {
        System.out.println("Cut talons  more than 1 year   old");
        long years = 1;
