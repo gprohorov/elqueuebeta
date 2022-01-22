@@ -266,7 +266,7 @@ public class TherapyService {
 	// Delete older than 1 year
 	public void deleteAllTherapiesOlderThanOneYear(){
 		List<Therapy> oldTherapies = this.repository
-				.findAllByStartBefore(LocalDateTime.now().minusYears(1));
+				.findAllByStartBefore(LocalDateTime.now().minusMonths(18));
 		System.out.println("#################### Therapies deleted - " + oldTherapies.size());
 		this.repository.deleteAll(oldTherapies);
 		System.out.println("==================  DONE!++++++++++++++++++");
