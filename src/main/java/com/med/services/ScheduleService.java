@@ -93,7 +93,7 @@ public class ScheduleService {
        long years = 1;
        talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
          System.out.println("Cut  therapies more than 1 year old");
-       therapyService.deleteAllTherapiesOlderThanOneYear();
+      // therapyService.deleteAllTherapiesOlderThanOneYear();
        System.out.println("-- Success cut ----");
     }
 
