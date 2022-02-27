@@ -332,7 +332,7 @@ public class SalaryService {
                     LocalDateTime begin = entry.getValue().stream().min(Comparator.comparing(Talon::getStart)).get().getStart();
                     LocalDateTime end = entry.getValue().stream().max(Comparator.comparing(Talon::getExecutionTime)).get().getExecutionTime();
                     int hrs = (int) ChronoUnit.HOURS.between(begin,end);
-                    hours[0] +=hrs;
+                    hours[0] += hrs;
                 });
         dto.setHours(hours[0]);
         if (doctorId==2 || doctorId==1){dto.setHours(days*8);}

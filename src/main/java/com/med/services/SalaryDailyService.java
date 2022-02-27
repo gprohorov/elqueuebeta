@@ -2,6 +2,7 @@ package com.med.services;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -133,7 +134,12 @@ public class SalaryDailyService {
             		- setting.get().getTax() / 30;
         }
 
+        double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
+        stavka = (int) ( stavka * workingHours / 8.0 ) ;
+
         salary.setStavka(stavka);
+
+
 
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
         //hardcode
@@ -475,6 +481,25 @@ public class SalaryDailyService {
     private boolean isWeekEnd(LocalDate date){
         return date.getDayOfWeek().equals(DayOfWeek.SUNDAY)
                 || date.getDayOfWeek().equals(DayOfWeek.SATURDAY);
+    }
+
+    public long getWorkingHoursForDoctorForDay(int doctorId, LocalDate date){
+
+        List<Talon> list = talonService.getTalonsForToday()
+        .stream().filter(talon -> talon.getDoctor().getId() == doctorId)
+        .collect(Collectors.toList());
+
+        LocalDateTime begin = list.stream()
+        .map(talon -> talon.getStart())
+        .min(LocalDateTime::compareTo)
+                .orElse(LocalDateTime.now());
+
+        LocalDateTime end = list.stream()
+        .map(talon -> talon.getStart())
+        .min(LocalDateTime::compareTo)
+                .orElse(LocalDateTime.now());
+
+        return  ChronoUnit.HOURS.between(begin, end);
     }
 
 
