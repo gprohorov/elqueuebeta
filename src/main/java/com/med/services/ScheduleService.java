@@ -126,7 +126,7 @@ public class ScheduleService {
     }
 
 
-    @Scheduled(cron = "0 15 19 * * *")
+    @Scheduled(cron = "0 35 19 * * *")
     public void generateSalaryForDay(){
 
         this.salaryDailyService.generateSalariesForDate(LocalDate.now().minusDays(1));

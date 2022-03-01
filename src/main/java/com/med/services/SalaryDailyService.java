@@ -163,6 +163,11 @@ public class SalaryDailyService {
 
 
     public void generateSalariesForDate(LocalDate date) {
+
+        List<SalaryDaily> list = this.getSalariesForDate(LocalDate.now());
+        this.repository.deleteAll(list);
+        list.clear();
+
         doctorService.getAllActive().forEach(doctor ->
         	this.createSalaryDailyForDoctor(doctor.getId(), date));
     }
@@ -486,7 +491,7 @@ public class SalaryDailyService {
 
     public long getWorkingHoursForDoctorForDay(int doctorId, LocalDate date){
 
-        List<Talon> list = talonService.getTalonsForToday()
+        List<Talon> list = talonService.getTalonsForDate(date)
                 .stream()
                 .filter(talon -> talon.getDoctor() != null)
                 .filter(talon -> talon.getDoctor().getId() == doctorId)
