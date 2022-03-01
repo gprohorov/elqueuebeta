@@ -135,6 +135,7 @@ public class SalaryDailyService {
         }
 
         double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
+        System.out.println(doctor.getFullName() + " - "+ workingHours);
         stavka = (int) ( stavka * workingHours / 8.0 );
 
 
@@ -164,7 +165,7 @@ public class SalaryDailyService {
 
     public void generateSalariesForDate(LocalDate date) {
 
-        List<SalaryDaily> list = this.getSalariesForDate(LocalDate.now());
+        List<SalaryDaily> list = this.getSalariesForDate(date);
         this.repository.deleteAll(list);
         list.clear();
 
