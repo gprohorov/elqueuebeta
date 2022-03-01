@@ -486,8 +486,10 @@ public class SalaryDailyService {
     public long getWorkingHoursForDoctorForDay(int doctorId, LocalDate date){
 
         List<Talon> list = talonService.getTalonsForToday()
-        .stream().filter(talon -> talon.getDoctor().getId() == doctorId)
-        .collect(Collectors.toList());
+                .stream()
+                .filter(talon -> talon.getDoctor() != null)
+                .filter(talon -> talon.getDoctor().getId() == doctorId)
+                .collect(Collectors.toList());
 
         LocalDateTime begin = list.stream()
         .map(talon -> talon.getStart())
