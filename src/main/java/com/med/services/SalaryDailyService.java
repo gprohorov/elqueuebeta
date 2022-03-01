@@ -507,7 +507,7 @@ public class SalaryDailyService {
                 .orElse(LocalDateTime.now());
 
         LocalDateTime end = list.stream()
-        .map(talon -> talon.getStart())
+        .map(talon -> talon.getExecutionTime())
         .max(LocalDateTime::compareTo)
                 .orElse(LocalDateTime.now());
 
