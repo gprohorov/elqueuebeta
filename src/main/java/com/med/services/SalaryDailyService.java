@@ -507,8 +507,8 @@ public class SalaryDailyService {
                 .orElse(LocalDateTime.now());
 
         LocalDateTime end = list.stream()
-        .map(talon -> talon.getExecutionTime())
-        .min(LocalDateTime::compareTo)
+        .map(talon -> talon.getStart())
+        .max(LocalDateTime::compareTo)
                 .orElse(LocalDateTime.now());
 
         return  ChronoUnit.HOURS.between(begin, end) + 1 ;
