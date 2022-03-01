@@ -128,7 +128,8 @@ public class ScheduleService {
 
     @Scheduled(cron = "0 20 18 * * *")
     public void generateSalaryForDay(){
-        this.salaryDailyService.generateSalariesForDate(LocalDate.now());
+
+        this.salaryDailyService.generateSalariesForDate(LocalDate.now().minusDays(1));
     }
 
 
