@@ -135,7 +135,8 @@ public class SalaryDailyService {
         }
 
         double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
-        stavka = (int) ( stavka * workingHours / 8.0 ) ;
+        stavka = (int) ( stavka * workingHours / 8.0 );
+
 
         salary.setStavka(stavka);
 
@@ -490,6 +491,9 @@ public class SalaryDailyService {
                 .filter(talon -> talon.getDoctor() != null)
                 .filter(talon -> talon.getDoctor().getId() == doctorId)
                 .collect(Collectors.toList());
+        if (list.isEmpty()) {
+            return 0;
+        }
 
         LocalDateTime begin = list.stream()
         .map(talon -> talon.getStart())
@@ -501,7 +505,7 @@ public class SalaryDailyService {
         .min(LocalDateTime::compareTo)
                 .orElse(LocalDateTime.now());
 
-        return  ChronoUnit.HOURS.between(begin, end);
+        return  ChronoUnit.HOURS.between(begin, end) + 1 ;
     }
 
 
