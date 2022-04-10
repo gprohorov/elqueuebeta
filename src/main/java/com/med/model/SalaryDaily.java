@@ -23,6 +23,7 @@ public class SalaryDaily {
     private String name; 	// фамилия доктора
     private int doctorId;	// его айдишник
     private int stavka; 	// ставка
+    private int hours;
 
     private int bonuses; 	// бонусы за процедуры
 
@@ -79,6 +80,14 @@ public class SalaryDaily {
         this.doctorId = doctorId;
     }
 
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
     public int getStavka() {return stavka;
     }
 
@@ -114,6 +123,7 @@ public class SalaryDaily {
                 ", name='" + name + '\'' +
                 ", doctorId=" + doctorId +
                 ", stavka=" + stavka +
+                ", hours=" + hours +
                 ", bonuses=" + bonuses +
                 ", total=" + total +
                 '}';

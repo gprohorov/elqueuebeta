@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -62,7 +63,10 @@ public class ScheduleService {
 
     @Scheduled(cron = "0 5 21 * * *")
     public void salaryDailyGeneration(){
+        System.out.println("  Daily  salary generation was starting at + " + LocalDateTime.now());
         this.salaryDailyService.generateSalariesForToday();
+        System.out.println("  Daily  salary generation was finishead + " + LocalDateTime.now());
+
     }
 
     @Scheduled(cron = "0 15 21 * * *")

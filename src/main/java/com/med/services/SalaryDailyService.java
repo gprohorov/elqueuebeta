@@ -48,8 +48,8 @@ public class SalaryDailyService {
         fullTimeList = doctorService.getAllActive().stream()
                 .filter(doc -> doc.getProcedureIds().isEmpty())
                 .mapToInt(Doctor::getId).boxed().collect(Collectors.toList());
-        fullTimeList.add(2); // для Иры.
-        fullTimeList.add(5); // для ЮВ
+    //    fullTimeList.add(2); // для Иры.
+    //   fullTimeList.add(5); // для ЮВ
 	// This code has been commented to the HUI to prevent garbage accrue
     // this.generateSalariesForToday();
     // this.createSalariesForKhozDvorForJan(31);
@@ -120,7 +120,8 @@ public class SalaryDailyService {
         salary.setName(doctorService.getDoctor(doctorId).getFullName());
         salary.setDate(date);
 
-
+/*   April 10 22
+       int stavka = doctorService.getDoctor(doctorId).getRate() / 175;
         int stavka = (doctorService.getDoctor(doctorId).getRate() / 30)
     		- setting.get().getTax() / 30 - setting.get().getCanteen();
 
@@ -133,14 +134,14 @@ public class SalaryDailyService {
             stavka = doctorService.getDoctor(doctorId).getRate() / 30
             		- setting.get().getTax() / 30;
         }
-
+*/
         double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
         System.out.println(doctor.getFullName() + " - "+ workingHours);
-        stavka = (int) ( stavka * workingHours / 8.0 );
-
+        int stavka = (int) (doctorService.getDoctor(doctorId).getRate() * workingHours / 175);
+        // HARDCODE:   175  -  working hours in a month
 
         salary.setStavka(stavka);
-
+        salary.setHours((int) workingHours);
 
 
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
