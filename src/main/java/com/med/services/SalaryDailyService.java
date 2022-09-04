@@ -145,8 +145,8 @@ public class SalaryDailyService {
 
 
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
-        //hardcode
-        salary.setBonuses(bonuses*9/10);
+
+        salary.setBonuses(bonuses);
 
         return this.createSalaryDaily(salary);
     }
