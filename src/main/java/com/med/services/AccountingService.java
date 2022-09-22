@@ -233,4 +233,8 @@ public class AccountingService {
 
         return this.repository.findByDateAndPayment(date,type);
     }
+
+    public void deleateAll(){
+        this.repository.deleteAll();
+    }
 }

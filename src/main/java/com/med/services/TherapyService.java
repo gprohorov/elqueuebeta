@@ -272,4 +272,10 @@ public class TherapyService {
 		System.out.println("==================  DONE!++++++++++++++++++");
 		oldTherapies = null;
 	}
+		public void deleteAll(){
+	this.repository.deleteAll();
+
+	}
+
+
 }

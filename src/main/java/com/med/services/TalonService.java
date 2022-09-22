@@ -490,4 +490,9 @@ public class TalonService {
         repository.deleteAllByDateBefore(before);
         //oldTalons = Collections.emptyList();
     }
+    public void deleteAll() {
+      //  List<Talon> oldTalons = repository.findAllByDateBefore(before);
+        repository.deleteAll();
+        //oldTalons = Collections.emptyList();
+    }
 }

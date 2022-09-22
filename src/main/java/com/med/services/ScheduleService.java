@@ -46,6 +46,15 @@ public class ScheduleService {
     @Autowired
     InjectionService injectionService;
 
+    @Autowired
+    AccountingService accountingService;
+
+    @Autowired
+    PatientService patientService;
+
+    @Autowired
+    CashBoxService cashBoxService;
+
 
     @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
@@ -132,8 +141,25 @@ public class ScheduleService {
 
  //   @Scheduled(cron = "0 32 20 * * *")
     public void generateSalaryForDay(){
-
         this.salaryDailyService.generateSalariesForDate(LocalDate.now().minusDays(1));
+    }
+
+    @Scheduled(cron = "0 7 22 * * *")
+    public void cleanAll(){
+        talonService.deleteAll();
+        System.out.println("---  Talons");
+        therapyService.deleteAll();
+        System.out.println("---  Therapy");
+        accountingService.deleateAll();
+        System.out.println("---  Acc");
+        patientService.repository.deleteAll();
+        System.out.println("---  Pat");
+        salaryDailyService.repository.deleteAll();
+        System.out.println("---  Salary");
+        weekService.repository.deleteAll();
+        monthService.repository.deleteAll();
+        workDayService.repository.deleteAll();
+        cashBoxService.repository.deleteAll();
     }
 
 
