@@ -144,7 +144,7 @@ public class ScheduleService {
         this.salaryDailyService.generateSalariesForDate(LocalDate.now().minusDays(1));
     }
 
-    @Scheduled(cron = "0 20 22 * * *")
+  //  @Scheduled(cron = "0 20 22 * * *")
     public void cleanAll(){
         talonService.deleteAll();
         System.out.println("---  Talons");
