@@ -160,6 +160,7 @@ public class ScheduleService {
         monthService.repository.deleteAll();
         workDayService.repository.deleteAll();
         cashBoxService.repository.deleteAll();
+        System.out.println("---  allez");
     }
 
 
