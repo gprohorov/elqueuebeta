@@ -3,7 +3,7 @@ SERVER=195.211.240.23
 rm -R ./dump
 rm ./dump.tar.gz
 
-ssh -tt bvh@$SERVER -p 2222 'cd /home/bvh;rm -R dump;rm dump.tar.gz;mongodump -d mednean_cv;mongodump -d mednean_kl;mongodump -d mednean_mg;tar -zcvf dump.tar.gz dump;exit'
+ssh -tt bvh@$SERVER -p 2222 'cd /home/bvh;rm -R dump;rm dump.tar.gz;mongodump -d mednean_cv;tar -zcvf dump.tar.gz dump;exit'
 scp -P 2222 bvh@$SERVER:/home/bvh/dump.tar.gz ./
 
 tar -zxvf dump.tar.gz 

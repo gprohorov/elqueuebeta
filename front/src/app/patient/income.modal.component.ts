@@ -34,7 +34,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.data = options.data;
         this.model.patientId = this.data.id;
         this.model.sum = this.data.balance < 0 ? this.data.balance * -1 : 0;
-        
+
         // Apply discount
         if (this.data.balance < 0) {
             this.model.discount = Math.ceil((this.data.balance*-1 / 100) * this.data.discount);
@@ -43,7 +43,7 @@ export class PatientIncomeModalComponent implements IModalDialog {
             this.model.sum = this.data.balance*-1;
         }
         this.calcBalanceAfter();
-        
+
         options.actionButtons = [{
             text: 'Виписка',
             buttonClass: 'btn btn-info mr-5',
@@ -52,7 +52,9 @@ export class PatientIncomeModalComponent implements IModalDialog {
             }
         }, {
             text: 'Внести',
+            buttonClass: 'insbutton btn btn-primary',
             onAction: () => {
+                document.getElementsByClassName('insbutton')[0]['disabled'] = true;
                 return this.submit(this.myForm, options);
             }
         }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
@@ -118,11 +120,11 @@ export class PatientIncomeModalComponent implements IModalDialog {
         this.change = this.cash - this.model.sum;
         this.calcBalanceAfter();
     }
-    
+
     calcBalanceAfter() {
         this.balanceAfter = this.data.balance + this.model.sum + this.model.discount;
     }
-    
+
     submit(f, options) {
         f.submitted = true;
         if (!f.form.valid) return false;
