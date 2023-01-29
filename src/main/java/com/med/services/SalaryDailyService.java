@@ -324,7 +324,9 @@ public class SalaryDailyService {
 
 //----------------------------- 10 march   ----------------------------------------
     public int getRestForTodayForDoctor(int id){
-        LocalDate from = LocalDate.of(2019, Month.JANUARY,1);
+        int currentYear = LocalDate.now().getYear();
+        LocalDate from = LocalDate.of(currentYear, Month.JANUARY,1);
+
         LocalDate to = LocalDate.now();
 
         int dailySummary = this.showSummaryForPeriodForDoctor(from.minusDays(1),to.plusDays(1),id)
