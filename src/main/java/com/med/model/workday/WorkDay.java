@@ -23,6 +23,11 @@ public class WorkDay {
     private int sumForExecutedProcedures; 	// наделали процедур на эту сумму
     private int cash;      					// кеш за сегодня
     private int card;     					// карточка
+    //------------- new PaymentTypes from 02.02.23
+    private int wired;                      // по перечислению
+    private int check;                      // чеком
+    private int dodatok;                    // через додаток
+    //--------------------------------------------
     private int discount;  					// знижки
     private int outlay;   					// расходы
     private int cashierWithdrawal;  		// изъяли из касы
@@ -142,6 +147,30 @@ public class WorkDay {
 
     public void setCard(int card) {
         this.card = card;
+    }
+
+    public int getWired() {
+        return wired;
+    }
+
+    public void setWired(int wired) {
+        this.wired = wired;
+    }
+
+    public int getCheck() {
+        return check;
+    }
+
+    public void setCheck(int check) {
+        this.check = check;
+    }
+
+    public int getDodatok() {
+        return dodatok;
+    }
+
+    public void setDodatok(int dodatok) {
+        this.dodatok = dodatok;
     }
 
     public int getDiscount() {
@@ -301,6 +330,9 @@ public class WorkDay {
                 ", sumForExecutedProcedures=" + sumForExecutedProcedures +
                 ", cash=" + cash +
                 ", card=" + card +
+                ", wired=" + wired +
+                ", check=" + check +
+                ", dodatok=" + dodatok +
                 ", discount=" + discount +
                 ", outlay=" + outlay +
                 ", cashierWithdrawal=" + cashierWithdrawal +

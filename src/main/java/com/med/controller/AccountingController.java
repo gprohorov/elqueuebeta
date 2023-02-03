@@ -61,7 +61,12 @@ public class AccountingController {
 
         if (sum != 0) {
             service.createAccounting(new Accounting(
-        		doctorId, patientId, LocalDateTime.now(), null,  sum, paymentType, desc));
+        	    	doctorId,
+                    patientId,
+                    LocalDateTime.now(),
+                    null,
+                    sum, paymentType,
+                    desc));
             if (paymentType.equals(PaymentType.CASH)) {
                 CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
                 cash.setType(CashType.PATIENT);

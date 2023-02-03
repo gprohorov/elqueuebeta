@@ -33,6 +33,7 @@ public class AccountingService {
 
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
+        System.out.println(accounting);
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
         patientService.savePatient(patient);
@@ -103,7 +104,6 @@ public class AccountingService {
             .mapToLong(Accounting::getSum).sum();
     }
 
-
     public Long getSumForDateCash(LocalDate date) {
         return this.getAllForDate(date).stream()
             .filter(accounting -> accounting.getSum() > 0)
@@ -115,6 +115,13 @@ public class AccountingService {
         return this.getAllForDate(date).stream()
             .filter(accounting -> accounting.getSum() > 0)
             .filter(accounting -> accounting.getPayment().equals(PaymentType.CARD))
+            .mapToLong(Accounting::getSum).sum();
+    }
+
+    public Long getSumForDateFrom(LocalDate date, PaymentType type) {
+        return this.getAllForDate(date).stream()
+            .filter(accounting -> accounting.getSum() > 0)
+            .filter(accounting -> accounting.getPayment().equals(type))
             .mapToLong(Accounting::getSum).sum();
     }
 

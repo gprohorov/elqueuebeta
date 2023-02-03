@@ -83,6 +83,8 @@ export class PatientIncomeModalComponent implements IModalDialog {
             if (item.payment === 'CASH'
                 || item.payment === 'CARD'
                 || item.payment === 'WIRED'
+                || item.payment === 'CHECK'
+                || item.payment === 'DODATOK'
             ) sum += item.sum;
         });
         return sum;
@@ -112,6 +114,10 @@ export class PatientIncomeModalComponent implements IModalDialog {
         if (item.payment === 'CARD') return 'Внесення з картки'
             + (item.desc === '' ? '' : ' (' + item.desc + ')');
         if (item.payment === 'WIRED') return 'Внесення по перерахунку'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'CHECK') return 'Внесення чеком'
+            + (item.desc === '' ? '' : ' (' + item.desc + ')');
+        if (item.payment === 'DODATOK') return 'Внесення через додаток'
             + (item.desc === '' ? '' : ' (' + item.desc + ')');
         return item.desc;
     }

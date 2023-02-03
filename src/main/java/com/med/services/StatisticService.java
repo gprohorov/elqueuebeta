@@ -199,6 +199,21 @@ public class StatisticService {
             .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setCard(card);
 
+        long wired = accountings.stream()
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.WIRED))
+            .mapToLong(Accounting::getSum).sum();
+        statisticsDTO.setWired(wired);
+
+        long check = accountings.stream()
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.CHECK))
+            .mapToLong(Accounting::getSum).sum();
+        statisticsDTO.setCheck(check);
+
+        long dodatok = accountings.stream()
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.DODATOK))
+            .mapToLong(Accounting::getSum).sum();
+        statisticsDTO.setDodatok(dodatok);
+
         long bill = accountings.stream()
             .filter(accounting -> accounting.getSum() < 0).mapToLong(Accounting::getSum).sum();
         statisticsDTO.setBill(bill);
@@ -208,7 +223,7 @@ public class StatisticService {
             .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setDiscount(discount);
 
-        statisticsDTO.setDebt(bill + cash + card + discount);
+        statisticsDTO.setDebt(bill + cash + card + wired + check + dodatok + discount);
         return statisticsDTO;
     }
 

@@ -54,8 +54,7 @@ public class WorkWeekService {
     }
 
     public GeneralStatisticsDTOWeekly createWeekly(int year, int week){
-
-        LocalDate theFirstSatOfYear = LocalDate.of(year,Month.JANUARY, 5 );
+        LocalDate theFirstSatOfYear = LocalDate.of(year,Month.JANUARY, 7);
         LocalDate to = theFirstSatOfYear.plusDays( 7 * week);
         LocalDate from = to.minusDays(7);
         int days = (int) ChronoUnit.DAYS.between(from,to);

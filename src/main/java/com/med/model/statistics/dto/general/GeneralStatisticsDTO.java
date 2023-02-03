@@ -9,6 +9,9 @@ public class GeneralStatisticsDTO {
     private int doctors;
     private long cash;
     private long card;
+    private long wired;
+    private long check;
+    private long dodatok;
     private long bill;
     private long discount;
     private long debt;
@@ -22,6 +25,22 @@ public class GeneralStatisticsDTO {
         this.doctors = doctors;
         this.cash = cash;
         this.card = card;
+        this.bill = bill;
+        this.discount = discount;
+        this.debt = debt;
+    }
+
+    public GeneralStatisticsDTO(LocalDate date, int patients, int doctors, long cash,
+                                long card, long wired, long check, long dodatok,
+                                long bill, long discount, long debt) {
+        this.date = date;
+        this.patients = patients;
+        this.doctors = doctors;
+        this.cash = cash;
+        this.card = card;
+        this.wired = wired;
+        this.check = check;
+        this.dodatok = dodatok;
         this.bill = bill;
         this.discount = discount;
         this.debt = debt;
@@ -65,6 +84,30 @@ public class GeneralStatisticsDTO {
 
     public void setCard(long card) {
         this.card = card;
+    }
+
+    public long getWired() {
+        return wired;
+    }
+
+    public void setWired(long wired) {
+        this.wired = wired;
+    }
+
+    public long getCheck() {
+        return check;
+    }
+
+    public void setCheck(long check) {
+        this.check = check;
+    }
+
+    public long getDodatok() {
+        return dodatok;
+    }
+
+    public void setDodatok(long dodatok) {
+        this.dodatok = dodatok;
     }
 
     public long getBill() {

@@ -128,6 +128,21 @@ public class WorkDayService  {
         int card = Math.toIntExact(accountingService.getSumForDateCard(LocalDate.now()));
         workDay.setCard(card);
 
+        //  сумма, внесённая сегодня в кассу пациентами по перечислению
+        int wired = Math.toIntExact(accountingService
+                .getSumForDateFrom(LocalDate.now(), PaymentType.WIRED));
+        workDay.setWired(wired);
+
+        //  сумма, внесённая сегодня в кассу пациентами по ЧЕКОМ
+        int check = Math.toIntExact(accountingService
+                .getSumForDateFrom(LocalDate.now(), PaymentType.CHECK));
+        workDay.setCheck(check);
+
+        //  сумма, внесённая сегодня в кассу пациентами через додаток
+        int dodatok = Math.toIntExact(accountingService
+                .getSumForDateFrom(LocalDate.now(), PaymentType.DODATOK));
+        workDay.setDodatok(dodatok);
+
         // Сумма всех скидок
         int discount = Math.toIntExact(accountingService.getSumForDateDiscount(LocalDate.now()));
         workDay.setDiscount(discount);

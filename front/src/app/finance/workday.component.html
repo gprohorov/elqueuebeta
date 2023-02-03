@@ -32,6 +32,9 @@
 <tr><td>Зроблено процедур на суму</td><td class="text-right text-nowrap"><strong>{{data?.sumForExecutedProcedures}}</strong> грн.</td></tr>
 <tr><td>Готівки за день</td><td class="text-right text-nowrap"><strong>{{data?.cash}}</strong> грн.</td></tr>
 <tr><td>Картою за день</td><td class="text-right text-nowrap"><strong>{{data?.card}}</strong> грн.</td></tr>
+<tr><td>По перерахунку за день</td><td class="text-right text-nowrap"><strong>{{data?.wired}}</strong> грн.</td></tr>
+<tr><td>Чеком за день</td><td class="text-right text-nowrap"><strong>{{data?.check}}</strong> грн.</td></tr>
+<tr><td>Через додаток за день</td><td class="text-right text-nowrap"><strong>{{data?.dodatok}}</strong> грн.</td></tr>
 <tr style="cursor: pointer;" (click)="show_discountList ? show_discountList = false : show_discountList = true">
   <td><i class="fa fa-caret-down" aria-hidden="true"></i> Знижки за день</td>
   <td class="text-right text-nowrap"><strong>{{data?.discount}}</strong> грн.</td></tr>

@@ -18,6 +18,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     doctors = 0;
     cash = 0;
     card = 0;
+    //------------
+    wired = 0;
+    check = 0;
+    dodatok = 0;
     bill = 0;
     discount = 0;
     debt = 0;
@@ -38,7 +42,7 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     isValid() {
         return (this.start && this.finish && this.finish >= this.start);
     }
-    
+
     load() {
         if (!this.isValid()) return;
         this.loading = true;
@@ -49,6 +53,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
             this.doctors = 0;
             this.cash = 0;
             this.card = 0;
+            //-------------
+            this.wired = 0;
+            this.check = 0;
+            this.dodatok = 0;
             this.bill = 0;
             this.discount = 0;
             this.debt = 0;
@@ -58,6 +66,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
                 this.doctors += currentValue.doctors;
                 this.cash += currentValue.cash;
                 this.card += currentValue.card;
+                //---------------
+                this.wired += currentValue.wired;
+                this.check += currentValue.check;
+                this.dodatok += currentValue.dodatok;
                 this.bill += currentValue.bill;
                 this.discount += currentValue.discount;
                 this.debt += currentValue.debt;

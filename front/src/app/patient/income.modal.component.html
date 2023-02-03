@@ -57,6 +57,8 @@
             <option value="CASH" selected>Готівкою</option>
             <option value="CARD">Картою</option>
             <option value="WIRED">Перерахунком</option>
+            <option value="CHECK">Чек</option>
+            <option value="DODATOK">Додаток</option>
         </select>
     </div>
     <div *ngIf="f.submitted && !paymentType.valid" class="help-block text-danger">Поле
