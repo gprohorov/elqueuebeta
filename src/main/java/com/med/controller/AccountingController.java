@@ -52,7 +52,7 @@ public class AccountingController {
 
         String patientId = jsonObj.getString("patientId");
         PaymentType paymentType = PaymentType.valueOf(jsonObj.getString("paymentType"));
-        String desc = jsonObj.getString("desc");
+        String desc = jsonObj.getString("desc") + " " + paymentType.toString();
         int sum = jsonObj.getInt("sum");
         int discount = jsonObj.getInt("discount");
         boolean closeDay = jsonObj.getBoolean("closeDay");
@@ -65,10 +65,15 @@ public class AccountingController {
                     patientId,
                     LocalDateTime.now(),
                     null,
-                    sum, paymentType,
+                    sum,
+                    paymentType,
                     desc));
-            if (paymentType.equals(PaymentType.CASH)) {
-                CashBox cash = new CashBox(LocalDateTime.now(), patientId, 0, "CASH", sum);
+            if (paymentType.equals(PaymentType.CASH) || paymentType.equals(PaymentType.CHECK)) {
+                CashBox cash = new CashBox(LocalDateTime.now(),
+                        patientId,
+                        0,
+                        desc,
+                        sum);
                 cash.setType(CashType.PATIENT);
                 cashBoxService.createCash(cash);
             }
