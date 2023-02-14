@@ -111,6 +111,13 @@ public class AccountingService {
             .mapToLong(Accounting::getSum).sum();
     }
 
+    public Long getSumForDateCheck(LocalDate date) {
+        return this.getAllForDate(date).stream()
+            .filter(accounting -> accounting.getSum() > 0)
+            .filter(accounting -> accounting.getPayment().equals(PaymentType.CHECK))
+            .mapToLong(Accounting::getSum).sum();
+    }
+
     public Long getSumForDateCard(LocalDate date) {
         return this.getAllForDate(date).stream()
             .filter(accounting -> accounting.getSum() > 0)

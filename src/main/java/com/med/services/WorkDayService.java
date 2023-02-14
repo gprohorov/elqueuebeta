@@ -108,9 +108,6 @@ public class WorkDayService  {
                 .map(Talon::getExecutionTime).sorted(Comparator.reverseOrder()).findFirst().orElse(null);
         workDay.setFinish(finish);
 
-
-
-
         // сумма, начислення за выполненные процедуры
         int sumForExecutedProcedures = Math.toIntExact(accountingService.getSumForDateProcedures(LocalDate.now()));
         workDay.setSumForExecutedProcedures(sumForExecutedProcedures);
