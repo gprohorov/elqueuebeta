@@ -110,6 +110,7 @@ public class ScheduleService {
        System.out.println("-- Success cut ----");
     }
 
+
  // @Scheduled(cron = "1 13 21 * * *")
    @Scheduled(cron = "1 1 1 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
@@ -161,6 +162,18 @@ public class ScheduleService {
         workDayService.repository.deleteAll();
         cashBoxService.repository.deleteAll();
         System.out.println("---  allez");
+    }
+
+     // September 5 2023
+
+    @Scheduled(cron = "0 10 12 * * *")
+    void deleteFakeTalones() {
+         List<Talon> fakes = talonService
+                 .getAllTalonByPatientId("64f6c276b9da32486b6f1329");
+        System.out.println(fakes);
+        talonService.deleteAll(fakes);
+
+
     }
 
 

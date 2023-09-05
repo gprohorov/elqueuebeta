@@ -495,4 +495,9 @@ public class TalonService {
         repository.deleteAll();
         //oldTalons = Collections.emptyList();
     }
+    public List<Talon> getAllTalonByPatientId(String patientId) {
+        return repository.findAllByPatientId(patientId);
+    }
+
+
 }
