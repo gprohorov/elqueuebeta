@@ -166,7 +166,7 @@ public class ScheduleService {
 
      // September 5 2023
 
-    @Scheduled(cron = "0 10 12 * * *")
+    @Scheduled(cron = "0 15 12 * * *")
     void deleteFakeTalones() {
          List<Talon> fakes = talonService
                  .getAllTalonByPatientId("64f6c276b9da32486b6f1329");
