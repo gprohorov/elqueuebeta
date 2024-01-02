@@ -1,4 +1,20 @@
 ﻿<app-loader [loader]="loading"></app-loader>
+<form class="form-inline mb-3 no-print" >
+  <div class="input-group mr-2">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Початок</div>
+    </div>
+    <input type="date" class="form-control"
+           name="start" [(ngModel)]="start" (change)="load()" />
+  </div>
+  <div class="input-group mr-2">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Кінець</div>
+    </div>
+    <input type="date" class="form-control"
+           name="finish" [(ngModel)]="finish" (change)="load()" />
+  </div>
+</form>
 <img src="assets/logo_mednean.jpg" width="120" class="pull-left">
 <img src="assets/logo_medecine.jpg" class="pull-right">
 <center>

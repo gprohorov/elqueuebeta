@@ -390,9 +390,10 @@ public class TalonService {
 
     // 27 aug  receipt means check
     //  Hardcode FROM was set to 28 aug 2018
+    // 02/01/24   removed hardcore
     public Receipt createReceipt(String patientId, LocalDate from, LocalDate to) {
-        from = LocalDate.of(2018, Month.AUGUST,28);  //  HARDCODE
-        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, from.minusDays(15))
+     //  from = LocalDate.of(2018, Month.AUGUST,28);  //  HARDCODE
+        List<Talon> talons = repository.findByPatientIdAndDateGreaterThan(patientId, from.minusDays(1))
             .stream().filter(talon -> talon.getDate().isBefore(to.plusDays(1)))
             .filter(talon -> talon.getActivity().equals(Activity.EXECUTED)).collect(Collectors.toList());
         List<ProcedureReceipt> list = new ArrayList<>();
@@ -424,7 +425,7 @@ public class TalonService {
         receipt.setSum((int) list.stream().mapToLong(ProcedureReceipt::getSum).sum());
 
         List<Accounting> accountings = accountingService.getAllIncomesForPatientFromTo(
-    		patientId, from.minusDays(15), to.plusDays(1));
+    		patientId, from.minusDays(1), to.plusDays(1));
         int discount = accountings.stream().filter(ac -> ac.getPayment().equals(PaymentType.DISCOUNT))
            .mapToInt(Accounting::getSum).sum();
         receipt.setDiscount(discount);

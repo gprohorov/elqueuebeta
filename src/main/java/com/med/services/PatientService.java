@@ -77,7 +77,6 @@ public class PatientService {
 		Patient patient = repository.findById(patientId).orElse(null);
 		if (patient == null) System.out.println(patient);
 		Therapy therapy = therapyService.findTheLastTherapy(patientId);
-		System.out.println("Patient      "  + patientId + "  " + patient);
 		if ( (patient!= null) && (therapy) != null) patient.setTherapy(therapy);
 		return patient;
 	}

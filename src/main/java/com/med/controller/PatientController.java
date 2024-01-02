@@ -145,14 +145,7 @@ public class PatientController {
         return talonService.createTalon(patientId, 1, 0);
     }
 
-    // 27 aug - create check to today for patient on registration
-    @GetMapping("/create/receipt/{patientId}/{from}/{to}")
-    public Receipt createReceiptFromTo(
-            @PathVariable(value = "patientId") String patientId,
-            @PathVariable(value = "from") String from,
-            @PathVariable(value = "to") String to) {
-        return talonService.createReceipt(patientId, LocalDate.parse(from), LocalDate.parse(to));
-    }
+
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -218,4 +211,14 @@ public class PatientController {
     public ReceiptToday getReceiptToday(@PathVariable(value = "patientId") String patientId) {
         return accountingService.getTodayReceipt(patientId);
     }
+
+    // created 02/01/24    from ... to
+    @GetMapping("/create/receipt/{patientId}/{from}/{to}")
+    public Receipt createReceiptFromTo(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "from") String from,
+            @PathVariable(value = "to") String to) {
+        return talonService.createReceipt(patientId, LocalDate.parse(from), LocalDate.parse(to));
+    }
+
 }
