@@ -3,6 +3,7 @@ src/main/resources/public/*
 dump
 dump.tar.gz
 target/
+logs/
 !.mvn
 .fuse*
 /src/main/resources/application.properties
