@@ -1,0 +1,7 @@
+#!/bin/bash
+git pull
+cd front
+npm run build
+cd ..
+mvn clean package
+sudo systemctl restart mednean
