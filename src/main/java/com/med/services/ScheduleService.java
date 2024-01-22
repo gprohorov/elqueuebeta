@@ -70,7 +70,7 @@ public class ScheduleService {
     void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
     }
 
-    @Scheduled(cron = "0 35 23 * * *")
+    @Scheduled(cron = "0 5 21 * * *")
     public void salaryDailyGeneration(){
         System.out.println("  Daily  salary generation was starting at + " + LocalDateTime.now());
         this.salaryDailyService.generateSalariesForToday();
