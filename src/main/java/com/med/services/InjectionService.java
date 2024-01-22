@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,21 @@ public class InjectionService {
 
     @Autowired
     SalaryService salaryService;
+    @Autowired
+    SalaryDailyService salaryDailyService;
+
+  //  @PostConstruct
+    void init() {
+     //   salaryDailyGeneration();
+    }
+
+    public void salaryDailyGeneration(){
+        System.out.println("  Daily  salary generation was starting at + " + LocalDateTime.now());
+        this.salaryDailyService.generateSalariesForToday();
+        System.out.println("  Daily  salary generation was finishead + " + LocalDateTime.now());
+
+    }
+
 
 
     public void inject(){

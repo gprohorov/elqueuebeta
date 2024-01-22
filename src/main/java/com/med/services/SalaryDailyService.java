@@ -499,20 +499,21 @@ public class SalaryDailyService {
                 .stream()
                 .filter(talon -> talon.getDoctor() != null)
                 .filter(talon -> talon.getDoctor().getId() == doctorId)
+         //       .peek(talon -> System.out.println(talon.getExecutionTime()))
                 .collect(Collectors.toList());
         if (list.isEmpty()) {
             return 0;
         }
-
         LocalDateTime begin = list.stream()
         .map(talon -> talon.getStart())
         .min(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now());
+                .orElse(LocalDateTime.now().minusHours(12));
 
         LocalDateTime end = list.stream()
         .map(talon -> talon.getExecutionTime())
-        .max(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now());
+                .filter(time -> time != null)
+                .max(LocalDateTime::compareTo)
+                .orElse(begin.plusHours(1));
 
         return  ChronoUnit.HOURS.between(begin, end) + 1 ;
     }
