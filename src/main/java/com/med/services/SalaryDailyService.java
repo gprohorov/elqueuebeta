@@ -151,24 +151,24 @@ public class SalaryDailyService {
         return this.createSalaryDaily(salary);
     }
 
-   // @Scheduled(cron = "0 15 19 * * *")
     public void generateSalariesForToday() {
-
-        List<SalaryDaily> list = this.getSalariesForDate(LocalDate.now());
-        this.repository.deleteAll(list);
-        list.clear();
-
+        this.deleteSalariesForTheDate(LocalDate.now());
+        List<SalaryDaily> list = new ArrayList<>();
         doctorService.getAllActive().forEach(doctor ->
         	list.add(this.createSalaryDailyForDoctor(doctor.getId(), LocalDate.now())));
-       // return list;
     }
+
+    public void deleteSalariesForTheDate(LocalDate date) {
+        List<SalaryDaily> list = this.getSalariesForDate(date);
+        this.repository.deleteAll(list);
+        list.clear();
+    }
+
 
 
     public void generateSalariesForDate(LocalDate date) {
 
-        List<SalaryDaily> list = this.getSalariesForDate(date);
-        this.repository.deleteAll(list);
-        list.clear();
+        this.deleteSalariesForTheDate(date);
 
         doctorService.getAllActive().forEach(doctor ->
         	this.createSalaryDailyForDoctor(doctor.getId(), date));
@@ -512,6 +512,7 @@ public class SalaryDailyService {
         LocalDateTime end = list.stream()
         .map(talon -> talon.getExecutionTime())
                 .filter(time -> time != null)
+                .filter(time -> time.isBefore(date.plusDays(1).atStartOfDay()))
                 .max(LocalDateTime::compareTo)
                 .orElse(begin.plusHours(1));
 

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +25,35 @@ public class InjectionService {
     @Autowired
     SalaryDailyService salaryDailyService;
 
-  //  @PostConstruct
+    @PostConstruct
     void init() {
-     //   salaryDailyGeneration();
+     //   salaryDailyGeneration(); 21/01/24
+        if (LocalDate.now().equals(LocalDate.of(2024, Month.JANUARY, 28))) {
+            this.salaryDailyGenerationForDays();
+        }
     }
+
 
     public void salaryDailyGeneration(){
         System.out.println("  Daily  salary generation was starting at + " + LocalDateTime.now());
         this.salaryDailyService.generateSalariesForToday();
         System.out.println("  Daily  salary generation was finishead + " + LocalDateTime.now());
+
+    }
+
+    public void salaryDailyGenerationForDays(){
+        List<LocalDate> days = new ArrayList<>(
+                Arrays.asList(
+                        LocalDate.of(2024, Month.JANUARY, 11),
+                        LocalDate.of(2024, Month.JANUARY, 12),
+                        LocalDate.of(2024, Month.JANUARY, 15)
+                )
+        );
+        System.out.println("  Daily  salary re-calculation was started at + " + LocalDateTime.now());
+        days.stream()
+                .forEach(date -> this.salaryDailyService.generateSalariesForDate(date));
+
+        System.out.println("  Daily  salary re-calculation was finished + " + LocalDateTime.now());
 
     }
 
