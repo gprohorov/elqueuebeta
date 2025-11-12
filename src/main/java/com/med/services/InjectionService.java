@@ -24,13 +24,31 @@ public class InjectionService {
     SalaryService salaryService;
     @Autowired
     SalaryDailyService salaryDailyService;
+    @Autowired
+    PatientService patientService;
 
     @PostConstruct
     void init() {
+
+/*
      //   salaryDailyGeneration(); 21/01/24
-        if (LocalDate.now().equals(LocalDate.of(2024, Month.JANUARY, 28))) {
-            this.salaryDailyGenerationForDays();
-        }
+       if (LocalDate.now().equals(LocalDate.of(2024, Month.JANUARY, 28))) {
+          this.salaryDailyGenerationForDays();
+       }
+
+        //  military searching
+         int[] array = {0};
+        patientService.getAll().stream()
+                .filter(patient -> patient.getPerson().getFullName().contains("*"))
+                .forEach(patient -> {
+                    System.out.println(++array[0] + ". " +patient.getPerson().getFullName());
+                });
+
+
+*/
+
+
+
     }
 
 

@@ -43,7 +43,7 @@ public class WorkDay {
     private int doctorsAbsent; 				// сколько сачков
     private String doctorsAbsentList; 		// список сачков
     private int discountSum; 				// сколько дали знижок - сумма всего
-    private String discountList; 		    // список знижок
+    private String discountList = ""; 		    // список знижок
     private String debtOfTodayPassiveList;  // список должников, которые записаны на сегодня и не пришли
     private String debtOfTomorrowPassiveList; //список должников, которые НЕ записаны на завтра
     private int recomendation;                // сумма за рекомендации

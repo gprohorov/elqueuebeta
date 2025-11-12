@@ -39,6 +39,9 @@ public class AccountingController {
     @Autowired
     CashBoxService cashBoxService;
 
+    @Autowired
+    AccountingService accountingService;
+
     @RequestMapping("/list")
     public List<Accounting> showAll() {
         return service.getAll();
@@ -82,6 +85,7 @@ public class AccountingController {
         if (discount != 0) {
             service.createAccounting(new Accounting(
         		doctorId, patientId, LocalDateTime.now(), null, discount, PaymentType.DISCOUNT, desc));
+           accountingService.insertCurrentDiscount(patientId, discount);
         }
         
         if (closeDay) {

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.med.model.workday.WorkDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public class AccountingService {
 
     @Autowired
     AccountingRepository repository;
+    @Autowired
+    private WorkDayService workDayService;
 
     public Accounting createAccounting(Accounting accounting) {
         repository.save(accounting);
@@ -250,5 +253,20 @@ public class AccountingService {
 
     public void deleateAll(){
         this.repository.deleteAll();
+    }
+
+
+    //---------------------  12 Nov 2025
+
+    // TODO: move to workday service
+    public void insertCurrentDiscount(String patientId, int discount) {
+        WorkDay workDay = workDayService.getWorkDay(LocalDate.now());
+        if (workDay == null) { return;}
+        String patientName = patientService.getPatient(patientId).getPerson().getFullName();
+        String record = patientName + " " + discount + ", ";
+        String previousRecord = workDay.getDiscountList();
+        workDay.setDiscountList(previousRecord + record);
+        workDayService.update(workDay);
+
     }
 }

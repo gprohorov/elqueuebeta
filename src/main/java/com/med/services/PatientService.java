@@ -102,6 +102,10 @@ public class PatientService {
 		).limit(30).collect(Collectors.toList());
 	}
 
+	public List<Patient> getAll(){
+		return repository.findAll();
+	}
+
 	public List<Patient> getAllForToday() {
 		return this.getAllForDate(LocalDate.now());
 	}
