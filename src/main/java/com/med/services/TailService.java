@@ -72,10 +72,11 @@ public class TailService {
     public List<Tail> getTails() {
 
         List<Talon> talonsForToday = talonService.getTalonsForToday();
-        List<Talon> preProcessedTalons = this.getPreprocessedTalons(talonsForToday);
+  //      List<Talon> preProcessedTalons = this.getPreprocessedTalons(talonsForToday);
 
-   //     List<Tail> tails = talonsForToday.stream().filter(talon ->
-        List<Tail> tails = preProcessedTalons.stream().filter(talon ->
+//        List<Tail> tails = preProcessedTalons.stream().filter(talon ->
+
+        List<Tail> tails = talonsForToday.stream().filter(talon ->
             talon.getActivity().equals(Activity.ACTIVE)
          || talon.getActivity().equals(Activity.ON_PROCEDURE)
          || talon.getActivity().equals(Activity.INVITED) )
@@ -132,6 +133,8 @@ public class TailService {
         if (tail.isVacant()) return patient;
         return null;
     }
+
+    //--------------------------------------------------------------------------------------------
 //--------------------------- 21 Dec
     private List<Talon> getPreprocessedTalons(List<Talon> list) {
 
