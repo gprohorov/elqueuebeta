@@ -73,7 +73,6 @@ public class TailService {
 
         List<Talon> talonsForToday = talonService.getTalonsForToday();
   //      List<Talon> preProcessedTalons = this.getPreprocessedTalons(talonsForToday);
-
 //        List<Tail> tails = preProcessedTalons.stream().filter(talon ->
 
         List<Tail> tails = talonsForToday.stream().filter(talon ->
