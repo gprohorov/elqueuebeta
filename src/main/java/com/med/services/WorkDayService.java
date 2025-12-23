@@ -231,8 +231,8 @@ public class WorkDayService  {
         List<String> doctorsAbsentList = new ArrayList<String>();
         for (Doctor doctor : allDoctors) {
             if (!doctorsActiveList.contains(doctor)) {
-                doctorsAbsentList.add(doctor.getFullName().split(" ")[0] + " "
-                        + doctor.getDaysOff());
+                doctorsAbsentList.add(doctor.getFullName().split(" ")[0] + " " );
+                  //      + doctor.getDaysOff()
             }
         }
         workDay.setDoctorsAbsent(doctorsAbsentList.size());

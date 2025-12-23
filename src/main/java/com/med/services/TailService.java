@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -41,6 +42,7 @@ public class TailService {
         procedureService.getAll().stream().forEach(pr -> semafor.put(pr.getId(), false));
 
     }
+
     public HashMap<Integer, Boolean> setAllSemafors(List<Talon> talonsForToday) {
 	    semafor.entrySet().stream().forEach(entry-> {
 	    	entry.setValue(talonsForToday.stream()
@@ -70,8 +72,10 @@ public class TailService {
     public List<Tail> getTails() {
 
         List<Talon> talonsForToday = talonService.getTalonsForToday();
+        List<Talon> preProcessedTalons = this.getPreprocessedTalons(talonsForToday);
 
-        List<Tail> tails = talonsForToday.stream().filter(talon ->
+   //     List<Tail> tails = talonsForToday.stream().filter(talon ->
+        List<Tail> tails = preProcessedTalons.stream().filter(talon ->
             talon.getActivity().equals(Activity.ACTIVE)
          || talon.getActivity().equals(Activity.ON_PROCEDURE)
          || talon.getActivity().equals(Activity.INVITED) )
@@ -128,4 +132,31 @@ public class TailService {
         if (tail.isVacant()) return patient;
         return null;
     }
+//--------------------------- 21 Dec
+    private List<Talon> getPreprocessedTalons(List<Talon> list) {
+
+        // these talons are the last ones for today of all the patients
+        //это все талоны на последнюю у пациента процедуру в этот день
+        List<Talon> lastOnes = list.stream()
+                .filter(talon -> talon.getActivity().equals(Activity.ACTIVE))
+                .filter(talon -> talon.getProcedure().getId() != 2)
+                .collect(Collectors.groupingBy(Talon::getPatientId))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().size() == 1)
+                .map(entry -> entry.getValue())
+                .flatMap(List::stream)
+             //   .forEach(talon -> talon.setActivity(Activity.INVITED))
+                .collect(Collectors.toList());
+        list.forEach(talon
+                        -> {
+                            if (lastOnes.contains(talon)){
+                           //   System.out.println("-------------  LUCKY GUY ---------------");
+                              talon.setActivity(Activity.INVITED);
+                           }
+        });
+
+        return  list;
+    }
+
 }
