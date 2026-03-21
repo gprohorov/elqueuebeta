@@ -23,6 +23,8 @@ public class Procedure {
     private int ALL_INCLUSIVE;
     @JsonProperty("SOCIAL")
     private int SOCIAL;
+    @JsonProperty("MILITARY")
+    private int MILITARY;
     private int percent;
     private boolean zoned;
     private int number;

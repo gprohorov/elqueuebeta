@@ -15,9 +15,9 @@
                     <label>Стать</label>
                     <div class="form-group radio">
                         <label class="mr-3"><input type="radio" name="gender" value="true"
-                            [(ngModel)]="model?.person.gender" #gender="ngModel">чол.</label> <label><input
+                            [(ngModel)]="model?.person.gender" #gender="ngModel"> чол.</label> <label><input
                             type="radio" name="gender" value="false"
-                            [(ngModel)]="model?.person.gender" #gender="ngModel">жін.</label>
+                            [(ngModel)]="model?.person.gender" #gender="ngModel"> жін.</label>
                     </div>
                 </div>
                 <div class="col-sm-8">
@@ -44,11 +44,41 @@
                 <label for="desc">Опис</label> <input type="text" class="form-control"
                     name="desc" [(ngModel)]="model.desc" #desc="ngModel" />
             </div>
+       <!--
             <div class="form-group">
-                <button [disabled]="loading" type="button" class="btn btn-success" 
+                <button [disabled]="loading" type="button" class="btn btn-success"
                   (click)="showAssignPatientRecomendationPopup()">Вибрати рекомендавця</button>
                 {{model.recomendationName}}
             </div>
+          -->
+          <div class="row">
+            <div class="form-group">
+              <label>Згода на обробку персональних даних</label>
+              <div class="form-group radio">
+                <label class="mr-3"><input type="radio" name="informated" value="NULL"
+                   [(ngModel)]="model?.person.informated" #informated="ngModel"> Не визначено</label>
+                <label class="mr-3"><input type="radio" name="informated" value="FALSE"
+                   [(ngModel)]="model?.person.informated" #informated="ngModel"> Заперечено</label>
+                <label class="mr-3"><input type="radio" name="informated" value="TRUE"
+                   [(ngModel)]="model?.person.informated" #informated="ngModel"> Підтверджено</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Згода на відеофіксацію</label>
+              <div class="form-group radio">
+                <label class="mr-3"><input type="radio" name="video" value="NULL"
+                   [(ngModel)]="model?.person.video" #video="ngModel"> Не визначено</label>
+                <label class="mr-3"><input type="radio" name="video" value="FALSE"
+                   [(ngModel)]="model?.person.video" #video="ngModel"> Заперечено</label>
+                <label class="mr-3"><input type="radio" name="video" value="TRUE"
+                   [(ngModel)]="model?.person.video" #video="ngModel"> Підтверджено</label>
+              </div>
+            </div>
+          </div>
+
             <div class="form-group">
                 <button [disabled]="loading" type="submit" class="btn btn-primary">Зберегти</button>
                 <button [routerLink]="['/patients']" class="btn btn-link">Скасувати</button>

@@ -11,7 +11,7 @@ export class Patient {
     recomendation: string;
     recomendationName: string;
     desc: string;
-    
+
     constructor() {
         this.person = new Person();
     }
@@ -24,4 +24,6 @@ export class Person {
     address: string;
     gender: string;
     dateOfBirth: string;
+    informated: string = 'NULL';
+    video: string = 'NULL';
 }

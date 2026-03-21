@@ -34,7 +34,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.sub) this.sub.unsubscribe();
     }
-    
+
     showAssignPatientRecomendationPopup() {
         const options = {
             title: 'Вибір рекомендавця',
@@ -43,7 +43,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
         };
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe((item) => {
-            this.model.recomendation = item.id; 
+            this.model.recomendation = item.id;
             this.model.recomendationName = item.person.fullName
         });
     }
@@ -53,6 +53,8 @@ export class PatientFormComponent implements OnInit, OnDestroy {
         this.sub = this.service.get(id).subscribe(
             data => {
                 data.person.gender = data.person.gender.toString();
+                data.person.informated = (data.person.informated != undefined && data.person.informated.toString()) || 'NULL';
+                data.person.video = (data.person.video != undefined && data.person.video.toString()) || 'NULL';
                 this.model = data;
                 this.loading = false;
             },

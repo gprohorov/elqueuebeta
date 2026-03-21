@@ -1,6 +1,7 @@
 package com.med.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Person {
 
@@ -10,17 +11,23 @@ public class Person {
     private String address;
     private boolean gender;
     private LocalDate dateOfBirth;
+    private Approvance video;
+    private Approvance informated;
+    private LocalDateTime registrationDate = LocalDateTime.now();
+
 
     public Person() {}
 
-    public Person(String fullName, String cellPhone, String town, String address,
-    		boolean gender, LocalDate dateOfBirth) {
+    public Person(String fullName, String cellPhone, String town, String address, boolean gender, LocalDate dateOfBirth, Approvance video, Approvance informated, LocalDateTime registrationDate) {
         this.fullName = fullName;
         this.cellPhone = cellPhone;
         this.town = town;
         this.address = address;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+        this.video = video;
+        this.informated = informated;
+        this.registrationDate = registrationDate;
     }
 
     public String getFullName() {
@@ -71,6 +78,30 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Approvance getVideo() {
+        return video;
+    }
+
+    public void setVideo(Approvance video) {
+        this.video = video;
+    }
+
+    public Approvance getInformated() {
+        return informated;
+    }
+
+    public void setInformated(Approvance informated) {
+        this.informated = informated;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -80,6 +111,9 @@ public class Person {
                 ", address='" + address + '\'' +
                 ", gender=" + gender +
                 ", dateOfBirth=" + dateOfBirth +
+                ", video=" + video +
+                ", informated=" + informated +
+                ", registrationDate=" + registrationDate +
                 '}';
     }
 }

@@ -6,7 +6,8 @@ public enum Status {
     VIP(6),
     BUSINESS(5),
     ALL_INCLUSIVE(4),
-    SOCIAL(3),
+    MILITARY(3),
+    SOCIAL(2),
     NULL(0);
 
     private final int level;
