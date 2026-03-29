@@ -23,7 +23,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
 
     public myOptions: NgxMasonryOptions = {
         transitionDuration: '0.001s',
-        columnWidth: 200,
+        columnWidth: 250,
         fitWidth: true,
         horizontalOrder: true,
         gutter: 20
@@ -67,7 +67,7 @@ export class ProceduresQueueListComponent implements OnInit, OnDestroy {
     executeProcedure(talonId: string, patient: any, group: any) {
         if (this.authService.isSuperadmin()) {
             window.open('/#/workplace/' + (group.procedureType == 'DIAGNOSTIC'
-                ? 'diagnostic/' + patient.id 
+                ? 'diagnostic/' + patient.id
                 : 'common/' + patient.id + '/' + group.procedureId), '_blank');
         } else if (confirm('Виконати процедуру "' + group.procedureName
             + '" для пацієнта "' + patient.person.fullName + '" ?')) {

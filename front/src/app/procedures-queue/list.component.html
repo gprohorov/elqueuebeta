@@ -24,14 +24,24 @@
                 [disabled]="item.activity == 'ON_PROCEDURE'"
                 (click)="updateOutOfTurn(item?.talon.id, item.activity != 'INVITED', item.person.fullName, group.procedureName)">
                 <i
-                    [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED', 
+                    [ngClass]="{'fa': true, 'fa-arrow-circle-up': item.activity != 'INVITED',
                             'fa-arrow-circle-down': item.activity == 'INVITED'}"></i>
             </button>
             <span class="masonry-list-item badge badge-{{Activity[item.activity].cssClass}}"
                 title="{{item.person.fullName}} ({{Status[item.status].text}})"
                 [ngStyle]="{'cursor': 'pointer'}" (click)="executeProcedure(item.talon.id, item, group)">
-                {{item.person.fullName}} </span> <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta
-                != null ? item.delta + ' хв.' : ''}}</span>
+                {{item.person.fullName}}
+            </span>
+
+            <i [ngClass]="{'text-success': item.person?.video === 'TRUE', 'text-danger': item.person?.video === 'FALSE'}"
+               class="fa fa-video-camera" aria-hidden="true"
+               [title]="item.person?.video === 'TRUE' ? 'Підтверджено' : item.person?.video === 'FALSE' ? 'Заперечено' : 'Не визначено'" >
+            </i>
+
+          <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta
+                != null ? item.delta + ' хв.' : ''}}
+        </span>
+
         </div>
     </div>
     </ngx-masonry-item> </ngx-masonry>

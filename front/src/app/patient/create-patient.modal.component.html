@@ -20,10 +20,10 @@
                 <td [ngClass]="{'bg-primary text-white': item.id == patientId}"
                     [ngStyle]="{'cursor': 'pointer'}" (click)="patientId = item.id"
                     title="
-                        {{item.person.gender ? 'ч.' : 'ж.'}}, 
-                        {{item.person.dateOfBirth | date:'dd.MM.yyyy'}}, 
+                        {{item.person.gender ? 'ч.' : 'ж.'}},
+                        {{item.person.dateOfBirth | date:'dd.MM.yyyy'}},
                         {{item.person.town}},
-                        {{item.balance}} грн.  
+                        {{item.balance}} грн.
                         ">{{item.person.fullName}}</td>
             </tr>
         </table>
@@ -85,6 +85,34 @@
             <input type="text" class="form-control" name="address"
                 [(ngModel)]="data?.person.address" #address="ngModel" />
         </div>
+      <div class="row">
+        <div class="form-group">
+          <label>Згода на обробку персональних даних</label>
+          <div class="form-group radio">
+            <label class="mr-3"><input type="radio" name="informated" value="NULL"
+                                       [(ngModel)]="data?.person.informated" #informated="ngModel"> Не визначено</label>
+            <label class="mr-3"><input type="radio" name="informated" value="FALSE"
+                                       [(ngModel)]="data?.person.informated" #informated="ngModel"> Заперечено</label>
+            <label class="mr-3"><input type="radio" name="informated" value="TRUE"
+                                       [(ngModel)]="data?.person.informated" #informated="ngModel"> Підтверджено</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Згода на відеофіксацію</label>
+          <div class="form-group radio">
+            <label class="mr-3"><input type="radio" name="video" value="NULL"
+                                       [(ngModel)]="data?.person.video" #video="ngModel"> Не визначено</label>
+            <label class="mr-3"><input type="radio" name="video" value="FALSE"
+                                       [(ngModel)]="data?.person.video" #video="ngModel"> Заперечено</label>
+            <label class="mr-3"><input type="radio" name="video" value="TRUE"
+                                       [(ngModel)]="data?.person.video" #video="ngModel"> Підтверджено</label>
+          </div>
+        </div>
+      </div>
+
     </div>
     <input type="checkbox" class="form-check-input ml-2 mt-2" name="addProcedure"
         [(value)]="addProcedure" [(ngModel)]="addProcedure" (change)="clearProcedure()" />

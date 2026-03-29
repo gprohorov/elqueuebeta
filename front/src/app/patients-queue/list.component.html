@@ -48,7 +48,9 @@
 <div class="container">
   <div [ngClass]="{'row': true, 'alert-secondary': appointment.appointment % 2 != 0}"
     *ngFor="let appointment of appointments">
-    <div class="col-1 pt-1">{{appointment.appointment}}:00</div>
+    <div class="col-1 pt-1">{{appointment.appointment}}:00
+      ({{appointment.items.length}})
+    </div>
     <div class="col">
       <div class="form-inline pt-1">
         <div *ngFor="let item of appointment.items">
