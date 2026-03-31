@@ -1,5 +1,5 @@
 ﻿.masonry-item {
-    width: 300px;
+    width: 400px;
     box-shadow: 0px 0px 10px #222;
     -moz-box-shadow: 0px 0px 10px #222;
     -webkit-box-shadow: 0px 0px 10px #222;
@@ -35,15 +35,12 @@
 
 .masonry-list-item {
     display: inline-block;
-    max-width: 175px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     vertical-align: baseline;
 }
 
 .masonry-list-item button {
-    max-width: 175px;
+    width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
 }

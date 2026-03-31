@@ -23,7 +23,7 @@ export class WorkplaceMainComponent implements OnInit, OnDestroy {
 
     public myOptions: NgxMasonryOptions = {
         transitionDuration: '0.2s',
-        columnWidth: 300,
+        columnWidth: 400,
         fitWidth: true,
         horizontalOrder: true,
         gutter: 20

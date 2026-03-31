@@ -19,14 +19,21 @@
     </div>
     <div [ngClass]="{'masonry-body': true, 'expanded': group?.expanded}">
         <div *ngFor="let item of group.patients">
-            <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null ?
-                item.delta + ' хв.' : ''}}</span> <span class="masonry-list-item">
+
+            <span class="masonry-list-item">
                 <button class="btn btn-{{Activity[item.activity].cssClass}}"
                     title="{{item.person.fullName}} ({{Status[item.status].text}})"
                     [routerLink]="['/workplace/' + (group.procedureType == 'DIAGNOSTIC'
                       ? 'diagnostic/' + item.id : 'common/' + item.id + '/' + group.procedureId)]">
                     <strong>{{item.person.fullName}}</strong>
                 </button>
+                <i [ngClass]="{'text-success': item.person?.video === 'TRUE', 'text-danger': item.person?.video === 'FALSE'}"
+                   class="fa fa-video-camera" aria-hidden="true"
+                   [title]="item.person?.video === 'TRUE' ? 'Підтверджено' : item.person?.video === 'FALSE' ? 'Заперечено' : 'Не визначено'" >
+                </i>&nbsp;
+                <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null ?
+                  item.delta + ' хв.' : ''}}
+                </span>
             </span>
         </div>
     </div>
