@@ -34,7 +34,7 @@
 
 .masonry-list-item {
     display: inline-block;
-    max-width: 110px;
+    max-width: 125px;
     white-space: nowrap;
     overflow: hidden;
     line-height: 1.5;

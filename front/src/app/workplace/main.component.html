@@ -32,7 +32,7 @@
                    [title]="item.person?.video === 'TRUE' ? 'Підтверджено' : item.person?.video === 'FALSE' ? 'Заперечено' : 'Не визначено'" >
                 </i>&nbsp;
                 <span class="pull-right {{getTimeDiffClass(item.delta)}}">{{item.delta != null ?
-                  item.delta + ' хв.' : ''}}
+                  item.delta + 'хв' : ''}}
                 </span>
             </span>
         </div>
