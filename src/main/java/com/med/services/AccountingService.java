@@ -35,11 +35,12 @@ public class AccountingService {
     private WorkDayService workDayService;
 
     public Accounting createAccounting(Accounting accounting) {
-        repository.save(accounting);
-        System.out.println(accounting);
+
         Patient patient = patientService.getPatient(accounting.getPatientId());
         patient.setBalance(patient.getBalance() + accounting.getSum());
+        repository.save(accounting);
         patientService.savePatient(patient);
+        System.out.println(accounting);
         return accounting;
     }
 
