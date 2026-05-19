@@ -47,6 +47,9 @@ public class StatisticService {
     @Autowired
     SettingsService settings;
 
+//    List<String> discountList = new ArrayList<>();
+//    public List<String> addDiscount(LocalDate date, String )
+
     public Long getCashAvailable() {
         return accountingService.getSumForDateCash(LocalDate.now());
     }
@@ -223,7 +226,22 @@ public class StatisticService {
             .mapToLong(Accounting::getSum).sum();
         statisticsDTO.setDiscount(discount);
 
+        List<String> list = new ArrayList<>();
+        accountings.stream()
+                .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))
+                        .forEach(accounting -> {
+                            String element = patientService
+                                    .getPatient(accounting.getPatientId()).getPerson()
+                                    .getFullName().split(" ")[0]
+                                    + " - " + accounting.getSum() + " грн.";
+                            list.add(element);
+                        });
+        statisticsDTO.setDiscountList(list);
+
         statisticsDTO.setDebt(bill + cash + card + wired + check + dodatok + discount);
+
+
+
         return statisticsDTO;
     }
 

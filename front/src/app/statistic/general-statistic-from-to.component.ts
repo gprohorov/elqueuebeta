@@ -1,7 +1,10 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿import {Component, OnInit, OnDestroy, ViewContainerRef} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StatisticService } from '../_services/index';
+import {PatientIncomeModalComponent} from "../patient/income.modal.component";
+import {ModalDialogService} from "ngx-modal-dialog";
+import {DiscountListModalComponent} from "./discount-list.modal.component";
 
 @Component({
     templateUrl: './general-statistic-from-to.component.html'
@@ -26,7 +29,10 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
     discount = 0;
     debt = 0;
 
-    constructor(private service: StatisticService) {
+    constructor(
+      private viewRef: ViewContainerRef,
+      private modalService: ModalDialogService,
+      private service: StatisticService) {
         this.start = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
         this.finish = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
     }
@@ -77,4 +83,16 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
             this.loading = false;
         });
     }
+
+   discountList(item: any) {
+     const options = {
+       title: 'Discount' ,
+       childComponent: DiscountListModalComponent,
+       data: item.discountList,
+       closeDialogSubject: null
+     };
+
+     this.modalService.openDialog(this.viewRef, options);
+  }
+
 }

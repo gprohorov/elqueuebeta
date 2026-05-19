@@ -107,6 +107,7 @@ import {
     WorkplaceCommonComponent,
     WorkplaceDiagnosticComponent
 } from './workplace/index';
+import {DiscountListModalComponent} from "./statistic/discount-list.modal.component";
 
 const appRoutes: Routes = [
     {
@@ -149,7 +150,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
-    
+
     {
         path: 'users', component: UserListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -160,7 +161,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN'], redirectTo: 'login' } }
     },
-    
+
     {
         path: 'doctors', component: DoctorListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -307,7 +308,7 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_DOCTOR'], redirectTo: 'login' } }
     },
-    
+
     {
         path: 'receipt/:patientId', component: ReceiptComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -391,7 +392,8 @@ const appRoutes: Routes = [
         AssignPatientRecomendationModalComponent,
         UsiModalComponent,
         FinanceWorkWeekComponent,
-        FinanceWorkMonthComponent
+        FinanceWorkMonthComponent,
+        DiscountListModalComponent
     ],
     providers: [
         AuthGuard,
@@ -431,7 +433,9 @@ const appRoutes: Routes = [
         FinanceOutcomeCategoryModalComponent,
         FinanceOutcomeItemModalComponent,
         AssignPatientRecomendationModalComponent,
-        UsiModalComponent
+        UsiModalComponent,
+        DiscountListModalComponent
+
     ],
     schemas: [NO_ERRORS_SCHEMA],
     bootstrap: [AppComponent]

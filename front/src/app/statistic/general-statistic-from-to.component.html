@@ -35,7 +35,11 @@
             <td>{{item.patients}}</td>
             <td>{{item.doctors}}</td>
             <td class="text-nowrap text-right">{{item.bill}} грн.</td>
-            <td class="text-nowrap text-right">{{item.discount}} грн.</td>
+            <td class="text-nowrap text-right">{{item.discount}} грн.
+              <i style="cursor: pointer;" class="fa fa-list" aria-hidden="true" (click)="discountList(item)"
+                 title= "Деталізація">
+              </i>
+            </td>
             <td class="text-nowrap text-right">{{item.debt}} грн.</td>
         </tr>
         <tr>
