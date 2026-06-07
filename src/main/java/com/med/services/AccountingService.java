@@ -37,10 +37,16 @@ public class AccountingService {
     public Accounting createAccounting(Accounting accounting) {
 
         Patient patient = patientService.getPatient(accounting.getPatientId());
-        patient.setBalance(patient.getBalance() + accounting.getSum());
+        int balance = patient.getBalance();
+        patient.setBalance(balance + accounting.getSum());
         repository.save(accounting);
         patientService.savePatient(patient);
-        System.out.println(accounting);
+
+        if (patientService.getPatient(accounting.getPatientId()).getBalance() == balance) {
+            patient.setBalance(balance + accounting.getSum());
+            patientService.savePatient(patient);
+        }
+
         return accounting;
     }
 
