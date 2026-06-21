@@ -43,6 +43,7 @@ public class AccountingService {
         patientService.savePatient(patient);
 
         if (patientService.getPatient(accounting.getPatientId()).getBalance() == balance) {
+            System.out.println("--- UNBALANCED -------------");
             patient.setBalance(balance + accounting.getSum());
             patientService.savePatient(patient);
         }

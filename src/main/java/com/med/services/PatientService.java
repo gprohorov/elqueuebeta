@@ -70,6 +70,7 @@ public class PatientService {
 	}
 
 	public Patient savePatient(Patient patient) {
+		System.out.println("-------- patient savving---  balance - ");
 		return repository.save(patient);
 	}
 
