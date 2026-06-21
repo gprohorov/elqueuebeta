@@ -41,6 +41,7 @@ public class AccountingService {
         patient.setBalance(balance + accounting.getSum());
         repository.save(accounting);
         patientService.savePatient(patient);
+        System.out.println(" balanceeee " + balance + "summm " + accounting.getSum());
 
         if (patientService.getPatient(accounting.getPatientId()).getBalance() == balance) {
             System.out.println("--- UNBALANCED -------------");
