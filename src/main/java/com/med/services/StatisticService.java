@@ -179,6 +179,21 @@ public class StatisticService {
         GeneralStatisticsDTO statisticsDTO = new GeneralStatisticsDTO();
         List<Talon> talons = talonService.getTalonsForDate(date);
         List<Accounting> accountings = accountingService.getAllForDate(date);
+        List<String> patientDebtList = new ArrayList<>();
+
+       // get all patients that have debt and gameover
+        patientService.getAllForDate(date)
+                        .stream()
+                .filter(pat ->pat.getActivity().equals(Activity.GAMEOVER))
+                .filter(pat -> pat.getBalance() < 0)
+                .forEach(pat -> {
+                    String element = pat.getPerson()
+                            .getFullName().split(" ")[0]
+                            + "  " + pat.getBalance() + " грн.";
+                    patientDebtList.add(element);
+
+                } );
+        statisticsDTO.setDebtList(patientDebtList);
 
         statisticsDTO.setDate(date);
 
@@ -219,7 +234,7 @@ public class StatisticService {
 
         long bill = accountings.stream()
             .filter(accounting -> accounting.getSum() < 0).mapToLong(Accounting::getSum).sum();
-        statisticsDTO.setBill(bill);
+        statisticsDTO.setBill(Math.abs(bill));
 
         long discount = accountings.stream()
             .filter(accounting -> accounting.getPayment().equals(PaymentType.DISCOUNT))

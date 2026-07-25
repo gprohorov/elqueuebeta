@@ -40,7 +40,11 @@
                  title= "Деталізація">
               </i>
             </td>
-            <td class="text-nowrap text-right">{{item.debt}} грн.</td>
+            <td class="text-nowrap text-right">{{item.debt}} грн.
+              <i style="cursor: pointer;" class="fa fa-list" aria-hidden="true" (click)="debtList(item)"
+                 title= "Деталізація">
+              </i>
+            </td>
         </tr>
         <tr>
             <td><strong>Всього:</strong></td>

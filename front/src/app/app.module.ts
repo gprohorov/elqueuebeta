@@ -108,6 +108,7 @@ import {
     WorkplaceDiagnosticComponent
 } from './workplace/index';
 import {DiscountListModalComponent} from "./statistic/discount-list.modal.component";
+import {DebtListModalComponent} from "./statistic/debt-list.modal.component";
 
 const appRoutes: Routes = [
     {
@@ -393,7 +394,8 @@ const appRoutes: Routes = [
         UsiModalComponent,
         FinanceWorkWeekComponent,
         FinanceWorkMonthComponent,
-        DiscountListModalComponent
+        DiscountListModalComponent,
+        DebtListModalComponent
     ],
     providers: [
         AuthGuard,
@@ -434,7 +436,8 @@ const appRoutes: Routes = [
         FinanceOutcomeItemModalComponent,
         AssignPatientRecomendationModalComponent,
         UsiModalComponent,
-        DiscountListModalComponent
+        DiscountListModalComponent,
+        DebtListModalComponent
 
     ],
     schemas: [NO_ERRORS_SCHEMA],

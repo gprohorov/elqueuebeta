@@ -18,6 +18,7 @@ public class GeneralStatisticsDTO {
     private long discount;
     private long debt;
     private List<String> discountList = new ArrayList<>();
+    private List<String> debtList = new ArrayList<>();
     public GeneralStatisticsDTO() {}
 
     public GeneralStatisticsDTO(LocalDate date, int patients, int doctors,
@@ -142,6 +143,14 @@ public class GeneralStatisticsDTO {
 
     public void setDiscountList(List<String> discountList) {
         this.discountList = discountList;
+    }
+
+    public List<String> getDebtList() {
+        return debtList;
+    }
+
+    public void setDebtList(List<String> debtList) {
+        this.debtList = debtList;
     }
 
     @Override

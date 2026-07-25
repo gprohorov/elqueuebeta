@@ -86,9 +86,20 @@ export class GeneralStatisticFromToComponent implements OnInit, OnDestroy {
 
    discountList(item: any) {
      const options = {
-       title: 'Discount' ,
+       title: 'Знижки' ,
        childComponent: DiscountListModalComponent,
        data: item.discountList,
+       closeDialogSubject: null
+     };
+
+     this.modalService.openDialog(this.viewRef, options);
+  }
+
+   debtList(item: any) {
+     const options = {
+       title: 'Борги' ,
+       childComponent: DiscountListModalComponent,
+       data: item.debtList,
        closeDialogSubject: null
      };
 
