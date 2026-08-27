@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,8 @@ import com.med.repository.PatientRepository;
 @Service
 public class PatientService {
 
-	@Autowired
+    private static final Logger log = LogManager.getLogger(PatientService.class);
+    @Autowired
 	PatientRepository repository;
 
 	@Autowired
@@ -70,7 +73,7 @@ public class PatientService {
 	}
 
 	public Patient savePatient(Patient patient) {
-		System.out.println("-------- patient savving---  balance - ");
+        log.info("-------- patient saving---  balance - {}", patient.getBalance());
 		return repository.save(patient);
 	}
 
@@ -241,8 +244,39 @@ public class PatientService {
 				.forEach(entry-> {
 					System.out.println(entry.getKey() + "  " + entry.getValue());
 				});
-
-
 	}
+
+	public void checkBalanceForOne(String patientId) {
+		Patient patient = this.getPatient(patientId);
+		int balance =  accountingService.getByPatientId(patientId).stream()
+				.mapToInt(Accounting::getSum)
+				.sum();
+
+		//   log.info("Checking  {} {}", patient.getPerson().getFullName(), patientId);
+		if (patient.getBalance() != balance) {
+			patient.setBalance(balance);
+			this.savePatient(patient);
+            log.info("!!!!!!!!!!!!!! {} fixed {}", patient.getPerson().getFullName(), balance);
+		} else {
+			//	log.info(" ----------- No problem -------------");
+		}
+	}
+
+	// kostil
+	public void correctAllBalancesForToday(){
+		log.info(" --------------  Balance checking started ");
+		List<String> idsOfToday = this.getAllForToday().stream()
+				.filter(patient -> patient.getActivity().equals(Activity.GAMEOVER))
+//				.filter(patient -> patient.getBalance() != 0)
+//				.filter(patient -> !patient.getPerson().getFullName().contains("*"))
+				.map(Patient::getId).collect(Collectors.toList());
+		if (idsOfToday.isEmpty() || idsOfToday == null) return;
+		idsOfToday.stream().forEach(id -> {
+			this.checkBalanceForOne(id);
+		});
+		log.info(" --------------  Balance checking finished ");
+	}
+
+
 
 }

@@ -220,5 +220,18 @@ public class PatientController {
             @PathVariable(value = "to") String to) {
         return talonService.createReceipt(patientId, LocalDate.parse(from), LocalDate.parse(to));
     }
+    @GetMapping("/fix/balance/{patientId}")
+    public void fixBalance(
+            @PathVariable(value = "patientId") String patientId) {
+         service.checkBalanceForOne(patientId);
+         return;
+    }
+
+    @GetMapping("/fix/balances")
+    public void fixAllBalances() {
+        service.correctAllBalancesForToday();
+        return;
+    }
+
 
 }

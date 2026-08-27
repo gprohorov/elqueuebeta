@@ -5,6 +5,8 @@ import com.med.model.Talon;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOMonthly;
 import com.med.model.statistics.dto.general.GeneralStatisticsDTOWeekly;
 import com.med.services.hotel.RecordService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.List;
 @Service
 public class ScheduleService {
 
+    private static final Logger log = LogManager.getLogger(ScheduleService.class);
     @Autowired
     WorkDayService workDayService;
 
@@ -70,11 +73,16 @@ public class ScheduleService {
     void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
     }
 
+    @Scheduled(cron = "0 55 19 * * *")
+    void checkBalancesForToday() {
+        patientService.correctAllBalancesForToday();
+    }
+
     @Scheduled(cron = "0 5 21 * * *")
     public void salaryDailyGeneration(){
-        System.out.println("  Daily  salary generation was starting at + " + LocalDateTime.now());
+        log.info("  Daily  salary generation was starting at + {}", LocalDateTime.now());
         this.salaryDailyService.generateSalariesForToday();
-        System.out.println("  Daily  salary generation was finishead + " + LocalDateTime.now());
+        log.info("  Daily  salary generation was finishead + {}", LocalDateTime.now());
 
     }
 
@@ -175,7 +183,6 @@ public class ScheduleService {
 
 
     }
-
 
 
 
