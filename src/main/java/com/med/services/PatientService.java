@@ -98,10 +98,10 @@ public class PatientService {
 		return patient;
 	}
 
-	public List<Patient> getAll(String fullName) {
+	public List<Patient> getAll(String fragment) {
 		Collator ukrCollator = Collator.getInstance(new Locale("uk", "UA"));
 	    ukrCollator.setStrength(Collator.PRIMARY);
-		return repository.findByThePersonFullName(fullName).stream().sorted((o1, o2) -> 
+		return repository.findByThePersonFullName(fragment).stream().sorted((o1, o2) ->
 			ukrCollator.compare(o1.getPerson().getFullName(), o2.getPerson().getFullName())
 		).limit(30).collect(Collectors.toList());
 	}

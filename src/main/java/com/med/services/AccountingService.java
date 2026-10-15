@@ -40,6 +40,7 @@ public class AccountingService {
         int balance = patient.getBalance();
         patient.setBalance(balance + accounting.getSum());
         repository.save(accounting);
+
         patientService.savePatient(patient);
         System.out.println(" balanceeee " + balance + "summm " + accounting.getSum());
 

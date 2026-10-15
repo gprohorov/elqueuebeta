@@ -11,6 +11,6 @@ import com.med.model.Patient;
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String> {
 	List<Patient> findByBalanceLessThan(long balance);
-    @Query(value="{ 'person.fullName': { $regex: ?0, $options: 'i' } }")
-    List<Patient> findByThePersonFullName(String fullName);
+    @Query(value = "{$or: [{ 'person.fullName': { $regex: ?0, $options: 'i' } }, { 'person.cellPhone': { $regex: ?0, $options: 'i' } }]}")
+    List<Patient> findByThePersonFullName(String fragment);
 }

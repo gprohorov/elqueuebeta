@@ -149,6 +149,8 @@
                                     </button>
                                 </div>
                             </div>
+                          Дата реєстрації: <strong>{{item?.person?.registrationDate | date: 'dd.MM.yyyy'}}</strong>
+                          Телефон: <strong>{{item?.person?.cellPhone}}</strong>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngFor="let talon of item.talons">
@@ -220,6 +222,10 @@
         Початок: <strong>{{item?.startActivity | date: 'HH:mm'}}</strong> <br />
         Очікування: <span class="text-{{getTimeDiffClass(item?.delta)}}">{{item?.delta !=
             null ? item?.delta + ' хв.' : ''}}</span> <br />
-        День лікування: <strong>{{item?.dayOfCure}}</strong> </ng-template>
+        День лікування: <strong>{{item?.dayOfCure}}</strong><br />
+        Дата реєстрації: <strong>{{item?.person?.registrationDate | date: 'dd.MM.yyyy'}}</strong><br />
+        Телефон: <strong>{{item?.person?.cellPhone}}</strong>
+
+        </ng-template>
     </button>
 </ng-template>

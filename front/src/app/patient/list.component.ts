@@ -83,22 +83,25 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }
 
     load(search: string = '') {
+      if (search.length === 0 || search.length > 2) {
         this.loading = true;
         this.subToday = this.patientsQueueService.getAll(this.date).subscribe(data => {
-            this.todayItems = data.filter(x => {
-                return x.person.fullName.toLowerCase().indexOf(search) > -1;
-            }).sort((a, b) => {
-                const x = a.person.fullName;
-                const y = b.person.fullName;
-                if (x < y) return -1;
-                if (x > y) return 1;
-                return 0;
-            });
-            this.loading = false;
+          this.todayItems = data.filter(x => {
+            return x.person.fullName.toLowerCase().indexOf(search) > -1;
+          }).sort((a, b) => {
+            const x = a.person.fullName;
+            const y = b.person.fullName;
+            if (x < y) return -1;
+            if (x > y) return 1;
+            return 0;
+          });
+          this.loading = false;
         });
         this.sub = this.patientService.getAll(search).subscribe(data => {
-            this.items = data;
-            this.loading = false;
+          this.items = data;
+          this.loading = false;
         });
+      }
     }
+
 }
