@@ -270,7 +270,7 @@ public class TalonService {
         List<Talon> talons = new ArrayList<>();
         this.removeTalonsForPatientToDate(patientId, date);
         Therapy therapy = therapyService.findTheLastTherapy(patientId);
-        if (therapy != null) {
+        if (therapy != null && therapy.getId() != null) {
         	talons = therapyService.generateTalonsByTherapyToDate(therapy, date);
         	talons.stream().forEach(talon -> {
 	            talon.setAppointed(time);
@@ -289,7 +289,8 @@ public class TalonService {
          }
         else {
         	// TODO: Remove hardcoded diagnostic, use procedure type instead
-         //   talons.add(new Talon(patientId, procedureService.getProcedure(2), date, time));
+            Talon talon = new Talon(patientId, procedureService.getProcedure(2), date, time);
+            talons.add(talon);
         }
 
  /*       List<Talon> talonList = talons.stream()
@@ -501,4 +502,30 @@ public class TalonService {
     }
 
 
+    public void setAllActivityToPatientByDate(String patientId, Activity activity, LocalDate date) {
+
+        List<Talon> talons = repository.findByDateAndPatientId(date, patientId);
+        Patient patient = patientService.getPatient(patientId);
+
+        if (activity.equals(Activity.ACTIVE)) {
+            //patient.setDays(this.calculateDays(patientId));
+            patientService.savePatient(patient);
+            List<Integer> free = procedureService.getFreeProcedures();
+            talons.stream().forEach(talon -> {
+                if (free.contains(Integer.valueOf(talon.getProcedureId()))) {  // allowed procedures
+                    this.setActivity(talon.getId(), Activity.ACTIVE);
+                }
+            });
+        } else {
+            talons.stream().forEach(talon -> this.setActivity(talon.getId(), activity));
+        }
+
+        if (activity.equals(Activity.NON_ACTIVE)) {
+            patient.setStartActivity(null);
+            patient.setLastActivity(null);
+            patientService.savePatient(patient);
+        }
+
+
+    }
 }

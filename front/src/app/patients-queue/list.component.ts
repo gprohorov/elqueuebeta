@@ -101,16 +101,16 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
             data: item,
             closeDialogSubject: null
         };
-        
+
         this.modalService.openDialog(this.viewRef, options);
         options.closeDialogSubject.subscribe(() => {
-            const clientwindow = window.open('/#/home', 'clientwindow') 
+            const clientwindow = window.open('/#/home', 'clientwindow')
             clientwindow.location.href = '/#/check/' + item.id;
             setTimeout(() => { window.open('/#/home', 'clientwindow'); }, 10 * 1000);
             this.load(item.id);
         });
-        
-        const clientwindow = window.open('/#/home', 'clientwindow'); 
+
+        const clientwindow = window.open('/#/home', 'clientwindow');
         clientwindow.location.href = '/#/check/' + item.id;
     }
 
@@ -147,6 +147,14 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         if (!confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) return;
         this.loading = true;
         this.subTemp = this.service.updateActivityAll(item.id, value).subscribe(() => {
+            this.load(item.id);
+        });
+    }
+
+    updateActivityAllForTheDay(item: any, value: string, date: string) {
+        if (!confirm('Встановити всім процедурам "' + Activity[value].text + '" ?')) return;
+        this.loading = true;
+        this.subTemp = this.service.updateActivityAllForTheDay(item.id, value, date).subscribe(() => {
             this.load(item.id);
         });
     }

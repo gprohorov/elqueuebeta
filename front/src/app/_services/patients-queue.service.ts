@@ -14,6 +14,7 @@ export class PatientsQueueService {
     private deleteUrl = config.api_path + '/patient/delete/';
     private updateActivityUrl = config.api_path + '/patient/talon/set/activity/';
     private updateActivityAllUrl = config.api_path + '/patient/talon/setall/activity/';
+    private updateActivityAllForTheDayUrl = config.api_path + '/patient/talon/setall/activity-day/';
     private updateOutOfTurnUrl = config.api_path + '/patient/talon/set/outofturn/';
     private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
@@ -39,6 +40,9 @@ export class PatientsQueueService {
 
     updateActivityAll(id: string, value: string) {
         return this.http.get(this.updateActivityAllUrl + id + '/' + value).pipe(catchError(this.handleError));
+    }
+    updateActivityAllForTheDay(id: string, value: string, date: string) {
+        return this.http.get(this.updateActivityAllForTheDayUrl + id + '/' + value + '/' + date).pipe(catchError(this.handleError));
     }
 
     updateOutOfTurn(id: string, value: boolean) {

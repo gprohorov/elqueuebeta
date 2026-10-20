@@ -189,6 +189,15 @@ public class PatientController {
         talonService.setAllActivity(patientId, activity);
     }
 
+    @GetMapping("/talon/setall/activity-day/{patientId}/{activity}/{date}")
+    public void setAllActivityToPatientByDate(
+        @PathVariable(value = "patientId") String patientId,
+        @PathVariable(value = "activity") Activity activity,
+        @PathVariable(value = "date") String date)
+    {
+        talonService.setAllActivityToPatientByDate(patientId, activity, LocalDate.parse(date));
+    }
+
     @GetMapping("/balance/days/{patientId}/{days}")
     public List<Accounting> getBalance(
         @PathVariable(value = "patientId") String patientId,

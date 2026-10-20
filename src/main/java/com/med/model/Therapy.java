@@ -1,6 +1,7 @@
 package com.med.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -18,7 +19,7 @@ public class Therapy {
     private String diag;
     private String codeDiag;
     private String notes;
-    private List<Assignment> assignments;
+    private List<Assignment> assignments = new ArrayList<>();
     private int days;
     @Transient
     private Boolean manualTherapy;
@@ -41,6 +42,11 @@ public class Therapy {
         this.start = LocalDateTime.now();
         this.assignments = assignments;
         this.days = days;
+    }
+
+    public Therapy(String patientId) {
+        this.patientId = patientId;
+        this.start = LocalDateTime.now();
     }
 
     public String getId() {

@@ -91,6 +91,14 @@ public class PatientService {
 			.forEach(talon -> patient.getTalons().add(talon));
 		return patient;
 	}
+		public Patient getPatientWithTalonsForTheDay(String id,LocalDate date) {
+		Patient patient = repository.findById(id).orElse(null);
+		talonService.getTalonsForDate(date).stream().filter(talon -> talon.getPatientId().equals(id))
+			.forEach(talon -> patient.getTalons().add(talon));
+		return patient;
+	}
+
+
 
 	public Patient getPatientWithOneTalon(String patientId, int procedureId) {
 		Patient patient = repository.findById(patientId).get();
