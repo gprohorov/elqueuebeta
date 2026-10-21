@@ -525,7 +525,5 @@ public class TalonService {
             patient.setLastActivity(null);
             patientService.savePatient(patient);
         }
-
-
     }
 }
