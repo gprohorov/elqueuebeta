@@ -32,12 +32,12 @@ export class NavComponent implements OnInit, OnDestroy {
           case 'mg':
             this.project = 'МИГОВО';
             break;
-          case 'kl': 
+          case 'kl':
             this.project = 'КЛІШКІВЦІ';
             break;
           case 'cv':
           default:
-            this.project = 'ЧЕРНІВЦІ';
+            this.project = 'Колл-центр';
             break;
         }
     }
@@ -79,7 +79,7 @@ export class NavComponent implements OnInit, OnDestroy {
             data: { SA: false }
         });
     }
-    
+
     showGiveSalaryPopup() {
         this.modalService.openDialog(this.viewRef, {
             title: 'Видача зарплати лікарю',
