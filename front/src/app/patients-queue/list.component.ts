@@ -4,7 +4,7 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import * as moment from 'moment';
 
 import { Status, Activity } from '../_storage/index';
-import { PatientsQueueService, AuthService } from '../_services/index';
+import {PatientsQueueService, AuthService, AlertService} from '../_services/index';
 
 import { PatientIncomeModalComponent } from '../patient/income.modal.component';
 import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
@@ -33,12 +33,14 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     Statuses = Object.keys(Status);
     Activity = Activity;
     Activities = Object.keys(Activity);
+    isDialing: boolean = false;
 
     constructor(
         private viewRef: ViewContainerRef,
         private modalService: ModalDialogService,
         private service: PatientsQueueService,
-        private authService: AuthService
+        private authService: AuthService,
+        private alertService: AlertService
     ) { }
 
     ngOnInit() {
@@ -259,6 +261,18 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         });
     }
 
+     dialto(cellPhone: string): void {
+      this.isDialing = true;
+      this.alertService.info('Dialing to ' + cellPhone);
+      this.authService.dialto(cellPhone)
+        .subscribe((resp) => {
+          this.isDialing = false;
+          this.alertService.success((resp.status) + ' ' + (resp.code ? resp.code : '') + ' ' + (resp.message ? resp.message : ''));
+        }, error => {
+          this.isDialing = false;
+          this.alertService.error(error.code + ' : ' + error.message);
+        });
+    }
 }
 
 let sort_by;

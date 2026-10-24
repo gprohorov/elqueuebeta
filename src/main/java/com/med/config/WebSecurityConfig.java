@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/user/generatepass/**").permitAll()
+                .antMatchers("/api/v1/call-center/**").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

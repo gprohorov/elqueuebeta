@@ -22,11 +22,9 @@ public class CallController {
     @Autowired
     CallService callService;
 
-    @GetMapping("/get-call/{internal}/{external}")
-    public InitCall getCall( @PathVariable String external,
-                           @PathVariable String internal) {
-
-        return callService.getCall(internal, external);
+    @GetMapping("/get-call/{external}")
+    public Object getCall( @PathVariable String external) {
+        return callService.getCall(external);
     }
 
 

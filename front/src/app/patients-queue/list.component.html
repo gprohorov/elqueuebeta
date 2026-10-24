@@ -151,6 +151,8 @@
                             </div>
                           Дата реєстрації: <strong>{{item?.person?.registrationDate | date: 'dd.MM.yyyy'}}</strong>
                           Телефон: <strong>{{item?.person?.cellPhone}}</strong>
+                          <i class="fa fa-phone" style="cursor: pointer; color: green" (click)="dialto(item?.person?.cellPhone)" > </i>
+                          <span [hidden]="!isDialing" class="blink">дозвон...</span>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngFor="let talon of item.talons">

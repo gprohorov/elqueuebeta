@@ -61,5 +61,10 @@ export class AuthService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
+
+    public dialto(cellPhone: string): Observable<any> {
+       return  this.http.get( config.api_path + '/v1/call-center/get-call/' + cellPhone );
+
+    }
 }
 
