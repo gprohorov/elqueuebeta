@@ -4,4 +4,4 @@ cd front
 npm run build
 cd ..
 mvn clean package
-sudo systemctl restart mednean
+sudo systemctl restart call
