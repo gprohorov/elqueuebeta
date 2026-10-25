@@ -9,27 +9,27 @@ import { AlertService, AuthService } from '../_services/index';
     templateUrl: 'login.component.html'
 })
 export class LoginComponent implements OnInit {
-  
+
     model: any = {};
     loading = false;
     returnUrl: string;
     project: string;
-     
+
     constructor(
         private router: Router,
         private authService: AuthService,
         private alertService: AlertService) {
-      
+
         switch(config.project) {
           case 'mg':
             this.project = 'МИГОВО';
             break;
-          case 'kl': 
+          case 'kl':
             this.project = 'КЛІШКІВЦІ';
             break;
           case 'cv':
           default:
-            this.project = 'ЧЕРНІВЦІ';
+            this.project = 'CALL-CENTER';
             break;
         }
         this.authService.deAuth();
