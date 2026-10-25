@@ -57,7 +57,7 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
-        repository.deleteById("6add8cd128efab41d188a0b8");
+    //    repository.deleteById("6add8cd128efab41d188a0b8");
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 
