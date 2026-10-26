@@ -28,6 +28,7 @@ public class CallService {
         InitCall initCall = new InitCall();
         String internal = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
+        if(internal.equals("doctor1")) internal = "104";
         initCall.setInternalNumber(internal);
         initCall.setExternalNumber(external);
         Object object = binotelClient.getCall(initCall);
