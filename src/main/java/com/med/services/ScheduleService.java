@@ -96,18 +96,17 @@ public class ScheduleService {
         recomendationService.setAwardForRecomendation();
     }
 
-    // закрити робочий день
-    @Scheduled(cron = "0 30 21 * * *")
+    @Scheduled(cron = "0 50 21 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
 
-    @Scheduled(cron = "0 40 21 * * *")
-    public void salaryDateGeneration(){
-        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
-        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
-        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
-    }
+//    @Scheduled(cron = "0 40 21 * * *")
+//    public void salaryDateGeneration(){
+//        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
+//        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
+//        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
+//    }
 
 
     @Scheduled(cron = "0 45 21 * * SAT")
