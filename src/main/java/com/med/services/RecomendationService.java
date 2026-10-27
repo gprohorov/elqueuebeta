@@ -26,7 +26,7 @@ public class RecomendationService {
     PatientService patientService;
 
     public void setAwardForRecomendation() {
-
+        System.out.println("AWARD");
         List<Accounting> paymentList = accountingService.getAllForDate(LocalDate.now())
                 .stream().filter(accounting ->
                         (accounting.getPayment().equals(PaymentType.CASH)

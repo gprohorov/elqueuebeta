@@ -157,6 +157,12 @@ public class SalaryDailyService {
         doctorService.getAllActive().forEach(doctor ->
         	list.add(this.createSalaryDailyForDoctor(doctor.getId(), LocalDate.now())));
     }
+    public void generateSalariesForTheDate(LocalDate date) {
+        this.deleteSalariesForTheDate(date);
+        List<SalaryDaily> list = new ArrayList<>();
+        doctorService.getAllActive().forEach(doctor ->
+        	list.add(this.createSalaryDailyForDoctor(doctor.getId(), date)));
+    }
 
     public void deleteSalariesForTheDate(LocalDate date) {
         List<SalaryDaily> list = this.getSalariesForDate(date);
