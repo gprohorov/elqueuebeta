@@ -101,12 +101,14 @@ public class ScheduleService {
         workDayService.setWorkDayFinishValues();
     }
 
-    @Scheduled(cron = "0 0 17 * * *")
-    public void salaryDateGeneration(){
-        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
-        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
-        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
-    }
+
+//    // yesterday
+//    @Scheduled(cron = "0 0 17 * * *")
+//    public void salaryDateGeneration(){
+//        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
+//        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
+//        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
+//    }
 
 
     @Scheduled(cron = "0 5 19 * * SAT")
