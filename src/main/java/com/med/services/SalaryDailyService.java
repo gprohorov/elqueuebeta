@@ -136,7 +136,7 @@ public class SalaryDailyService {
         }
 */
         double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
-        System.out.println(doctor.getFullName() + " - "+ workingHours);
+//        System.out.println(doctor.getFullName() + " - "+ workingHours);
         int stavka = (int) (doctorService.getDoctor(doctorId).getRate() * workingHours / 175);
         // HARDCODE:   175  -  working hours in a month
 
@@ -147,7 +147,7 @@ public class SalaryDailyService {
         int bonuses = salaryDTOService.generateBonusesForDoctor(talons);
 
         salary.setBonuses(bonuses);
-
+        System.out.println(doctor.getFullName() + " " + salary.getTotal());
         return this.createSalaryDaily(salary);
     }
 
@@ -160,8 +160,10 @@ public class SalaryDailyService {
     public void generateSalariesForTheDate(LocalDate date) {
         this.deleteSalariesForTheDate(date);
         List<SalaryDaily> list = new ArrayList<>();
-        doctorService.getAllActive().forEach(doctor ->
-        	list.add(this.createSalaryDailyForDoctor(doctor.getId(), date)));
+        doctorService.getAllActive().forEach(doctor -> {
+                    list.add(this.createSalaryDailyForDoctor(doctor.getId(), date));
+                }
+        );
     }
 
     public void deleteSalariesForTheDate(LocalDate date) {

@@ -64,21 +64,21 @@ public class ScheduleService {
        workDayService.initWorkDay();
     }
 
-    @Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(cron = "0 10 1 * * *")
     void setWorkDayStart() {
         workDayService.setWorkDayStart();
     }
 
-    @Scheduled(cron = "0 0 12 * * *")
-    void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
-    }
+//    @Scheduled(cron = "0 0 12 * * *")
+//    void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
+//    }
 
-    @Scheduled(cron = "0 55 19 * * *")
+    @Scheduled(cron = "0 5 18 * * *")
     void checkBalancesForToday() {
         patientService.correctAllBalancesForToday();
     }
 
-    @Scheduled(cron = "0 5 21 * * *")
+    @Scheduled(cron = "0 15 18 * * *")
     public void salaryDailyGeneration(){
         log.info("  Daily  salary generation was starting at + {}", LocalDateTime.now());
         this.salaryDailyService.generateSalariesForToday();
@@ -86,30 +86,30 @@ public class ScheduleService {
     }
 
 
-    @Scheduled(cron = "0 15 21 * * *")
+    @Scheduled(cron = "0 35 18 * * *")
     void markAbsentDoctors() {
         salaryDailyService.setDoctorsTruant(LocalDate.now());
     }
 
-    @Scheduled(cron = "0 25 21 * * *")
+    @Scheduled(cron = "0 45 18 * * *")
     void  setAwardsForRecomendation(){
         recomendationService.setAwardForRecomendation();
     }
 
-    @Scheduled(cron = "0 50 21 * * *")
+    @Scheduled(cron = "0 55 18 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
 
-//    @Scheduled(cron = "0 40 21 * * *")
-//    public void salaryDateGeneration(){
-//        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
-//        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
-//        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
-//    }
+    @Scheduled(cron = "0 0 17 * * *")
+    public void salaryDateGeneration(){
+        log.info("  Yesterday  salary generation was starting at + {}", LocalDateTime.now());
+        this.salaryDailyService.generateSalariesForTheDate(LocalDate.now().minusDays(1));
+        log.info("  Yesterday  salary generation was finishead + {}", LocalDateTime.now());
+    }
 
 
-    @Scheduled(cron = "0 45 21 * * SAT")
+    @Scheduled(cron = "0 5 19 * * SAT")
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();

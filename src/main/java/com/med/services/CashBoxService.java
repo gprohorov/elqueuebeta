@@ -248,6 +248,21 @@ public class CashBoxService {
         System.out.println(" ----------  pair is injected");
         return repository.saveAll(list);
     }
+//
+//    @Scheduled(cron = "0 47 22 * * *")
+//    public void getAllCashForYesterday() {
+//        LocalDate date = LocalDate.now().minusDays(1);
+//        LocalDateTime morning = date.atStartOfDay();
+//        List<CashBox> list = repository.findAllByDateTimeAfter(morning);
+//        list.stream().filter(cash-> cash.getDateTime()
+//               .isBefore(date.plusDays(1).atStartOfDay()))
+//               .filter(cash-> cash.getSum() > 5000)
+//               .forEach(cash -> System.out.println(cash.getPatientId() + " " + cash.getSum()));
+//
+//    }
+//
+
+
 
 
 }
