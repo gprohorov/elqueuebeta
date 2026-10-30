@@ -265,10 +265,23 @@ public class TherapyService {
 	}
 	// Delete older than 1 year
 	public void deleteAllTherapiesOlderThanOneYear(){
-		List<Therapy> oldTherapies = this.repository
-				.findAllByStartBefore(LocalDateTime.now().minusMonths(22));
-		System.out.println("#################### Therapies deleted - " + oldTherapies.size());
-		this.repository.deleteAll(oldTherapies);
+		int month = 50;
+		List<String> oldTherapies = new ArrayList<>();
+		for (int i = 0; i < 38; i++) {
+			System.out.println(i);
+			 oldTherapies = this.repository
+					.findAllByStartBefore(LocalDateTime.now().minusMonths(month -i))
+					.stream()
+					.map(item -> item.getId())
+					.collect(Collectors.toList());
+
+			System.out.println("#################### Therapies to delete - " + oldTherapies.size());
+			oldTherapies.stream().forEach(id -> {
+//				System.out.println(id);
+				repository.deleteById(id);
+			});
+		}
+		//this.repository.deleteAll(oldTherapies);
 		System.out.println("==================  DONE!++++++++++++++++++");
 		oldTherapies = null;
 	}

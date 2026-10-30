@@ -136,7 +136,7 @@ public class SalaryDailyService {
         }
 */
         double workingHours = this.getWorkingHoursForDoctorForDay(doctorId, date);
-//        System.out.println(doctor.getFullName() + " - "+ workingHours);
+        System.out.println(doctor.getFullName() + " - "+ workingHours);
         int stavka = (int) (doctorService.getDoctor(doctorId).getRate() * workingHours / 175);
         // HARDCODE:   175  -  working hours in a month
 

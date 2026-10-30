@@ -59,15 +59,22 @@ public class ScheduleService {
     CashBoxService cashBoxService;
 
 
-    @Scheduled(cron = "0 0 7 * * *")
+    @Scheduled(cron = "0 45 23 * * *")
     void initWorkDay() {
        workDayService.initWorkDay();
     }
 
-    @Scheduled(cron = "0 10 1 * * *")
+    @Scheduled(cron = "0 46 23 * * *")
     void setWorkDayStart() {
         workDayService.setWorkDayStart();
     }
+
+
+    @Scheduled(cron = "0 47 23 * * *")
+    void closeWorkDay() {
+        workDayService.setWorkDayFinishValues();
+    }
+
 
 //    @Scheduled(cron = "0 0 12 * * *")
 //    void hotelBillsForToday(){ recordService.generateBillsForAllLodgers();
@@ -96,11 +103,6 @@ public class ScheduleService {
         recomendationService.setAwardForRecomendation();
     }
 
-    @Scheduled(cron = "0 55 18 * * *")
-    void closeWorkDay() {
-        workDayService.setWorkDayFinishValues();
-    }
-
 
 //    // yesterday
 //    @Scheduled(cron = "0 0 17 * * *")
@@ -111,26 +113,26 @@ public class ScheduleService {
 //    }
 
 
-    @Scheduled(cron = "0 5 19 * * SAT")
+    @Scheduled(cron = "0 5 20 * * SAT")
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();
     }
 
 //     @Scheduled(cron = "0 10 23 * * *")
-     @Scheduled(cron = "0 35 0 * * *")
+     @Scheduled(cron = "0 46 21 * * *")
     void cutOldTalonesAndTherapies() {
        System.out.println("Cut talons  more than 1 year   old");
        long years = 1;
        talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
          System.out.println("Cut  therapies more than 1 year old");
-      // therapyService.deleteAllTherapiesOlderThanOneYear();
+//            therapyService.deleteAllTherapiesOlderThanOneYear();
        System.out.println("-- Success cut ----");
     }
 
 
  // @Scheduled(cron = "1 13 21 * * *")
-   @Scheduled(cron = "1 1 1 1 * *")
+   @Scheduled(cron = "1 1 3 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
         System.out.println("Month report   generation");
        return monthService.createRegularMonthReport();

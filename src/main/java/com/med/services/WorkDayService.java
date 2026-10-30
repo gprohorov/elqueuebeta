@@ -68,9 +68,11 @@ public class WorkDayService  {
     }
 
 
-
-
     public void initWorkDay() {
+        repository.deleteById("6ae280c8c509f11f969af01e");
+        repository.deleteById("6ae2d2d2c509f11f969af01f");
+        repository.deleteById("6ae3d248c509f11f969af7a2");
+
         WorkDay workDay = new WorkDay(LocalDate.now());
         int assigned = (int) talonService.getTalonsForToday().stream()
                 .map(Talon::getPatientId).distinct().count();
@@ -80,7 +82,7 @@ public class WorkDayService  {
         this.create(workDay);
     }
 
-    // @Scheduled(cron = "0 0 10 * * *")
+
     public void setWorkDayStart() {
         WorkDay workDay = this.getWorkDay(LocalDate.now());
         LocalDateTime start = talonService.getTalonsForToday().stream()
@@ -363,10 +365,6 @@ public class WorkDayService  {
                .filter(accounting -> !accounting.getPayment().equals(PaymentType.PROC))
                .forEach(System.out::println);
 */
-
-
-
-
 
         //------------------------ debt------------------
         System.out.println(" ----------------  WORKDAY COMPLETE " + date.toString());
