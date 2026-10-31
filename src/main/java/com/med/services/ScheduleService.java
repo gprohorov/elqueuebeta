@@ -123,10 +123,10 @@ public class ScheduleService {
      @Scheduled(cron = "0 43 2 * * *")
     void cutOldTalonesAndTherapies() {
        System.out.println("Cut talons  more than 1 year   old");
-       long years = 1;
-       talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
+       long months = 6;
+       talonService.deleteAllTallonsBefore(LocalDate.now().minusMonths(months));
          System.out.println("Cut  therapies more than 1 year old");
-            therapyService.deleteAllTherapiesOlderThanOneYear();
+            therapyService.deleteAllByStartBefore(LocalDateTime.now().minusMonths(months));
        System.out.println("-- Success cut ----");
     }
 

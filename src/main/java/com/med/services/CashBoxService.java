@@ -89,6 +89,12 @@ public class CashBoxService {
         return repository.findAll().stream().mapToInt(CashBox::getSum).sum();
     }
 
+    public int getCashBoxToDate(LocalDate date) {
+        return repository.findAll().stream()
+                .filter(cash -> cash.getDateTime().isBefore(date.plusDays(1).atStartOfDay()))
+                .mapToInt(CashBox::getSum).sum();
+    }
+
     public Response toZero(int sum) {
 
     	if (sum > this.getCashBox()) {
@@ -123,6 +129,7 @@ public class CashBoxService {
         return repository.findAllByDateTimeAfter(morning);
     }
 
+    // 31 Oct 26  - need to check and test
     public int getOutlayForToday() {
         LocalDateTime morning = LocalDateTime.now().minusHours(12);
         return repository.findAllByDateTimeAfter(morning).stream()
@@ -132,11 +139,11 @@ public class CashBoxService {
                 .sum();
     }
     public int getOutlayForTheDay(LocalDate date) {
-        LocalDateTime morning = date.atTime(3,3,3);
+        LocalDateTime morning = date.atStartOfDay();
         return repository.findAllByDateTimeAfter(morning).stream()
                 .filter(cashBox -> cashBox.getSum()<0)
                 .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
-                .filter(cashBox -> cashBox.getDateTime().isBefore(morning.plusHours(16)))
+                .filter(cashBox -> cashBox.getDateTime().isBefore(date.plusDays(1).atStartOfDay()))
                 .mapToInt(CashBox::getSum)
                 .sum();
     }

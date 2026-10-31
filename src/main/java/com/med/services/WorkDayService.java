@@ -60,28 +60,12 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
-    //    repository.deleteById("6add8cd128efab41d188a0b8");
-//        WorkDay workDay = new WorkDay(date);
-//        List<WorkDay> all = this.allForDate(date);
-//        if (all.size() >= 1) {workDay = all.get(0);}
-//        if (all.size() >= 2) {
-//            repository.deleteAll(all);
-//            repository.save(workDay);
-//        }
-//        //-----------------------
-//        WorkDay dayToFix = repository.findByDate(date).orElse(null);
-//        if (dayToFix == null || dayToFix.getStart()  == null) {
-//            this.setWorkDayFinishValues(date);
-//        }
-//        //----------------------------------
-//
+
         if (date.equals(LocalDate.now().plusDays(5))) {
-            talonService.deleteAllTallonsBefore(LocalDate.now().minusMonths(6));
-          //  therapyService.deleteAllTherapiesOlderThanOneYear();
-            therapyService.deleteAllByStartBefore(LocalDateTime.now().minusMonths(6));
-            System.out.println("deletiobn complete");
-            this.repository.deleteById("6ae50fdec509f15e26094363");
-            this.repository.save(new WorkDay(LocalDate.now().minusDays(2)));
+          this.setWorkDayFinishValues(LocalDate.now().minusDays(5));
+          this.setWorkDayFinishValues(LocalDate.now().minusDays(2));
+          this.setWorkDayFinishValues(LocalDate.now().minusDays(1));
+          this.setWorkDayFinishValues(LocalDate.now());
         }
 
         System.out.println(date.toString());
@@ -95,8 +79,6 @@ public class WorkDayService  {
 
 
     public void initWorkDay(LocalDate date) {
-//        repository.deleteById("6ae42451c509f11f969af7a3");
-//        repository.deleteById("6ae50fdec509f15e26094363");
         WorkDay oldOne = this.getWorkDay(date);
         if (oldOne != null) { repository.delete(oldOne); }
         WorkDay workDay = new WorkDay(date);
@@ -413,6 +395,11 @@ public class WorkDayService  {
         // витрати
         int outlay = cashBoxService.getOutlayForTheDay(date);
         workDay.setOutlay(outlay);
+
+
+        // касса в конце дня
+        int kassa = cashBoxService.getCashBoxToDate(date);
+        workDay.setSumAtFinish(kassa);
 
 
 
