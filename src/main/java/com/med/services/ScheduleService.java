@@ -59,18 +59,18 @@ public class ScheduleService {
     CashBoxService cashBoxService;
 
 
-    @Scheduled(cron = "0 31 17 * * *")
+    @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
         LocalDate date = LocalDate.now();
         workDayService.initWorkDay(date); }
 
-    @Scheduled(cron = "30 31 17 * * *")
+    @Scheduled(cron = "0 0 10 * * *")
     void setWorkDayStart() {
         LocalDate date = LocalDate.now();
         workDayService.setWorkDayStart(date);
     }
 
-    @Scheduled(cron = "0 32 17 * * *")
+    @Scheduled(cron = "0 0 18 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
