@@ -61,12 +61,12 @@ public class WorkDayService  {
 
     public WorkDay getWorkDay(LocalDate date) {
 
-        if (date.equals(LocalDate.now().plusDays(5))) {
-          this.setWorkDayFinishValues(LocalDate.now().minusDays(5));
-          this.setWorkDayFinishValues(LocalDate.now().minusDays(2));
-          this.setWorkDayFinishValues(LocalDate.now().minusDays(1));
-          this.setWorkDayFinishValues(LocalDate.now());
-        }
+//        if (date.equals(LocalDate.now().plusDays(5))) {
+//          this.setWorkDayFinishValues(LocalDate.now().minusDays(5));
+//          this.setWorkDayFinishValues(LocalDate.now().minusDays(2));
+//          this.setWorkDayFinishValues(LocalDate.now().minusDays(1));
+//          this.setWorkDayFinishValues(LocalDate.now());
+//        }
 
         System.out.println(date.toString());
         return repository.findByDate(date).orElse(new WorkDay(date));
@@ -79,8 +79,9 @@ public class WorkDayService  {
 
 
     public void initWorkDay(LocalDate date) {
-        WorkDay oldOne = this.getWorkDay(date);
-        if (oldOne != null) { repository.delete(oldOne); }
+//        WorkDay oldOne = this.getWorkDay(date);
+//        if (oldOne != null) { repository.delete(oldOne); }
+        System.out.println("INIT");
         WorkDay workDay = new WorkDay(date);
         int assigned = (int) talonService.getTalonsForToday().stream()
                 .map(Talon::getPatientId).distinct().count();
