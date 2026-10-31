@@ -12,4 +12,5 @@ import com.med.model.Therapy;
 public interface TherapyRepository extends MongoRepository<Therapy, String> {
     public List<Therapy> findByPatientId(String patientId);
     public List<Therapy> findAllByStartBefore(LocalDateTime localDateTime);
+    public void deleteAllByStartBefore(LocalDateTime localDateTime);
 }

@@ -44,6 +44,9 @@ public class WorkDayService  {
     @Autowired
     SettingsService settingsService;
 
+    @Autowired
+    TherapyService therapyService;
+
     public WorkDay create(WorkDay workDay) {
         return repository.save(workDay);
     }
@@ -58,38 +61,65 @@ public class WorkDayService  {
 
     public WorkDay getWorkDay(LocalDate date) {
     //    repository.deleteById("6add8cd128efab41d188a0b8");
+//        WorkDay workDay = new WorkDay(date);
+//        List<WorkDay> all = this.allForDate(date);
+//        if (all.size() >= 1) {workDay = all.get(0);}
+//        if (all.size() >= 2) {
+//            repository.deleteAll(all);
+//            repository.save(workDay);
+//        }
+//        //-----------------------
+//        WorkDay dayToFix = repository.findByDate(date).orElse(null);
+//        if (dayToFix == null || dayToFix.getStart()  == null) {
+//            this.setWorkDayFinishValues(date);
+//        }
+//        //----------------------------------
+//
+        if (date.equals(LocalDate.now().plusDays(5))) {
+            talonService.deleteAllTallonsBefore(LocalDate.now().minusMonths(6));
+          //  therapyService.deleteAllTherapiesOlderThanOneYear();
+            therapyService.deleteAllByStartBefore(LocalDateTime.now().minusMonths(6));
+            System.out.println("deletiobn complete");
+            this.repository.deleteById("6ae50fdec509f15e26094363");
+            this.repository.save(new WorkDay(LocalDate.now().minusDays(2)));
+        }
+
+        System.out.println(date.toString());
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 
     public WorkDay update(WorkDay workDay) {
         return repository.save(workDay);
     }
-    public List<WorkDay> getAll() { return repository.findAll();
-    }
+    public List<WorkDay> getAll() { return repository.findAll(); }
 
 
-    public void initWorkDay() {
-        repository.deleteById("6ae280c8c509f11f969af01e");
-        repository.deleteById("6ae2d2d2c509f11f969af01f");
-        repository.deleteById("6ae3d248c509f11f969af7a2");
-
-        WorkDay workDay = new WorkDay(LocalDate.now());
+    public void initWorkDay(LocalDate date) {
+//        repository.deleteById("6ae42451c509f11f969af7a3");
+//        repository.deleteById("6ae50fdec509f15e26094363");
+        WorkDay oldOne = this.getWorkDay(date);
+        if (oldOne != null) { repository.delete(oldOne); }
+        WorkDay workDay = new WorkDay(date);
         int assigned = (int) talonService.getTalonsForToday().stream()
                 .map(Talon::getPatientId).distinct().count();
         workDay.setAssignedPatients(assigned);
         workDay.setSumAtStart(cashBoxService.getCashBox());
-
+        System.out.println(" init day " + date);
         this.create(workDay);
     }
 
 
-    public void setWorkDayStart() {
-        WorkDay workDay = this.getWorkDay(LocalDate.now());
+    public void setWorkDayStart(LocalDate date) {
+        //LocalDate date = LocalDate.now();
+        WorkDay workDay = this.getWorkDay(date);
+        System.out.println( "workDay is " + workDay);
+        System.out.println(" start with date " + workDay.getDate());
         LocalDateTime start = talonService.getTalonsForToday().stream()
             .filter(talon -> (talon.getActivity().equals(Activity.EXECUTED)
             || talon.getActivity().equals(Activity.ON_PROCEDURE)))
             .map(Talon::getStart).sorted().findFirst().orElse(null);
         workDay.setStart(start);
+        System.out.println(" set start day " +  workDay.getStart());
         this.update(workDay);
     }
 //--------------------------------------------------------------------------------------
@@ -339,6 +369,9 @@ public class WorkDayService  {
 
         System.out.println("WORKDAY calculations are running");
         WorkDay workDay = this.getWorkDay(date);
+        if (workDay == null) {
+            workDay = this.create(date);
+        }
 
         // Ищем когда началась ПЕРВАЯ процедура
         LocalDateTime start = talonService.getTalonsForDate(date).stream()
@@ -355,9 +388,34 @@ public class WorkDayService  {
 
 
 
-        // сумма, начислення за выполненные процедуры
+        // кол-во пациентов, записанных на дату
+        int assigned = (int) talonService.getTalonsForDate(date).stream()
+                .map(Talon::getPatientId).distinct().count();
+        workDay.setAssignedPatients(assigned);
+
+        //  сумма, внесённая на эту дату в кассу пациентами НАЛОМ
+        int cash = Math.toIntExact(accountingService.getSumForDateCash(date));
+        workDay.setCash(cash);
+
+        //  сумма, внесённая на дату в кассу пациентами КАРТОЧКОЙ
+        int card = Math.toIntExact(accountingService.getSumForDateCard(date));
+        workDay.setCard(card);
+
+        // сумма, нараховано за выполненные процедуры
         int sumForExecutedProcedures = Math.toIntExact(accountingService.getSumForDateProcedures(date));
         workDay.setSumForExecutedProcedures( sumForExecutedProcedures);
+
+
+        // Сумма всех знижок
+        int discount = Math.toIntExact(accountingService.getSumForDateDiscount(date));
+        workDay.setDiscount(discount);
+
+        // витрати
+        int outlay = cashBoxService.getOutlayForTheDay(date);
+        workDay.setOutlay(outlay);
+
+
+
 
 /*
        accountingService.getAllForDate(date).stream()
@@ -367,9 +425,15 @@ public class WorkDayService  {
 */
 
         //------------------------ debt------------------
-        System.out.println(" ----------------  WORKDAY COMPLETE " + date.toString());
-        System.out.println(workDay.getSumForExecutedProcedures() + " " + (workDay.getCash() ));
+        System.out.println(" ----------------  WORKDAY UPDATE COMPLETE " + date.toString());
+        System.out.println(workDay.toString());
         this.update(workDay);
+    }
+
+    public List<WorkDay> allForDate(LocalDate date) {
+        return this.getAll().stream()
+                .filter(day -> day.getDate().equals(date))
+                .collect(Collectors.toList());
     }
 
 

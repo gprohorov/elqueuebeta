@@ -291,4 +291,10 @@ public class TherapyService {
 	}
 
 
+	public void deleteAllByStartBefore(LocalDateTime localDateTime){
+		System.out.println("Starting deleteion");
+		this.repository.deleteAllByStartBefore(localDateTime);
+	}
+
+
 }

@@ -59,18 +59,18 @@ public class ScheduleService {
     CashBoxService cashBoxService;
 
 
-    @Scheduled(cron = "0 45 23 * * *")
+    @Scheduled(cron = "0 0 7 * * *")
     void initWorkDay() {
-       workDayService.initWorkDay();
-    }
+        LocalDate date = LocalDate.now();
+        workDayService.initWorkDay(date); }
 
-    @Scheduled(cron = "0 46 23 * * *")
+    @Scheduled(cron = "0 0 10 * * *")
     void setWorkDayStart() {
-        workDayService.setWorkDayStart();
+        LocalDate date = LocalDate.now();
+        workDayService.setWorkDayStart(date);
     }
 
-
-    @Scheduled(cron = "0 47 23 * * *")
+    @Scheduled(cron = "0 0 20 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }
@@ -113,26 +113,26 @@ public class ScheduleService {
 //    }
 
 
-    @Scheduled(cron = "0 5 20 * * SAT")
+    @Scheduled(cron = "0 5 21 * * SAT")
     GeneralStatisticsDTOWeekly calculateWorkWeek() {
         System.out.println("Week report generation");
        return weekService.generateWeeklyForCurrentWeek();
     }
 
-//     @Scheduled(cron = "0 10 23 * * *")
-     @Scheduled(cron = "0 46 21 * * *")
+//     @Scheduled(cron = "0 21 0 * * *")
+     @Scheduled(cron = "0 43 2 * * *")
     void cutOldTalonesAndTherapies() {
        System.out.println("Cut talons  more than 1 year   old");
        long years = 1;
        talonService.deleteAllTallonsBefore(LocalDate.now().minusYears(years));
          System.out.println("Cut  therapies more than 1 year old");
-//            therapyService.deleteAllTherapiesOlderThanOneYear();
+            therapyService.deleteAllTherapiesOlderThanOneYear();
        System.out.println("-- Success cut ----");
     }
 
 
  // @Scheduled(cron = "1 13 21 * * *")
-   @Scheduled(cron = "1 1 3 1 * *")
+   @Scheduled(cron = "1 1 4 1 * *")
     GeneralStatisticsDTOMonthly calculateWorkMonth() {
         System.out.println("Month report   generation");
        return monthService.createRegularMonthReport();

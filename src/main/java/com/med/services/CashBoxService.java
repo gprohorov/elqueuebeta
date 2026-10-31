@@ -131,6 +131,15 @@ public class CashBoxService {
                 .mapToInt(CashBox::getSum)
                 .sum();
     }
+    public int getOutlayForTheDay(LocalDate date) {
+        LocalDateTime morning = date.atTime(3,3,3);
+        return repository.findAllByDateTimeAfter(morning).stream()
+                .filter(cashBox -> cashBox.getSum()<0)
+                .filter(cashBox -> !cashBox.getType().equals(CashType.EXTRACTION))
+                .filter(cashBox -> cashBox.getDateTime().isBefore(morning.plusHours(16)))
+                .mapToInt(CashBox::getSum)
+                .sum();
+    }
 
 
     // 17 september 2019
