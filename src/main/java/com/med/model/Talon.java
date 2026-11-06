@@ -17,7 +17,8 @@ public class Talon {
     private Procedure procedure;
     private int zones = 1;
     private String desc;
-    private int appointed;
+    private int appointed = 9;
+    private double appointedFloat = 8.30;
     private LocalDateTime start;
     private LocalDateTime executionTime;
     @Nullable
