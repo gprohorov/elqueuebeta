@@ -110,18 +110,11 @@
                         <div class="card-header">
                             <div class="row form-inline">
                                 <h4 class="col-auto">Процедури</h4>
-                                <div class="col-auto">
-                                    <button class="btn btn-info" (click)="showAssignProcedurePopup(item)">Додати процедуру</button>
-                                </div>
-                                <div class="col-auto">
-                                    <button class="btn btn-warning" (click)="showIncomePopup(item)">Розрахувати</button>
-                                </div>
+
                                 <div class="col-auto">
                                     <button class="btn btn-info" (click)="showAssignProceduresOnDatePopup(item)">Наступна дата</button>
                                 </div>
-                                <div class="col-auto">
-                                    <button class="btn btn-success" (click)="showAssignHotelPopup(item)">Поселити у готель</button>
-                                </div>
+
                                 <div class="col-auto ml-auto mt-3">
                                     <button
                                         title='Встановити всім процедурам "{{Activity.ACTIVE.text}}"'

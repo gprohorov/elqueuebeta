@@ -4,7 +4,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
-    
+
         <!-- Doctor interface section START -->
         <div class="navbar-nav mr-auto" *ngxPermissionsOnly="['ROLE_DOCTOR']">
             <a class="dropdown-item" routerLink='/workplace' routerLinkActive="active">Пацієнти
@@ -37,7 +37,14 @@
             	routerLinkActive="active">Вікно клієнта</a>
         </div>
         <!-- Administrator interface section END -->
-        
+
+      <!-- Telephone caller interface section START -->
+      <div class="navbar-nav" *ngxPermissionsOnly="['ROLE_CALL']">
+        <a class="dropdown-item" routerLink="/patients-queue" routerLinkActive="active">Пацієнти</a>
+        <a class="dropdown-item" routerLink="/patients" routerLinkActive="active">База пацієнтів</a>
+
+      </div>
+      <!-- Telephone caller interface section END -->
         <!-- Super Administrator interface section START -->
         <div class="navbar-nav" *ngxPermissionsOnly="['ROLE_SUPERADMIN']">
         	<a class="dropdown-item" routerLink="/procedures-queue" routerLinkActive="active">Процедури</a>
@@ -53,13 +60,13 @@
 	            	<a class="dropdown-item" routerLink="/hotel"
 	            		routerLinkActive="active">Готель</a>
                    	<hr/>
-	            	<a class="dropdown-item" routerLink="/settings" 
+	            	<a class="dropdown-item" routerLink="/settings"
                     	routerLinkActive="active">Загальні налаштування</a>
-                    <a class="dropdown-item" routerLink="/users" 
+                    <a class="dropdown-item" routerLink="/users"
                     	routerLinkActive="active">Список аккаунтів</a>
-                    <a class="dropdown-item" routerLink="/doctors" 
+                    <a class="dropdown-item" routerLink="/doctors"
                     	routerLinkActive="active">Список лікарів</a>
-                    <a class="dropdown-item" routerLink="/procedures" 
+                    <a class="dropdown-item" routerLink="/procedures"
                     	routerLinkActive="active">Список процедур</a>
                    	<hr/>
 	                <button class="dropdown-item btn btn-primary" (click)="showKassaAddOutcomePopup()">
@@ -133,8 +140,8 @@
 	        </div>
         </div>
         <!-- Super Administrator interface section END -->
-        
-        <div class="navbar-nav ml-auto">
+
+      <div class="navbar-nav ml-auto">
             <a class="dropdown-item" routerLink="/login">
                 Вихід <small>({{user.info?.fullName || user.username}})</small>
             </a>

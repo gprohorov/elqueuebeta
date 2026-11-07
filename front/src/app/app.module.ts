@@ -116,10 +116,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard, NgxPermissionsGuard],
         data: {
             permissions: {
-                except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR', 'ROLE_HEAD'],
+                except: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_DOCTOR', 'ROLE_HEAD', 'ROLE_CALL'],
                 redirectTo: {
                     ROLE_SUPERADMIN: 'procedures-queue',
                     ROLE_ADMIN: 'patients-queue',
+                    ROLE_CALL: 'patients-queue',
                     ROLE_DOCTOR: 'workplace',
                     default: 'login'
                 }
@@ -138,12 +139,12 @@ const appRoutes: Routes = [
     {
         path: 'patients', component: PatientListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD', 'ROLE_CALL'], redirectTo: 'login' } }
     },
     {
         path: 'patient-form', component: PatientFormComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_HEAD', 'ROLE_CALL'], redirectTo: 'login' } }
     },
 
     {
@@ -188,7 +189,7 @@ const appRoutes: Routes = [
     {
         path: 'patients-queue', component: PatientsQueueListComponent,
         canActivate: [AuthGuard, NgxPermissionsGuard],
-        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN'], redirectTo: 'login' } }
+        data: { permissions: { only: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_CALL'], redirectTo: 'login' } }
     },
 
     {
