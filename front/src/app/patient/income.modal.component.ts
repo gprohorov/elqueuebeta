@@ -44,20 +44,22 @@ export class PatientIncomeModalComponent implements IModalDialog {
         }
         this.calcBalanceAfter();
 
-        options.actionButtons = [{
-            text: 'Виписка',
-            buttonClass: 'btn btn-info mr-5',
-            onAction: () => {
-                setTimeout(() => { window.open('/#/receipt/' + this.model.patientId, '_blank'); }, 0);
-            }
-        }, {
-            text: 'Внести',
-            buttonClass: 'insbutton btn btn-primary',
-            onAction: () => {
-                document.getElementsByClassName('insbutton')[0]['disabled'] = true;
-                return this.submit(this.myForm, options);
-            }
-        }, { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
+        options.actionButtons = [
+        //   {
+        //     text: 'Виписка',
+        //     buttonClass: 'btn btn-info mr-5',
+        //     onAction: () => {
+        //         setTimeout(() => { window.open('/#/receipt/' + this.model.patientId, '_blank'); }, 0);
+        //     }
+        // }, {
+        //     text: 'Внести',
+        //     buttonClass: 'insbutton btn btn-primary',
+        //     onAction: () => {
+        //         document.getElementsByClassName('insbutton')[0]['disabled'] = true;
+        //         return this.submit(this.myForm, options);
+        //     }
+        // },
+          { text: 'Скасувати', buttonClass: 'btn btn-secondary' }];
     }
 
     getDetails() {
