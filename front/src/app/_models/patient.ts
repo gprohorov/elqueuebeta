@@ -11,6 +11,7 @@ export class Patient {
     recomendation: string;
     recomendationName: string;
     desc: string;
+    consultation: boolean;
 
     constructor() {
         this.person = new Person();

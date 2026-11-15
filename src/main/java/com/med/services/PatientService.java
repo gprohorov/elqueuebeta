@@ -8,18 +8,12 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.med.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.PatientRegDTO;
-import com.med.model.Status;
-import com.med.model.Talon;
-import com.med.model.Therapy;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
 import com.med.repository.AccountingRepository;
@@ -73,7 +67,7 @@ public class PatientService {
 	}
 
 	public Patient savePatient(Patient patient) {
-        log.info("-------- patient saving---  balance - {}", patient.getBalance());
+       // log.info("-------- patient saving---  balance - {}", patient.getBalance());
 		return repository.save(patient);
 	}
 
@@ -131,6 +125,16 @@ public class PatientService {
 		patient.setStatus(status);
 		return repository.save(patient);
 	}
+
+	public Patient setCallStatus(String patientId, CallStatus callStatus) {
+		Patient patient = this.getPatient(patientId);
+		log.info(callStatus);
+		patient.setCallStatus(callStatus);
+		log.info(patient.getPerson().getFullName() + " - " +patient.getCallStatus());
+		return repository.save(patient);
+	}
+
+
 	
 	public Patient updateDiscount(String patientId, int discount) {
 		Patient patient = this.getPatient(patientId);
@@ -196,6 +200,24 @@ public class PatientService {
 		//System.out.println( System.currentTimeMillis() - start);
 		return patients;
 	}
+
+
+	// Patients on consultation ONLY
+	public List<Patient> getAllPatientsForConsultation(LocalDate date){
+		List<Patient> patients = new ArrayList<>();
+		List<Talon> talons = talonService.getTalonsForDate(date);
+		talons.stream()
+				.filter(talon -> talon.getProcedure().getId() == 2)
+				.forEach(talon -> {
+					String patientId = talon.getPatientId();
+					Patient patient = this.getPatient(patientId);
+					patients.add(patient);
+				});
+		return patients;
+	}
+
+
+
 
 	/////////////// assign to date //////////////////////////
 	public List<Talon> assignPatientToDate(String patientId, LocalDate date, int time) {
@@ -284,6 +306,19 @@ public class PatientService {
 		});
 		log.info(" --------------  Balance checking finished ");
 	}
+
+	 public void setAllTrueConsultation(){
+		List<String> ids = this.getAll()
+				.stream()
+				.map(patient -> patient.getId())
+				.collect(Collectors.toList());
+		 System.out.println("============");
+		 ids.forEach(id -> {
+			 Patient patient = getPatient(id);
+			 patient.setConsultation(true);
+			 this.savePatient(patient);
+		 });
+	 }
 
 
 

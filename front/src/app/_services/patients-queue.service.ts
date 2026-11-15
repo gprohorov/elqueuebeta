@@ -19,6 +19,7 @@ export class PatientsQueueService {
     private updateStatusUrl = config.api_path + '/patient/set/status/';
     private updateBalanceUrl = config.api_path + '/patient/update/balance/';
     private executeProcedureUrl = config.api_path + '/talon/execute/';
+    private changeCallStatusUrl = config.api_path + '/patient/set/callstatus/';
 
     constructor(private http: HttpClient) { }
 
@@ -70,4 +71,14 @@ export class PatientsQueueService {
         console.error('An error occurred', err);
         return Observable.throw(err.message || err);
     }
+    // Change call status for patient in queue
+    changeCallStatus(id: string, status: string) {
+     // console.log(status + ' ' + id);
+      const url = this.changeCallStatusUrl + id + '/' + status;
+    //  console.log(url);
+      return this.http.get(url).subscribe((res) => {
+        console.log(res);
+      });
+    }
+
 }

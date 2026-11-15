@@ -27,14 +27,21 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
     hotelPatients: number;
     activePatients: number;
     notActivePatients: number;
+    consultationsNumber: number;
     date: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, -14);
-    filters: any = 'all'; // possible values: 'all', 'active', 'notactive', 'hotel'
+    filters: any = 'all'; // possible values: 'all', 'active', 'notactive', 'hotel', 'consultation'
     Status = Status;
     Statuses = Object.keys(Status);
     Activity = Activity;
     Activities = Object.keys(Activity);
     isDialing: boolean = false;
-
+    callColors = {
+      WAITING: 'green',
+      CALLING: 'yellow',
+      SUCCESS: 'black',
+      FAILED: 'red',
+      BAD: 'blue'
+    };
     constructor(
         private viewRef: ViewContainerRef,
         private modalService: ModalDialogService,
@@ -217,7 +224,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
               || item.activity === 'INVITED'
               || item.activity === 'STUCK'
             ) && this.filters === 'notactive')
-            || (item.hotel === false && this.filters === 'hotel');
+            || (item.consultation === false && this.filters === 'consultation');
     }
 
     changeDay(days: number) {
@@ -256,6 +263,9 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
                 || x.activity === 'INVITED'
                 || x.activity === 'STUCK' ).length;
             this.notActivePatients = this.totalPatients - this.activePatients;
+
+            this.consultationsNumber = data.filter(x => x.consultation === false ).length;
+
             this.loading = false;
             if (itemId) this.scrollToRow(itemId);
         });
@@ -273,6 +283,10 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
           this.alertService.error(error.code + ' : ' + error.message);
         });
     }
+
+  protected onChangeCallStatus(item: any) {
+      this.service.changeCallStatus(item.id, item.callStatus);
+  }
 }
 
 let sort_by;

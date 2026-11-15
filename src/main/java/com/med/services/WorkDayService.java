@@ -57,6 +57,8 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
+        System.out.println(date);
+//        patientService.setAllTrueConsultation();
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 

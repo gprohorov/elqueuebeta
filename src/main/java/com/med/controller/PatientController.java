@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.med.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.med.model.Activity;
-import com.med.model.Patient;
-import com.med.model.PatientRegDTO;
-import com.med.model.Status;
-import com.med.model.Talon;
 import com.med.model.balance.Accounting;
 import com.med.model.balance.Receipt;
 import com.med.model.balance.ReceiptToday;
@@ -160,6 +155,13 @@ public class PatientController {
     public List<Patient> showPatientsForDate(@PathVariable(value = "date") String date) {
         return service.getAllForDate(LocalDate.parse(date));
     }
+    // Patients for date  on consultation ONLY
+    @GetMapping("/list/consultation/date/{date}")
+    public List<Patient> showPatientsOnConsultationForDate(
+            @PathVariable(value = "date") String date) {
+        return service.getAllPatientsForConsultation(LocalDate.parse(date));
+    }
+
 
     @GetMapping("/talon/set/activity/{talonId}/{activity}")
     public Talon talonSetActivity(
@@ -241,6 +243,17 @@ public class PatientController {
         service.correctAllBalancesForToday();
         return;
     }
+
+    // 15 nov 26
+    @GetMapping("/set/callstatus/{patientId}/{callStatus}")
+    public Patient patientSetCallStatus(
+            @PathVariable(value = "patientId") String patientId,
+            @PathVariable(value = "callStatus") CallStatus callStatus) {
+        System.out.println(callStatus);
+        return  service.setCallStatus(patientId, callStatus);
+    }
+
+
 
 
 }

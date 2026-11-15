@@ -38,6 +38,8 @@ public class Patient {
     private String recomendation; // id of recomendator
     private String recomendationName; // name of recomendator
     private String desc;
+    private CallStatus callStatus = CallStatus.WAITING;
+    private boolean isConsultation = false;
 
     public Patient() {}
 
@@ -76,6 +78,22 @@ public class Patient {
         this.desc = desc;
         this.recomendation = recomendation;
 
+    }
+
+    public CallStatus getCallStatus() {
+        return callStatus;
+    }
+
+    public void setCallStatus(CallStatus callStatus) {
+        this.callStatus = callStatus;
+    }
+
+    public boolean isConsultation() {
+        return isConsultation;
+    }
+
+    public void setConsultation(boolean consultation) {
+        isConsultation = consultation;
     }
 
     public String getRecomendation() {
