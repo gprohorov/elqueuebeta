@@ -224,7 +224,7 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
               || item.activity === 'INVITED'
               || item.activity === 'STUCK'
             ) && this.filters === 'notactive')
-            || (item.consultation === false && this.filters === 'consultation');
+            || (item.consultation === true && this.filters === 'consultation');
     }
 
     changeDay(days: number) {
