@@ -64,12 +64,12 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
-        log.info( "Work day to get " + date.toString());
-        List<Patient> patients = patientService.getAllForDate(date);
-        patients.forEach(patient -> {
-            patient.setConsultation(true);
-            patientService.savePatient(patient);
-        });
+//        log.info( "Work day to get " + date.toString());
+//        List<Patient> patients = patientService.getAllForDate(date);
+//        patients.forEach(patient -> {
+//            patient.setConsultation(true);
+//            patientService.savePatient(patient);
+//        });
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 
