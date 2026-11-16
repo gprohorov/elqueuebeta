@@ -27,13 +27,13 @@ public enum Role implements GrantedAuthority {
     		return name();
     	}
     },
-    ROLE_USER {
+    ROLE_CALL {
         @Override
         public String getAuthority() {
             return name();
         }
     },
-    ROLE_CALLER {
+    ROLE_USER {
         @Override
         public String getAuthority() {
             return name();

@@ -142,6 +142,7 @@ public class TherapyService {
 		talon.setZones(0);
 
 		patient.setLastActivity(LocalDateTime.now());
+		patient.setConsultation(true);
 		patientService.savePatient(patient);
 
 		therapy.setPatientId(patient.getId());

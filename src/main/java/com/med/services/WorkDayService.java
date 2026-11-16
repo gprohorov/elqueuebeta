@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import com.med.model.balance.Accounting;
 import com.med.model.balance.PaymentType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import com.med.repository.WorkDayRepository;
 
 @Service
 public class WorkDayService  {
+
+    private static final Logger log = LogManager.getLogger(PatientService.class);
 
     @Autowired
     WorkDayRepository repository;
@@ -60,15 +64,12 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
-
-//        if (date.equals(LocalDate.now().plusDays(5))) {
-//          this.setWorkDayFinishValues(LocalDate.now().minusDays(5));
-//          this.setWorkDayFinishValues(LocalDate.now().minusDays(2));
-//          this.setWorkDayFinishValues(LocalDate.now().minusDays(1));
-//          this.setWorkDayFinishValues(LocalDate.now());
-//        }
-
-        System.out.println(date.toString());
+        log.info( "Work day to get " + date.toString());
+        List<Patient> patients = patientService.getAllForDate(date);
+        patients.forEach(patient -> {
+            patient.setConsultation(true);
+            patientService.savePatient(patient);
+        });
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 

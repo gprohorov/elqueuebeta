@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.med.model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,8 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class TalonService {
+
+    private static final Logger log = LogManager.getLogger(PatientService.class);
 
     @Autowired
     TalonRepository repository;
@@ -57,6 +61,13 @@ public class TalonService {
     }
 
     public Talon createTalon(String patientId, int procedureId, LocalDate date) {
+
+        if (procedureId == 2) {
+            Patient patient = patientService.getPatient(patientId);
+            patient.setConsultation(true);
+            patientService.savePatient(patient);
+        }
+        log.info("Talon seemed has been created");
         return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), date));
     }
     
