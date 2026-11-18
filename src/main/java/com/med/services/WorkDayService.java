@@ -58,7 +58,13 @@ public class WorkDayService  {
 
     public WorkDay getWorkDay(LocalDate date) {
         System.out.println(date);
-//        patientService.setAllTrueConsultation();
+        // put your code here
+        // to activate while get a day in workday request
+//        List<Patient> patients = patientService.getAllForDate(date);
+//        patients.forEach(patient -> {
+//            patient.setAppointed(patient.getAppointed() * 100);
+//            patientService.savePatient(patient);
+//        });
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
 

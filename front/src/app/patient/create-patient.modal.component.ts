@@ -36,7 +36,7 @@ export class CreatePatientModalComponent implements IModalDialog, OnDestroy {
             this.data.procedureId = this.procedures[0].id;
             this.data.date = new Date().toISOString().split('T').shift();
             const hours = new Date().getHours();
-            this.data.appointed = hours < 8 ? 8 : hours > 16 ? 16 : hours;
+            this.data.appointed = hours < 8 ? 800 : hours > 16 ? 1600 : hours;
             this.data.activate = true;
         });
 

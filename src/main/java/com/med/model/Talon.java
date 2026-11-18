@@ -94,7 +94,7 @@ public class Talon {
         this.executionTime = null;
         this.doctor = null;
         this.sum = 0;
-        this.appointed = 9;
+        this.appointed = 0;
     }
 
     public Talon(String patientId, Procedure procedure, LocalDate date, int appointed) {

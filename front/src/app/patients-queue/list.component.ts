@@ -1,16 +1,16 @@
-﻿import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { ModalDialogService } from 'ngx-modal-dialog';
+﻿import {Component, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {ModalDialogService} from 'ngx-modal-dialog';
 import * as moment from 'moment';
 
-import { Status, Activity } from '../_storage/index';
-import {PatientsQueueService, AuthService, AlertService} from '../_services/index';
+import {Activity, Status} from '../_storage/index';
+import {AlertService, AuthService, PatientsQueueService} from '../_services/index';
 
-import { PatientIncomeModalComponent } from '../patient/income.modal.component';
-import { PatientAssignProcedureModalComponent } from '../patient/assign-procedure.modal.component';
-import { PatientAssignProceduresOnDateModalComponent } from '../patient/assign-procedures-on-date.modal.component';
-import { PatientAssignHotelModalComponent } from '../patient/assign-hotel.modal.component';
-import { CreatePatientModalComponent } from '../patient/create-patient.modal.component';
+import {PatientIncomeModalComponent} from '../patient/income.modal.component';
+import {PatientAssignProcedureModalComponent} from '../patient/assign-procedure.modal.component';
+import {PatientAssignProceduresOnDateModalComponent} from '../patient/assign-procedures-on-date.modal.component';
+import {PatientAssignHotelModalComponent} from '../patient/assign-hotel.modal.component';
+import {CreatePatientModalComponent} from '../patient/create-patient.modal.component';
 
 @Component({
     templateUrl: './list.component.html'
@@ -232,6 +232,13 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         date.setDate(date.getDate() + days);
         this.date = date.toISOString().split('T')[0];
         this.load();
+    }
+
+    convertTime(value: number) {
+        if (value < 20) {return value + ':00'; }
+        const hour = Math.floor(value / 100).toString() + ':';
+        const minutes = (value % 100).toString().padStart(2, '0');
+      return  hour + minutes;
     }
 
     isSuperadmin() {
