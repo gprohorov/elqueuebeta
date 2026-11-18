@@ -225,6 +225,13 @@ export class PatientsQueueListComponent implements OnInit, OnDestroy {
         this.load();
     }
 
+  convertTime(value: number) {
+    if (value < 20) {return value + ':00'; }
+    const hour = Math.floor(value / 100).toString() + ':';
+    const minutes = (value % 100).toString().padStart(2, '0');
+    return  hour + minutes;
+  }
+
     isSuperadmin() {
         return this.authService.isSuperadmin();
     }
