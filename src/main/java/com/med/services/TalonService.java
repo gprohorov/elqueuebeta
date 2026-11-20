@@ -53,10 +53,15 @@ public class TalonService {
     }
 
     public Talon createTalon(String patientId, int procedureId, int days) {
-        return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), days));
+        return this.saveTalon(new Talon(patientId, procedureService.getProcedure(procedureId), days));
     }
 
     public Talon saveTalon(Talon talon) {
+        int hour = talon.getAppointed();
+        if (hour == 0) { hour = LocalDateTime.now().getHour() * 100;}
+        if (hour <= 24 ) { hour = hour * 100; }
+        if (hour > 2400) { hour = hour / 100; }
+        talon.setAppointed(hour);
         return repository.save(talon);
     }
 
@@ -95,7 +100,7 @@ public class TalonService {
     		therapy.setAssignments(assignments);
     		therapyService.saveTherapy(therapy);
     	}
-        return repository.save(talon);
+        return this.saveTalon(talon);
     }
 
     public List<Talon> getAll() {

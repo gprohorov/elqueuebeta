@@ -64,23 +64,25 @@ public class WorkDayService  {
     }
 
     public WorkDay getWorkDay(LocalDate date) {
-        // put your code here
-        // to activate while get a day in workday request
-//        List<Talon> talons = talonService.getTalonsForDate(date);
-//        talons.forEach(talon -> {
-//            int appointment = talon.getAppointed();
-//            if (appointment < 20) {
-//                appointment = appointment * 100;
-//            }
-//            if (appointment >=  8000) {
-//                appointment = appointment / 100;
-//            }
-//                talon.setAppointed(appointment);
-//                talonService.saveTalon(talon);
-//                log.info("Talon " + talon.getId() + " " + talon.getAppointed()
-//                );
-//
-//        });
+//         put your code here
+//         to activate while get a day in workday request
+
+        List<Talon> talons = talonService.getTalonsForDate(date);
+        talons.forEach(talon -> {
+            int appointment = talon.getAppointed();
+            if (appointment < 20) {
+                appointment = appointment * 100;
+            }
+            if (appointment == 0) {appointment = 800;}
+            if (appointment >=  8000) {
+                appointment = appointment / 10;
+            }
+                talon.setAppointed(appointment);
+                talonService.saveTalon(talon);
+                log.info("Talon " + talon.getId() + " " + talon.getAppointed()
+                );
+
+        });
 
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
