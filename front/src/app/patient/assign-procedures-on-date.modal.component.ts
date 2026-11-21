@@ -26,7 +26,7 @@ export class PatientAssignProceduresOnDateModalComponent implements IModalDialog
         this.data = options.data;
         this.data.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000 + 24 * 60 * 60 * 1000)
             ).toISOString().slice(0, -14);
-        this.data.appointed = 0;
+        this.data.appointed = 800;
     }
 
     submit(f, options) {

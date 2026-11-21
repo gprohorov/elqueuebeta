@@ -65,6 +65,15 @@ public class TalonService {
         return repository.save(talon);
     }
 
+    private Talon fixAppointment(Talon talon) {
+        int hour = talon.getAppointed();
+        if (hour == 0) { hour = 800;}
+        if (hour <= 24 ) { hour = hour * 100; }
+        if (hour > 2400) { hour = hour / 100; }
+        talon.setAppointed(hour);
+        return talon;
+    }
+
     public Talon createTalon(String patientId, int procedureId, LocalDate date) {
 
         if (procedureId == 2) {
@@ -73,7 +82,7 @@ public class TalonService {
             patientService.savePatient(patient);
         }
         log.info("Talon seemed has been created");
-        return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), date));
+        return this.saveTalon(new Talon(patientId, procedureService.getProcedure(procedureId), date));
     }
     
     public Talon createTalon(String patientId, int procedureId, LocalDate date, int time) {
@@ -232,6 +241,16 @@ public class TalonService {
     }
 
     public List<Talon> saveTalons(List<Talon> talons) {
+
+         for (Talon talon : talons) {
+             int app = talon.getAppointed();
+             if (app < 24) {
+                 talon.setAppointed(app * 24);
+             }
+             if (app == 0) {
+                 talon.setAppointed(800);
+             }
+         }
         return repository.saveAll(talons);
     }
 
@@ -327,7 +346,7 @@ public class TalonService {
                 );
 
 
-        return repository.saveAll(talons);
+        return this.saveTalons(talons);
     }
 
     // TODO: Make it by MongoRepository
