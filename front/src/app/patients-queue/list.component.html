@@ -149,7 +149,7 @@
                                     </button>
                                 </div>
                             </div>
-                          Дата реєстрації: <strong>{{item?.person?.registrationDate | date: 'dd.MM.yyyy'}}</strong>
+                          Дата реєстрації на консультацію: <strong>{{item?.person?.registrationDate | date: 'dd.MM.yyyy'}}</strong>
                           Телефон: <strong>{{item?.person?.cellPhone}}</strong>
                           <i class="fa fa-phone" style="cursor: pointer;" [ngStyle]="{'color':callColors[item.callStatus]}" (click)="dialto(item?.person?.cellPhone)" > </i>
                           <span [hidden]="!isDialing" class="blink">дозвон...</span>

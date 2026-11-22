@@ -49,15 +49,27 @@ public class TalonService {
     }
 
     public Talon createTalon(String patientId, int procedureId, int days) {
-        return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), days));
+        return this.saveTalon(new Talon(patientId, procedureService.getProcedure(procedureId), days));
     }
 
     public Talon saveTalon(Talon talon) {
+        int hour = talon.getAppointed();
+        if (hour == 0) { hour = LocalDateTime.now().getHour() * 100;}
+        if (hour <= 24 ) { hour = hour * 100; }
+        if (hour > 2400) { hour = 800; }
+        talon.setAppointed(hour);
+
+        if (talon.getProcedure().getId() == 2) {
+            String patientId = talon.getPatientId();
+            Patient patient = patientService.getPatient(patientId);
+            patient.getPerson().setRegistrationDate(LocalDateTime.now());
+            patientService.savePatient(patient);
+        }
         return repository.save(talon);
     }
 
     public Talon createTalon(String patientId, int procedureId, LocalDate date) {
-        return repository.save(new Talon(patientId, procedureService.getProcedure(procedureId), date));
+        return this.saveTalon(new Talon(patientId, procedureService.getProcedure(procedureId), date));
     }
     
     public Talon createTalon(String patientId, int procedureId, LocalDate date, int time) {
@@ -84,7 +96,7 @@ public class TalonService {
     		therapy.setAssignments(assignments);
     		therapyService.saveTherapy(therapy);
     	}
-        return repository.save(talon);
+        return this.saveTalon(talon);
     }
 
     public List<Talon> getAll() {
@@ -216,6 +228,16 @@ public class TalonService {
     }
 
     public List<Talon> saveTalons(List<Talon> talons) {
+
+        for (Talon talon : talons) {
+            int app = talon.getAppointed();
+            if (app < 24) {
+                talon.setAppointed(app * 24);
+            }
+            if (app == 0) {
+                talon.setAppointed(800);
+            }
+        }
         return repository.saveAll(talons);
     }
 
