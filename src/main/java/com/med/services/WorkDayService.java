@@ -2,6 +2,7 @@ package com.med.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,22 +68,23 @@ public class WorkDayService  {
 //         put your code here
 //         to activate while get a day in workday request
 
-        List<Talon> talons = talonService.getTalonsForDate(date);
-        talons.forEach(talon -> {
-            int appointment = talon.getAppointed();
-            if (appointment < 20) {
-                appointment = appointment * 100;
-            }
-            if (appointment == 0) {appointment = 800;}
-            if (appointment >=  8000) {
-                appointment = appointment / 10;
-            }
-                talon.setAppointed(appointment);
-                talonService.saveTalon(talon);
-                log.info("Talon " + talon.getId() + " " + talon.getAppointed()
-                );
-
-        });
+//        List<Talon> talons = talonService.getTalonsForDate(date);
+//        talons.forEach(talon -> {
+//            int appointment = talon.getAppointed();
+//            if (appointment < 20) {
+//                appointment = appointment * 100;
+//            }
+//            if (appointment == 0) {appointment = 800;}
+//            if (appointment >=  8000) {
+//                appointment = appointment / 10;
+//            }
+//                talon.setAppointed(appointment);
+//                talonService.saveTalon(talon);
+//                log.info("Talon " + talon.getId() + " " + talon.getAppointed()
+//                );
+//
+//        });
+//        this.getDailyAverageTenure(date);
 
         return repository.findByDate(date).orElse(new WorkDay(date));
     }
@@ -298,7 +300,10 @@ public class WorkDayService  {
                 .filter(patient -> patient.getBalance() < 0)
                 .filter(patient -> patient.isHotel())
                 .mapToInt(Patient::getBalance).sum();
-        workDay.setDebtOfHotel(hotel);
+        int tenure = this.getDailyAverageTenure(LocalDate.now());
+        workDay.setDebtOfHotel(tenure); // костыль, надо бы сделать отдельное поле,
+        // а не лепить к отелю. Что-то типа int WorkDay.tenure
+
 
         int nonHotel = debt - hotel;
         workDay.setDebtOfTodayWithoutHotel(nonHotel);
@@ -361,6 +366,68 @@ public class WorkDayService  {
         //------------------------ debt------------------
         System.out.println("WORKDAY COMPLETE ");
         this.update(workDay);
+    }
+
+    public int getDailyAverageTenure(LocalDate date) {
+        List<Talon> talons = talonService.getTalonsForDate(date)
+                .stream()
+                .filter(talon -> talon.getActivity().equals(Activity.EXECUTED))
+                .collect(Collectors.toList());
+
+        if (talons.size() == 0) {
+            return 0;
+        }
+
+        List<String> patientIds = talons.stream()
+                .map(talon -> talon.getPatientId())
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<Integer> tenures = new ArrayList<>();
+        patientIds.stream()
+                .forEach(id -> {
+                    LocalDateTime start = this.getStartForPatient(talons, id);
+                    LocalDateTime finish = this.getFinishForPatient(talons, id);
+                    Integer duration = this.getDuration(start, finish);
+//                    System.out.println(patientService.getPatient(id).getPerson().getFullName());
+//                    System.out.println(duration);
+//                    System.out.println("-------");
+
+                    tenures.add(duration);
+                });
+        int averageTenure = tenures.stream()
+                .filter(Objects::nonNull)
+                .filter(value -> value < 420)
+                .mapToInt(Integer::intValue).sum() / tenures.size();
+
+        System.out.println(date.toString() + "  " + averageTenure);
+
+
+        return averageTenure;
+    }
+
+    private LocalDateTime getStartForPatient(List<Talon> talons, String patientId) {
+        LocalDateTime start = talons.stream()
+                .filter(talon -> talon.getPatientId().equals(patientId))
+                .map(talon -> talon.getStart())
+                .sorted()
+                .findFirst().orElse(null);
+        return start;
+    }
+    private LocalDateTime getFinishForPatient(List<Talon> talons, String patientId) {
+        LocalDateTime start = talons.stream()
+                .filter(talon -> talon.getPatientId().equals(patientId))
+                .map(talon -> talon.getExecutionTime())
+                .sorted(Comparator.reverseOrder())
+                .findFirst().orElse(null);
+        return start;
+    }
+    private Integer getDuration(LocalDateTime start, LocalDateTime finish){
+        if (start == null || finish == null) {
+            return null;
+        }
+        Integer duration = (int) ChronoUnit.MINUTES.between(start,finish);
+        return duration;
     }
 
     public void setWorkDayFinishValues(LocalDate date) {

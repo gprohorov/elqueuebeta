@@ -70,7 +70,7 @@ public class ScheduleService {
         workDayService.setWorkDayStart(date);
     }
 
-    @Scheduled(cron = "0 0 18 * * *")
+    @Scheduled(cron = "0 20 18 * * *")
     void closeWorkDay() {
         workDayService.setWorkDayFinishValues();
     }

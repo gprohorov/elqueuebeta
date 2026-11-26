@@ -45,7 +45,7 @@
 <tr><td>Сума боргу всіх боржників</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayAll}}</strong> грн.</td></tr>
 <tr><td>Сума боргу всіх активних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfTodayActive}}</strong> грн.</td></tr>
 <tr></tr>
-<tr><td>Сума боргу готельних</td><td class="text-right text-nowrap"><strong>{{data?.debtOfHotel}}</strong> грн.</td></tr>
+<tr><td>Середній час перебування у клініці</td><td class="text-right text-nowrap"><strong>{{data?.debtOfHotel}}</strong> хв.</td></tr>
 <tr style="cursor: pointer;" (click)="show_debtOfTodayWithoutHotelList ? show_debtOfTodayWithoutHotelList = false : show_debtOfTodayWithoutHotelList = true">
   <td><i class="fa fa-caret-down" aria-hidden="true"></i> Сума боргу не готельних</td>
   <td class="text-right text-nowrap"><strong>{{data?.debtOfTodayWithoutHotel}}</strong> грн.</td></tr>
